@@ -2,6 +2,7 @@ import React from 'react';
 import { render } from 'react-dom';
 import jsStringify from "javascript-stringify";
 import _ from "lodash";
+import { features, baseWebpack, createConfig } from "./configurator";
 
 const styles = {
     fontFamily: 'sans-serif',
@@ -14,38 +15,6 @@ const textboxStyles = {
     display: "block"
 }
 
-const baseWebpack = {
-    entry: './src/index.js',
-    output: {
-        path: "path.resolve(__dirname, 'dist')",
-        filename: 'bundle.js'
-    }
-}
-
-const features = {
-    "lodash": {
-        webpack:
-        (webpackConfig) =>
-            Object.assign({}, webpackConfig, {
-                lodash: true
-            })
-    },
-    "React": {
-        webpack: (webpackConfig) =>
-            Object.assign({}, webpackConfig, {
-                module: {
-                    rules: [
-                        {
-                            test: /\.(js|jsx)$/,
-                            exclude: /node_modules/,
-                            use: 'babel-loader'
-                        }
-                    ]
-                }
-            })
-    }
-}
-//jsStringify(features["React"]["webpack"](baseWebpack))
 class Configurator extends React.Component {
     constructor(props) {
         super(props);
@@ -60,18 +29,13 @@ class Configurator extends React.Component {
         return _.chain(this.state.selected).map((v, k) => v ? k : null).reject(_.isNull).value();
     }
     render() {
-        return <div style={styles}>
-            {_.map(_.keys(features), (feature) => <div><input checked={this.state.selected[feature]} onClick={() => this.setSelected(feature)} type="checkbox" /> {feature}</div>)}
-            <div>{this.selectedArray()}</div>
-            <div style={textboxStyles}>
-            {jsStringify(_.reduce(this.selectedArray(), (acc = baseWebpack, currentValue) => features[currentValue]["webpack"](acc)))}
-        </div>
-
-            <textarea style={textboxStyles}>
-
-        {jsStringify(features["React"]["webpack"](baseWebpack), null, 2)}
-        </textarea>
-            </div>
+        const newConfig = createConfig(this.selectedArray())
+        return (
+            <div style={styles}>
+                {_.map(_.keys(features), (feature) => <div><input checked={this.state.selected[feature]} onClick={() => this.setSelected(feature)} type="checkbox" /> {feature}</div>)}
+                <textarea style={textboxStyles} value={newConfig}>
+                </textarea>
+                </div>)
 
     }
 }
