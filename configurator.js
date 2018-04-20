@@ -10,6 +10,7 @@ export const baseWebpack = {
 }
 export const features = {
     "lodash": {
+        npm: ["lodash"],
         webpack:
         (webpackConfig) =>
             Object.assign({}, webpackConfig, {
@@ -17,6 +18,7 @@ export const features = {
             })
     },
     "React": {
+        npm: ["react", "react-dom"],
         webpack: (webpackConfig) =>
             Object.assign({}, webpackConfig, {
                 module: {
@@ -32,8 +34,12 @@ export const features = {
     }
 }
 
-export function createConfig(configItems) {
-    return jsStringify(_.reduce(configItems, (acc, currentValue) => (features[currentValue]["webpack"](acc)), baseWebpack), null, 2)
+export function getNpmModules(configItems) {
+    return _.reduce(configItems, (acc, currentValue) => (_.concat(acc, features[currentValue]["npm"])), [])
+}
+
+export function createConfig(configItems, configType) {
+    return jsStringify(_.reduce(configItems, (acc, currentValue) => (features[currentValue][configType](acc)), baseWebpack), null, 2)
 }
 
 // console.log("it is ", createConfig(["React", "lodash"]));

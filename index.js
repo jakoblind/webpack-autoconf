@@ -2,7 +2,7 @@ import React from 'react';
 import { render } from 'react-dom';
 import jsStringify from "javascript-stringify";
 import _ from "lodash";
-import { features, baseWebpack, createConfig } from "./configurator";
+import { features, baseWebpack, createConfig, getNpmModules } from "./configurator";
 
 const styles = {
     fontFamily: 'sans-serif',
@@ -29,11 +29,15 @@ class Configurator extends React.Component {
         return _.chain(this.state.selected).map((v, k) => v ? k : null).reject(_.isNull).value();
     }
     render() {
-        const newConfig = createConfig(this.selectedArray())
+        const newWebpackConfig = createConfig(this.selectedArray(), "webpack");
+        const newNpmConfig = getNpmModules(this.selectedArray());
+
+        const npmCommand = "npm install --save-dev " + newNpmConfig.join(" ")
         return (
             <div style={styles}>
                 {_.map(_.keys(features), (feature) => <div><input checked={this.state.selected[feature]} onClick={() => this.setSelected(feature)} type="checkbox" /> {feature}</div>)}
-                <textarea style={textboxStyles} value={newConfig}>
+            <textarea value={npmCommand}/>
+                <textarea style={textboxStyles} value={newWebpackConfig}>
                 </textarea>
                 </div>)
 
