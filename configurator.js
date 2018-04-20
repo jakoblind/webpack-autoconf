@@ -1,53 +1,112 @@
 const jsStringify = require("javascript-stringify");
 const _ = require("lodash");
 
-export const baseWebpack = {
+const baseWebpack = {
     entry: './src/index.js',
     output: {
-        path: "path.resolve(__dirname, 'dist')",
+        path: "CODE:path.resolve(__dirname, 'dist')",
         filename: 'bundle.js'
     }
 }
-export const features = {
-    "Production mode": {
-        babel: _.identity,
-        webpack: _.identity,
-        npm: []
-    },
-    "lodash": {
-        babel: _.identity,
-        npm: ["lodash"],
-        webpack:
-        (webpackConfig) =>
-            Object.assign({}, webpackConfig, {
-                lodash: true
-            })
-    },
-    "React": {
-        babel: (babelConfig) => Object.assign({}, babelConfig, {
-  "presets": ["env", "react"]
-        }),
-        npm: ["react", "react-dom", "babel-loader", "babel-preset-react", "babel-core", "babel-preset-env"],
-        webpack: (webpackConfig) =>
-            Object.assign({}, webpackConfig, {
-                module: {
-                    rules: [
-                        {
-                            test: /\.(js|jsx)$/,
-                            exclude: /node_modules/,
-                            use: 'babel-loader'
-                        }
-                    ]
-                }
-            })
+
+const baseWebpackImports = [
+    "const webpack = require('webpack');",
+    "const path = require('path');"
+];
+
+function addPlugin(webpackConfig, plugin) {
+    if (!webpackConfig.plugins) {
+        return Object.assign({}, webpackConfig, {
+            plugins: [plugin]
+        })
     }
+    return Object.assign({}, webpackConfig, {
+        plugins: _.concat(webpackConfig.plugins, plugin)
+    })
+}
+export const features = (()=>{
+    const features = {
+        "React": {
+            babel: (babelConfig) => Object.assign({}, babelConfig, {
+                "presets": ["env", "react"]
+            }),
+            npm: ["react", "react-dom", "babel-loader", "babel-preset-react", "babel-core", "babel-preset-env"],
+            webpack: (webpackConfig) =>
+                Object.assign({}, webpackConfig, {
+                    module: {
+                        rules: [
+                            {
+                                test: /\.(js|jsx)$/,
+                                exclude: /node_modules/,
+                                use: 'babel-loader'
+                            }
+                        ]
+                    }
+                })
+        },
+        "moment": {
+            "npm": ["moment"],
+            webpack: (webpackConfig) => addPlugin(webpackConfig, "CODE:new webpack.ContextReplacementPlugin(/moment[\/\\]locale$/, /en/)")
+        },
+        "lodash": {
+            babel: _.identity,
+            npm: ["lodash", "lodash-webpack-plugin"],
+            webpackImports: ["const LodashModuleReplacementPlugin = require('lodash-webpack-plugin');"],
+            webpack:
+            (webpackConfig) => addPlugin(webpackConfig, "CODE:new LodashModuleReplacementPlugin")
+        },
+        "scope hoisting": {
+            webpack: (webpackConfig) => addPlugin(webpackConfig, "CODE:new webpack.optimize.ModuleConcatenationPlugin()")
+        },
+        "Production mode": {
+            webpack: (webpackConfig) => addPlugin(webpackConfig, `CODE:new webpack.DefinePlugin({
+   'process.env.NODE_ENV': JSON.stringify('production')
+})`)
+        }
+    }
+    return _.mapValues(features, (item) => {
+        if (!item.babel) {
+            item.babel = _.identity;
+        }
+        if (!item.webpack) {
+            item.webpack = _.identity;
+        }
+        if (!item.webpackImports) {
+            item.webpackImports = [];
+        }
+        if (!item.npm) {
+            item.npm = [];
+        }
+        return item;
+    })
+})()
+
+function stringifyReplacer (value, indent, stringify) {
+  if (typeof value === 'string' && value.startsWith("CODE:")) {
+      return value.replace(/"/g, '\\"').replace(/^CODE:/, "");
+  }
+
+  return stringify(value);
+}
+
+function createConfig(configItems, configType) {
+    const base = configType === "webpack" ? baseWebpack : {};
+    return jsStringify(_.reduce(configItems, (acc, currentValue) => (features[currentValue][configType](acc)), base), stringifyReplacer, 2)
 }
 
 export function getNpmModules(configItems) {
     return _.reduce(configItems, (acc, currentValue) => (_.concat(acc, features[currentValue]["npm"])), ["webpack"])
 }
 
-export function createConfig(configItems, configType) {
-    const base = configType === "webpack" ? baseWebpack : {};
-    return jsStringify(_.reduce(configItems, (acc, currentValue) => (features[currentValue][configType](acc)), base), null, 2)
+export function createWebpackConfig(configItems) {
+    return createConfig(configItems, "babel");
+}
+
+export function createBabelConfig(configItems) {
+
+    return `${baseWebpackImports.join("\n")}
+
+const config = ${createConfig(configItems, "webpack")}
+
+module.exports = config;`;
 }
