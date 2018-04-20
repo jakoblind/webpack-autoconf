@@ -9,7 +9,13 @@ export const baseWebpack = {
     }
 }
 export const features = {
+    "Production mode": {
+        babel: _.identity,
+        webpack: _.identity,
+        npm: []
+    },
     "lodash": {
+        babel: _.identity,
         npm: ["lodash"],
         webpack:
         (webpackConfig) =>
@@ -18,7 +24,10 @@ export const features = {
             })
     },
     "React": {
-        npm: ["react", "react-dom"],
+        babel: (babelConfig) => Object.assign({}, babelConfig, {
+  "presets": ["env", "react"]
+        }),
+        npm: ["react", "react-dom", "babel-loader", "babel-preset-react", "babel-core", "babel-preset-env"],
         webpack: (webpackConfig) =>
             Object.assign({}, webpackConfig, {
                 module: {
@@ -35,11 +44,10 @@ export const features = {
 }
 
 export function getNpmModules(configItems) {
-    return _.reduce(configItems, (acc, currentValue) => (_.concat(acc, features[currentValue]["npm"])), [])
+    return _.reduce(configItems, (acc, currentValue) => (_.concat(acc, features[currentValue]["npm"])), ["webpack"])
 }
 
 export function createConfig(configItems, configType) {
-    return jsStringify(_.reduce(configItems, (acc, currentValue) => (features[currentValue][configType](acc)), baseWebpack), null, 2)
+    const base = configType === "webpack" ? baseWebpack : {};
+    return jsStringify(_.reduce(configItems, (acc, currentValue) => (features[currentValue][configType](acc)), base), null, 2)
 }
-
-// console.log("it is ", createConfig(["React", "lodash"]));
