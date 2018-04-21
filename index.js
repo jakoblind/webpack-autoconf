@@ -4,6 +4,8 @@ import jsStringify from "javascript-stringify";
 import _ from "lodash";
 import { features, createWebpackConfig, createBabelConfig, getNpmModules } from "./configurator";
 
+import prism from "prismjs";
+
 class Configurator extends React.Component {
     constructor(props) {
         super(props);
@@ -22,6 +24,12 @@ class Configurator extends React.Component {
         const newBabelConfig = createBabelConfig(this.selectedArray());
         const newNpmConfig = getNpmModules(this.selectedArray());
 
+        const highlightedWebpackConfig = () => {
+            return {
+                __html: Prism.highlight(newWebpackConfig, Prism.languages.javascript, 'javascript')
+            };
+        };
+
         const npmCommand = "npm install --save-dev " + newNpmConfig.join(" ")
         return (
             <div>
@@ -36,8 +44,8 @@ class Configurator extends React.Component {
             </div>
                 <div className="container">
                 <div className="left-section">
-            <h3>Your personal webpack.config.js</h3>
-                <textarea readOnly={true} rows="30" value={newWebpackConfig}/>
+                <h3>Your personal webpack.config.js</h3>
+                <pre><code className="language-css" dangerouslySetInnerHTML={highlightedWebpackConfig()}></code></pre>
                 </div>
                 <div className="right-section">
                 <h3>Create your project in 4 easy steps!</h3>
