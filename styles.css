@@ -1,0 +1,55 @@
+body {
+    font-family: sans-serif;
+    background: #182025;
+    color: white;
+}
+
+.header {
+    text-align: center;
+}
+
+.footer {
+    width: 800px;
+    margin: 0 auto;
+}
+
+h1 {
+    font-size: small;
+}
+
+.container {
+    display: flex;
+    clear:both;
+
+}
+a {
+
+    color: red;
+}
+.left-section {
+    width: 50%;
+
+}
+textarea {
+    width: 90%;
+}
+
+.right-section {
+
+    width: 50%;
+}
+
+.features {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.feature {
+
+    float:left;
+}
+
+h3 {
+
+    clear:both;
+}

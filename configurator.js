@@ -81,7 +81,7 @@ export const features = (()=>{
         "SVG": {
             npm: ["file-loader"],
             webpack: (webpackConfig) => addModuleRule(webpackConfig, {
-                test: /\.less$/,
+                test: /\.svg$/,
                 use: [
                     "file-loader"
                 ]
@@ -153,11 +153,13 @@ export function getNpmModules(configItems) {
     return _.reduce(configItems, (acc, currentValue) => (_.concat(acc, features[currentValue]["npm"])), ["webpack"])
 }
 
-export function createWebpackConfig(configItems) {
-    return createConfig(configItems, "babel");
+export function createBabelConfig(configItems) {
+    const config = createConfig(configItems, "babel");
+    return config === "{}" ? null : config;
+
 }
 
-export function createBabelConfig(configItems) {
+export function createWebpackConfig(configItems) {
 
     return `${baseWebpackImports.join("\n")}
 
