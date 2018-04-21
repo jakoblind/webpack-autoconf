@@ -24,6 +24,21 @@ function addPlugin(webpackConfig, plugin) {
         plugins: _.concat(webpackConfig.plugins, plugin)
     })
 }
+
+function addModuleRule(webpackConfig, rule) {
+    if (!_.has(webpackConfig, "module.rules")) {
+        return Object.assign({}, webpackConfig, {
+            module: {
+                rules: [rule]
+            }
+        })
+    }
+
+    const newWebpackConfig = _.cloneDeep(webpackConfig);
+    newWebpackConfig.module.rules.push(rule);
+    return newWebpackConfig;
+}
+
 export const features = (()=>{
     const features = {
         "React": {
@@ -32,17 +47,57 @@ export const features = (()=>{
             }),
             npm: ["react", "react-dom", "babel-loader", "babel-preset-react", "babel-core", "babel-preset-env"],
             webpack: (webpackConfig) =>
-                Object.assign({}, webpackConfig, {
-                    module: {
-                        rules: [
-                            {
-                                test: /\.(js|jsx)$/,
-                                exclude: /node_modules/,
-                                use: 'babel-loader'
-                            }
-                        ]
+                Object.assign({}, webpackConfig, addModuleRule(webpackConfig, {
+                    test: /\.(js|jsx)$/,
+                    exclude: /node_modules/,
+                    use: 'babel-loader'
+                }), {
+                    resolve: {
+                        extensions: ['.js', '.jsx']
                     }
                 })
+        },
+        "CSS": {
+            npm: ["style-loader", "css-loader"],
+            webpack: (webpackConfig) => addModuleRule(webpackConfig, {
+                test: /\.css$/,
+                use: [
+                    'style-loader',
+                    'css-loader'
+                ]
+            })
+        },
+        "less": {
+            npm: ["style-loader", "css-loader", "less-loader"],
+            webpack: (webpackConfig) => addModuleRule(webpackConfig, {
+                test: /\.less$/,
+                use: [
+                    'style-loader',
+                    'css-loader',
+                    "less-loader"
+                ]
+            })
+        },
+        "SVG": {
+            npm: ["file-loader"],
+            webpack: (webpackConfig) => addModuleRule(webpackConfig, {
+                test: /\.less$/,
+                use: [
+                    "file-loader"
+                ]
+            })
+        },
+        "PNG": {
+            npm: ["url-loader"],
+            webpack: (webpackConfig) => addModuleRule(webpackConfig, {
+                test: /\.png$/,
+                use: [{
+                    loader: 'url-loader',
+                    options:{
+                        mimetype:'image/png'
+                    }
+                }]
+            })
         },
         "moment": {
             "npm": ["moment"],
