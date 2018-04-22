@@ -34,12 +34,12 @@ class Configurator extends React.Component {
             };
         };
 
-        const npmCommand = "npm install --save-dev " + newNpmConfig.join(" ")
+        const npmCommand = "mkdir myapp\ncd myapp\nnpm init -y\nnpm install --save-dev " + newNpmConfig.join(" ")
 
         return (
             <div>
                 <div className="header">
-                    <h1>webpack configurator</h1>
+                    <h1>webpack 4 configurator</h1>
                     <h2>Create a <i>personalized</i> and <i>optimized</i> webpack.config.js!</h2>
 
                     <div >
@@ -53,17 +53,19 @@ class Configurator extends React.Component {
                         <pre><code className="language-css" dangerouslySetInnerHTML={highlightedWebpackConfig()}></code></pre>
                     </div>
                     <div className="right-section">
-                        <h3>Create your project in 4 easy steps!</h3>
-                        <h4>1. Create an NPM project and install dependencies</h4>
+                        <h3>Create your project in {newBabelConfig ? 4 : 3} easy steps!</h3>
+                        <ol>
+                        <li>Create an NPM project and install dependencies</li>
                         <textarea readOnly={true} rows="6" cols="50" value={npmCommand}/>
 
-                        <h4>2. Create webpack.config.js in the root and copy the contents of the generated file</h4>
+                        <li>Create webpack.config.js in the root and copy the contents of the generated file</li>
 
-                        <h4>3. Create folders src and dist and create your index.js file in src folder</h4>
-                        {newBabelConfig ? <div><h4>4. You will also need this .babel.rc file</h4>
+                        <li>Create folders src and dist and create your index.js file in src folder</li>
+                        {newBabelConfig ? <div><li>You will also need this .babel.rc file</li>
                             <textarea readOnly={true} rows="5" cols="50" value={newBabelConfig}/></div> : null}
 
-                        <p>Need more detailed instructions?</p>
+                        </ol>
+                        <a href="http://blog.jakoblind.no/react-with-webpack-babel-npm/">Need more detailed instructions?</a>
                     </div>
                 </div>
 

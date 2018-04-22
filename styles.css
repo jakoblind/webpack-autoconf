@@ -1,10 +1,10 @@
 body {
     font-family: sans-serif;
+    font-family:"Helvetica Neue", Arial, sans-serif;
 }
 
 .start-here {
     width: 400px;
-
     display: block;
     margin: 0 auto;
     background: url('./images/arrowdown2.png');
@@ -27,26 +27,40 @@ h1 {
     font-size: small;
 }
 
+h2 {
+    margin-top: 0px;
+}
+
 .container {
     display: flex;
     clear:both;
 
 }
-a {
+@media screen and (max-width: 40em) {
+    .container {
+        flex-direction: column;
 
-    color: red;
+    }
 }
-.left-section {
+
+.left-section,
+.right-section {
+    padding: 10px;
     width: 50%;
-
 }
+@media screen and (max-width: 40em) {
+    .right-section,
+    .left-section{
+        display: block;
+        width: 100%;
+    }
+}
+a {
+    color: #ffb000;
+}
+
 textarea {
     width: 90%;
-}
-
-.right-section {
-
-    width: 50%;
 }
 
 .features {
@@ -63,7 +77,7 @@ textarea {
     margin-bottom: 12px;
     padding-left: 40px;
     cursor: pointer;
-    font-size: 22px;
+    font-size: 18px;
     -webkit-user-select: none;
     -moz-user-select: none;
     -ms-user-select: none;
@@ -93,7 +107,7 @@ textarea {
 
 /* When the checkbox is checked, add a blue background */
 .feature-container input:checked ~ .checkmark {
-    background-color: #2196F3;
+    background-color: #33ff00;
 }
 
 /* Create the checkmark/indicator (hidden when not checked) */
@@ -124,4 +138,29 @@ textarea {
 h3 {
 
     clear:both;
+}
+
+
+ol {
+    counter-reset:li;
+}
+ol li {
+    position: relative;
+    list-style:none;
+    margin-bottom: 20px;
+
+}
+ol li:before {
+    content:counter(li);
+    counter-increment:li;
+    position:absolute;
+    top:-11px;
+    left:-2em;
+    width:2em;
+    margin-right:8px;
+    padding:4px;
+    font-size: 27px;
+    font-weight:bold;
+    font-family:"Helvetica Neue", Arial, sans-serif;
+    text-align:center;
 }
