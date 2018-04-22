@@ -7,7 +7,7 @@ import { features, createWebpackConfig, createBabelConfig, getNpmModules } from 
 import prism from "prismjs";
 
 const Features = ({features, selected, setSelected}) => <div className="features">
-      {_.map(_.keys(features), (feature) => <div className="feature"><input checked={selected[feature]} onClick={() => setSelected(feature)} type="checkbox" /> {feature}</div>)}
+      {_.map(_.keys(features), (feature) => <label className="feature-container">{feature}<input checked={selected[feature]} onClick={() => setSelected(feature)} type="checkbox" /><span class="checkmark"></span></label>)}
 </div>
 
 class Configurator extends React.Component {
