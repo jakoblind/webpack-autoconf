@@ -42,7 +42,9 @@ class Configurator extends React.Component {
                     <h1>webpack configurator</h1>
                     <h2>Create a <i>personalized</i> and <i>optimized</i> webpack.config.js!</h2>
 
-                    <p>Start here! What features do you need?</p>
+                    <div >
+                        <div className="start-here">Start here! What features do you need?</div>
+                    </div>
                     <Features features={features} selected={this.state.selected} setSelected={this.setSelected}/>
                 </div>
                 <div className="container">

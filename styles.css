@@ -2,7 +2,19 @@ body {
     font-family: sans-serif;
 }
 
+.start-here {
+    width: 400px;
+
+    display: block;
+    margin: 0 auto;
+    background: url('./images/arrowdown2.png');
+    background-repeat: no-repeat;
+    background-size: 50px 50px;
+    height: 70px;
+}
 .header {
+    max-width: 800px;
+    margin: 0 auto;
     text-align: center;
 }
 
