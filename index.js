@@ -7,7 +7,7 @@ import { features, createWebpackConfig, createBabelConfig, getNpmModules } from 
 import prism from "prismjs";
 
 const Features = ({features, selected, setSelected}) => <div className="features">
-      {_.map(_.keys(features), (feature) => <label className="feature-container">{feature}<input checked={selected[feature]} onClick={() => setSelected(feature)} type="checkbox" /><span class="checkmark"></span></label>)}
+      {_.map(_.keys(features), (feature) => <label key={feature} className="feature-container">{feature}<input checked={selected[feature]} onClick={() => setSelected(feature)} type="checkbox" /><span className="checkmark"></span></label>)}
 </div>
 
 class Configurator extends React.Component {
@@ -73,16 +73,17 @@ class Configurator extends React.Component {
                     <h3>What is this?  </h3>
                     <p>
                         When using this tool, you get a webpack.config.js that is created just for <i>you</i>. It's a great starting point for further development. The webpack.config.js will create an optimized bundle based on <a href="http://blog.jakoblind.no/3-ways-to-reduce-webpack-bundle-size/">best practices</a>. Advanced optimizations such as code splitting is not (yet?) supported with this tool.
-                        <h4>Want more?</h4>
-                        <p>Want to be notified when I build more cool stuff like this? And also get early access to articles?</p>
-<a className="myButton" href="https://www.getdrip.com/forms/81916834/submissions/new">Sign up to my newsletter</a>
-                        <h4>Found a bug or want a feature?</h4>
-                        <p>Contact me on <a href="https://twitter.com/karljakoblind">twitter</a> or file an issue or even better make a PR on the <a href="https://github.com/jakoblind/webpack-configurator">github repo</a>. Yes this is open source.</p>
-                        <h4>Who made this thing?</h4>
-                        <p>
-                            It's me, Jakob who made this. I write <a href="http://blog.jakoblind.no">a blog about React</a> that you might want to check out if you liked this! I am also on <a href="https://twitter.com/karljakoblind">twitter</a>.
-                        </p>
                     </p>
+                    <h4>Want more?</h4>
+                    <p>Want to be notified when I build more cool stuff like this? And also get early access to articles?</p>
+                    <a className="myButton" href="https://www.getdrip.com/forms/81916834/submissions/new">Sign up to my newsletter</a>
+                    <h4>Found a bug or want a feature?</h4>
+                    <p>Contact me on <a href="https://twitter.com/karljakoblind">twitter</a> or file an issue or even better make a PR on the <a href="https://github.com/jakoblind/webpack-configurator">github repo</a>. Yes this is open source.</p>
+                    <h4>Who made this thing?</h4>
+                    <p>
+                        It's me, Jakob who made this. I write <a href="http://blog.jakoblind.no">a blog about React</a> that you might want to check out if you liked this! I am also on <a href="https://twitter.com/karljakoblind">twitter</a>.
+                    </p>
+
                 </div>
 
             </div>)
