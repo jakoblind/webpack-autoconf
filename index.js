@@ -74,7 +74,8 @@ class Configurator extends React.Component {
                     <p>
                         When using this tool, you get a webpack.config.js that is created just for <i>you</i>. It's a great starting point for further development. The webpack.config.js will create an optimized bundle based on <a href="http://blog.jakoblind.no/3-ways-to-reduce-webpack-bundle-size/">best practices</a>. Advanced optimizations such as code splitting is not (yet?) supported with this tool.
                         <h4>Want more?</h4>
-                        <p>Want to be notified when I build more cool stuff like this? And also get early access to articles? Sign up to my newsletter </p>
+                        <p>Want to be notified when I build more cool stuff like this? And also get early access to articles?</p>
+<a className="myButton" href="https://www.getdrip.com/forms/81916834/submissions/new">Sign up to my newsletter</a>
                         <h4>Found a bug or want a feature?</h4>
                         <p>Contact me on <a href="https://twitter.com/karljakoblind">twitter</a> or file an issue or even better make a PR on the <a href="https://github.com/jakoblind/webpack-configurator">github repo</a>. Yes this is open source.</p>
                         <h4>Who made this thing?</h4>
