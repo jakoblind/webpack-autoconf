@@ -153,6 +153,10 @@ export function getNpmModules(configItems) {
     return _.reduce(configItems, (acc, currentValue) => (_.concat(acc, features[currentValue]["npm"])), ["webpack"])
 }
 
+export function getWebpackImports(configItems) {
+    return _.reduce(configItems, (acc, currentValue) => (_.concat(acc, features[currentValue]["webpackImports"])), [])
+}
+
 export function createBabelConfig(configItems) {
     const config = createConfig(configItems, "babel");
     return config === "{}" ? null : config;
@@ -160,8 +164,8 @@ export function createBabelConfig(configItems) {
 }
 
 export function createWebpackConfig(configItems) {
-
-    return `${baseWebpackImports.join("\n")}
+    const imports = _.concat(baseWebpackImports, getWebpackImports(configItems))
+    return `${imports.join("\n")}
 
 const config = ${createConfig(configItems, "webpack")}
 
