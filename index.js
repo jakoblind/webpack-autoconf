@@ -61,7 +61,7 @@ class Configurator extends React.Component {
                         <li>Create webpack.config.js in the root and copy the contents of the generated file</li>
 
                         <li>Create folders src and dist and create your index.js file in src folder</li>
-                        {newBabelConfig ? <div><li>You will also need this .babel.rc file</li>
+                        {newBabelConfig ? <div><li>You will also need this .babelrc file</li>
                             <textarea readOnly={true} rows="5" cols="50" value={newBabelConfig}/></div> : null}
 
                         </ol>
