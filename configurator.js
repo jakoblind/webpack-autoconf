@@ -6,7 +6,8 @@ const baseWebpack = {
     output: {
         path: "CODE:path.resolve(__dirname, 'dist')",
         filename: 'bundle.js'
-    }
+    },
+    mode: 'development'
 }
 
 const baseWebpackImports = [
@@ -114,9 +115,9 @@ export const features = (()=>{
             webpack: (webpackConfig) => addPlugin(webpackConfig, "CODE:new webpack.optimize.ModuleConcatenationPlugin()")
         },
         "Production mode": {
-            webpack: (webpackConfig) => addPlugin(webpackConfig, `CODE:new webpack.DefinePlugin({
+            webpack: (webpackConfig) => _.set(addPlugin(webpackConfig, `CODE:new webpack.DefinePlugin({
    'process.env.NODE_ENV': JSON.stringify('production')
-})`)
+})`), "mode", "production")
         }
     }
     return _.mapValues(features, (item) => {
