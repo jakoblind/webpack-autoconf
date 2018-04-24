@@ -68,6 +68,17 @@ export const features = (()=>{
                 ]
             })
         },
+        "sass": {
+            npm: ["style-loader", "css-loader", "sass-loader", "node-sass"],
+            webpack: (webpackConfig) => addModuleRule(webpackConfig, {
+                test: /\.scss$/,
+                use: [
+                    'style-loader',
+                    'css-loader',
+                    "sass-loader"
+                ]
+            })
+        },
         "less": {
             npm: ["style-loader", "css-loader", "less-loader"],
             webpack: (webpackConfig) => addModuleRule(webpackConfig, {
@@ -151,7 +162,10 @@ function createConfig(configItems, configType) {
 }
 
 export function getNpmModules(configItems) {
-    return _.reduce(configItems, (acc, currentValue) => (_.concat(acc, features[currentValue]["npm"])), ["webpack"])
+    return _.chain(configItems)
+        .reduce((acc, currentValue) => (_.concat(acc, features[currentValue]["npm"])), ["webpack"])
+        .uniq()
+        .values();
 }
 
 export function getWebpackImports(configItems) {
