@@ -44,7 +44,7 @@ export const features = (()=>{
     const features = {
         "React": {
             babel: (babelConfig) => Object.assign({}, babelConfig, {
-                "presets": ["env", "react"]
+                "presets": [['env', { modules: false }], "react"]
             }),
             npm: ["react", "react-dom", "babel-loader", "babel-preset-react", "babel-core", "babel-preset-env"],
             webpack: (webpackConfig) =>

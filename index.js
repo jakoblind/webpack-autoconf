@@ -62,7 +62,7 @@ class Configurator extends React.Component {
 
                         <li>Create folders src and dist and create your index.js file in src folder</li>
                         {newBabelConfig ? <div><li>You will also need this .babelrc file</li>
-                            <textarea readOnly={true} rows="5" cols="50" value={newBabelConfig}/></div> : null}
+                            <textarea readOnly={true} rows="11" cols="50" value={newBabelConfig}/></div> : null}
 
                         </ol>
                         <a href="http://blog.jakoblind.no/react-with-webpack-babel-npm/">Need more detailed instructions?</a>
