@@ -122,9 +122,6 @@ export const features = (()=>{
             webpack:
             (webpackConfig) => addPlugin(webpackConfig, "CODE:new LodashModuleReplacementPlugin")
         },
-        "scope hoisting": {
-            webpack: (webpackConfig) => addPlugin(webpackConfig, "CODE:new webpack.optimize.ModuleConcatenationPlugin()")
-        },
         "Production mode": {
             webpack: (webpackConfig) => _.set(addPlugin(webpackConfig, `CODE:new webpack.DefinePlugin({
    'process.env.NODE_ENV': JSON.stringify('production')
