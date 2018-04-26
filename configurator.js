@@ -123,9 +123,7 @@ export const features = (()=>{
             (webpackConfig) => addPlugin(webpackConfig, "CODE:new LodashModuleReplacementPlugin")
         },
         "Production mode": {
-            webpack: (webpackConfig) => _.set(addPlugin(webpackConfig, `CODE:new webpack.DefinePlugin({
-   'process.env.NODE_ENV': JSON.stringify('production')
-})`), "mode", "production")
+            webpack: (webpackConfig) => Object.assign({}, webpackConfig, {"mode": "production"})
         }
     }
     return _.mapValues(features, (item) => {
