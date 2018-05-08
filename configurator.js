@@ -75,7 +75,7 @@ export const features = (()=>{
                 use: [
                     'style-loader',
                     'css-loader',
-                    "sass-loader"
+                    'sass-loader'
                 ]
             })
         },
@@ -86,7 +86,18 @@ export const features = (()=>{
                 use: [
                     'style-loader',
                     'css-loader',
-                    "less-loader"
+                    'less-loader'
+                ]
+            })
+        },
+        "stylus": {
+            npm: ["style-loader", "css-loader", "stylus-loader"],
+            webpack: (webpackConfig) => addModuleRule(webpackConfig, {
+                test: /\.styl$/,
+                use: [
+                    'style-loader',
+                    'css-loader',
+                    'stylus-loader'
                 ]
             })
         },
