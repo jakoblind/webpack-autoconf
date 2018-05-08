@@ -46,7 +46,7 @@ export const features = (()=>{
             babel: (babelConfig) => Object.assign({}, babelConfig, {
                 "presets": [['env', { modules: false }], "react"]
             }),
-            npm: ["react", "react-dom", "babel-loader", "babel-preset-react", "babel-core", "babel-preset-env"],
+            dependencies: ["react", "react-dom", "babel-loader", "babel-preset-react", "babel-core", "babel-preset-env"],
             webpack: (webpackConfig) =>
                 Object.assign({}, webpackConfig, addModuleRule(webpackConfig, {
                     test: /\.(js|jsx)$/,
@@ -59,7 +59,7 @@ export const features = (()=>{
                 })
         },
         "CSS": {
-            npm: ["style-loader", "css-loader"],
+            dependencies: ["style-loader", "css-loader"],
             webpack: (webpackConfig) => addModuleRule(webpackConfig, {
                 test: /\.css$/,
                 use: [
@@ -69,7 +69,7 @@ export const features = (()=>{
             })
         },
         "sass": {
-            npm: ["style-loader", "css-loader", "sass-loader", "node-sass"],
+            dependencies: ["style-loader", "css-loader", "sass-loader", "node-sass"],
             webpack: (webpackConfig) => addModuleRule(webpackConfig, {
                 test: /\.scss$/,
                 use: [
@@ -80,7 +80,7 @@ export const features = (()=>{
             })
         },
         "less": {
-            npm: ["style-loader", "css-loader", "less-loader"],
+            dependencies: ["style-loader", "css-loader", "less-loader"],
             webpack: (webpackConfig) => addModuleRule(webpackConfig, {
                 test: /\.less$/,
                 use: [
@@ -91,7 +91,7 @@ export const features = (()=>{
             })
         },
         "stylus": {
-            npm: ["style-loader", "css-loader", "stylus-loader"],
+            dependencies: ["style-loader", "css-loader", "stylus-loader"],
             webpack: (webpackConfig) => addModuleRule(webpackConfig, {
                 test: /\.styl$/,
                 use: [
@@ -102,7 +102,7 @@ export const features = (()=>{
             })
         },
         "SVG": {
-            npm: ["file-loader"],
+            dependencies: ["file-loader"],
             webpack: (webpackConfig) => addModuleRule(webpackConfig, {
                 test: /\.svg$/,
                 use: [
@@ -111,7 +111,7 @@ export const features = (()=>{
             })
         },
         "PNG": {
-            npm: ["url-loader"],
+            dependencies: ["url-loader"],
             webpack: (webpackConfig) => addModuleRule(webpackConfig, {
                 test: /\.png$/,
                 use: [{
@@ -123,12 +123,12 @@ export const features = (()=>{
             })
         },
         "moment": {
-            "npm": ["moment"],
+            "dependencies": ["moment"],
             webpack: (webpackConfig) => addPlugin(webpackConfig, "CODE:new webpack.ContextReplacementPlugin(/moment[\\\/\\\\]locale$/, /en/)")
         },
         "lodash": {
             babel: _.identity,
-            npm: ["lodash", "lodash-webpack-plugin"],
+            dependencies: ["lodash", "lodash-webpack-plugin"],
             webpackImports: ["const LodashModuleReplacementPlugin = require('lodash-webpack-plugin');"],
             webpack:
             (webpackConfig) => addPlugin(webpackConfig, "CODE:new LodashModuleReplacementPlugin")
@@ -147,8 +147,8 @@ export const features = (()=>{
         if (!item.webpackImports) {
             item.webpackImports = [];
         }
-        if (!item.npm) {
-            item.npm = [];
+        if (!item.dependencies) {
+            item.dependencies = [];
         }
         return item;
     })
@@ -167,9 +167,9 @@ function createConfig(configItems, configType) {
     return jsStringify(_.reduce(configItems, (acc, currentValue) => (features[currentValue][configType](acc)), base), stringifyReplacer, 2)
 }
 
-export function getNpmModules(configItems) {
+export function getNpmDependencies(configItems) {
     return _.chain(configItems)
-        .reduce((acc, currentValue) => (_.concat(acc, features[currentValue]["npm"])), ["webpack"])
+        .reduce((acc, currentValue) => (_.concat(acc, features[currentValue]["dependencies"])), ["webpack"])
         .uniq()
         .values();
 }
