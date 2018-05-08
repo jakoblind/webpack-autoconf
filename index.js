@@ -10,6 +10,13 @@ const Features = ({features, selected, setSelected}) => <div className="features
       {_.map(_.keys(features), (feature) => <label key={feature} className="feature-container">{feature}<input checked={selected[feature]} onClick={() => setSelected(feature)} type="checkbox" /><span className="checkmark"></span></label>)}
 </div>
 
+const logFeatureClickToGa = (feature, selected) => {
+    window.dataLayer.push({ "event" : "click-checkbox",
+                            'eventCategory' : 'features',
+                            'eventAction'   : selected ? 'select' : 'deselect',
+                            'eventLabel'    : feature});
+}
+
 class Configurator extends React.Component {
     constructor(props) {
         super(props);
@@ -17,6 +24,7 @@ class Configurator extends React.Component {
         this.setSelected = this.setSelected.bind(this);
     }
     setSelected(feature) {
+        logFeatureClickToGa(feature, !this.state.selected[feature]);
         const selected = Object.assign({}, this.state.selected, { [feature]: !this.state.selected[feature] })
         this.setState({ selected });
     }
