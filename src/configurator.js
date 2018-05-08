@@ -48,6 +48,23 @@ export const features = (()=>{
                     }
                 })
         },
+        "Vue": {
+            group: "Main library",
+            webpackImports: ["const VueLoaderPlugin = require('vue-loader/lib/plugin');"],
+            webpack: (webpackConfig) => {
+                const webpackConfigWithRule = addModuleRule(webpackConfig,  {
+                    test: /\.vue$/,
+                    loader: 'vue-loader'
+                })
+
+                return addPlugin(webpackConfigWithRule, "CODE:new VueLoaderPlugin()");
+            },
+            babel: (babelConfig) => Object.assign({}, babelConfig, {
+                "presets": [['env', { modules: false }], "react"]
+            }),
+            devDependencies: ["vue-loader", "vue-template-compiler"],
+            dependencies: ["vue"]
+        },
         "CSS": {
             group: "Styling",
             devDependencies: ["style-loader", "css-loader"],
