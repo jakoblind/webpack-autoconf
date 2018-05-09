@@ -17,11 +17,37 @@ const Feature = ({feature, selected, setSelected}) => (
     </label>
 );
 
-const Features = ({features, selected, setSelected}) => (
-    <div className="features">
-        {_.map(_.keys(features), (feature) => <Feature feature={feature} selected={selected[feature]} setSelected={setSelected}/>)}
-    </div>
-);
+class Features extends React.Component {
+    render() {
+        const { features, selected, setSelected } = this.props;
+        const groupedFeatures = _.chain(features)
+              .mapValues((v,k,o) => Object.assign({}, v, { feature: k }))
+              .groupBy("group")
+              .value();
+
+        return (
+            <div className="features">
+                {_.map(groupedFeatures, (featureList, group) => (
+                    <div className="feature-group">
+                        <div className="feature-group-name">
+                            {group !== "undefined" ? group : ""}
+                        </div>
+                        <div className="feature-group-container">
+                        {_.map(featureList, (feature) => (
+                            <Feature
+                                feature={feature.feature}
+                                selected={selected[feature.feature]}
+                                setSelected={setSelected}
+                            />
+                        ))}
+                    </div>
+                    </div>
+                ))}
+
+            </div>
+        );
+    }
+}
 
 const logFeatureClickToGa = (feature, selected) => {
     const eventAction = selected ? 'select' : 'deselect';
@@ -68,7 +94,10 @@ class Configurator extends React.Component {
                     <div >
                         <div className="start-here">Start here! What features do you need?</div>
                     </div>
-                    <Features features={features} selected={this.state.selected} setSelected={this.setSelected}/>
+                    <Features
+                        features={features}
+                        selected={this.state.selected}
+                        setSelected={this.setSelected}/>
                 </div>
                 <div className="container">
                     <div className="left-section">

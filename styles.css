@@ -46,7 +46,7 @@ h2 {
 
 .left-section,
 .right-section {
-    padding: 10px;
+    padding: 0px 10px 10px 10px;
     width: 50%;
 }
 @media screen and (max-width: 40em) {
@@ -65,20 +65,30 @@ textarea {
 }
 
 .features {
-    max-width: 800px;
+    padding: 10px;
+    max-width: 520px;
     margin: 0 auto;
+}
+
+.feature-group {
+    display: flex;
+}
+
+.feature-group-name {
+    font-size: 18px;
+    text-align: left;
+    min-width: 100px;
 }
 
 .feature-container {
     display: block;
     text-align: left;
-    width: 139px;
+    width: 80px;
     float: left;
     position: relative;
     margin-bottom: 12px;
-    padding-left: 40px;
+    padding-left: 25px;
     cursor: pointer;
-    font-size: 18px;
     -webkit-user-select: none;
     -moz-user-select: none;
     -ms-user-select: none;
@@ -96,8 +106,8 @@ textarea {
     position: absolute;
     top: 0;
     left: 0;
-    height: 25px;
-    width: 25px;
+    height: 15px;
+    width: 15px;
     background-color: #eee;
 }
 
@@ -125,10 +135,10 @@ textarea {
 
 /* Style the checkmark/indicator */
 .feature-container .checkmark:after {
-    left: 9px;
-    top: 5px;
-    width: 5px;
-    height: 10px;
+    left: 4px;
+    top: 1px;
+    width: 3.5px;
+    height: 7px;
     border: solid white;
     border-width: 0 3px 3px 0;
     -webkit-transform: rotate(45deg);

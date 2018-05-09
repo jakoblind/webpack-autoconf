@@ -31,6 +31,7 @@ function addModuleRule(webpackConfig, rule) {
 export const features = (()=>{
     const features = {
         "React": {
+            group: "Main library",
             babel: (babelConfig) => Object.assign({}, babelConfig, {
                 "presets": [['env', { modules: false }], "react"]
             }),
@@ -48,6 +49,7 @@ export const features = (()=>{
                 })
         },
         "CSS": {
+            group: "Styling",
             devDependencies: ["style-loader", "css-loader"],
             webpack: (webpackConfig) => addModuleRule(webpackConfig, {
                 test: /\.css$/,
@@ -58,6 +60,7 @@ export const features = (()=>{
             })
         },
         "sass": {
+            group: "Styling",
             devDependencies: ["style-loader", "css-loader", "sass-loader", "node-sass"],
             webpack: (webpackConfig) => addModuleRule(webpackConfig, {
                 test: /\.scss$/,
@@ -69,6 +72,7 @@ export const features = (()=>{
             })
         },
         "less": {
+            group: "Styling",
             devDependencies: ["style-loader", "css-loader", "less-loader"],
             webpack: (webpackConfig) => addModuleRule(webpackConfig, {
                 test: /\.less$/,
@@ -80,6 +84,7 @@ export const features = (()=>{
             })
         },
         "stylus": {
+            group: "Styling",
             devDependencies: ["style-loader", "css-loader", "stylus-loader"],
             webpack: (webpackConfig) => addModuleRule(webpackConfig, {
                 test: /\.styl$/,
@@ -91,6 +96,7 @@ export const features = (()=>{
             })
         },
         "SVG": {
+            group: "Image",
             devDependencies: ["file-loader"],
             webpack: (webpackConfig) => addModuleRule(webpackConfig, {
                 test: /\.svg$/,
@@ -100,6 +106,7 @@ export const features = (()=>{
             })
         },
         "PNG": {
+            group: "Image",
             devDependencies: ["url-loader"],
             webpack: (webpackConfig) => addModuleRule(webpackConfig, {
                 test: /\.png$/,
@@ -112,10 +119,12 @@ export const features = (()=>{
             })
         },
         "moment": {
+            group: "Utilities",
             "dependencies": ["moment"],
             webpack: (webpackConfig) => addPlugin(webpackConfig, "CODE:new webpack.ContextReplacementPlugin(/moment[\\\/\\\\]locale$/, /en/)")
         },
         "lodash": {
+            group: "Utilities",
             babel: _.identity,
             dependencies: ["lodash"],
             devDependencies: ["lodash-webpack-plugin"],
