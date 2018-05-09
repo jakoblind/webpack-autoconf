@@ -32,6 +32,9 @@ function addModuleRule(webpackConfig, ruleOrRules) {
     return newWebpackConfig;
 }
 
+const getStyleLoaderOrVueStyleLoader = (configItems) => _.includes(configItems, "Vue") ? 'vue-style-loader' : 'style-loader';
+
+
 export const features = (() => {
     const features = {
         "React": {
@@ -67,18 +70,18 @@ export const features = (() => {
                 return addPlugin(webpackConfigWithRule, "CODE:new VueLoaderPlugin()");
             },
             babel: (babelConfig) => Object.assign({}, babelConfig, {
-                "presets": [['env', { modules: false }], "react"]
+                "presets": [['env', { modules: false }]]
             }),
-            devDependencies: ["vue-loader", "vue-template-compiler"],
+            devDependencies: ["vue-loader", "vue-template-compiler", "babel-loader", "babel-core", "babel-preset-env"],
             dependencies: ["vue"]
         },
         "CSS": {
             group: "Styling",
             devDependencies: ["style-loader", "css-loader"],
-            webpack: (webpackConfig) => addModuleRule(webpackConfig, {
+            webpack: (webpackConfig, configItems) => addModuleRule(webpackConfig, {
                 test: /\.css$/,
                 use: [
-                    'style-loader',
+                    getStyleLoaderOrVueStyleLoader(configItems),
                     'css-loader'
                 ]
             })
@@ -86,10 +89,10 @@ export const features = (() => {
         "Sass": {
             group: "Styling",
             devDependencies: ["style-loader", "css-loader", "sass-loader", "node-sass"],
-            webpack: (webpackConfig) => addModuleRule(webpackConfig, {
+            webpack: (webpackConfig, configItems) => addModuleRule(webpackConfig, {
                 test: /\.scss$/,
                 use: [
-                    'style-loader',
+                    getStyleLoaderOrVueStyleLoader(configItems),
                     'css-loader',
                     'sass-loader'
                 ]
@@ -98,10 +101,10 @@ export const features = (() => {
         "Less": {
             group: "Styling",
             devDependencies: ["style-loader", "css-loader", "less-loader"],
-            webpack: (webpackConfig) => addModuleRule(webpackConfig, {
+            webpack: (webpackConfig, configItems) => addModuleRule(webpackConfig, {
                 test: /\.less$/,
                 use: [
-                    'style-loader',
+                    getStyleLoaderOrVueStyleLoader(configItems),
                     'css-loader',
                     'less-loader'
                 ]
@@ -110,10 +113,10 @@ export const features = (() => {
         "stylus": {
             group: "Styling",
             devDependencies: ["style-loader", "css-loader", "stylus-loader"],
-            webpack: (webpackConfig) => addModuleRule(webpackConfig, {
+            webpack: (webpackConfig, configItems) => addModuleRule(webpackConfig, {
                 test: /\.styl$/,
                 use: [
-                    'style-loader',
+                    getStyleLoaderOrVueStyleLoader(configItems),
                     'css-loader',
                     'stylus-loader'
                 ]
@@ -190,7 +193,7 @@ function stringifyReplacer (value, indent, stringify) {
 
 function createConfig(configItems, configType) {
     const base = configType === "webpack" ? baseWebpack : {};
-    return jsStringify(_.reduce(configItems, (acc, currentValue) => (features[currentValue][configType](acc)), base), stringifyReplacer, 2)
+    return jsStringify(_.reduce(configItems, (acc, currentValue) => (features[currentValue][configType](acc, configItems)), base), stringifyReplacer, 2)
 }
 
 export function getNpmDependencies(configItems) {
