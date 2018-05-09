@@ -59,7 +59,7 @@ export const features = (()=>{
                 ]
             })
         },
-        "sass": {
+        "Sass": {
             group: "Styling",
             devDependencies: ["style-loader", "css-loader", "sass-loader", "node-sass"],
             webpack: (webpackConfig) => addModuleRule(webpackConfig, {
@@ -71,7 +71,7 @@ export const features = (()=>{
                 ]
             })
         },
-        "less": {
+        "Less": {
             group: "Styling",
             devDependencies: ["style-loader", "css-loader", "less-loader"],
             webpack: (webpackConfig) => addModuleRule(webpackConfig, {

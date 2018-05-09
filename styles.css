@@ -3,6 +3,10 @@ body {
     font-family:"Helvetica Neue", Arial, sans-serif;
 }
 
+#app {
+    margin-bottom: 100px;
+}
+
 .start-here {
     width: 400px;
     display: block;
