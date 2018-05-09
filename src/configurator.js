@@ -34,6 +34,7 @@ function addModuleRule(webpackConfig, ruleOrRules) {
 
 const getStyleLoaderOrVueStyleLoader = (configItems) => _.includes(configItems, "Vue") ? 'vue-style-loader' : 'style-loader';
 
+const getStyleLoaderDependencyIfNeeded = (configItems) => _.includes(configItems, "Vue") ? [] : ['style-loader'];
 
 export const features = (() => {
     const features = {
@@ -42,8 +43,8 @@ export const features = (() => {
             babel: (babelConfig) => Object.assign({}, babelConfig, {
                 "presets": [['env', { modules: false }], "react"]
             }),
-            dependencies: ["react", "react-dom"],
-            devDependencies: ["babel-loader", "babel-preset-react", "babel-core", "babel-preset-env"],
+            dependencies: (configItems) => ["react", "react-dom"],
+            devDependencies: (configItems) => ["babel-loader", "babel-preset-react", "babel-core", "babel-preset-env"],
             webpack: (webpackConfig) =>
                 Object.assign({}, webpackConfig, addModuleRule(webpackConfig, {
                     test: /\.(js|jsx)$/,
@@ -72,12 +73,12 @@ export const features = (() => {
             babel: (babelConfig) => Object.assign({}, babelConfig, {
                 "presets": [['env', { modules: false }]]
             }),
-            devDependencies: ["vue-loader", "vue-template-compiler", "babel-loader", "babel-core", "babel-preset-env"],
-            dependencies: ["vue"]
+            devDependencies: (configItems) => ["vue-loader", "vue-template-compiler", "babel-loader", "babel-core", "babel-preset-env"],
+            dependencies: (configItems) => ["vue"]
         },
         "CSS": {
             group: "Styling",
-            devDependencies: ["style-loader", "css-loader"],
+            devDependencies: (configItems) => _.concat(["css-loader"], getStyleLoaderDependencyIfNeeded(configItems)),
             webpack: (webpackConfig, configItems) => addModuleRule(webpackConfig, {
                 test: /\.css$/,
                 use: [
@@ -88,7 +89,7 @@ export const features = (() => {
         },
         "Sass": {
             group: "Styling",
-            devDependencies: ["style-loader", "css-loader", "sass-loader", "node-sass"],
+            devDependencies: (configItems) => _.concat(["css-loader", "sass-loader", "node-sass"], getStyleLoaderDependencyIfNeeded(configItems)),
             webpack: (webpackConfig, configItems) => addModuleRule(webpackConfig, {
                 test: /\.scss$/,
                 use: [
@@ -100,7 +101,7 @@ export const features = (() => {
         },
         "Less": {
             group: "Styling",
-            devDependencies: ["style-loader", "css-loader", "less-loader"],
+            devDependencies: (configItems) => _.concat(["css-loader", "less-loader"], getStyleLoaderDependencyIfNeeded(configItems)),
             webpack: (webpackConfig, configItems) => addModuleRule(webpackConfig, {
                 test: /\.less$/,
                 use: [
@@ -112,7 +113,7 @@ export const features = (() => {
         },
         "stylus": {
             group: "Styling",
-            devDependencies: ["style-loader", "css-loader", "stylus-loader"],
+            devDependencies: (configItems) => _.concat(["css-loader", "stylus-loader"], getStyleLoaderDependencyIfNeeded(configItems)),
             webpack: (webpackConfig, configItems) => addModuleRule(webpackConfig, {
                 test: /\.styl$/,
                 use: [
@@ -124,7 +125,7 @@ export const features = (() => {
         },
         "SVG": {
             group: "Image",
-            devDependencies: ["file-loader"],
+            devDependencies: (configItems) => ["file-loader"],
             webpack: (webpackConfig) => addModuleRule(webpackConfig, {
                 test: /\.svg$/,
                 use: [
@@ -134,7 +135,7 @@ export const features = (() => {
         },
         "PNG": {
             group: "Image",
-            devDependencies: ["url-loader"],
+            devDependencies: (configItems) => ["url-loader"],
             webpack: (webpackConfig) => addModuleRule(webpackConfig, {
                 test: /\.png$/,
                 use: [{
@@ -153,8 +154,8 @@ export const features = (() => {
         "lodash": {
             group: "Utilities",
             babel: _.identity,
-            dependencies: ["lodash"],
-            devDependencies: ["lodash-webpack-plugin"],
+            dependencies: (configItems) => ["lodash"],
+            devDependencies: (configItems) => ["lodash-webpack-plugin"],
             webpackImports: ["const LodashModuleReplacementPlugin = require('lodash-webpack-plugin');"],
             webpack:
             (webpackConfig) => addPlugin(webpackConfig, "CODE:new LodashModuleReplacementPlugin")
@@ -174,10 +175,10 @@ export const features = (() => {
             item.webpackImports = [];
         }
         if (!item.dependencies) {
-            item.dependencies = [];
+            item.dependencies = () => [];
         }
         if (!item.devDependencies) {
-            item.devDependencies = [];
+            item.devDependencies = () => [];
         }
         return item;
     })
@@ -198,12 +199,12 @@ function createConfig(configItems, configType) {
 
 export function getNpmDependencies(configItems) {
     const dependencies = _.chain(configItems)
-          .reduce((acc, currentValue) => (_.concat(acc, features[currentValue]["dependencies"])), [])
+          .reduce((acc, currentValue) => (_.concat(acc, features[currentValue]["dependencies"](configItems))), [])
           .uniq()
           .value();
 
     const devDependencies = _.chain(configItems)
-          .reduce((acc, currentValue) => (_.concat(acc, features[currentValue]["devDependencies"])), ["webpack"])
+          .reduce((acc, currentValue) => (_.concat(acc, features[currentValue]["devDependencies"](configItems))), ["webpack"])
           .uniq()
           .value();
 
