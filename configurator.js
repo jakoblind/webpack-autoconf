@@ -46,7 +46,8 @@ export const features = (()=>{
             babel: (babelConfig) => Object.assign({}, babelConfig, {
                 "presets": [['env', { modules: false }], "react"]
             }),
-            npm: ["react", "react-dom", "babel-loader", "babel-preset-react", "babel-core", "babel-preset-env"],
+            dependencies: ["react", "react-dom"],
+            devDependencies: ["babel-loader", "babel-preset-react", "babel-core", "babel-preset-env"],
             webpack: (webpackConfig) =>
                 Object.assign({}, webpackConfig, addModuleRule(webpackConfig, {
                     test: /\.(js|jsx)$/,
@@ -59,7 +60,7 @@ export const features = (()=>{
                 })
         },
         "CSS": {
-            npm: ["style-loader", "css-loader"],
+            devDependencies: ["style-loader", "css-loader"],
             webpack: (webpackConfig) => addModuleRule(webpackConfig, {
                 test: /\.css$/,
                 use: [
@@ -69,7 +70,7 @@ export const features = (()=>{
             })
         },
         "sass": {
-            npm: ["style-loader", "css-loader", "sass-loader", "node-sass"],
+            devDependencies: ["style-loader", "css-loader", "sass-loader", "node-sass"],
             webpack: (webpackConfig) => addModuleRule(webpackConfig, {
                 test: /\.scss$/,
                 use: [
@@ -80,7 +81,7 @@ export const features = (()=>{
             })
         },
         "less": {
-            npm: ["style-loader", "css-loader", "less-loader"],
+            devDependencies: ["style-loader", "css-loader", "less-loader"],
             webpack: (webpackConfig) => addModuleRule(webpackConfig, {
                 test: /\.less$/,
                 use: [
@@ -91,7 +92,7 @@ export const features = (()=>{
             })
         },
         "stylus": {
-            npm: ["style-loader", "css-loader", "stylus-loader"],
+            devDependencies: ["style-loader", "css-loader", "stylus-loader"],
             webpack: (webpackConfig) => addModuleRule(webpackConfig, {
                 test: /\.styl$/,
                 use: [
@@ -102,7 +103,7 @@ export const features = (()=>{
             })
         },
         "SVG": {
-            npm: ["file-loader"],
+            devDependencies: ["file-loader"],
             webpack: (webpackConfig) => addModuleRule(webpackConfig, {
                 test: /\.svg$/,
                 use: [
@@ -111,7 +112,7 @@ export const features = (()=>{
             })
         },
         "PNG": {
-            npm: ["url-loader"],
+            devDependencies: ["url-loader"],
             webpack: (webpackConfig) => addModuleRule(webpackConfig, {
                 test: /\.png$/,
                 use: [{
@@ -123,12 +124,13 @@ export const features = (()=>{
             })
         },
         "moment": {
-            "npm": ["moment"],
+            "dependencies": ["moment"],
             webpack: (webpackConfig) => addPlugin(webpackConfig, "CODE:new webpack.ContextReplacementPlugin(/moment[\\\/\\\\]locale$/, /en/)")
         },
         "lodash": {
             babel: _.identity,
-            npm: ["lodash", "lodash-webpack-plugin"],
+            dependencies: ["lodash"],
+            devDependencies: ["lodash-webpack-plugin"],
             webpackImports: ["const LodashModuleReplacementPlugin = require('lodash-webpack-plugin');"],
             webpack:
             (webpackConfig) => addPlugin(webpackConfig, "CODE:new LodashModuleReplacementPlugin")
@@ -147,8 +149,11 @@ export const features = (()=>{
         if (!item.webpackImports) {
             item.webpackImports = [];
         }
-        if (!item.npm) {
-            item.npm = [];
+        if (!item.dependencies) {
+            item.dependencies = [];
+        }
+        if (!item.devDependencies) {
+            item.devDependencies = [];
         }
         return item;
     })
@@ -167,11 +172,21 @@ function createConfig(configItems, configType) {
     return jsStringify(_.reduce(configItems, (acc, currentValue) => (features[currentValue][configType](acc)), base), stringifyReplacer, 2)
 }
 
-export function getNpmModules(configItems) {
-    return _.chain(configItems)
-        .reduce((acc, currentValue) => (_.concat(acc, features[currentValue]["npm"])), ["webpack"])
-        .uniq()
-        .values();
+export function getNpmDependencies(configItems) {
+    const dependencies = _.chain(configItems)
+          .reduce((acc, currentValue) => (_.concat(acc, features[currentValue]["dependencies"])), [])
+          .uniq()
+          .value();
+
+    const devDependencies = _.chain(configItems)
+          .reduce((acc, currentValue) => (_.concat(acc, features[currentValue]["devDependencies"])), ["webpack"])
+          .uniq()
+          .value();
+
+    return {
+        dependencies,
+        devDependencies
+    }
 }
 
 export function getWebpackImports(configItems) {

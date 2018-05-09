@@ -2,7 +2,7 @@ import React from 'react';
 import { render } from 'react-dom';
 import jsStringify from "javascript-stringify";
 import _ from "lodash";
-import { features, createWebpackConfig, createBabelConfig, getNpmModules } from "./configurator";
+import { features, createWebpackConfig, createBabelConfig, getNpmDependencies } from "./configurator";
 
 import prism from "prismjs";
 
@@ -35,7 +35,7 @@ class Configurator extends React.Component {
     render() {
         const newWebpackConfig = createWebpackConfig(this.selectedArray());
         const newBabelConfig = createBabelConfig(this.selectedArray());
-        const newNpmConfig = getNpmModules(this.selectedArray());
+        const newNpmConfig = getNpmDependencies(this.selectedArray());
 
         const highlightedWebpackConfig = () => {
             return {
@@ -43,7 +43,8 @@ class Configurator extends React.Component {
             };
         };
 
-        const npmCommand = "mkdir myapp\ncd myapp\nnpm init -y\nnpm install --save-dev " + newNpmConfig.join(" ")
+        const npmInstallCommand = _.isEmpty(newNpmConfig.dependencies) ? "" : "\nnpm install " + newNpmConfig.dependencies.join(" ")
+        const npmCommand = "mkdir myapp\ncd myapp\nnpm init -y\nnpm install --save-dev " + newNpmConfig.devDependencies.join(" ") + npmInstallCommand
 
         return (
             <div>
