@@ -2,7 +2,7 @@ import React from 'react';
 import { render } from 'react-dom';
 import jsStringify from "javascript-stringify";
 import _ from "lodash";
-import { features, createWebpackConfig, createBabelConfig, getNpmDependencies } from "./configurator";
+import { features, createWebpackConfig, createBabelConfig, getNpmDependencies } from "./src/configurator";
 
 import prism from "prismjs";
 

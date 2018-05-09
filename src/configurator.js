@@ -1,19 +1,7 @@
+import { baseWebpack, baseWebpackImports } from "./templates";
+
 const jsStringify = require("javascript-stringify");
 const _ = require("lodash");
-
-const baseWebpack = {
-    entry: './src/index.js',
-    output: {
-        path: "CODE:path.resolve(__dirname, 'dist')",
-        filename: 'bundle.js'
-    },
-    mode: 'development'
-}
-
-const baseWebpackImports = [
-    "const webpack = require('webpack');",
-    "const path = require('path');"
-];
 
 function addPlugin(webpackConfig, plugin) {
     if (!webpackConfig.plugins) {
