@@ -14,21 +14,25 @@ function addPlugin(webpackConfig, plugin) {
     })
 }
 
-function addModuleRule(webpackConfig, rule) {
+function addModuleRule(webpackConfig, ruleOrRules) {
+    const isManyRules = _.isArray(ruleOrRules);
+    const rules = isManyRules ? ruleOrRules : [ruleOrRules];
+
     if (!_.has(webpackConfig, "module.rules")) {
         return Object.assign({}, webpackConfig, {
             module: {
-                rules: [rule]
+                rules
             }
         })
     }
 
     const newWebpackConfig = _.cloneDeep(webpackConfig);
-    newWebpackConfig.module.rules.push(rule);
+    newWebpackConfig.module.rules = _.union(newWebpackConfig.module.rules, rules)
+
     return newWebpackConfig;
 }
 
-export const features = (()=>{
+export const features = (() => {
     const features = {
         "React": {
             group: "Main library",
@@ -52,10 +56,13 @@ export const features = (()=>{
             group: "Main library",
             webpackImports: ["const VueLoaderPlugin = require('vue-loader/lib/plugin');"],
             webpack: (webpackConfig) => {
-                const webpackConfigWithRule = addModuleRule(webpackConfig,  {
+                const webpackConfigWithRule = addModuleRule(webpackConfig,  [{
                     test: /\.vue$/,
                     loader: 'vue-loader'
-                })
+                }, {
+                    test: /\.js$/,
+                    loader: 'babel-loader'
+                }])
 
                 return addPlugin(webpackConfigWithRule, "CODE:new VueLoaderPlugin()");
             },
