@@ -6,9 +6,22 @@ import { features, createWebpackConfig, createBabelConfig, getNpmDependencies } 
 
 import prism from "prismjs";
 
-const Features = ({features, selected, setSelected}) => <div className="features">
-      {_.map(_.keys(features), (feature) => <label key={feature} className="feature-container">{feature}<input checked={selected[feature]} onClick={() => setSelected(feature)} type="checkbox" /><span className="checkmark"></span></label>)}
-</div>
+const Feature = ({feature, selected, setSelected}) => (
+    <label key={feature} className="feature-container">
+            {feature}
+            <input
+                checked={selected}
+                onClick={() => setSelected(feature)}
+                type="checkbox" />
+                <span className="checkmark"></span>
+    </label>
+);
+
+const Features = ({features, selected, setSelected}) => (
+    <div className="features">
+        {_.map(_.keys(features), (feature) => <Feature feature={feature} selected={selected[feature]} setSelected={setSelected}/>)}
+    </div>
+);
 
 const logFeatureClickToGa = (feature, selected) => {
     const eventAction = selected ? 'select' : 'deselect';
