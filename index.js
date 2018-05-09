@@ -11,10 +11,11 @@ const Features = ({features, selected, setSelected}) => <div className="features
 </div>
 
 const logFeatureClickToGa = (feature, selected) => {
-    window.dataLayer.push({ "event" : "click-checkbox",
-                            'eventCategory' : 'features',
-                            'eventAction'   : selected ? 'select' : 'deselect',
-                            'eventLabel'    : feature});
+    const eventAction = selected ? 'select' : 'deselect';
+    window.gtag("event", eventAction, {
+        "event_category": "features",
+        "event_label": feature
+    })
 }
 
 class Configurator extends React.Component {
