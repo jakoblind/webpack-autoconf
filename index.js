@@ -106,7 +106,7 @@ const WebpackConfigArea = ({newWebpackConfig}) => {
     )
 }
 
-const StepByStepArea = ({newNpmConfig, newBabelConfig}) => {
+const StepByStepArea = ({newNpmConfig, newBabelConfig, isReact}) => {
     const npmInstallCommand = _.isEmpty(newNpmConfig.dependencies) ? "" : "\nnpm install " + newNpmConfig.dependencies.join(" ")
     const npmCommand = "mkdir myapp\ncd myapp\nnpm init -y\nnpm install --save-dev " + newNpmConfig.devDependencies.join(" ") + npmInstallCommand
 
@@ -122,8 +122,7 @@ const StepByStepArea = ({newNpmConfig, newBabelConfig}) => {
                 {newBabelConfig ? <div><li>Create <i>.babelrc</i> in the root and copy the contents from below</li>
                     <textarea readOnly={true} rows="11" cols="50" value={newBabelConfig}/></div> : null}
 
-                <li>Create folders src and dist and create your index.js file in src folder</li>
-
+                {isReact ? <li>Create folders src and dist and create your <a href="https://s3-eu-west-1.amazonaws.com/jakoblind/react/index.js">index.js</a> file in src folder and <a href="https://s3-eu-west-1.amazonaws.com/jakoblind/react/index.html">index.html</a> in the dist folder</li> : <li>Create folders src and dist and create your index.js file in src folder</li>}
             </ol>
             <a href="http://blog.jakoblind.no/react-with-webpack-babel-npm/">Need more detailed instructions?</a>
         </div>
@@ -159,7 +158,8 @@ class Configurator extends React.Component {
                     <WebpackConfigArea newWebpackConfig={newWebpackConfig}/>
                     <StepByStepArea
                         newNpmConfig={newNpmConfig}
-                        newBabelConfig={newBabelConfig}/>
+                        newBabelConfig={newBabelConfig}
+                        isReact={_.includes(this.selectedArray(), "React")}/>
                 </div>
                 <Footer/>
             </div>)
