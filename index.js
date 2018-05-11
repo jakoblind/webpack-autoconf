@@ -143,9 +143,9 @@ class Configurator extends React.Component {
 
         // only possible to select one of Vue or React. Needing both is an edge case
         // that is probably very rare. It adds much complexity to support both.
-        if (feature === "Vue") {
+        if (feature === "Vue" && setToSelected) {
             selected["React"] = !setToSelected;
-        } else if (feature === "React") {
+        } else if (feature === "React" && setToSelected) {
             selected["Vue"] = !setToSelected;
         }
         this.setState({ selected });
