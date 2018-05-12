@@ -148,7 +148,7 @@ export const features = (() => {
         },
         "moment": {
             group: "Utilities",
-            "dependencies": ["moment"],
+            "dependencies": (configItems) => ["moment"],
             webpack: (webpackConfig) => addPlugin(webpackConfig, "CODE:new webpack.ContextReplacementPlugin(/moment[\\\/\\\\]locale$/, /en/)")
         },
         "lodash": {
