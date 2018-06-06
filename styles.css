@@ -16,6 +16,14 @@ body {
     background-size: 50px 50px;
     height: 70px;
 }
+
+@media only screen and (max-width: 40em) {
+  .start-here {
+    width: 300px;
+    background: none;
+  }
+}
+
 .header {
     max-width: 800px;
     margin: 0 auto;
@@ -58,6 +66,7 @@ h2 {
     .left-section{
         display: block;
         width: 100%;
+        padding: 0;
     }
 }
 a {
