@@ -20,7 +20,8 @@ body {
 @media only screen and (max-width: 40em) {
   .start-here {
     width: 300px;
-    background: none;
+    padding: 0 50px;
+    box-sizing: border-box;
   }
 }
 
