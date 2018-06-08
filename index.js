@@ -7,10 +7,10 @@ import { features, createWebpackConfig, createBabelConfig, getNpmDependencies } 
 import prism from "prismjs";
 
 const Feature = ({feature, selected, setSelected}) => (
-    <label key={feature} className="feature-container">
+    <label className="feature-container">
             {feature}
             <input
-                checked={selected}
+                checked={selected || false}
                 onClick={() => setSelected(feature)}
                 type="checkbox" />
                 <span className="checkmark"></span>
@@ -28,16 +28,17 @@ class Features extends React.Component {
         return (
             <div className="features">
                 {_.map(groupedFeatures, (featureList, group) => (
-                    <div className="feature-group">
+                    <div className="feature-group" key={group}>
                         <div className="feature-group-name">
-                            {group !== "undefined" ? group : ""}
+                            {group !== "undefined" ? group : ''}
                         </div>
                         <div className="feature-group-container">
-                        {_.map(featureList, (feature) => (
+                        {_.map(featureList, ({feature}) => (
                             <Feature
-                                feature={feature.feature}
-                                selected={selected[feature.feature]}
+                                feature={feature}
+                                selected={selected[feature]}
                                 setSelected={setSelected}
+                                key={feature}
                             />
                         ))}
                     </div>
