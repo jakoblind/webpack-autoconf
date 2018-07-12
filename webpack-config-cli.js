@@ -10,17 +10,19 @@ import childProcess from "child_process";
 
 import {features, createWebpackConfig, createBabelConfig, getNpmDependencies, getDefaultProjectName} from "./src/configurator";
 import { packageJson, readmeFile } from "./src/templates";
+import { reactIndexJs, reactIndexHtml } from "./static/react/index";
+import { emptyIndexJs } from "./static/empty/index";
 
 function exec(command) {
-  return new Promise(function(resolve, reject) {
-    childProcess.exec(command, function(error, stdout, stderr) {
-      if (error) {
-        return reject(error);
-      }
+    return new Promise(function(resolve, reject) {
+        childProcess.exec(command, function(error, stdout, stderr) {
+            if (error) {
+                return reject(error);
+            }
 
-      resolve({stdout, stderr});
+            resolve({stdout, stderr});
+        });
     });
-  });
 }
 
 function getFeatureCombinations() {
@@ -98,17 +100,10 @@ function generateProject(requestedFeatures, { basePath, name }) {
     if (isReact) {
         mkDir(fullPath + "dist");
 
-        fs.createReadStream('./static/react/index.js').pipe(fs.createWriteStream(fullPath + 'src/index.js'));
-        fs.createReadStream('./static/react/index.html').pipe(fs.createWriteStream(fullPath + 'dist/index.html'));
-        /* TODO: implement this as a backup solution if local files does not exist
-           reactFilesPromise = fetch("https://s3-eu-west-1.amazonaws.com/jakoblind/react/index.js") // //
-           .then(res => res.text()) //
-           .then(content => writeFile(fullPath + "src/index.js", content)) //
-           .then(() => fetch("https://s3-eu-west-1.amazonaws.com/jakoblind/react/index.html")) //
-           .then(res => res.text()) //
-           .then(content => writeFile(fullPath + "dist/index.html", content))*/
+        writeFile(fullPath + "src/index.js", reactIndexJs);
+        writeFile(fullPath + "dist/index.html", reactIndexHtml);
     } else {
-        fs.createReadStream('./static/empty/index.js').pipe(fs.createWriteStream(fullPath + 'src/index.js'));
+        writeFile(fullPath + "src/index.js", emptyIndexJs);
     }
 
     return reactFilesPromise

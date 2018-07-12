@@ -1,1 +1,1 @@
-console.log("hello world!");
+export const emptyIndexJs = `console.log("hello world!");`
