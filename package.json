@@ -13,7 +13,10 @@
     "cli-install-local": "npm run cli-build; npm run cli-append-shebang; npm run cli-link",
     "prepublishOnly": "npm run cli-build; npm run cli-append-shebang"
   },
-  "files": ["bin/webpack-autoconf.js", "bin/webpack-autoconf.map"],
+  "files": [
+    "bin/webpack-autoconf.js",
+    "bin/webpack-autoconf.map"
+  ],
   "keywords": [],
   "author": "",
   "license": "ISC",
