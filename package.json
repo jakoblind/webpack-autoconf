@@ -11,6 +11,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "combinations": "^0.1.1",
     "javascript-stringify": "^1.6.0",
     "lodash": "^4.17.5",
     "prismjs": "^1.14.0",
@@ -22,6 +23,8 @@
     "babel-preset-env": "^1.6.1",
     "babel-preset-react": "^6.24.1",
     "babel-register": "^6.26.0",
+    "bluebird": "^3.5.1",
+    "node-fetch": "^2.1.2",
     "parcel-bundler": "^1.7.1"
   }
 }
