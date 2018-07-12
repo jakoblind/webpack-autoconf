@@ -19,7 +19,7 @@ Make sure you use NPM 8 or later
 
 ```sh
 npm install
-babel index.html
+npm run start
 ```
 
 Point your browser to http://localhost:1234
