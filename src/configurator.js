@@ -3,6 +3,10 @@ import { baseWebpack, baseWebpackImports } from "./templates";
 const jsStringify = require("javascript-stringify");
 const _ = require("lodash");
 
+export function getDefaultProjectName(name, features) {
+    return name + "-" + _.kebabCase(_.sortBy(features));
+}
+
 function addPlugin(webpackConfig, plugin) {
     if (!webpackConfig.plugins) {
         return Object.assign({}, webpackConfig, {

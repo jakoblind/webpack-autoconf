@@ -6,7 +6,11 @@ body {
 #app {
     margin-bottom: 100px;
 }
-
+.icon {
+    margin-right: 7px;
+    width: 20px;
+    color: red;
+}
 .start-here {
     width: 400px;
     display: block;
@@ -71,7 +75,7 @@ h2 {
     }
 }
 a {
-    color: #ffb000;
+    color: #0078a0;
 }
 
 textarea {

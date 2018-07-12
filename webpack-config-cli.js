@@ -8,7 +8,7 @@ import Promise from "bluebird";
 import fs from "fs";
 import childProcess from "child_process";
 
-import {features, createWebpackConfig, createBabelConfig, getNpmDependencies} from "./src/configurator";
+import {features, createWebpackConfig, createBabelConfig, getNpmDependencies, getDefaultProjectName} from "./src/configurator";
 import { packageJson, readmeFile } from "./src/templates";
 
 function exec(command) {
@@ -68,10 +68,6 @@ function mkDir(path) {
     if (path && !fs.existsSync(path)) {
         fs.mkdirSync(path);
     }
-}
-
-function getDefaultProjectName(name, features) {
-    return name + "-" + _.kebabCase(_.sortBy(features));
 }
 
 function generateProject(requestedFeatures, { basePath, name }) {

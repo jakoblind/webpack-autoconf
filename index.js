@@ -2,7 +2,7 @@ import React from 'react';
 import { render } from 'react-dom';
 import jsStringify from "javascript-stringify";
 import _ from "lodash";
-import { features, createWebpackConfig, createBabelConfig, getNpmDependencies } from "./src/configurator";
+import { features, createWebpackConfig, createBabelConfig, getNpmDependencies, getDefaultProjectName } from "./src/configurator";
 
 import prism from "prismjs";
 
@@ -107,24 +107,28 @@ const WebpackConfigArea = ({newWebpackConfig}) => {
     )
 }
 
-const StepByStepArea = ({newNpmConfig, newBabelConfig, isReact}) => {
+const StepByStepArea = ({features, newNpmConfig, newBabelConfig, isReact}) => {
     const npmInstallCommand = _.isEmpty(newNpmConfig.dependencies) ? "" : "\nnpm install " + newNpmConfig.dependencies.join(" ")
     const npmCommand = "mkdir myapp\ncd myapp\nnpm init -y\nnpm install --save-dev " + newNpmConfig.devDependencies.join(" ") + npmInstallCommand
 
+    const filename = getDefaultProjectName("empty-project", features);
+    const zipUrl = `https://s3-eu-west-1.amazonaws.com/jakoblind/zips/${filename}.zip`;
     return (
         <div className="right-section">
-            <h3>Create your project in {newBabelConfig ? 4 : 3} easy steps!</h3>
-            <ol>
-                <li>Create an NPM project and install dependencies</li>
-                <textarea readOnly={true} rows="6" cols="50" value={npmCommand}/>
+            <h3>Get your project!</h3>
+            <a href={zipUrl}><img className="icon" src={require("./images/zip.svg")}/>Download a zip file with your project config</a>
+             <h3>Or create your project yourself</h3>
+             <ol>
+             <li>Create an NPM project and install dependencies</li>
+             <textarea readOnly={true} rows="6" cols="50" value={npmCommand}/>
 
-                <li>Create <i>webpack.config.js</i> in the root and copy the contents of the generated file</li>
+             <li>Create <i>webpack.config.js</i> in the root and copy the contents of the generated file</li>
 
-                {newBabelConfig ? <div><li>Create <i>.babelrc</i> in the root and copy the contents from below</li>
-                    <textarea readOnly={true} rows="11" cols="50" value={newBabelConfig}/></div> : null}
+             {newBabelConfig ? <div><li>Create <i>.babelrc</i> in the root and copy the contents from below</li>
+                                <textarea readOnly={true} rows="11" cols="50" value={newBabelConfig}/></div> : null}
 
-                {isReact ? <li>Create folders src and dist and create your <a href="https://s3-eu-west-1.amazonaws.com/jakoblind/react/index.js">index.js</a> file in src folder and <a href="https://s3-eu-west-1.amazonaws.com/jakoblind/react/index.html">index.html</a> in the dist folder</li> : <li>Create folders src and dist and create your index.js file in src folder</li>}
-            </ol>
+             {isReact ? <li>Create folders src and dist and create your <a href="https://s3-eu-west-1.amazonaws.com/jakoblind/react/index.js">index.js</a> file in src folder and <a href="https://s3-eu-west-1.amazonaws.com/jakoblind/react/index.html">index.html</a> in the dist folder</li> : <li>Create folders src and dist and create your index.js file in src folder</li>}
+             </ol>
             <a href="http://blog.jakoblind.no/react-with-webpack-babel-npm/">Need more detailed instructions?</a>
         </div>
 
@@ -167,6 +171,7 @@ class Configurator extends React.Component {
                 <div className="container">
                     <WebpackConfigArea newWebpackConfig={newWebpackConfig}/>
                     <StepByStepArea
+                        features={this.selectedArray()}
                         newNpmConfig={newNpmConfig}
                         newBabelConfig={newBabelConfig}
                         isReact={_.includes(this.selectedArray(), "React")}/>
