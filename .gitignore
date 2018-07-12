@@ -3,3 +3,4 @@ dist
 .cache
 /.idea
 generated
+bin

@@ -4,14 +4,21 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "clean": "rm -rf bin dist",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "parcel index.html"
+    "start": "parcel index.html",
+    "cli-build": "parcel build --target=node --out-dir bin webpack-autoconf.js",
+    "cli-append-shebang": "echo '#! /usr/bin/env node'  | cat - bin/webpack-autoconf.js > /tmp/out && mv /tmp/out bin/webpack-autoconf.js",
+    "cli-link": "chmod +x bin/webpack-autoconf.js && npm link",
+    "cli-install-local": "npm run cli-build; npm run cli-append-shebang; npm run cli-link",
+    "prepublishOnly": "npm run cli-build; npm run cli-append-shebang"
   },
+  "files": ["bin/webpack-autoconf.js", "bin/webpack-autoconf.map"],
   "keywords": [],
   "author": "",
   "license": "ISC",
   "bin": {
-    "webpack-config": "dist/webpack-config-cli.js"
+    "webpack-autoconf": "bin/webpack-autoconf.js"
   },
   "dependencies": {
     "combinations": "^0.1.1",
