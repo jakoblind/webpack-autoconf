@@ -117,13 +117,7 @@ function generateProject(requestedFeatures, { basePath, name }) {
 // TODO: check if all of requestedFeatures are supported
 const [a, b, command, name, ...requestedFeatures] = process.argv;
 
-if (command === "help"){
-    console.log("Usage: node ./webpack-config-cli.js [command] [name] [features]");
-    console.log("");
-    console.log("Commands:");
-    console.log("  new\tcreate a new project with [name] using [features]");
-    console.log("  all\tgenerate all possible combinations of projects in 'generated' folder.");
-} else if (command === "new") {
+if (command === "new") {
     generateProject(requestedFeatures, {name});
 } else if (command === "all") {
     // for some reason Promise.reduce ignores the first item in the list so we add one extra empty feature [[]]
@@ -132,4 +126,12 @@ if (command === "help"){
     Promise.reduce(combinations, (_, features) => {
         return generateProject(features, {basePath: "generated"})
     })
+} else {
+    console.log("Usage: webpack-autoconf new [project-name] [features]");
+    console.log("");
+    console.log("Where [features] can be any combination of:");
+    _.forEach(_.keys(features), feature => console.log("  - "+feature))
+    console.log("");
+    console.log("Example: webpack-autoconf new myProject React PNG");
+    console.log("");
 }
