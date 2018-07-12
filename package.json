@@ -1,5 +1,5 @@
 {
-  "name": "webpack-configurator",
+  "name": "webpack-autoconf",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -10,6 +10,9 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
+  "bin": {
+    "webpack-config": "dist/webpack-config-cli.js"
+  },
   "dependencies": {
     "combinations": "^0.1.1",
     "javascript-stringify": "^1.6.0",
