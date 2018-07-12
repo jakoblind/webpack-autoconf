@@ -2,7 +2,7 @@ import React from 'react';
 import { render } from 'react-dom';
 import jsStringify from "javascript-stringify";
 import _ from "lodash";
-import { features, createWebpackConfig, createBabelConfig, getNpmDependencies, getDefaultProjectName } from "./src/configurator";
+import { features, createWebpackConfig, createBabelConfig, getNpmDependencies, getDefaultProjectName } from "./configurator";
 
 import prism from "prismjs";
 
@@ -116,7 +116,7 @@ const StepByStepArea = ({features, newNpmConfig, newBabelConfig, isReact}) => {
     return (
         <div className="right-section">
             <h3>Get your project!</h3>
-            <a href={zipUrl}><img className="icon" src={require("./images/zip.svg")}/>Download a zip file with your project config</a>
+            <a href={zipUrl}><img className="icon" src={require("../images/zip.svg")}/>Download a zip file with your project config</a>
              <h3>Or create your project yourself</h3>
              <ol>
              <li>Create an NPM project and install dependencies</li>
