@@ -8,8 +8,8 @@ import Promise from "bluebird";
 import fs from "fs";
 import childProcess from "child_process";
 
-import {features, createWebpackConfig, createBabelConfig, getNpmDependencies, getDefaultProjectName} from "./src/configurator";
-import { packageJson, readmeFile } from "./src/templates";
+import { features, createWebpackConfig, createBabelConfig, getNpmDependencies, getDefaultProjectName, getPackageJson } from "./src/configurator";
+import { readmeFile } from "./src/templates";
 import { reactIndexJs, reactIndexHtml } from "./static/react/index";
 import { emptyIndexJs } from "./static/empty/index";
 
@@ -47,20 +47,6 @@ function getNodeVersionPromise(name) {
     });
 }
 
-function getPackageJson(name, dependenciesNames, devDependenciesNames) {
-    const dependenciesVersionsPromises = _.map(dependenciesNames, getNodeVersionPromise);
-    const devDependenciesVersionsPromises = _.map(devDependenciesNames, getNodeVersionPromise);
-    let dependenciesVersions;
-    return Promise.all(dependenciesVersionsPromises).then((response) => {
-        dependenciesVersions = response;
-        return Promise.all(devDependenciesVersionsPromises)
-    }).then((devDependenciesVersions) => {
-        const dependencies = _.zipObject(dependenciesNames, dependenciesVersions);
-        const devDependencies = _.zipObject(devDependenciesNames, devDependenciesVersions);
-
-        return Object.assign({}, packageJson, {dependencies}, {devDependencies}, {name});
-    })
-}
 
 function writeFile(path, content) {
     fs.writeFileSync(path, content);
@@ -107,7 +93,7 @@ function generateProject(requestedFeatures, { basePath, name }) {
     }
 
     return reactFilesPromise
-        .then(() => getPackageJson("empty-project-"+_.kebabCase(requestedFeatures), newNpmConfig.dependencies, newNpmConfig.devDependencies)) .then((newPackageJson) => {
+        .then(() => getPackageJson("empty-project-"+_.kebabCase(requestedFeatures), newNpmConfig.dependencies, newNpmConfig.devDependencies, getNodeVersionPromise)) .then((newPackageJson) => {
             writeFile(fullPath + "package.json", JSON.stringify(newPackageJson, null, 2));
             console.log("Done generating " + projectName + "!");
             return projectName;

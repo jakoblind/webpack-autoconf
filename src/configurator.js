@@ -1,4 +1,4 @@
-import { baseWebpack, baseWebpackImports } from "./templates";
+import { baseWebpack, baseWebpackImports, packageJson } from "./templates";
 
 const jsStringify = require("javascript-stringify");
 const _ = require("lodash");
@@ -235,4 +235,19 @@ export function createWebpackConfig(configItems) {
 const config = ${createConfig(configItems, "webpack")}
 
 module.exports = config;`;
+}
+
+export function getPackageJson(name, dependenciesNames, devDependenciesNames, getNodeVersionPromise) {
+    const dependenciesVersionsPromises = _.map(dependenciesNames, getNodeVersionPromise);
+    const devDependenciesVersionsPromises = _.map(devDependenciesNames, getNodeVersionPromise);
+    let dependenciesVersions;
+    return Promise.all(dependenciesVersionsPromises).then((response) => {
+        dependenciesVersions = response;
+        return Promise.all(devDependenciesVersionsPromises)
+    }).then((devDependenciesVersions) => {
+        const dependencies = _.zipObject(dependenciesNames, dependenciesVersions);
+        const devDependencies = _.zipObject(devDependenciesNames, devDependenciesVersions);
+
+        return Object.assign({}, packageJson, {dependencies}, {devDependencies}, {name});
+    })
 }
