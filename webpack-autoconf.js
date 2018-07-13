@@ -41,7 +41,7 @@ function getNodeVersionPromise(name) {
     }
     // TODO: error handling!
     return exec(`npm show ${name} version`).then(({stdout}) => {
-        const version = stdout.replace(/\n$/, "")
+        const version = "^" + stdout.replace(/\n$/, "")
         nodeVersionMap[name] = version;
         return version;
     });
