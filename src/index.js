@@ -111,6 +111,16 @@ const StepByStepArea = ({features, newNpmConfig, newBabelConfig, isReact}) => {
     const npmInstallCommand = _.isEmpty(newNpmConfig.dependencies) ? "" : "\nnpm install " + newNpmConfig.dependencies.join(" ")
     const npmCommand = "mkdir myapp\ncd myapp\nnpm init -y\nnpm install --save-dev " + newNpmConfig.devDependencies.join(" ") + npmInstallCommand
 
+    let babelStep = null;
+    if (newBabelConfig) {
+        babelStep = <div><li>Create <i>.babelrc</i> in the root and copy the contents from below</li> <textarea readOnly={true} rows="11" cols="50" value={newBabelConfig}/></div>;
+    }
+
+    let srcFoldersStep = <li>Create folders src and dist and create your index.js file in src folder</li>;
+    if (isReact) {
+        srcFoldersStep = <li>Create folders src and dist and create your <a href="https://s3-eu-west-1.amazonaws.com/jakoblind/react/index.js">index.js</a> file in src folder and <a href="https://s3-eu-west-1.amazonaws.com/jakoblind/react/index.html">index.html</a> in the dist folder</li>;
+    }
+
     return (
         <div className="right-section">
              <h3>How to create your project yourself</h3>
@@ -120,14 +130,11 @@ const StepByStepArea = ({features, newNpmConfig, newBabelConfig, isReact}) => {
 
              <li>Create <i>webpack.config.js</i> in the root and copy the contents of the generated file</li>
 
-             {newBabelConfig ? <div><li>Create <i>.babelrc</i> in the root and copy the contents from below</li>
-                                <textarea readOnly={true} rows="11" cols="50" value={newBabelConfig}/></div> : null}
-
-             {isReact ? <li>Create folders src and dist and create your <a href="https://s3-eu-west-1.amazonaws.com/jakoblind/react/index.js">index.js</a> file in src folder and <a href="https://s3-eu-west-1.amazonaws.com/jakoblind/react/index.html">index.html</a> in the dist folder</li> : <li>Create folders src and dist and create your index.js file in src folder</li>}
+             { babelStep }
+             { srcFoldersStep }
              </ol>
             <a href="http://blog.jakoblind.no/react-with-webpack-babel-npm/">Need more detailed instructions?</a>
         </div>
-
     )
 }
 
