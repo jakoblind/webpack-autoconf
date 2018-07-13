@@ -159,6 +159,10 @@ class Configurator extends React.Component {
         const newWebpackConfig = createWebpackConfig(this.selectedArray());
         const newBabelConfig = createBabelConfig(this.selectedArray());
         const newNpmConfig = getNpmDependencies(this.selectedArray());
+
+        const isReact = _.includes(this.selectedArray(), "React");
+        const isVue = _.includes(this.selectedArray(), "Vue");
+
         const filename = getDefaultProjectName("empty-project", this.selectedArray());
         const zipUrl = `https://s3-eu-west-1.amazonaws.com/jakoblind/zips/${filename}.zip`;
 
@@ -168,13 +172,13 @@ class Configurator extends React.Component {
                     selected={this.state.selected}
                     setSelected={this.setSelected} />
                 <div className="container">
-                    <a href={zipUrl}><img className="icon" src={require("../images/zip.svg")}/>Download an empty project with your configuration</a>
+                    { !isVue ? <a href={zipUrl}><img className="icon" src={require("../images/zip.svg")}/>Download an empty project with your configuration</a> : null }
                     <WebpackConfigArea newWebpackConfig={newWebpackConfig}/>
                     <StepByStepArea
                         features={this.selectedArray()}
                         newNpmConfig={newNpmConfig}
                         newBabelConfig={newBabelConfig}
-                        isReact={_.includes(this.selectedArray(), "React")}/>
+                        isReact={isReact}/>
                 </div>
                 <Footer/>
             </div>)
