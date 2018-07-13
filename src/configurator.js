@@ -248,6 +248,6 @@ export function getPackageJson(name, dependenciesNames, devDependenciesNames, ge
         const dependencies = _.zipObject(dependenciesNames, dependenciesVersions);
         const devDependencies = _.zipObject(devDependenciesNames, devDependenciesVersions);
 
-        return Object.assign({}, packageJson, {dependencies}, {devDependencies}, {name});
+        return Object.assign({}, {name}, packageJson, {dependencies}, {devDependencies});
     })
 }
