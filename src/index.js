@@ -102,7 +102,7 @@ const WebpackConfigArea = ({newWebpackConfig}) => {
     return (
         <div className="left-section">
             <h3>Your personal webpack.config.js</h3>
-            <pre><code className="language-css" dangerouslySetInnerHTML={highlightedWebpackConfig()}></code></pre>
+            <pre id="code-box"><code className="language-css" dangerouslySetInnerHTML={highlightedWebpackConfig()}></code></pre>
         </div>
     )
 }
@@ -111,13 +111,9 @@ const StepByStepArea = ({features, newNpmConfig, newBabelConfig, isReact}) => {
     const npmInstallCommand = _.isEmpty(newNpmConfig.dependencies) ? "" : "\nnpm install " + newNpmConfig.dependencies.join(" ")
     const npmCommand = "mkdir myapp\ncd myapp\nnpm init -y\nnpm install --save-dev " + newNpmConfig.devDependencies.join(" ") + npmInstallCommand
 
-    const filename = getDefaultProjectName("empty-project", features);
-    const zipUrl = `https://s3-eu-west-1.amazonaws.com/jakoblind/zips/${filename}.zip`;
     return (
         <div className="right-section">
-            <h3>Get your project!</h3>
-            <a href={zipUrl}><img className="icon" src={require("../images/zip.svg")}/>Download a zip file with your project config</a>
-             <h3>Or create your project yourself</h3>
+             <h3>How to create your project yourself</h3>
              <ol>
              <li>Create an NPM project and install dependencies</li>
              <textarea readOnly={true} rows="6" cols="50" value={npmCommand}/>
@@ -153,6 +149,7 @@ class Configurator extends React.Component {
         } else if (feature === "React" && setToSelected) {
             selected["Vue"] = !setToSelected;
         }
+
         this.setState({ selected });
     }
     selectedArray(){
@@ -162,6 +159,8 @@ class Configurator extends React.Component {
         const newWebpackConfig = createWebpackConfig(this.selectedArray());
         const newBabelConfig = createBabelConfig(this.selectedArray());
         const newNpmConfig = getNpmDependencies(this.selectedArray());
+        const filename = getDefaultProjectName("empty-project", this.selectedArray());
+        const zipUrl = `https://s3-eu-west-1.amazonaws.com/jakoblind/zips/${filename}.zip`;
 
         return (
             <div>
@@ -169,6 +168,7 @@ class Configurator extends React.Component {
                     selected={this.state.selected}
                     setSelected={this.setSelected} />
                 <div className="container">
+                    <a href={zipUrl}><img className="icon" src={require("../images/zip.svg")}/>Download an empty project with your configuration</a>
                     <WebpackConfigArea newWebpackConfig={newWebpackConfig}/>
                     <StepByStepArea
                         features={this.selectedArray()}

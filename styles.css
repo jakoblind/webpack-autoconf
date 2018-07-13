@@ -21,11 +21,24 @@ body {
     height: 70px;
 }
 
+#code-box {
+    height: 400px;
+    overflow:scroll;
+    margin-left: 39px;
+    margin-right: 39px;
+}
+
+
 @media only screen and (max-width: 40em) {
   .start-here {
     width: 300px;
     padding: 0 50px;
     box-sizing: border-box;
+  }
+  #code-box {
+    margin-left: 0px;
+    margin-right: 0px;
+
   }
 }
 
@@ -49,22 +62,15 @@ h2 {
 }
 
 .container {
-    display: flex;
     clear:both;
-    max-width: 1400px;
+    max-width: 800px;
     margin: 0 auto;
-}
-@media only screen and (max-width: 40em) {
-    .container {
-        flex-direction: column;
-
-    }
 }
 
 .left-section,
 .right-section {
     padding: 0px 10px 10px 10px;
-    width: 50%;
+    width: 100%;
 }
 @media screen and (max-width: 40em) {
     .right-section,
