@@ -2,9 +2,17 @@ import React from 'react';
 import { render } from 'react-dom';
 import jsStringify from "javascript-stringify";
 import _ from "lodash";
-import { features, createWebpackConfig, createBabelConfig, getNpmDependencies, getDefaultProjectName } from "./configurator";
-
 import prism from "prismjs";
+
+import {
+    features,
+    createWebpackConfig,
+    createBabelConfig,
+    getNpmDependencies,
+    getDefaultProjectName
+} from "./configurator";
+
+import FileBrowser from "./FileBrowser";
 
 const Feature = ({feature, selected, setSelected}) => (
     <label className="feature-container">
@@ -58,6 +66,13 @@ const logFeatureClickToGa = (feature, selected) => {
     })
 }
 
+const logDownloadToGa = (filename) => {
+    window.gtag("event", "download-zip", {
+        "event_category": "created-project",
+        "event_label": filename
+    })
+}
+
 const Header = ({selected, setSelected}) => (
     <div className="header">
         <h1>webpack 4 configurator</h1>
@@ -92,28 +107,13 @@ const Footer = () => (
     </div>
 );
 
-const WebpackConfigArea = ({newWebpackConfig}) => {
-    const highlightedWebpackConfig = () => {
-        return {
-            __html: Prism.highlight(newWebpackConfig, Prism.languages.javascript, 'javascript')
-        };
-    };
-
-    return (
-        <div className="left-section">
-            <h3>Your personal webpack.config.js</h3>
-            <pre id="code-box"><code className="language-css" dangerouslySetInnerHTML={highlightedWebpackConfig()}></code></pre>
-        </div>
-    )
-}
-
 const StepByStepArea = ({features, newNpmConfig, newBabelConfig, isReact}) => {
     const npmInstallCommand = _.isEmpty(newNpmConfig.dependencies) ? "" : "\nnpm install " + newNpmConfig.dependencies.join(" ")
     const npmCommand = "mkdir myapp\ncd myapp\nnpm init -y\nnpm install --save-dev " + newNpmConfig.devDependencies.join(" ") + npmInstallCommand
 
     let babelStep = null;
     if (newBabelConfig) {
-        babelStep = <div><li>Create <i>.babelrc</i> in the root and copy the contents from below</li> <textarea readOnly={true} rows="11" cols="50" value={newBabelConfig}/></div>;
+        babelStep = <div><li>Create <i>.babelrc</i> in the root and copy the contents of the generated file</li></div>;
     }
 
     let srcFoldersStep = <li>Create folders src and dist and create your index.js file in src folder</li>;
@@ -143,6 +143,7 @@ class Configurator extends React.Component {
         super(props);
         this.state = { selected: { } }
         this.setSelected = this.setSelected.bind(this);
+        this.onClickDownloadZip = this.onClickDownloadZip.bind(this);
     }
     setSelected(feature) {
         const setToSelected = !this.state.selected[feature]
@@ -162,6 +163,10 @@ class Configurator extends React.Component {
     selectedArray(){
         return _.chain(this.state.selected).map((v, k) => v ? k : null).reject(_.isNull).value();
     }
+    onClickDownloadZip(event) {
+        const filename = getDefaultProjectName("empty-project", this.selectedArray());
+        logDownloadToGa(filename);
+    }
     render() {
         const newWebpackConfig = createWebpackConfig(this.selectedArray());
         const newBabelConfig = createBabelConfig(this.selectedArray());
@@ -179,8 +184,12 @@ class Configurator extends React.Component {
                     selected={this.state.selected}
                     setSelected={this.setSelected} />
                 <div className="container">
-                    { !isVue ? <a href={zipUrl}><img className="icon" src={require("../images/zip.svg")}/>Download an empty project with your configuration</a> : null }
-                    <WebpackConfigArea newWebpackConfig={newWebpackConfig}/>
+                    { !isVue ? <a onClick={this.onClickDownloadZip} href={zipUrl}><img className="icon" src={require("../images/zip.svg")}/>Download an empty project with your configuration</a> : null }
+                    <FileBrowser
+                        newBabelConfig={newBabelConfig}
+                        newWebpackConfig={newWebpackConfig}
+                        features={this.selectedArray()}
+                        newNpmConfig={newNpmConfig}/>
                     <StepByStepArea
                         features={this.selectedArray()}
                         newNpmConfig={newNpmConfig}

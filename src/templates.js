@@ -26,9 +26,9 @@ export const packageJson = {
   "scripts": {
     "dist": "webpack -p"
   },
-  "devDependencies": {
+  //"devDependencies": {
 //    "react": "^16.4.1",
-  }
+  //}
 }
 
 export const readmeFile = (name, isReact) => `# ${name}

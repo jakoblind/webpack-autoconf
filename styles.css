@@ -22,14 +22,44 @@ body {
 }
 
 #code-box {
-    height: 400px;
+    height: 500px;
+    width: 80%;
     overflow:scroll;
-    margin-left: 39px;
-    margin-right: 39px;
+    background-color: #242424;
 }
 
+.file-browser {
+    color: #ccc;
+    background-color: #2d2d2d;
+    margin-top: 14px;
+    display: flex;
+    cursor: pointer;
+    border-radius: 10px;
+}
+
+.files {
+    width: 25%;
+}
+
+.files ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 17px 0px;
+}
+
+.files li {
+    padding: 2px 25px;
+}
+
+.files li.selected {
+    background: #145B98;
+    color: white;
+}
 
 @media only screen and (max-width: 40em) {
+    .files li {
+        padding: 2px;
+    }
   .start-here {
     width: 300px;
     padding: 0 50px;
