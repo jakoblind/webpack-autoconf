@@ -184,7 +184,7 @@ class Configurator extends React.Component {
                     selected={this.state.selected}
                     setSelected={this.setSelected} />
                 <div className="container">
-                    { !isVue ? <a onClick={this.onClickDownloadZip} href={zipUrl}><img className="icon" src={require("../images/zip.svg")}/>Download an empty project with your configuration</a> : null }
+                    { !isVue ? <a onClick={this.onClickDownloadZip} href={zipUrl}><img className="icon" src={require("../images/zip.svg")}/>Download your project as a zip!</a> : null }
                     <FileBrowser
                         newBabelConfig={newBabelConfig}
                         newWebpackConfig={newWebpackConfig}
