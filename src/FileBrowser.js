@@ -7,6 +7,7 @@ import {
 } from "./configurator";
 
 import { reactIndexJs, reactIndexHtml } from "./../static/react/index";
+import { emptyIndexJs } from "./../static/empty/index";
 import { readmeFile } from "./templates";
 
 const FileList = ({ files, selectedFile, onSelectFile }) => {
@@ -123,7 +124,7 @@ class FileBrowserContainer extends React.Component {
         ];
 
         const filesToShow = _.concat(
-            ["webpack.config.js", "package.json", "README.md"],
+            ["webpack.config.js", "package.json", "README.md", "src/index.js"],
             newBabelConfig ? ".babelrc" : [],
             isReact ? reactFileNames : []);
 
@@ -131,7 +132,7 @@ class FileBrowserContainer extends React.Component {
             "webpack.config.js": newWebpackConfig,
             "package.json": JSON.stringify(this.state.packageJson, null, 2),
             "dist/index.html": reactIndexHtml,
-            "src/index.js": reactIndexJs,
+            "src/index.js": isReact ? reactIndexJs : emptyIndexJs,
             ".babelrc": newBabelConfig,
             "README.md": readmeFile("empty-project", isReact)
         };
