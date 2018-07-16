@@ -208,7 +208,7 @@ export function getNpmDependencies(configItems) {
           .value();
 
     const devDependencies = _.chain(configItems)
-          .reduce((acc, currentValue) => (_.concat(acc, features[currentValue]["devDependencies"](configItems))), ["webpack"])
+          .reduce((acc, currentValue) => (_.concat(acc, features[currentValue]["devDependencies"](configItems))), ["webpack", "webpack-cli"])
           .uniq()
           .value();
 
