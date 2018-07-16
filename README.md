@@ -21,7 +21,6 @@ Where [features] can be any combination of:
   - PNG
   - moment
   - lodash
-  - Production mode
 
 Example: webpack-autoconf new myProject React PNG
 

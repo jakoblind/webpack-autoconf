@@ -3,8 +3,7 @@ export const baseWebpack = {
     output: {
         path: "CODE:path.resolve(__dirname, 'dist')",
         filename: 'bundle.js'
-    },
-    mode: 'development'
+    }
 }
 
 export const baseWebpackImports = [
@@ -17,14 +16,13 @@ export const packageJson = {
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "scripts": {
-    "dist": "webpack -p"
+    "clean": "rm dist/bundle.js",
+    "build-dev": "webpack -d --mode development",
+    "build-prod": "webpack -p --mode production"
   },
   //"devDependencies": {
 //    "react": "^16.4.1",
@@ -35,11 +33,24 @@ export const readmeFile = (name, isReact) => `# ${name}
 
 Empty project.
 
-## Installation and building
+## Building
+
+First install dependencies:
 
 \`\`\`sh
 npm install
-npm run dist
+\`\`\`
+
+To create a production build:
+
+\`\`\`sh
+npm run build-dev
+\`\`\`
+
+To create a development build:
+
+\`\`\`sh
+npm run build-dev
 \`\`\`
 
 ## Running

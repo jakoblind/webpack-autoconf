@@ -163,9 +163,6 @@ export const features = (() => {
             webpackImports: ["const LodashModuleReplacementPlugin = require('lodash-webpack-plugin');"],
             webpack:
             (webpackConfig) => addPlugin(webpackConfig, "CODE:new LodashModuleReplacementPlugin")
-        },
-        "Production mode": {
-            webpack: (webpackConfig) => Object.assign({}, webpackConfig, {"mode": "production"})
         }
     }
     return _.mapValues(features, (item) => {
