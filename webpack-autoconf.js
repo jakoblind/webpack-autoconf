@@ -10,7 +10,7 @@ import childProcess from "child_process";
 
 import { features, createWebpackConfig, createBabelConfig, getNpmDependencies, getDefaultProjectName, getPackageJson } from "./src/configurator";
 import { readmeFile } from "./src/templates";
-import { reactIndexJs, reactIndexHtml } from "./static/react/index";
+import { reactIndexJs, reactHotIndexJs, reactIndexHtml } from "./static/react/index";
 import { emptyIndexJs } from "./static/empty/index";
 
 function exec(command) {
@@ -59,13 +59,20 @@ function mkDir(path) {
 }
 
 function generateProject(requestedFeatures, { basePath, name }) {
+    const isReact = _.includes(requestedFeatures, "React");
+    const isHotReact = _.includes(requestedFeatures, "React hot loader");
+
+    if (isHotReact && !isReact) {
+        console.log("Cannot configure React hot loading without configuring React");
+        return;
+    }
+
     const projectName = name || getDefaultProjectName("empty-project", requestedFeatures);
     const fullPath = (basePath || ".") + "/" + projectName + "/"
 
     const newNpmConfig = getNpmDependencies(requestedFeatures);
     const newWebpackConfig = createWebpackConfig(requestedFeatures);
     const newBabelConfig = createBabelConfig(requestedFeatures);
-    const isReact = _.includes(requestedFeatures, "React")
 
     console.log("Generating " + projectName + "...");
 
@@ -73,7 +80,7 @@ function generateProject(requestedFeatures, { basePath, name }) {
     mkDir(fullPath);
 
     writeFile(fullPath + "webpack.config.js", newWebpackConfig);
-    writeFile(fullPath + "README.md", readmeFile(projectName, isReact));
+    writeFile(fullPath + "README.md", readmeFile(projectName, isReact, isHotReact));
 
     if (newBabelConfig) {
         writeFile(fullPath + ".babelrc", newBabelConfig);
@@ -86,14 +93,14 @@ function generateProject(requestedFeatures, { basePath, name }) {
     if (isReact) {
         mkDir(fullPath + "dist");
 
-        writeFile(fullPath + "src/index.js", reactIndexJs);
+        writeFile(fullPath + "src/index.js", isHotReact ? reactHotIndexJs : reactIndexJs);
         writeFile(fullPath + "dist/index.html", reactIndexHtml);
     } else {
         writeFile(fullPath + "src/index.js", emptyIndexJs);
     }
 
     return reactFilesPromise
-        .then(() => getPackageJson("empty-project-"+_.kebabCase(requestedFeatures), newNpmConfig.dependencies, newNpmConfig.devDependencies, getNodeVersionPromise)) .then((newPackageJson) => {
+        .then(() => getPackageJson("empty-project-"+_.kebabCase(requestedFeatures), newNpmConfig.dependencies, newNpmConfig.devDependencies, getNodeVersionPromise, requestedFeatures)) .then((newPackageJson) => {
             writeFile(fullPath + "package.json", JSON.stringify(newPackageJson, null, 2));
             console.log("Done generating " + projectName + "!");
             return projectName;

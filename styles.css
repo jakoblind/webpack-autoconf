@@ -22,7 +22,7 @@ body {
 }
 
 #code-box {
-    height: 500px;
+    max-height: 800px;
     width: 80%;
     overflow:scroll;
     background-color: #242424;

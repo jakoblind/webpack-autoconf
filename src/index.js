@@ -73,20 +73,22 @@ const logDownloadToGa = (filename) => {
     })
 }
 
-const Header = ({selected, setSelected}) => (
-    <div className="header">
-        <h1>webpack 4 configurator</h1>
-        <h2>Create a <i>personalized</i> and <i>optimized</i> webpack.config.js!</h2>
+const Header = ({ selected, setSelected, showFeatures }) => {
+    return (
+        <div className="header">
+            <h1>webpack 4 configurator</h1>
+            <h2>Create a <i>personalized</i> and <i>optimized</i> webpack.config.js!</h2>
 
-        <div >
-            <div className="start-here">Start here! What features do you need?</div>
-        </div>
-        <Features
-            features={features}
-            selected={selected}
-            setSelected={setSelected}/>
-    </div>
-);
+            <div >
+                <div className="start-here">Start here! What features do you need?</div>
+            </div>
+            <Features
+                features={showFeatures}
+                selected={selected}
+                setSelected={setSelected}/>
+            </div>
+    );
+}
 
 const Footer = () => (
     <div className="footer">
@@ -148,14 +150,24 @@ class Configurator extends React.Component {
     setSelected(feature) {
         const setToSelected = !this.state.selected[feature]
         logFeatureClickToGa(feature, setToSelected);
-        const selected = Object.assign({}, this.state.selected, { [feature]: setToSelected });
+        const selected = Object.assign(
+            {},
+            this.state.selected,
+            { [feature]: setToSelected }
+        );
 
         // only possible to select one of Vue or React. Needing both is an edge case
         // that is probably very rare. It adds much complexity to support both.
         if (feature === "Vue" && setToSelected) {
             selected["React"] = !setToSelected;
+            selected["React hot loader"] = false;
         } else if (feature === "React" && setToSelected) {
             selected["Vue"] = !setToSelected;
+            // let's default react hot loader
+            selected["React hot loader"] = true;
+        } else if (feature === "React" && !setToSelected) {
+            // cant have React hot loader without React
+            selected["React hot loader"] = false;
         }
 
         this.setState({ selected });
@@ -178,11 +190,17 @@ class Configurator extends React.Component {
         const filename = getDefaultProjectName("empty-project", this.selectedArray());
         const zipUrl = `https://s3-eu-west-1.amazonaws.com/jakoblind/zips/${filename}.zip`;
 
+        const showFeatures = _.clone(features);
+
+        if (!isReact) {
+            delete showFeatures["React hot loader"];
+        }
         return (
             <div>
                 <Header
                     selected={this.state.selected}
-                    setSelected={this.setSelected} />
+                    setSelected={this.setSelected}
+                    showFeatures={showFeatures}/>
                 <div className="container">
                     { !isVue ? <a onClick={this.onClickDownloadZip} href={zipUrl}><img className="icon" src={require("../images/zip.svg")}/>Download your project as a zip!</a> : null }
                     <FileBrowser

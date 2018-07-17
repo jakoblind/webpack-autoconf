@@ -29,18 +29,24 @@ export const packageJson = {
   //}
 }
 
-export const readmeFile = (name, isReact) => `# ${name}
+export const readmeFile = (name, isReact, isHot) => `# ${name}
 
 Empty project.
 
-## Building
+## Building and running on localhost
 
 First install dependencies:
 
 \`\`\`sh
 npm install
 \`\`\`
+${isHot ? `
+To run in hot module reloading mode:
 
+\`\`\`sh
+npm start
+\`\`\`
+` : ``}
 To create a production build:
 
 \`\`\`sh

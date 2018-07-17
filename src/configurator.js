@@ -163,6 +163,21 @@ export const features = (() => {
             webpackImports: ["const LodashModuleReplacementPlugin = require('lodash-webpack-plugin');"],
             webpack:
             (webpackConfig) => addPlugin(webpackConfig, "CODE:new LodashModuleReplacementPlugin")
+        },
+        "React hot loader": {
+            group: "",
+            babel: (babelConfig) => Object.assign({}, babelConfig, {
+                "plugins": ["react-hot-loader/babel"]
+            }),
+            dependencies: (configItems) => ["react-hot-loader"],
+            devDependencies: (configItems) => ["webpack-dev-server"],
+            webpack: (webpackConfig) =>
+                Object.assign({}, webpackConfig, {
+                    devServer: {
+                        contentBase: './dist'
+                    }
+                })
+
         }
     }
     return _.mapValues(features, (item) => {
@@ -234,7 +249,11 @@ const config = ${createConfig(configItems, "webpack")}
 module.exports = config;`;
 }
 
-export function getPackageJson(name, dependenciesNames, devDependenciesNames, getNodeVersionPromise) {
+export function getPackageJson(name,
+                               dependenciesNames,
+                               devDependenciesNames,
+                               getNodeVersionPromise,
+                               features) {
     const dependenciesVersionsPromises = _.map(dependenciesNames, getNodeVersionPromise);
     const devDependenciesVersionsPromises = _.map(devDependenciesNames, getNodeVersionPromise);
     let dependenciesVersions;
@@ -245,6 +264,25 @@ export function getPackageJson(name, dependenciesNames, devDependenciesNames, ge
         const dependencies = _.zipObject(dependenciesNames, dependenciesVersions);
         const devDependencies = _.zipObject(devDependenciesNames, devDependenciesVersions);
 
-        return Object.assign({}, {name}, packageJson, {dependencies}, {devDependencies});
+        const generatedPackageJson = Object.assign(
+            {},
+            {name},
+            packageJson,
+            {dependencies},
+            {devDependencies});
+
+        const isHotReact = _.includes(features, "React hot loader");
+
+        if (isHotReact) {
+            generatedPackageJson.scripts = Object.assign(
+                {},
+                packageJson.scripts,
+                {
+                    "start": "webpack-dev-server --hot --mode development"
+                }
+            )
+        }
+
+        return generatedPackageJson;
     })
 }

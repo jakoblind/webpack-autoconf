@@ -6,7 +6,12 @@ import {
     getDefaultProjectName
 } from "./configurator";
 
-import { reactIndexJs, reactIndexHtml } from "./../static/react/index";
+import {
+    reactIndexJs,
+    reactHotIndexJs,
+    reactIndexHtml
+} from "./../static/react/index";
+
 import { emptyIndexJs } from "./../static/empty/index";
 import { readmeFile } from "./templates";
 
@@ -88,6 +93,10 @@ class FileBrowserContainer extends React.Component {
         }
     }
     updatePackageJson() {
+        this.setState({
+            packageJson: "// fetching dependency versions..."
+        })
+
         const getNodeVersionPromise = (name) => {
             return fetch(`https://unpkg.com/${name}/package.json`)
                 .then(res => res.json())
@@ -100,7 +109,8 @@ class FileBrowserContainer extends React.Component {
             getDefaultProjectName("empty-project", features),
             newNpmConfig.dependencies,
             newNpmConfig.devDependencies,
-            getNodeVersionPromise
+            getNodeVersionPromise,
+            features
         ).then((packageJson) =>
                this.setState({ packageJson }));
     }
@@ -117,6 +127,7 @@ class FileBrowserContainer extends React.Component {
         } = this.props;
 
         const isReact = _.includes(features, "React");
+        const isHotReact = _.includes(this.props.features, "React hot loader");
 
         const reactFileNames = [
             "dist/index.html",
@@ -128,13 +139,23 @@ class FileBrowserContainer extends React.Component {
             newBabelConfig ? ".babelrc" : [],
             isReact ? reactFileNames : []);
 
+        let indexJsFile = emptyIndexJs;
+
+        if (isReact){
+            if (isHotReact) {
+                indexJsFile = reactHotIndexJs;
+            } else {
+                indexJsFile = reactIndexJs;
+            }
+        }
+
         const completeFileContentMap = {
             "webpack.config.js": newWebpackConfig,
             "package.json": JSON.stringify(this.state.packageJson, null, 2),
             "dist/index.html": reactIndexHtml,
-            "src/index.js": isReact ? reactIndexJs : emptyIndexJs,
+            "src/index.js": indexJsFile,
             ".babelrc": newBabelConfig,
-            "README.md": readmeFile("empty-project", isReact)
+            "README.md": readmeFile("empty-project", isReact, isHotReact)
         };
 
         const fileContentMap = _.pickBy(completeFileContentMap, (value, fileName) => _.includes(filesToShow, fileName));
