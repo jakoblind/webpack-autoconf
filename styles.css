@@ -83,6 +83,32 @@ body {
     text-align: center;
 }
 
+.zip-icon-area {
+    width: 40%;
+    float:left;
+}
+.zip-icon {
+    background: #232729;
+    color: white;
+    width: 120px;
+    text-align: center;
+    padding-bottom: 10px;
+
+}
+.signup-button-area {
+    margin-bottom: 15px;
+}
+.signup-form-area {
+    width: 60%;
+    float:left;
+}
+.signup-field {
+    padding: 11px;
+    font-size: medium;
+    border-radius: 5px;
+    margin: 10px;
+}
+
 .footer {
     max-width: 800px;
     margin: 0 auto;

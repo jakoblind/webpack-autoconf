@@ -31,7 +31,8 @@
     "node-fetch": "^2.1.2",
     "prismjs": "^1.15.0",
     "react": "^16.4.1",
-    "react-dom": "^16.4.1"
+    "react-dom": "^16.4.1",
+    "react-modal": "^3.5.1"
   },
   "devDependencies": {
     "babel-cli": "^6.26.0",

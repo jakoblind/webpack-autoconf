@@ -3,6 +3,7 @@ import { render } from 'react-dom';
 import jsStringify from "javascript-stringify";
 import _ from "lodash";
 import prism from "prismjs";
+import GetZip from "./GetZip";
 
 import {
     features,
@@ -138,11 +139,6 @@ const StepByStepArea = ({features, newNpmConfig, newBabelConfig, isReact}) => {
             <a href="http://blog.jakoblind.no/react-with-webpack-babel-npm/">Need more detailed instructions?</a>
         </div>
     )
-}
-
-const GetZip = ({ projectname }) => {
-    const zipUrl = `https://s3-eu-west-1.amazonaws.com/jakoblind/zips/${projectname}.zip`;
-    return <a className="myButton" onClick={() => logDownloadToGa(projectname)} href={zipUrl}><img className="icon" src={require("../images/zip.svg")}/>Download your project as a zip!</a>;
 }
 
 class Configurator extends React.Component {
