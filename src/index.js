@@ -142,7 +142,7 @@ const StepByStepArea = ({features, newNpmConfig, newBabelConfig, isReact}) => {
 
 const GetZip = ({ projectname }) => {
     const zipUrl = `https://s3-eu-west-1.amazonaws.com/jakoblind/zips/${projectname}.zip`;
-    return <a onClick={() => logDownloadToGa(projectname)} href={zipUrl}><img className="icon" src={require("../images/zip.svg")}/>Download your project as a zip!</a>;
+    return <a className="myButton" onClick={() => logDownloadToGa(projectname)} href={zipUrl}><img className="icon" src={require("../images/zip.svg")}/>Download your project as a zip!</a>;
 }
 
 class Configurator extends React.Component {
@@ -201,7 +201,9 @@ class Configurator extends React.Component {
                     setSelected={this.setSelected}
                     showFeatures={showFeatures}/>
                 <div className="container">
-                    { !isVue ? <GetZip onClickDownloadZip={this.onClickDownloadZip} projectname={projectname} /> : null }
+                    <div className="download-zip">
+                        { !isVue ? <GetZip onClickDownloadZip={this.onClickDownloadZip} projectname={projectname} /> : null }
+                    </div>
                     <FileBrowser
                         newBabelConfig={newBabelConfig}
                         newWebpackConfig={newWebpackConfig}
