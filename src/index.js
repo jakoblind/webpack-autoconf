@@ -140,12 +140,16 @@ const StepByStepArea = ({features, newNpmConfig, newBabelConfig, isReact}) => {
     )
 }
 
+const GetZip = ({ projectname }) => {
+    const zipUrl = `https://s3-eu-west-1.amazonaws.com/jakoblind/zips/${projectname}.zip`;
+    return <a onClick={() => logDownloadToGa(projectname)} href={zipUrl}><img className="icon" src={require("../images/zip.svg")}/>Download your project as a zip!</a>;
+}
+
 class Configurator extends React.Component {
     constructor(props) {
         super(props);
         this.state = { selected: { } }
         this.setSelected = this.setSelected.bind(this);
-        this.onClickDownloadZip = this.onClickDownloadZip.bind(this);
     }
     setSelected(feature) {
         const setToSelected = !this.state.selected[feature]
@@ -175,10 +179,6 @@ class Configurator extends React.Component {
     selectedArray(){
         return _.chain(this.state.selected).map((v, k) => v ? k : null).reject(_.isNull).value();
     }
-    onClickDownloadZip(event) {
-        const filename = getDefaultProjectName("empty-project", this.selectedArray());
-        logDownloadToGa(filename);
-    }
     render() {
         const newWebpackConfig = createWebpackConfig(this.selectedArray());
         const newBabelConfig = createBabelConfig(this.selectedArray());
@@ -187,8 +187,7 @@ class Configurator extends React.Component {
         const isReact = _.includes(this.selectedArray(), "React");
         const isVue = _.includes(this.selectedArray(), "Vue");
 
-        const filename = getDefaultProjectName("empty-project", this.selectedArray());
-        const zipUrl = `https://s3-eu-west-1.amazonaws.com/jakoblind/zips/${filename}.zip`;
+        const projectname = getDefaultProjectName("empty-project", this.selectedArray());
 
         const showFeatures = _.clone(features);
 
@@ -202,7 +201,7 @@ class Configurator extends React.Component {
                     setSelected={this.setSelected}
                     showFeatures={showFeatures}/>
                 <div className="container">
-                    { !isVue ? <a onClick={this.onClickDownloadZip} href={zipUrl}><img className="icon" src={require("../images/zip.svg")}/>Download your project as a zip!</a> : null }
+                    { !isVue ? <GetZip onClickDownloadZip={this.onClickDownloadZip} projectname={projectname} /> : null }
                     <FileBrowser
                         newBabelConfig={newBabelConfig}
                         newWebpackConfig={newWebpackConfig}
