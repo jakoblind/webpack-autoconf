@@ -14,6 +14,8 @@ import {
 
 import { emptyIndexJs } from "./../static/empty/index";
 import { readmeFile } from "./templates";
+import {tsconfig, tsconfigReact} from "../static/ts";
+import {vueIndexHtml, vueIndexTs} from "../static/vue";
 
 const FileList = ({ files, selectedFile, onSelectFile }) => {
     const filesElements = _.map(files, (file) => <li className={file === selectedFile ? "selected" : "" } key={file} onClick={() => onSelectFile(file)}>{file}</li>)
@@ -127,6 +129,8 @@ class FileBrowserContainer extends React.Component {
         } = this.props;
 
         const isReact = _.includes(features, "React");
+        const isVue = _.includes(features, "Vue");
+        const isTypescript = _.includes(features, "Typescript");
         const isHotReact = _.includes(this.props.features, "React hot loader");
 
         const reactFileNames = [
@@ -135,8 +139,9 @@ class FileBrowserContainer extends React.Component {
         ];
 
         const filesToShow = _.concat(
-            ["webpack.config.js", "package.json", "README.md", "src/index.js"],
+            ["webpack.config.js", "package.json", "README.md"],
             newBabelConfig ? ".babelrc" : [],
+            isTypescript ? ["tsconfig.json", "src/index.ts"] : ["src/index.js"],
             isReact ? reactFileNames : []);
 
         let indexJsFile = emptyIndexJs;
@@ -149,11 +154,16 @@ class FileBrowserContainer extends React.Component {
             }
         }
 
+        if (isVue){
+            indexJsFile = vueIndexTs;
+        }
+
         const completeFileContentMap = {
             "webpack.config.js": newWebpackConfig,
             "package.json": JSON.stringify(this.state.packageJson, null, 2),
-            "dist/index.html": reactIndexHtml,
-            "src/index.js": indexJsFile,
+            "dist/index.html": isVue ? vueIndexHtml : reactIndexHtml,
+            [`src/index.${isTypescript ? 'ts' : 'js'}`]: indexJsFile,
+            "tsconfig.json": isReact ? tsconfigReact : tsconfig,
             ".babelrc": newBabelConfig,
             "README.md": readmeFile("empty-project", isReact, isHotReact)
         };

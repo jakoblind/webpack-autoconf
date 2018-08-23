@@ -18,6 +18,11 @@ function addPlugin(webpackConfig, plugin) {
     })
 }
 
+function assignModuleRuleAndResolver(webpackConfig, rules, resolverExts) {
+    const newWebpackConfig = addModuleRule(webpackConfig, rules);
+    return addResolverExtensions(newWebpackConfig, resolverExts);
+}
+
 function addModuleRule(webpackConfig, ruleOrRules) {
     const isManyRules = _.isArray(ruleOrRules);
     const rules = isManyRules ? ruleOrRules : [ruleOrRules];
@@ -31,7 +36,26 @@ function addModuleRule(webpackConfig, ruleOrRules) {
     }
 
     const newWebpackConfig = _.cloneDeep(webpackConfig);
-    newWebpackConfig.module.rules = _.union(newWebpackConfig.module.rules, rules)
+    newWebpackConfig.module.rules = _.union(newWebpackConfig.module.rules, rules);
+
+    return newWebpackConfig;
+}
+
+function addResolverExtensions(webpackConfig, extOrExts) {
+
+    const isManyExtensions = _.isArray(extOrExts);
+    const extensions = isManyExtensions ? extOrExts : [extOrExts];
+
+    if (!_.has(webpackConfig, "resolve")) {
+        return Object.assign({}, webpackConfig, {
+            resolve: {
+                extensions
+            },
+        })
+    }
+
+    const newWebpackConfig = _.cloneDeep(webpackConfig);
+    newWebpackConfig.resolve.extensions = _.union(newWebpackConfig.resolve.extensions, extensions)
 
     return newWebpackConfig;
 }
@@ -54,23 +78,19 @@ export const features = (() => {
                     test: /\.(js|jsx)$/,
                     exclude: /node_modules/,
                     use: 'babel-loader'
-                }), {
-                    resolve: {
-                        extensions: ['.js', '.jsx']
-                    }
-                })
+                }), addResolverExtensions(webpackConfig, [ '.jsx', '.js' ]))
         },
         "Vue": {
             group: "Main library",
             webpackImports: ["const VueLoaderPlugin = require('vue-loader/lib/plugin');"],
             webpack: (webpackConfig) => {
-                const webpackConfigWithRule = addModuleRule(webpackConfig,  [{
+                const webpackConfigWithRule = Object.assign({}, addModuleRule(webpackConfig,  [{
                     test: /\.vue$/,
                     loader: 'vue-loader'
                 }, {
                     test: /\.js$/,
                     loader: 'babel-loader'
-                }])
+                }]), addResolverExtensions(webpackConfig, [ '.js', '.vue' ]));
 
                 return addPlugin(webpackConfigWithRule, "CODE:new VueLoaderPlugin()");
             },
@@ -164,6 +184,18 @@ export const features = (() => {
             webpack:
             (webpackConfig) => addPlugin(webpackConfig, "CODE:new LodashModuleReplacementPlugin")
         },
+        "Typescript": {
+            group: "Utilities",
+            devDependencies: (configItems) => ["typescript", "ts-loader"],
+            webpack: (webpackConfig) => assignModuleRuleAndResolver(webpackConfig, {
+                test: /\.tsx?$/,
+                use: 'ts-loader',
+                exclude: /node_modules/,
+                options: {
+                    appendTsSuffixTo: [/\.vue$/],
+                }
+            }, [ '.tsx', '.ts', '.js' ])
+        },
         "React hot loader": {
             group: "",
             babel: (babelConfig) => Object.assign({}, babelConfig, {
@@ -209,7 +241,10 @@ function stringifyReplacer (value, indent, stringify) {
 }
 
 function createConfig(configItems, configType) {
-    const base = configType === "webpack" ? baseWebpack : {};
+    const isTypescript = configItems.includes('Typescript');
+    const entry = `./src/index.${isTypescript ? 'ts' : 'js'}`;
+    const baseWebpackTsSupport =  _.assignIn(baseWebpack, {entry});
+    const base = configType === "webpack" ? baseWebpackTsSupport : {};
     return jsStringify(_.reduce(configItems, (acc, currentValue) => (features[currentValue][configType](acc, configItems)), base), stringifyReplacer, 2)
 }
 
