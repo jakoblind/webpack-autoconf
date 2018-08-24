@@ -60,7 +60,9 @@ function mkDir(path) {
 
 function generateProject(requestedFeatures, { basePath, name }) {
     const isReact = _.includes(requestedFeatures, "React");
+    const isTypescript = _.includes(requestedFeatures, "Typescript");
     const isHotReact = _.includes(requestedFeatures, "React hot loader");
+    const indexSuffix = isTypescript ? 'ts' : 'js';
 
     if (isHotReact && !isReact) {
         console.log("Cannot configure React hot loading without configuring React");
@@ -79,6 +81,10 @@ function generateProject(requestedFeatures, { basePath, name }) {
     mkDir(basePath);
     mkDir(fullPath);
 
+    if (isTypescript) {
+        newWebpackConfig.entry = './src/index.ts';
+    }
+
     writeFile(fullPath + "webpack.config.js", newWebpackConfig);
     writeFile(fullPath + "README.md", readmeFile(projectName, isReact, isHotReact));
 
@@ -93,10 +99,10 @@ function generateProject(requestedFeatures, { basePath, name }) {
     if (isReact) {
         mkDir(fullPath + "dist");
 
-        writeFile(fullPath + "src/index.js", isHotReact ? reactHotIndexJs : reactIndexJs);
+        writeFile(`${fullPath}src/index.${indexSuffix}`, isHotReact ? reactHotIndexJs : reactIndexJs);
         writeFile(fullPath + "dist/index.html", reactIndexHtml);
     } else {
-        writeFile(fullPath + "src/index.js", emptyIndexJs);
+        writeFile(`${fullPath}src/index.${indexSuffix}`, emptyIndexJs);
     }
 
     return reactFilesPromise
