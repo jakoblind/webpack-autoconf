@@ -50,7 +50,7 @@ npm start
 To create a production build:
 
 \`\`\`sh
-npm run build-dev
+npm run build-prod
 \`\`\`
 
 To create a development build:
