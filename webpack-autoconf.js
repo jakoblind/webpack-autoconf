@@ -12,7 +12,7 @@ import { features, createWebpackConfig, createBabelConfig, getNpmDependencies, g
 import { readmeFile } from "./src/templates";
 import { reactIndexJs, reactHotIndexJs, reactIndexHtml } from "./static/react/index";
 import { emptyIndexJs } from "./static/empty/index";
-import { tsconfig, tsconfigReact } from "./static/ts";
+import {indexTypescriptHTML, tsconfig, tsconfigReact} from "./static/ts";
 import {vueHelloWorld, vueIndexHtml, vueIndexTs, vueShimType} from "./static/vue";
 
 function exec(command) {
@@ -111,6 +111,8 @@ function generateProject(requestedFeatures, { basePath, name }) {
             writeFile(`${fullPath}tsconfig.json`, tsconfigReact);
         }
     } else if (isTypescript) {
+        mkDir(fullPath + "dist");
+        writeFile(fullPath + "dist/index.html", indexTypescriptHTML);
         writeFile(`${fullPath}src/index.${indexSuffix}`, emptyIndexJs);
         writeFile(`${fullPath}tsconfig.json`, tsconfig);
     } else {

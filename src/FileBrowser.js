@@ -14,7 +14,7 @@ import {
 
 import { emptyIndexJs } from "./../static/empty/index";
 import { readmeFile } from "./templates";
-import {tsconfig, tsconfigReact} from "../static/ts";
+import {indexTypescript, indexTypescriptHTML, tsconfig, tsconfigReact} from "../static/ts";
 import {vueIndexHtml, vueIndexTs} from "../static/vue";
 
 const FileList = ({ files, selectedFile, onSelectFile }) => {
@@ -145,23 +145,31 @@ class FileBrowserContainer extends React.Component {
             reactFileNames);
 
         let indexJsFile = emptyIndexJs;
+        let indexHTML = '';
 
-        if (isReact){
+        if(isTypescript) {
+            indexJsFile = indexTypescript;
+            indexHTML = indexTypescriptHTML;
+        }
+
+        if (isReact) {
             if (isHotReact) {
                 indexJsFile = reactHotIndexJs;
             } else {
                 indexJsFile = reactIndexJs;
             }
+            indexHTML = reactIndexHtml;
         }
 
-        if (isVue){
+        if (isVue) {
             indexJsFile = vueIndexTs;
+            indexHTML = vueIndexHtml;
         }
 
         const completeFileContentMap = {
             "webpack.config.js": newWebpackConfig,
             "package.json": JSON.stringify(this.state.packageJson, null, 2),
-            "dist/index.html": isVue ? vueIndexHtml : reactIndexHtml,
+            "dist/index.html": indexHTML,
             [`src/index.${isTypescript ? 'ts' : 'js'}`]: indexJsFile,
             "tsconfig.json": isReact ? tsconfigReact : tsconfig,
             ".babelrc": newBabelConfig,

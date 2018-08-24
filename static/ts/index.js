@@ -32,3 +32,26 @@ export const tsconfigReact = `{
         "./src/**/*"
     ]
 }`;
+
+export const indexTypescript = `
+async function helloWorld() {
+  return 'hello world!';
+}
+
+helloWorld()
+  .then((msg) => console.log(msg))
+  .catch((e) => console.error(e));
+`;
+
+export const indexTypescriptHTML = `
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Typescirpt starter app</title>
+    </head>
+    <body>
+        <h1>Typescript Project</h1>
+        <script src="bundle.js"></script>
+    </body>
+</html>
+`;
