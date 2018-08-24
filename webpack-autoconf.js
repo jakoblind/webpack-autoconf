@@ -67,6 +67,10 @@ function generateProject(requestedFeatures, { basePath, name }) {
     const isHotReact = _.includes(requestedFeatures, "React hot loader");
     const indexSuffix = isTypescript ? 'ts' : 'js';
 
+    if (isVue) {
+        requestedFeatures.push('CSS');
+    }
+
     if (isHotReact && !isReact) {
         console.log("Cannot configure React hot loading without configuring React");
         return;
