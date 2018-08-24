@@ -37,7 +37,6 @@ function addModuleRule(webpackConfig, ruleOrRules) {
 
     const newWebpackConfig = _.cloneDeep(webpackConfig);
     newWebpackConfig.module.rules = _.union(newWebpackConfig.module.rules, rules);
-
     return newWebpackConfig;
 }
 
@@ -73,25 +72,23 @@ export const features = (() => {
             }),
             dependencies: (configItems) => ["react", "react-dom"],
             devDependencies: (configItems) => ["babel-loader", "babel-preset-react", "babel-core", "babel-preset-env"],
-            webpack: (webpackConfig) =>
-                Object.assign({}, webpackConfig, addModuleRule(webpackConfig, {
-                    test: /\.(js|jsx)$/,
-                    exclude: /node_modules/,
-                    use: 'babel-loader'
-                }), addResolverExtensions(webpackConfig, [ '.jsx', '.js' ]))
+            webpack: (webpackConfig) => assignModuleRuleAndResolver(webpackConfig, [{
+                test: /\.(js|jsx)$/,
+                exclude: /node_modules/,
+                use: 'babel-loader'
+            }],  [ '.jsx', '.js'])
         },
         "Vue": {
             group: "Main library",
             webpackImports: ["const VueLoaderPlugin = require('vue-loader/lib/plugin');"],
             webpack: (webpackConfig) => {
-                const webpackConfigWithRule = Object.assign({}, addModuleRule(webpackConfig,  [{
+                const webpackConfigWithRule = assignModuleRuleAndResolver(webpackConfig, [{
                     test: /\.vue$/,
                     loader: 'vue-loader'
                 }, {
                     test: /\.js$/,
                     loader: 'babel-loader'
-                }]), addResolverExtensions(webpackConfig, [ '.js', '.vue' ]));
-
+                }],  [ '.js', '.vue' ]);
                 return addPlugin(webpackConfigWithRule, "CODE:new VueLoaderPlugin()");
             },
             babel: (babelConfig) => Object.assign({}, babelConfig, {
