@@ -188,8 +188,8 @@ export const features = (() => {
             group: "Utilities",
             devDependencies: (configItems) => ["typescript", "ts-loader"],
             webpack: (webpackConfig) => assignModuleRuleAndResolver(webpackConfig, {
-                test: /\.tsx?$/,
-                use: 'ts-loader',
+                test: /\.ts?$/,
+                loader: 'ts-loader',
                 exclude: /node_modules/,
                 options: {
                     appendTsSuffixTo: [/\.vue$/],

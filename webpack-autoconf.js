@@ -13,6 +13,7 @@ import { readmeFile } from "./src/templates";
 import { reactIndexJs, reactHotIndexJs, reactIndexHtml } from "./static/react/index";
 import { emptyIndexJs } from "./static/empty/index";
 import { tsconfig, tsconfigReact } from "./static/ts";
+import {vueHelloWorld, vueIndexHtml, vueIndexTs, vueShimType} from "./static/vue";
 
 function exec(command) {
     return new Promise(function(resolve, reject) {
@@ -61,6 +62,7 @@ function mkDir(path) {
 
 function generateProject(requestedFeatures, { basePath, name }) {
     const isReact = _.includes(requestedFeatures, "React");
+    const isVue = _.includes(requestedFeatures, "Vue");
     const isTypescript = _.includes(requestedFeatures, "Typescript");
     const isHotReact = _.includes(requestedFeatures, "React hot loader");
     const indexSuffix = isTypescript ? 'ts' : 'js';
@@ -85,19 +87,26 @@ function generateProject(requestedFeatures, { basePath, name }) {
     writeFile(fullPath + "webpack.config.js", newWebpackConfig);
     writeFile(fullPath + "README.md", readmeFile(projectName, isReact, isHotReact));
 
-    if (newBabelConfig) {
+    if (newBabelConfig && isReact) {
         writeFile(fullPath + ".babelrc", newBabelConfig);
     }
 
-    let reactFilesPromise = Promise.resolve()
-
     mkDir(fullPath + "src");
 
-    if (isReact) {
-        mkDir(fullPath + "dist");
+    if (isVue){
+        writeFile(`${fullPath}/src/Hello.vue`, vueHelloWorld);
+    }
 
-        writeFile(`${fullPath}src/index.${indexSuffix}`, isHotReact ? reactHotIndexJs : reactIndexJs);
-        writeFile(fullPath + "dist/index.html", reactIndexHtml);
+    if(isVue && isTypescript){
+        writeFile(`${fullPath}vue-shim.d.ts`, vueShimType);
+    }
+
+    if (isReact || isVue) {
+        mkDir(fullPath + "dist");
+        const INDEX_REACT = isHotReact ? reactHotIndexJs : reactIndexJs;
+
+        writeFile(`${fullPath}src/index.${indexSuffix}`, isReact ? INDEX_REACT : vueIndexTs);
+        writeFile(fullPath + "dist/index.html", isVue ? vueIndexHtml : reactIndexHtml);
         if (isTypescript) {
             writeFile(`${fullPath}tsconfig.json`, tsconfigReact);
         }
@@ -108,8 +117,8 @@ function generateProject(requestedFeatures, { basePath, name }) {
         writeFile(`${fullPath}src/index.${indexSuffix}`, emptyIndexJs);
     }
 
-    return reactFilesPromise
-        .then(() => getPackageJson("empty-project-"+_.kebabCase(requestedFeatures), newNpmConfig.dependencies, newNpmConfig.devDependencies, getNodeVersionPromise, requestedFeatures)) .then((newPackageJson) => {
+    return getPackageJson("empty-project-"+_.kebabCase(requestedFeatures), newNpmConfig.dependencies, newNpmConfig.devDependencies, getNodeVersionPromise, requestedFeatures)
+        .then((newPackageJson) => {
             writeFile(fullPath + "package.json", JSON.stringify(newPackageJson, null, 2));
             console.log("Done generating " + projectName + "!");
             return projectName;

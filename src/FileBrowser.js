@@ -140,9 +140,9 @@ class FileBrowserContainer extends React.Component {
 
         const filesToShow = _.concat(
             ["webpack.config.js", "package.json", "README.md"],
-            newBabelConfig ? ".babelrc" : [],
+            (newBabelConfig && !isVue)  ? ".babelrc" : [],
             isTypescript ? ["tsconfig.json", "src/index.ts"] : ["src/index.js"],
-            isReact ? reactFileNames : []);
+            reactFileNames);
 
         let indexJsFile = emptyIndexJs;
 
