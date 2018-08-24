@@ -12,6 +12,7 @@ import { features, createWebpackConfig, createBabelConfig, getNpmDependencies, g
 import { readmeFile } from "./src/templates";
 import { reactIndexJs, reactHotIndexJs, reactIndexHtml } from "./static/react/index";
 import { emptyIndexJs } from "./static/empty/index";
+import { tsconfig, tsconfigReact } from "./static/ts";
 
 function exec(command) {
     return new Promise(function(resolve, reject) {
@@ -81,10 +82,6 @@ function generateProject(requestedFeatures, { basePath, name }) {
     mkDir(basePath);
     mkDir(fullPath);
 
-    if (isTypescript) {
-        newWebpackConfig.entry = './src/index.ts';
-    }
-
     writeFile(fullPath + "webpack.config.js", newWebpackConfig);
     writeFile(fullPath + "README.md", readmeFile(projectName, isReact, isHotReact));
 
@@ -101,6 +98,12 @@ function generateProject(requestedFeatures, { basePath, name }) {
 
         writeFile(`${fullPath}src/index.${indexSuffix}`, isHotReact ? reactHotIndexJs : reactIndexJs);
         writeFile(fullPath + "dist/index.html", reactIndexHtml);
+        if (isTypescript) {
+            writeFile(`${fullPath}tsconfig.json`, tsconfigReact);
+        }
+    } else if (isTypescript) {
+        writeFile(`${fullPath}src/index.${indexSuffix}`, emptyIndexJs);
+        writeFile(`${fullPath}tsconfig.json`, tsconfig);
     } else {
         writeFile(`${fullPath}src/index.${indexSuffix}`, emptyIndexJs);
     }
