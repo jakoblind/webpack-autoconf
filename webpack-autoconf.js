@@ -13,7 +13,7 @@ import { readmeFile } from "./src/templates";
 import { reactIndexJs, reactHotIndexJs, reactIndexHtml } from "./static/react/index";
 import { emptyIndexJs } from "./static/empty/index";
 import {indexTypescriptHTML, tsconfig, tsconfigReact} from "./static/ts";
-import {vueHelloWorld, vueIndexHtml, vueIndexTs, vueShimType} from "./static/vue";
+import {vueHelloWorldJs, vueHelloWorldTS, vueIndexAppVue, vueIndexHtml, vueIndexTs, vueShimType} from "./static/vue";
 
 function exec(command) {
     return new Promise(function(resolve, reject) {
@@ -94,7 +94,8 @@ function generateProject(requestedFeatures, { basePath, name }) {
     mkDir(fullPath + "src");
 
     if (isVue){
-        writeFile(`${fullPath}/src/Hello.vue`, vueHelloWorld);
+        writeFile(`${fullPath}/src/App.vue`, isTypescript ? vueHelloWorldTS: vueIndexAppVue);
+        writeFile(`${fullPath}/src/Hello.vue`, isTypescript ? vueHelloWorldTS: vueHelloWorldJs);
     }
 
     if(isVue && isTypescript){
