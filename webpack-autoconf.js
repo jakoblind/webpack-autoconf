@@ -1,8 +1,6 @@
 import _ from "lodash";
 
-import jsStringify from "javascript-stringify";
 import combinations from "combinations";
-import fetch from "node-fetch";
 import Promise from "bluebird";
 
 import fs from "fs";
@@ -98,7 +96,7 @@ function generateProject(requestedFeatures, { basePath, name }) {
     mkDir(fullPath + "src");
 
     if (isVue){
-        writeFile(`${fullPath}/src/App.vue`, isTypescript ? vueHelloWorldTS: vueIndexAppVue);
+        writeFile(`${fullPath}/src/App.vue`, vueIndexAppVue);
         writeFile(`${fullPath}/src/Hello.vue`, isTypescript ? vueHelloWorldTS: vueHelloWorldJs);
     }
 
