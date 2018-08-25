@@ -161,6 +161,7 @@ class Configurator extends React.Component {
         if (feature === "Vue" && setToSelected) {
             selected["React"] = !setToSelected;
             selected["React hot loader"] = false;
+            selected["CSS"] = true;
         } else if (feature === "React" && setToSelected) {
             selected["Vue"] = !setToSelected;
             // let's default react hot loader

@@ -14,8 +14,8 @@ import {
 
 import { emptyIndexJs } from "./../static/empty/index";
 import { readmeFile } from "./templates";
-import {tsconfig, tsconfigReact} from "../static/ts";
-import {vueIndexHtml, vueIndexTs} from "../static/vue";
+import {indexTypescript, indexTypescriptHTML, tsconfig, tsconfigReact} from "../static/ts";
+import {vueHelloWorldJs, vueHelloWorldTS, vueIndexAppVue, vueIndexHtml, vueIndexTs} from "../static/vue";
 
 const FileList = ({ files, selectedFile, onSelectFile }) => {
     const filesElements = _.map(files, (file) => <li className={file === selectedFile ? "selected" : "" } key={file} onClick={() => onSelectFile(file)}>{file}</li>)
@@ -138,33 +138,48 @@ class FileBrowserContainer extends React.Component {
             "src/index.js"
         ];
 
+        const VueFileNames = [
+            "src/App.vue",
+            "src/Hello.vue"
+        ];
+
         const filesToShow = _.concat(
             ["webpack.config.js", "package.json", "README.md"],
-            newBabelConfig ? ".babelrc" : [],
+            (newBabelConfig && !isVue)  ? ".babelrc" : [],
             isTypescript ? ["tsconfig.json", "src/index.ts"] : ["src/index.js"],
-            isReact ? reactFileNames : []);
+            isVue ? reactFileNames.concat(VueFileNames) : reactFileNames);
 
         let indexJsFile = emptyIndexJs;
+        let indexHTML = '';
 
-        if (isReact){
+        if(isTypescript) {
+            indexJsFile = indexTypescript;
+            indexHTML = indexTypescriptHTML;
+        }
+
+        if (isReact) {
             if (isHotReact) {
                 indexJsFile = reactHotIndexJs;
             } else {
                 indexJsFile = reactIndexJs;
             }
+            indexHTML = reactIndexHtml;
         }
 
-        if (isVue){
+        if (isVue) {
             indexJsFile = vueIndexTs;
+            indexHTML = vueIndexHtml;
         }
 
         const completeFileContentMap = {
             "webpack.config.js": newWebpackConfig,
             "package.json": JSON.stringify(this.state.packageJson, null, 2),
-            "dist/index.html": isVue ? vueIndexHtml : reactIndexHtml,
+            "dist/index.html": indexHTML,
             [`src/index.${isTypescript ? 'ts' : 'js'}`]: indexJsFile,
             "tsconfig.json": isReact ? tsconfigReact : tsconfig,
             ".babelrc": newBabelConfig,
+            "src/App.vue": vueIndexAppVue,
+            "src/Hello.vue": isTypescript ? vueHelloWorldTS : vueHelloWorldJs,
             "README.md": readmeFile("empty-project", isReact, isHotReact)
         };
 
