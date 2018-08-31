@@ -76,7 +76,7 @@ export const features = (() => {
                 test: /\.(js|jsx)$/,
                 exclude: /node_modules/,
                 use: 'babel-loader'
-            }],  [ '.jsx', '.js'])
+            }],  ['.js', '.jsx'])
         },
         "Vue": {
             group: "Main library",
