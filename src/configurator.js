@@ -71,7 +71,13 @@ export const features = (() => {
                 "presets": [['env', { modules: false }], "react"]
             }),
             dependencies: (configItems) => ["react", "react-dom"],
-            devDependencies: (configItems) => ["babel-loader", "babel-preset-react", "babel-core", "babel-preset-env"],
+            devDependencies: (configItems) => {
+                const isTypescript = _.includes(configItems, "Typescript");
+                return _.concat(
+                    ["babel-loader", "babel-preset-react", "babel-core", "babel-preset-env"],
+                    isTypescript ? ["@types/react", "@types/react-dom"] : []
+                );
+            },
             webpack: (webpackConfig) => assignModuleRuleAndResolver(webpackConfig, [{
                 test: /\.(js|jsx)$/,
                 exclude: /node_modules/,
@@ -185,7 +191,7 @@ export const features = (() => {
             group: "Utilities",
             devDependencies: (configItems) => ["typescript", "ts-loader"],
             webpack: (webpackConfig) => assignModuleRuleAndResolver(webpackConfig, {
-                test: /\.ts?$/,
+                test: /\.(ts|tsx)?$/,
                 loader: 'ts-loader',
                 exclude: /node_modules/,
                 options: {
@@ -238,8 +244,19 @@ function stringifyReplacer (value, indent, stringify) {
 }
 
 function createConfig(configItems, configType) {
-    const isTypescript = configItems.includes('Typescript');
-    const entry = `./src/index.${isTypescript ? 'ts' : 'js'}`;
+    const isReact = _.includes(configItems, "React");
+    const isTypescript = _.includes(configItems, "Typescript");
+
+    let entryExtension = "js";
+    if (isTypescript) {
+        if (isReact) {
+            entryExtension = "tsx"
+        } else {
+            entryExtension = "ts"
+        }
+    }
+
+    const entry = `./src/index.${entryExtension}`;
     const baseWebpackTsSupport =  _.assignIn(baseWebpack, {entry});
     const base = configType === "webpack" ? baseWebpackTsSupport : {};
     return jsStringify(_.reduce(configItems, (acc, currentValue) => (features[currentValue][configType](acc, configItems)), base), stringifyReplacer, 2)

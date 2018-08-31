@@ -8,6 +8,7 @@ import {
 
 import {
     reactIndexJs,
+    reactIndexTsx,
     reactHotIndexJs,
     reactIndexHtml
 } from "./../static/react/index";
@@ -133,7 +134,7 @@ class FileBrowserContainer extends React.Component {
         const isTypescript = _.includes(features, "Typescript");
         const isHotReact = _.includes(this.props.features, "React hot loader");
 
-        const indexJsFileName = isTypescript ? "src/index.ts" : "src/index.js"
+        const indexJsFileName = isTypescript ? (isReact ? "src/index.tsx" : "src/index.ts") : "src/index.js"
 
         const reactFileNames = [
             "dist/index.html",
@@ -187,6 +188,7 @@ class FileBrowserContainer extends React.Component {
             "dist/index.html": indexHTML,
             [`src/index.${isTypescript ? 'ts' : 'js'}`]: indexJsFile,
             "tsconfig.json": isReact ? tsconfigReact : tsconfig,
+            "src/index.tsx": reactIndexTsx,
             ".babelrc": newBabelConfig,
             "src/App.vue": vueIndexAppVue,
             "src/Hello.vue": isTypescript ? vueHelloWorldTS : vueHelloWorldJs,

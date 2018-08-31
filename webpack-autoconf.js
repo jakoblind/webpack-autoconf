@@ -8,7 +8,12 @@ import childProcess from "child_process";
 
 import { features, createWebpackConfig, createBabelConfig, getNpmDependencies, getDefaultProjectName, getPackageJson } from "./src/configurator";
 import { readmeFile } from "./src/templates";
-import { reactIndexJs, reactHotIndexJs, reactIndexHtml } from "./static/react/index";
+import {
+    reactIndexJs,
+    reactIndexTsx,
+    reactHotIndexJs,
+    reactIndexHtml
+} from "./static/react/index";
 import { emptyIndexJs } from "./static/empty/index";
 import {indexTypescriptHTML, tsconfig, tsconfigReact} from "./static/ts";
 import {vueHelloWorldJs, vueHelloWorldTS, vueIndexAppVue, vueIndexHtml, vueIndexTs, vueShimType} from "./static/vue";
@@ -108,7 +113,12 @@ function generateProject(requestedFeatures, { basePath, name }) {
         mkDir(fullPath + "dist");
         const INDEX_REACT = isHotReact ? reactHotIndexJs : reactIndexJs;
 
-        writeFile(`${fullPath}src/index.${indexSuffix}`, isReact ? INDEX_REACT : vueIndexTs);
+        if (isTypescript && isReact) {
+            writeFile(`${fullPath}src/index.tsx`, reactIndexTsx);
+        } else {
+            writeFile(`${fullPath}src/index.${indexSuffix}`, isReact ? INDEX_REACT : vueIndexTs);
+        }
+
         writeFile(fullPath + "dist/index.html", isVue ? vueIndexHtml : reactIndexHtml);
         if (isTypescript) {
             writeFile(`${fullPath}tsconfig.json`, tsconfigReact);
