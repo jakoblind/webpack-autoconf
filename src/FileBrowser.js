@@ -133,21 +133,31 @@ class FileBrowserContainer extends React.Component {
         const isTypescript = _.includes(features, "Typescript");
         const isHotReact = _.includes(this.props.features, "React hot loader");
 
+        const indexJsFileName = isTypescript ? "src/index.ts" : "src/index.js"
+
         const reactFileNames = [
             "dist/index.html",
-            "src/index.js"
+            indexJsFileName
         ];
 
         const VueFileNames = [
             "src/App.vue",
             "src/Hello.vue"
         ];
+        let sourceCodeFiles = indexJsFileName;
+
+        if (isVue) {
+            sourceCodeFiles = VueFileNames;
+        } else if (isReact) {
+            sourceCodeFiles = reactFileNames;
+        }
 
         const filesToShow = _.concat(
             ["webpack.config.js", "package.json", "README.md"],
+            sourceCodeFiles,
             (newBabelConfig && !isVue)  ? ".babelrc" : [],
-            isTypescript ? ["tsconfig.json", "src/index.ts"] : ["src/index.js"],
-            isVue ? reactFileNames.concat(VueFileNames) : reactFileNames);
+            isTypescript ? ["tsconfig.json"] : []
+        );
 
         let indexJsFile = emptyIndexJs;
         let indexHTML = '';
@@ -186,10 +196,10 @@ class FileBrowserContainer extends React.Component {
         const fileContentMap = _.pickBy(completeFileContentMap, (value, fileName) => _.includes(filesToShow, fileName));
 
         return (
-            <FileBrowser
+                <FileBrowser
                 defaultSelection={"webpack.config.js"}
                 fileContentMap={fileContentMap} />
-        );
+                );
     }
 }
 
