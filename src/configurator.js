@@ -103,6 +103,18 @@ export const features = (() => {
             devDependencies: (configItems) => ["vue-loader", "vue-template-compiler", "babel-loader", "babel-core", "babel-preset-env"],
             dependencies: (configItems) => ["vue"]
         },
+        "Typescript": {
+            group: "Transpiler",
+            devDependencies: (configItems) => ["typescript", "ts-loader"],
+            webpack: (webpackConfig) => assignModuleRuleAndResolver(webpackConfig, {
+                test: /\.(ts|tsx)?$/,
+                loader: 'ts-loader',
+                exclude: /node_modules/,
+                options: {
+                    appendTsSuffixTo: [/\.vue$/],
+                }
+            }, [ '.tsx', '.ts', '.js' ])
+        },
         "CSS": {
             group: "Styling",
             devDependencies: (configItems) => _.concat(["css-loader"], getStyleLoaderDependencyIfNeeded(configItems)),
@@ -186,18 +198,6 @@ export const features = (() => {
             webpackImports: ["const LodashModuleReplacementPlugin = require('lodash-webpack-plugin');"],
             webpack:
             (webpackConfig) => addPlugin(webpackConfig, "CODE:new LodashModuleReplacementPlugin")
-        },
-        "Typescript": {
-            group: "Utilities",
-            devDependencies: (configItems) => ["typescript", "ts-loader"],
-            webpack: (webpackConfig) => assignModuleRuleAndResolver(webpackConfig, {
-                test: /\.(ts|tsx)?$/,
-                loader: 'ts-loader',
-                exclude: /node_modules/,
-                options: {
-                    appendTsSuffixTo: [/\.vue$/],
-                }
-            }, [ '.tsx', '.ts', '.js' ])
         },
         "React hot loader": {
             group: "",
