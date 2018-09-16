@@ -113,16 +113,18 @@ const Footer = () => (
 const StepByStepArea = ({features, newNpmConfig, newBabelConfig, isReact}) => {
     const npmInstallCommand = _.isEmpty(newNpmConfig.dependencies) ? "" : "\nnpm install " + newNpmConfig.dependencies.join(" ")
     const npmCommand = "mkdir myapp\ncd myapp\nnpm init -y\nnpm install --save-dev " + newNpmConfig.devDependencies.join(" ") + npmInstallCommand
+    const isTypescript = _.includes(features, "Typescript");
 
     let babelStep = null;
     if (newBabelConfig) {
         babelStep = <div><li>Create <i>.babelrc</i> in the root and copy the contents of the generated file</li></div>;
+    } else if (isTypescript) {
+        //currently, you cannt use both typescript and babel.
+        // if typescript is selected you must have a tsconf
+        babelStep = <div><li>Create <i>tsconfig.json</i> in the root and copy the contents of the generated file</li></div>;
     }
 
-    let srcFoldersStep = <li>Create folders src and dist and create your index.js file in src folder</li>;
-    if (isReact) {
-        srcFoldersStep = <li>Create folders src and dist and create your <a href="https://s3-eu-west-1.amazonaws.com/jakoblind/react/index.js">index.js</a> file in src folder and <a href="https://s3-eu-west-1.amazonaws.com/jakoblind/react/index.html">index.html</a> in the dist folder</li>;
-    }
+    let srcFoldersStep = <li>Create folders src and dist and create source code files</li>;
 
     return (
         <div className="right-section">
