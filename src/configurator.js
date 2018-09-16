@@ -68,13 +68,13 @@ export const features = (() => {
         "React": {
             group: "Main library",
             babel: (babelConfig) => Object.assign({}, babelConfig, {
-                "presets": [['env', { modules: false }], "react"]
+                "presets": [['@babel/preset-env', { modules: false }], "@babel/preset-react"]
             }),
             dependencies: (configItems) => ["react", "react-dom"],
             devDependencies: (configItems) => {
                 const isTypescript = _.includes(configItems, "Typescript");
                 return _.concat(
-                    ["babel-loader", "babel-preset-react", "babel-core", "babel-preset-env"],
+                    ["babel-loader", "@babel/preset-react", "@babel/core", "@babel/preset-env"],
                     isTypescript ? ["@types/react", "@types/react-dom"] : []
                 );
             },
@@ -98,9 +98,9 @@ export const features = (() => {
                 return addPlugin(webpackConfigWithRule, "CODE:new VueLoaderPlugin()");
             },
             babel: (babelConfig) => Object.assign({}, babelConfig, {
-                "presets": [['env', { modules: false }]]
+                "presets": [['@babel/preset-env', { modules: false }]]
             }),
-            devDependencies: (configItems) => ["vue-loader", "vue-template-compiler", "babel-loader", "babel-core", "babel-preset-env"],
+            devDependencies: (configItems) => ["vue-loader", "vue-template-compiler", "babel-loader", "@babel/core", "@babel/preset-env"],
             dependencies: (configItems) => ["vue"]
         },
         "Typescript": {
