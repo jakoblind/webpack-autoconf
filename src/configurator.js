@@ -106,14 +106,20 @@ export const features = (() => {
         "Typescript": {
             group: "Transpiler",
             devDependencies: (configItems) => ["typescript", "ts-loader"],
-            webpack: (webpackConfig) => assignModuleRuleAndResolver(webpackConfig, {
-                test: /\.(ts|tsx)?$/,
-                loader: 'ts-loader',
-                exclude: /node_modules/,
-                options: {
-                    appendTsSuffixTo: [/\.vue$/],
+            webpack: (webpackConfig, configItems) => {
+                const isVue = _.includes(configItems, "Vue");
+                const typescriptModule = {
+                    test: /\.(ts|tsx)?$/,
+                    loader: 'ts-loader',
+                    exclude: /node_modules/
+                };
+                if (isVue) {
+                    typescriptModule.options = {
+                        appendTsSuffixTo: [/\.vue$/],
+                    }
                 }
-            }, [ '.tsx', '.ts', '.js' ])
+                return assignModuleRuleAndResolver(webpackConfig, typescriptModule, [ '.tsx', '.ts', '.js' ])
+            }
         },
         "CSS": {
             group: "Styling",
