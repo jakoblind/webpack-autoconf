@@ -162,12 +162,19 @@ class Configurator extends React.Component {
             selected["React"] = !setToSelected;
             selected["React hot loader"] = false;
             selected["CSS"] = true;
-        } else if (feature === "React" && setToSelected) {
-            selected["Vue"] = !setToSelected;
-            // let's default react hot loader
-            selected["React hot loader"] = true;
-        } else if (feature === "React" && !setToSelected) {
-            // cant have React hot loader without React
+        }
+        //
+        if (feature === "React") {
+            if (setToSelected) {
+                selected["Vue"] = !setToSelected;
+                // let's default react hot loader
+                selected["React hot loader"] = true;
+            } else {
+                // cant have React hot loader without React
+                selected["React hot loader"] = false;
+            }
+        }
+        if (selected["Typescript"] && selected["React"]) {
             selected["React hot loader"] = false;
         }
 
@@ -183,12 +190,16 @@ class Configurator extends React.Component {
 
         const isReact = _.includes(this.selectedArray(), "React");
         const isVue = _.includes(this.selectedArray(), "Vue");
+        const isTypescript = _.includes(this.selectedArray(), "Typescript");
 
         const projectname = getDefaultProjectName("empty-project", this.selectedArray());
 
         const showFeatures = _.clone(features);
 
         if (!isReact) {
+            delete showFeatures["React hot loader"];
+        }
+        if (isReact && isTypescript) {
             delete showFeatures["React hot loader"];
         }
         return (

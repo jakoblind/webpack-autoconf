@@ -71,11 +71,17 @@ function generateProject(requestedFeatures, { basePath, name }) {
     const indexSuffix = isTypescript ? 'ts' : 'js';
 
     if (isVue) {
-        requestedFeatures.push('CSS');
+        console.log("You must use CSS if using Vue");
+        return;
     }
 
     if (isHotReact && !isReact) {
         console.log("Cannot configure React hot loading without configuring React");
+        return;
+    }
+
+    if (isHotReact && isTypescript) {
+        console.log("Typescript with React hot loading currently not supported");
         return;
     }
 
