@@ -77,8 +77,8 @@ const logDownloadToGa = (filename) => {
 const Header = ({ selected, setSelected, showFeatures }) => {
     return (
         <div className="header">
-            <h1>webpack 4 configurator</h1>
-            <h2>Create a <i>personalized</i> and <i>optimized</i> webpack.config.js!</h2>
+            <h1>webpack config tool</h1>
+            <h2>Create a <i>personalized</i> and <i>optimized</i> webpack config!</h2>
 
             <div >
                 <div className="start-here">Start here! What features do you need?</div>
