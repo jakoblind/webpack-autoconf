@@ -13,20 +13,23 @@ body {
     filter: invert(100%);
 }
 .start-here {
-    width: 400px;
+    width: 327px;
     display: block;
     margin: 0 auto;
-    background: url('./images/arrowdown2.png');
+    background: url('../images/arrowdown2.png');
     background-repeat: no-repeat;
     background-size: 50px 50px;
-    height: 70px;
+    height: 50px;
+    padding-left: 19px;
 }
 
-#code-box {
+.code-box {
+    font-size: 15px;
     max-height: 800px;
     width: 80%;
     overflow:scroll;
     background-color: #242424;
+    padding: 10px;
 }
 
 .file-browser {
@@ -66,7 +69,7 @@ body {
     padding: 0 50px;
     box-sizing: border-box;
   }
-  #code-box {
+  .code-box {
     margin-left: 0px;
     margin-right: 0px;
 
@@ -168,7 +171,7 @@ textarea {
 .feature-container {
     display: block;
     text-align: left;
-    width: 80px;
+    width: 100px;
     float: left;
     position: relative;
     margin-bottom: 12px;
@@ -222,8 +225,8 @@ textarea {
 .feature-container .checkmark:after {
     left: 4px;
     top: 1px;
-    width: 3.5px;
-    height: 7px;
+    width: 6px;
+    height: 10px;
     border: solid white;
     border-width: 0 3px 3px 0;
     -webkit-transform: rotate(45deg);

@@ -44,10 +44,10 @@ Make sure you use NPM 8 or later
 
 ```sh
 npm install
-npm run start
+gatsby develop
 ```
 
-Point your browser to http://localhost:1234
+Point your browser to http://localhost:8000
 
 ## Contributing
 

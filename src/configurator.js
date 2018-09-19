@@ -194,7 +194,7 @@ export const features = (() => {
         "moment": {
             group: "Utilities",
             "dependencies": (configItems) => ["moment"],
-            webpack: (webpackConfig) => addPlugin(webpackConfig, "CODE:new webpack.ContextReplacementPlugin(/moment[\\\/\\\\]locale$/, /en/)")
+            webpack: (webpackConfig) => addPlugin(webpackConfig, "CODE:new webpack.ContextReplacementPlugin(/moment[\\\/\\\\]locale$/, /en/)") // eslint-disable-line
         },
         "lodash": {
             group: "Utilities",
