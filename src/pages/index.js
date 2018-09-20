@@ -186,9 +186,7 @@ const StepByStepArea = ({
         {babelStep}
         {srcFoldersStep}
       </ol>
-      <a href="http://blog.jakoblind.no/react-with-webpack-babel-npm/">
-        Need more detailed instructions?
-      </a>
+      <GetZip linkText="Need more detailed instructions?" />
     </div>
   )
 }
@@ -266,12 +264,10 @@ class Configurator extends React.Component {
         />
         <div className={styles.container}>
           <div className={styles.downloadZip}>
-            {!isVue ? (
-              <GetZip
-                onClickDownloadZip={this.onClickDownloadZip}
-                projectname={projectname}
-              />
-            ) : null}
+            <GetZip
+              linkText="Free webpack course: Learn webpack properly"
+              projectname={projectname}
+            />
           </div>
           <FileBrowser
             newBabelConfig={newBabelConfig}
@@ -279,6 +275,19 @@ class Configurator extends React.Component {
             features={this.selectedArray()}
             newNpmConfig={newNpmConfig}
           />
+          <br />
+          <div className={styles.container}>
+            <a
+              href={`https://s3-eu-west-1.amazonaws.com/jakoblind/zips/${projectname}.zip`}
+            >
+              <img
+                alt="zip-file"
+                className={styles.icon}
+                src={require('../../images/zip.svg')}
+              />
+              Get your project as a zip!
+            </a>
+          </div>
           <StepByStepArea
             features={this.selectedArray()}
             newNpmConfig={newNpmConfig}

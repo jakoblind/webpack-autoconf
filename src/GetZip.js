@@ -35,21 +35,44 @@ class GetZip extends React.Component {
         this.setState({isOpen: false});
     }
     render() {
-        const { projectname } = this.props;
-
         return (
             <div>
-                <a className={styles.myButton} href="#" onClick={this.open}><img alt="zip-file" className={styles.icon} src={require("../images/zip.svg")}/>Get your project as a zip!</a>
+                <a className={this.props.linkStyles} href="#" onClick={this.open}>{this.props.linkText}</a>
 
                 <Modal
                     isOpen={this.state.isOpen}
                     onRequestClose={this.close}
                     style={customStyles}
                     contentLabel="Example Modal" >
-                    <h2 ref={subtitle => this.subtitle = subtitle}>Get the code straight to your inbox!</h2>
-                    <p>You'll also get fresh articles about Redux/React a few times per month.</p>
+                    <div className={styles.modalContainer}>
+                    <h2 ref={subtitle => this.subtitle = subtitle}>Time to learn webpack properly</h2>
+                    <p>You have clicked around in this tool for a while. But you still can't wrap your head around how webpack works.</p>
+<ul>
+<li>"What is the .babelrc file?"</li>
+<li>"What is a loader and what is a plugin? what's the difference?"</li>
+<li>"They want me to put CSS and images in the bundle?!"</li>
+</ul>
+
+<p>To learn webpack properly you must get your hands dirty and do the work. It's not enough to glance over some generated webpack configs.</p>
+
+<h3>Free webpack email course</h3>
+<p>Yes, it's a build tool. Yes, you need a course to learn it.</p>
+
+<p>With this email course you will learn webpack from the ground up. Using industry best practices. <i>And it's free!</i></p>
+
+<p>You get 5 emails in 5 days.</p>
+<ul>
+<li>Lesson 1: What does webpack do? (an overview)</li>
+<li>Lesson 2: Create your first webpack project</li>
+<li>Lesson 3: The webpack.config.js and Babel</li>
+<li>Lesson 4: Create a React app with webpack</li>
+<li>Lesson 5: Styling with webpack</li>
+</ul>
+
+<p>Level up your frontend skills and become a more solid, all-round frontend dev. Sign up now!</p>
+</div>
                      <div className={styles.signupFormArea}>
-                      <form action="https://www.getdrip.com/forms/746048472/submissions" method="post" data-drip-embedded-form="746048472">
+                      <form action="https://www.getdrip.com/forms/138671466/submissions" method="post" data-drip-embedded-form="138671466">
                         <div>
                             <input
                                 autoFocus="true"
@@ -67,24 +90,17 @@ class GetZip extends React.Component {
                                 id="drip-first-name"
                                 name="fields[first_name]" />
                         </div>
-                        <input type="hidden" name="fields[webpack_features]" value={projectname}/>
                         <div className={styles.signupButtonArea}>
                             <input
                                  className={styles.myButton}
                                  type="submit"
-                                 value="Send me the project!"
+                                 value="Enroll in the webpack course!"
                                 data-drip-attribute="sign-up-button" />
                         </div>
-                        <a href="#" onClick={this.close}>No thanks, I rather copy/paste it</a>
+                        <a href="#" onClick={this.close}>No thanks, I don't want to learn webpack</a>
                       </form>
                     </div>
-                    <div className={styles.zipIconArea}>
-                        <div className={styles.zipIcon}>
-                             <img alt="zip icon" src={require("../images/zip-icon.png")}/>
-                             <div>{projectname}.zip</div>
-                              </div>
 
-            </div>
                     </Modal>
             </div>
         );
