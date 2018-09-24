@@ -44,7 +44,7 @@ export default () => {
       </p>
       <div className={styles.signupFormArea}>
         <form
-          action="https: //www.getdrip.com/forms/138671466/submissions"
+          action="https://www.getdrip.com/forms/138671466/submissions"
           method="post"
           data-drip-embedded-form="138671466"
         >
