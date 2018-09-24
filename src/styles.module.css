@@ -96,8 +96,14 @@ body {
     padding-bottom: 10px;
 
 }
-.modal-container {
-    width: 600px;
+.webpack-config-container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 30px 20px;
+}
+
+.backLink {
+    padding-bottom: 60px;
 }
 
 .signup-button-area {

@@ -1,7 +1,7 @@
 import React from 'react'
 import _ from 'lodash'
-import GetZip from '../GetZip'
 import styles from '../styles.module.css'
+import { Link } from 'gatsby'
 
 import {
   features,
@@ -186,7 +186,7 @@ const StepByStepArea = ({
         {babelStep}
         {srcFoldersStep}
       </ol>
-      <GetZip linkText="Need more detailed instructions?" />
+      <Link to="/course">Need more detailed instructions?</Link>
     </div>
   )
 }
@@ -264,10 +264,9 @@ class Configurator extends React.Component {
         />
         <div className={styles.container}>
           <div className={styles.downloadZip}>
-            <GetZip
-              linkText="Free webpack course: Learn webpack properly"
-              projectname={projectname}
-            />
+            <Link to="/course">
+              Free webpack course: Learn webpack properly
+            </Link>
           </div>
           <FileBrowser
             newBabelConfig={newBabelConfig}
