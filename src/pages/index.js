@@ -71,9 +71,6 @@ const Header = ({ selected, setSelected, showFeatures }) => {
   return (
     <div className={styles.header}>
       <h1>webpack config tool</h1>
-      <h2>
-        Create a <i>personalized</i> and <i>optimized</i> webpack config!
-      </h2>
       <div>
         <div className={styles.startHere}>Start here! Select some features</div>
       </div>
