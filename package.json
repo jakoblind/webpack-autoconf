@@ -6,7 +6,7 @@
   "scripts": {
     "clean": "rm -rf bin dist",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "parcel index.html",
+    "start": "gatsby develop",
     "cli-build": "parcel build --target=node --out-dir bin webpack-autoconf.js",
     "cli-append-shebang": "echo '#! /usr/bin/env node'  | cat - bin/webpack-autoconf.js > /tmp/out && mv /tmp/out bin/webpack-autoconf.js",
     "cli-link": "chmod +x bin/webpack-autoconf.js && npm link",
