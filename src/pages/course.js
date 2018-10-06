@@ -40,7 +40,7 @@ export default () => {
 
       <p>
         Level up your frontend skills and become a more solid, all-round
-        frontend dev. Sign up now!
+        frontend dev. Sign up to get lesson 1 right now!
       </p>
       <div className={styles.signupFormArea}>
         <form
@@ -71,7 +71,7 @@ export default () => {
             <input
               className={styles.myButton}
               type="submit"
-              value="Enroll in the webpack course!"
+              value="Send Me Lesson 1"
               data-drip-attribute="sign-up-button"
             />
           </div>
