@@ -71,14 +71,6 @@ const Header = ({ selected, setSelected, showFeatures }) => {
   return (
     <div className={styles.header}>
       <h1>webpack config tool</h1>
-      <div>
-        <div className={styles.startHere}>Start here! Select some features</div>
-      </div>
-      <Features
-        features={showFeatures}
-        selected={selected}
-        setSelected={setSelected}
-      />
     </div>
   )
 }
@@ -258,31 +250,43 @@ class Configurator extends React.Component {
           selected={this.state.selected}
           setSelected={this.setSelected}
           showFeatures={showFeatures}
-        />
+            />
+        <div className={styles.topContainer}>
+            <div className={styles.featuresContainer}>
+                <h3>Select your features</h3>
+                <Features
+                    features={showFeatures}
+                    selected={this.state.selected}
+                    setSelected={this.setSelected}
+                    />
+                <a
+                    href={`https://s3-eu-west-1.amazonaws.com/jakoblind/zips/${projectname}.zip`}
+                    >
+                    <img
+                        alt="zip-file"
+                        className={styles.icon}
+                        src={require('../../images/zip.svg')}
+                        />
+                    Get your project as a zip!
+                </a>
+                <div className={styles.courseLinkContainer}>
+                    <Link className={styles.myButton} to="/course">
+                        Free webpack course
+                    </Link><br/><br/>
+                </div>
+            </div>
+            <div className={styles.codeContainer}>
+                <FileBrowser
+                    newBabelConfig={newBabelConfig}
+                    newWebpackConfig={newWebpackConfig}
+                    features={this.selectedArray()}
+                    newNpmConfig={newNpmConfig}
+                    />
+                <br />
+            </div>
+        </div>
         <div className={styles.container}>
-          <div className={styles.downloadZip}>
-            <Link to="/course">
-              Free webpack course: Learn webpack properly
-            </Link>
-          </div>
-          <FileBrowser
-            newBabelConfig={newBabelConfig}
-            newWebpackConfig={newWebpackConfig}
-            features={this.selectedArray()}
-            newNpmConfig={newNpmConfig}
-          />
-          <br />
           <div className={styles.container}>
-            <a
-              href={`https://s3-eu-west-1.amazonaws.com/jakoblind/zips/${projectname}.zip`}
-            >
-              <img
-                alt="zip-file"
-                className={styles.icon}
-                src={require('../../images/zip.svg')}
-              />
-              Get your project as a zip!
-            </a>
           </div>
           <StepByStepArea
             features={this.selectedArray()}

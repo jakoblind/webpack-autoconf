@@ -11,7 +11,7 @@ body {
     width: 20px;
 }
 .start-here {
-    width: 327px;
+    width: 124px;
     display: block;
     margin: 0 auto;
     background: url('../images/arrowdown2.png');
@@ -23,7 +23,7 @@ body {
 
 .code-box {
     font-size: 15px;
-    max-height: 800px;
+    height: 600px;
     width: 80%;
     overflow:scroll;
     background-color: #242424;
@@ -80,7 +80,8 @@ body {
     text-align: center;
 }
 
-.download-zip {
+.courseLinkContainer {
+    margin: 20px 10px;
     text-align: center;
 }
 
@@ -136,8 +137,23 @@ h2 {
     margin-top: 0px;
 }
 
+.topContainer {
+    max-width: 1067px;
+    margin: 0 auto;
+}
+.featuresContainer {
+    max-width: 320px;
+    display: block;
+    float: left;
+    width: 30%;
+}
+.codeContainer {
+    display: block;
+    float: left;
+    width: 70%;
+    max-width: 800px;
+}
 .container {
-    clear:both;
     max-width: 800px;
     margin: 0 auto;
 }
@@ -164,7 +180,6 @@ textarea {
 }
 
 .features {
-    padding: 10px;
     max-width: 520px;
     margin: 0 auto;
 }
