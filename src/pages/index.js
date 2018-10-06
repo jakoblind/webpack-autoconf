@@ -259,20 +259,29 @@ class Configurator extends React.Component {
                     selected={this.state.selected}
                     setSelected={this.setSelected}
                     />
-                <a
-                    href={`https://s3-eu-west-1.amazonaws.com/jakoblind/zips/${projectname}.zip`}
-                    >
-                    <img
-                        alt="zip-file"
-                        className={styles.icon}
-                        src={require('../../images/zip.svg')}
-                        />
-                    Get your project as a zip!
-                </a>
-                <div className={styles.courseLinkContainer}>
-                    <Link className={styles.myButton} to="/course">
-                        Free webpack course
-                    </Link><br/><br/>
+                <div className={styles.desktopOnly}>
+                    <a
+                        href={`https://s3-eu-west-1.amazonaws.com/jakoblind/zips/${projectname}.zip`}
+                        >
+                        <img
+                            alt="zip-file"
+                            className={styles.icon}
+                            src={require('../../images/zip.svg')}
+                            />
+                        Get your project as a zip!
+                    </a>
+                    <div className={styles.courseLinkContainer}>
+                        <Link className={styles.myButton} to="/course">
+                            Free webpack course
+                        </Link>
+                    </div>
+                </div>
+                <div className={styles.smallScreensOnly}>
+                    <div className={styles.courseLinkContainer}>
+                        <Link to="/course">
+                            Free webpack course
+                        </Link>
+                    </div>
                 </div>
             </div>
             <div className={styles.codeContainer}>
@@ -283,6 +292,18 @@ class Configurator extends React.Component {
                     newNpmConfig={newNpmConfig}
                     />
                 <br />
+                <div className={styles.smallScreensOnly}>
+                    <a
+                        href={`https://s3-eu-west-1.amazonaws.com/jakoblind/zips/${projectname}.zip`}
+                        >
+                        <img
+                            alt="zip-file"
+                            className={styles.icon}
+                            src={require('../../images/zip.svg')}
+                            />
+                        Get your project as a zip!
+                    </a>
+                </div>
             </div>
         </div>
         <div className={styles.container}>

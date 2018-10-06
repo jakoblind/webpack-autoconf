@@ -10,16 +10,6 @@ body {
     margin-right: 7px;
     width: 20px;
 }
-.start-here {
-    width: 124px;
-    display: block;
-    margin: 0 auto;
-    background: url('../images/arrowdown2.png');
-    background-repeat: no-repeat;
-    background-size: 50px 50px;
-    height: 50px;
-    padding-left: 19px;
-}
 
 .code-box {
     font-size: 15px;
@@ -62,11 +52,6 @@ body {
     .files li {
         padding: 2px;
     }
-  .start-here {
-    width: 300px;
-    padding: 0 50px;
-    box-sizing: border-box;
-  }
   .code-box {
     margin-left: 0px;
     margin-right: 0px;
@@ -81,7 +66,7 @@ body {
 }
 
 .courseLinkContainer {
-    margin: 20px 10px;
+    margin: 10px 10px;
     text-align: center;
 }
 
@@ -153,6 +138,32 @@ h2 {
     width: 70%;
     max-width: 800px;
 }
+.desktopOnly {
+    display: block;
+}
+.smallScreensOnly {
+    display: none;
+}
+@media only screen and (max-width: 666px) {
+    .desktopOnly {
+        display: none;
+    }
+    .smallScreensOnly {
+        display: block;
+    }
+
+    .featuresContainer {
+        float:none;
+        width: 100%;
+        margin: 0 auto;
+    }
+    .codeContainer {
+        float:none;
+        width: 100%;
+        margin: 0 auto;
+    }
+}
+
 .container {
     max-width: 800px;
     margin: 0 auto;
