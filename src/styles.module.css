@@ -49,14 +49,19 @@ body {
 }
 
 @media only screen and (max-width: 40em) {
-    .files li {
-        padding: 2px;
+    .files  {
+        width: 100%;
     }
-  .code-box {
-    margin-left: 0px;
-    margin-right: 0px;
-
-  }
+    .files ul {
+        padding: 5px;
+    }
+    .code-box {
+        margin-top: 0px;
+        width: 100%;
+    }
+    .file-browser {
+        display: block;
+    }
 }
 
 .header {
