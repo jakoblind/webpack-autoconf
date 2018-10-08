@@ -15,7 +15,7 @@ body {
     font-size: 15px;
     height: 600px;
     width: 80%;
-    overflow:scroll;
+    overflow:auto;
     background-color: #242424;
     padding: 10px;
 }
