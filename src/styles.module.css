@@ -64,6 +64,17 @@ body {
     }
 }
 
+@media only screen and (min-height: 1000px) {
+    .code-box {
+        height: 850px;
+    }
+}
+@media only screen and (max-height: 700px) {
+    .code-box {
+        height: 550px;
+    }
+}
+
 .header {
     max-width: 800px;
     margin: 0 auto;
@@ -141,7 +152,6 @@ h2 {
     display: block;
     float: left;
     width: 70%;
-    max-width: 800px;
 }
 .desktopOnly {
     display: block;
@@ -149,6 +159,13 @@ h2 {
 .smallScreensOnly {
     display: none;
 }
+
+@media only screen and (min-width: 1900px) {
+    .topContainer {
+        max-width: 1250px;
+    }
+}
+
 @media only screen and (max-width: 666px) {
     .desktopOnly {
         display: none;
