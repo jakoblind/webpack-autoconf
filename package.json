@@ -27,6 +27,7 @@
   "dependencies": {
     "bluebird": "^3.5.1",
     "combinations": "^0.1.1",
+    "diff": "^3.5.0",
     "gatsby": "^2.0.0",
     "gatsby-plugin-drip-widget": "^1.0.2",
     "gatsby-plugin-favicon": "^3.1.4",
@@ -34,10 +35,10 @@
     "gatsby-plugin-manifest": "^2.0.2",
     "gatsby-plugin-offline": "^2.0.5",
     "gatsby-plugin-react-helmet": "^3.0.0",
-    "gatsby-remark-prismjs": "^3.0.0",
     "gatsby-transformer-remark": "^2.1.2",
     "javascript-stringify": "^1.6.0",
     "lodash": "^4.17.5",
+    "memoize-one": "^4.0.2",
     "node-fetch": "^2.1.2",
     "prismjs": "^1.15.0",
     "react": "^16.5.1",
@@ -52,6 +53,6 @@
     "@babel/preset-react": "^7.0.0",
     "babel-core": "^7.0.0-bridge.0",
     "jest": "^23.6.0",
-    "prettier": "^1.14.2"
+    "prettier": "^1.14.3"
   }
 }

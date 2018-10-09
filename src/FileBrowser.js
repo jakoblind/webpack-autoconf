@@ -6,7 +6,18 @@ import { getPackageJson, getDefaultProjectName } from './configurator'
 import projectGenerator from './project-generator'
 import styles from './styles.module.css'
 import Prism from 'prismjs'
+import memoizeOne from 'memoize-one'
+import { createWebpackConfig } from './configurator'
+
+// disable prettier for now.
+// import prettier from 'prettier/standalone'
+// const parserBabylon = require('prettier/parser-babylon')
+
+const JsDiff = require('diff')
+
 require('prismjs/themes/prism-tomorrow.css')
+require('./prism-line-highlight.css')
+require('./PrismLineHighlight')
 
 const FileList = ({ files, selectedFile, onSelectFile }) => {
   const filesElements = _.map(files, file => (
@@ -26,21 +37,41 @@ const FileList = ({ files, selectedFile, onSelectFile }) => {
   )
 }
 
-const CodeBox = ({ code }) => {
-  const highlightedCode = () => {
-    return {
-      __html: Prism.highlight(code, Prism.languages.javascript, 'javascript'), // eslint-disable-line
+class CodeBox extends React.Component {
+  componentDidMount() {
+    Prism.highlightAll()
+  }
+  componentDidUpdate(props) {
+    if (
+      props.code != this.props.code ||
+      props.highlightedLines != this.props.highlightedLines
+    ) {
+      Prism.highlightAll()
     }
   }
+  render() {
+    const { code, highlightedLines } = this.props
 
-  return (
-    <pre className={styles.codeBox}>
-      <code
-        className={styles.languageCss}
-        dangerouslySetInnerHTML={highlightedCode()}
-      />
-    </pre>
-  )
+    return (
+      <div className={styles.codeBox}>
+        <pre
+          style={{
+            'padding-top': '0',
+            background: '#242424',
+            overflow: 'none',
+          }}
+          data-line={highlightedLines}
+        >
+          <code
+            style={{ background: '#242424' }}
+            className="language-javascript"
+          >
+            {code}
+          </code>
+        </pre>
+      </div>
+    )
+  }
 }
 
 class FileBrowser extends React.Component {
@@ -69,6 +100,13 @@ class FileBrowser extends React.Component {
 
     var extensionRegex = /\.[0-9a-z]+$/i
     const extension = this.state.selectedFile.match(extensionRegex)
+
+    // Only highlight webpack.config.js for now.
+    const highlightedLines =
+      this.state.selectedFile === 'webpack.config.js'
+        ? this.props.highlightedWebpackConfigLines
+        : null
+
     return (
       <div className={styles.fileBrowser}>
         <FileList
@@ -76,7 +114,11 @@ class FileBrowser extends React.Component {
           files={_.keys(fileContentMap)}
           onSelectFile={this.setSelectedFile}
         />
-        <CodeBox extension={extension} code={content} />
+        <CodeBox
+          extension={extension}
+          code={content}
+          highlightedLines={highlightedLines}
+        />
       </div>
     )
   }
@@ -91,7 +133,7 @@ class FileBrowserContainer extends React.Component {
     this.updatePackageJson = this.updatePackageJson.bind(this)
   }
   componentDidUpdate(prevProps) {
-    if (this.props.newNpmConfig !== prevProps.newNpmConfig) {
+    if (!_.isEqual(this.props.newNpmConfig, prevProps.newNpmConfig)) {
       this.updatePackageJson()
     }
   }
@@ -119,17 +161,73 @@ class FileBrowserContainer extends React.Component {
   componentDidMount() {
     this.updatePackageJson()
   }
+  prettifyJson(json) {
+    // This is disabled for now.
+    // must adjust width to editor width to enable it
+    return json /*prettier.format(json, {
+      parser: 'babylon',
+      printWidth: 40, // TODO: dont auto use 40 widht
+      plugins: { babylon: parserBabylon },
+    })*/
+  }
+  prettifyJsonMemoized = memoizeOne(this.prettifyJson)
+  getLineNumbersToHighlight = memoizeOne((features, highlightFeature) => {
+    if (!_.includes(features, highlightFeature)) {
+      return
+    }
+    const webpackConfigWithoutHighlighted = createWebpackConfig(
+      _.reject(features, f => f === highlightFeature)
+    )
+    const webpackConfigCurrent = createWebpackConfig(features)
+
+    const diff = JsDiff.diffJson(
+      this.prettifyJson(webpackConfigWithoutHighlighted),
+      this.prettifyJson(webpackConfigCurrent)
+    )
+
+    let highlightedLines = ''
+    let currentLineNumber = 0
+    diff.forEach(part => {
+      if (part.removed) {
+        return
+      }
+      if (part.added) {
+        if (highlightedLines !== '') {
+          highlightedLines = highlightedLines + ','
+        }
+
+        highlightedLines =
+          highlightedLines +
+          (currentLineNumber + 1) +
+          '-' +
+          (part.count + currentLineNumber)
+      }
+      currentLineNumber = currentLineNumber + part.count
+    })
+
+    return highlightedLines
+  })
   render() {
-    const { features } = this.props
+    const { features, highlightFeature } = this.props
 
     const files = _.assign({}, projectGenerator(features, 'empty-project'), {
       'package.json': JSON.stringify(this.state.packageJson, null, 2),
     })
 
+    const filesPrettified = _.forEach(files, (f, k) => {
+      if (k === 'webpack.config.js') {
+        files['webpack.config.js'] = this.prettifyJsonMemoized(f)
+      }
+    })
+
     return (
       <FileBrowser
         defaultSelection={'webpack.config.js'}
-        fileContentMap={files}
+        fileContentMap={filesPrettified}
+        highlightedWebpackConfigLines={this.getLineNumbersToHighlight(
+          features,
+          highlightFeature
+        )}
       />
     )
   }
