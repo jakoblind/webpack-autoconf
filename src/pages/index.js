@@ -15,8 +15,21 @@ import FileBrowser from '../FileBrowser'
 
 import Layout from '../components/layout'
 
-const Feature = ({ feature, selected, setSelected }) => (
-  <label className={styles.featureContainer}>
+const Feature = ({
+  feature,
+  selected,
+  setSelected,
+  onMouseEnter,
+  onMouseLeave,
+}) => (
+  <label
+    className={styles.featureContainer}
+    onMouseEnter={() => onMouseEnter(feature)}
+    onMouseLeave={() => onMouseLeave(feature)}
+    onTouchStart={() => onMouseEnter(feature)}
+    onTouchEnd={() => onMouseLeave(feature)}
+    onTouchCancel={() => onMouseLeave(feature)}
+  >
     {feature}
     <input
       checked={selected || false}
@@ -29,7 +42,13 @@ const Feature = ({ feature, selected, setSelected }) => (
 
 class Features extends React.Component {
   render() {
-    const { features, selected, setSelected } = this.props
+    const {
+      features,
+      selected,
+      setSelected,
+      onMouseEnter,
+      onMouseLeave,
+    } = this.props
     const groupedFeatures = _.chain(features)
       .mapValues((v, k, o) => Object.assign({}, v, { feature: k }))
       .groupBy('group')
@@ -48,6 +67,8 @@ class Features extends React.Component {
                   feature={feature}
                   selected={selected[feature]}
                   setSelected={setSelected}
+                  onMouseEnter={onMouseEnter}
+                  onMouseLeave={onMouseLeave}
                   key={feature}
                 />
               ))}
@@ -183,8 +204,10 @@ const StepByStepArea = ({
 class Configurator extends React.Component {
   constructor(props) {
     super(props)
-    this.state = { selected: {} }
+    this.state = { selected: {}, hoverFeature: null }
     this.setSelected = this.setSelected.bind(this)
+    this.onMouseEnterFeature = this.onMouseEnterFeature.bind(this)
+    this.onMouseLeaveFeature = this.onMouseLeaveFeature.bind(this)
   }
   setSelected(feature) {
     const setToSelected = !this.state.selected[feature]
@@ -222,8 +245,13 @@ class Configurator extends React.Component {
       .reject(_.isNull)
       .value()
   }
+  onMouseEnterFeature(feature) {
+    this.setState({ hoverFeature: feature })
+  }
+  onMouseLeaveFeature() {
+    this.setState({ hoverFeature: null })
+  }
   render() {
-    const newWebpackConfig = createWebpackConfig(this.selectedArray())
     const newBabelConfig = createBabelConfig(this.selectedArray())
     const newNpmConfig = getNpmDependencies(this.selectedArray())
 
@@ -257,6 +285,8 @@ class Configurator extends React.Component {
               features={showFeatures}
               selected={this.state.selected}
               setSelected={this.setSelected}
+              onMouseEnter={this.onMouseEnterFeature}
+              onMouseLeave={this.onMouseLeaveFeature}
             />
             <div className={styles.desktopOnly}>
               <a
@@ -283,9 +313,8 @@ class Configurator extends React.Component {
           </div>
           <div className={styles.codeContainer}>
             <FileBrowser
-              newBabelConfig={newBabelConfig}
-              newWebpackConfig={newWebpackConfig}
               features={this.selectedArray()}
+              highlightFeature={this.state.hoverFeature}
               newNpmConfig={newNpmConfig}
             />
             <br />
