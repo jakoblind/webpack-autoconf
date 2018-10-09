@@ -80,8 +80,8 @@ export const features = (() => {
             },
             webpack: (webpackConfig) => assignModuleRuleAndResolver(webpackConfig, [{
                 test: /\.(js|jsx)$/,
-                exclude: /node_modules/,
-                use: 'babel-loader'
+                use: 'babel-loader',
+                exclude: /node_modules/
             }],  ['.js', '.jsx'])
         },
         "Vue": {
@@ -110,7 +110,7 @@ export const features = (() => {
                 const isVue = _.includes(configItems, "Vue");
                 const typescriptModule = {
                     test: /\.(ts|tsx)?$/,
-                    loader: 'ts-loader',
+                    use: 'ts-loader',
                     exclude: /node_modules/
                 };
                 if (isVue) {
@@ -173,9 +173,7 @@ export const features = (() => {
             devDependencies: (configItems) => ["file-loader"],
             webpack: (webpackConfig) => addModuleRule(webpackConfig, {
                 test: /\.svg$/,
-                use: [
-                    "file-loader"
-                ]
+                use: "file-loader"
             })
         },
         "PNG": {

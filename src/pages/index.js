@@ -60,7 +60,7 @@ class Features extends React.Component {
 }
 
 const logFeatureClickToGa = (feature, selected) => {
-  const eventAction = selected ? 'select' : 'deselect'
+  //const eventAction = selected ? 'select' : 'deselect'
   /*window.gtag('event', eventAction, {
     event_category: 'features',
     event_label: feature,
@@ -228,7 +228,6 @@ class Configurator extends React.Component {
     const newNpmConfig = getNpmDependencies(this.selectedArray())
 
     const isReact = _.includes(this.selectedArray(), 'React')
-    const isVue = _.includes(this.selectedArray(), 'Vue')
     const isTypescript = _.includes(this.selectedArray(), 'Typescript')
 
     const projectname = getDefaultProjectName(
@@ -250,65 +249,62 @@ class Configurator extends React.Component {
           selected={this.state.selected}
           setSelected={this.setSelected}
           showFeatures={showFeatures}
-            />
+        />
         <div className={styles.topContainer}>
-            <div className={styles.featuresContainer}>
-                <h3>Select your features</h3>
-                <Features
-                    features={showFeatures}
-                    selected={this.state.selected}
-                    setSelected={this.setSelected}
-                    />
-                <div className={styles.desktopOnly}>
-                    <a
-                        href={`https://s3-eu-west-1.amazonaws.com/jakoblind/zips/${projectname}.zip`}
-                        >
-                        <img
-                            alt="zip-file"
-                            className={styles.icon}
-                            src={require('../../images/zip.svg')}
-                            />
-                        Get your project as a zip!
-                    </a>
-                    <div className={styles.courseLinkContainer}>
-                        <Link className={styles.myButton} to="/course">
-                            Free webpack course
-                        </Link>
-                    </div>
-                </div>
-                <div className={styles.smallScreensOnly}>
-                    <div className={styles.courseLinkContainer}>
-                        <Link to="/course">
-                            Free webpack course
-                        </Link>
-                    </div>
-                </div>
+          <div className={styles.featuresContainer}>
+            <h3>Select your features</h3>
+            <Features
+              features={showFeatures}
+              selected={this.state.selected}
+              setSelected={this.setSelected}
+            />
+            <div className={styles.desktopOnly}>
+              <a
+                href={`https://s3-eu-west-1.amazonaws.com/jakoblind/zips/${projectname}.zip`}
+              >
+                <img
+                  alt="zip-file"
+                  className={styles.icon}
+                  src={require('../../images/zip.svg')}
+                />
+                Get your project as a zip!
+              </a>
+              <div className={styles.courseLinkContainer}>
+                <Link className={styles.myButton} to="/course">
+                  Free webpack course
+                </Link>
+              </div>
             </div>
-            <div className={styles.codeContainer}>
-                <FileBrowser
-                    newBabelConfig={newBabelConfig}
-                    newWebpackConfig={newWebpackConfig}
-                    features={this.selectedArray()}
-                    newNpmConfig={newNpmConfig}
-                    />
-                <br />
-                <div className={styles.smallScreensOnly}>
-                    <a
-                        href={`https://s3-eu-west-1.amazonaws.com/jakoblind/zips/${projectname}.zip`}
-                        >
-                        <img
-                            alt="zip-file"
-                            className={styles.icon}
-                            src={require('../../images/zip.svg')}
-                            />
-                        Get your project as a zip!
-                    </a>
-                </div>
+            <div className={styles.smallScreensOnly}>
+              <div className={styles.courseLinkContainer}>
+                <Link to="/course">Free webpack course</Link>
+              </div>
             </div>
+          </div>
+          <div className={styles.codeContainer}>
+            <FileBrowser
+              newBabelConfig={newBabelConfig}
+              newWebpackConfig={newWebpackConfig}
+              features={this.selectedArray()}
+              newNpmConfig={newNpmConfig}
+            />
+            <br />
+            <div className={styles.smallScreensOnly}>
+              <a
+                href={`https://s3-eu-west-1.amazonaws.com/jakoblind/zips/${projectname}.zip`}
+              >
+                <img
+                  alt="zip-file"
+                  className={styles.icon}
+                  src={require('../../images/zip.svg')}
+                />
+                Get your project as a zip!
+              </a>
+            </div>
+          </div>
         </div>
         <div className={styles.container}>
-          <div className={styles.container}>
-          </div>
+          <div className={styles.container} />
           <StepByStepArea
             features={this.selectedArray()}
             newNpmConfig={newNpmConfig}
