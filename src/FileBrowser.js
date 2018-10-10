@@ -54,20 +54,8 @@ class CodeBox extends React.Component {
 
     return (
       <div className={styles.codeBox}>
-        <pre
-          style={{
-            paddingTop: '0',
-            background: '#242424',
-            overflow: 'none',
-          }}
-          data-line={highlightedLines}
-        >
-          <code
-            style={{ background: '#242424' }}
-            className="language-javascript"
-          >
-            {code}
-          </code>
+        <pre className={styles.codeBoxPre} data-line={highlightedLines}>
+          <code className="language-javascript">{code}</code>
         </pre>
       </div>
     )

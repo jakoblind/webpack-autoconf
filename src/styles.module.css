@@ -20,6 +20,11 @@ body {
     padding: 10px;
     border-radius: 10px;
 }
+.code-box .code-box-pre {
+    background: #242424;
+    overflow: none;
+    padding-top: 0px;
+}
 
 .file-browser {
     color: #ccc;
