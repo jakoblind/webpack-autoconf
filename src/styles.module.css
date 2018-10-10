@@ -19,6 +19,7 @@ body {
     background-color: #242424;
     padding: 10px;
     border-radius: 10px;
+    cursor: text;
 }
 .code-box .code-box-pre {
     background: #242424;
