@@ -18,6 +18,7 @@ body {
     overflow:auto;
     background-color: #242424;
     padding: 10px;
+    border-radius: 10px;
 }
 
 .file-browser {

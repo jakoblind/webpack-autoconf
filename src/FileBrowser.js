@@ -56,7 +56,7 @@ class CodeBox extends React.Component {
       <div className={styles.codeBox}>
         <pre
           style={{
-            'padding-top': '0',
+            paddingTop: '0',
             background: '#242424',
             overflow: 'none',
           }}
