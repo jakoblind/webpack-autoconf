@@ -38,7 +38,7 @@
     "gatsby-transformer-remark": "^2.1.2",
     "javascript-stringify": "^1.6.0",
     "lodash": "^4.17.5",
-    "memoize-one": "^4.0.2",
+    "memoizee": "^0.4.14",
     "node-fetch": "^2.1.2",
     "prismjs": "^1.15.0",
     "react": "^16.5.1",

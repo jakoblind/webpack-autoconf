@@ -6,7 +6,7 @@ import { getPackageJson, getDefaultProjectName } from './configurator'
 import projectGenerator from './project-generator'
 import styles from './styles.module.css'
 import Prism from 'prismjs'
-import memoizeOne from 'memoize-one'
+import memoizee from "memoizee";
 import { createWebpackConfig } from './configurator'
 
 // disable prettier for now.
@@ -130,13 +130,13 @@ class FileBrowserContainer extends React.Component {
       packageJson: '// fetching dependency versions...',
     })
 
-    const getNodeVersionPromise = name => {
-      return fetch(`https://unpkg.com/${name}/package.json`)
-        .then(res => res.json())
-        .then(r => {
-          return '^' + r.version
-        })
-    }
+      const getNodeVersionPromise = memoizee(name => {
+          return fetch(`https://unpkg.com/${name}/package.json`)
+              .then(res => res.json())
+              .then(r => {
+                  return '^' + r.version
+              })
+      }, {promise: true})
     const { newNpmConfig, features } = this.props
     getPackageJson(
       getDefaultProjectName('empty-project', features),
@@ -158,8 +158,8 @@ class FileBrowserContainer extends React.Component {
       plugins: { babylon: parserBabylon },
     })*/
   }
-  prettifyJsonMemoized = memoizeOne(this.prettifyJson)
-  getLineNumbersToHighlight = memoizeOne((features, highlightFeature) => {
+  prettifyJsonMemoized = memoizee(this.prettifyJson)
+  getLineNumbersToHighlight = memoizee((features, highlightFeature) => {
     if (!_.includes(features, highlightFeature)) {
       return
     }
