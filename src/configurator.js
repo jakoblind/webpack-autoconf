@@ -203,6 +203,32 @@ export const features = (() => {
             webpack:
             (webpackConfig) => addPlugin(webpackConfig, "CODE:new LodashModuleReplacementPlugin")
         },
+        "Code split vendors": {
+            group: "Optimization",
+            devDependencies: (configItems) => ["html-webpack-plugin", "html-webpack-template"],
+            webpackImports: ["const HtmlWebpackPlugin = require('html-webpack-plugin')"],
+            webpack: (webpackConfig) => {
+                const withPlugin = addPlugin(webpackConfig, `CODE:new HtmlWebpackPlugin({
+    template: require('html-webpack-template'),
+    inject: false,
+    appMountId: 'app',
+  })`)
+
+                const withFilename =  _.setWith(_.clone(withPlugin), "output.filename", '[name].[contenthash].js', _.clone);
+                return _.setWith(_.clone(withFilename), "optimization", {
+                    runtimeChunk: 'single',
+                    splitChunks: {
+                        cacheGroups: {
+                            vendor: {
+                                test: /[\\/]node_modules[\\/]/,
+                                name: 'vendors',
+                                chunks: 'all',
+                            },
+                        },
+                    },
+                }, _.clone);
+            }
+        },
         "React hot loader": {
             group: "",
             babel: (babelConfig) => Object.assign({}, babelConfig, {
