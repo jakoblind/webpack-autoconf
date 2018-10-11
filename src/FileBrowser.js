@@ -5,8 +5,9 @@ import { getPackageJson, getDefaultProjectName } from './configurator'
 
 import projectGenerator from './project-generator'
 import styles from './styles.module.css'
+import './prism-line-highlight.css'
 import Prism from 'prismjs'
-import memoizee from "memoizee";
+import memoizee from 'memoizee'
 import { createWebpackConfig } from './configurator'
 
 // disable prettier for now.
@@ -16,7 +17,6 @@ import { createWebpackConfig } from './configurator'
 const JsDiff = require('diff')
 
 require('prismjs/themes/prism-tomorrow.css')
-require('./prism-line-highlight.css')
 require('./PrismLineHighlight')
 
 const FileList = ({ files, selectedFile, onSelectFile }) => {
@@ -130,13 +130,16 @@ class FileBrowserContainer extends React.Component {
       packageJson: '// fetching dependency versions...',
     })
 
-      const getNodeVersionPromise = memoizee(name => {
-          return fetch(`https://unpkg.com/${name}/package.json`)
-              .then(res => res.json())
-              .then(r => {
-                  return '^' + r.version
-              })
-      }, {promise: true})
+    const getNodeVersionPromise = memoizee(
+      name => {
+        return fetch(`https://unpkg.com/${name}/package.json`)
+          .then(res => res.json())
+          .then(r => {
+            return '^' + r.version
+          })
+      },
+      { promise: true }
+    )
     const { newNpmConfig, features } = this.props
     getPackageJson(
       getDefaultProjectName('empty-project', features),

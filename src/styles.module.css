@@ -25,6 +25,7 @@ body {
     background: #242424;
     overflow: none;
     padding-top: 0px;
+    padding-left: 1em;
 }
 
 .file-browser {
