@@ -17,15 +17,14 @@ body {
     width: 80%;
     overflow:auto;
     background-color: #242424;
-    padding: 10px;
     border-radius: 10px;
     cursor: text;
 }
 .code-box .code-box-pre {
     background: #242424;
     overflow: visible;
-    padding-top: 0px;
-    padding-left: 1em;
+    margin: 0px;
+    padding: 1em;
 }
 
 .file-browser {

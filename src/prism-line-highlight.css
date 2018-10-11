@@ -9,6 +9,7 @@ pre[data-line] {
     right: 0;
     margin-left: 7px;
     margin-right: 7px;
+    margin-top: 1em;
 
     box-shadow: 0 0 10pt 2pt #145B98;
     border-radius: 10px;
