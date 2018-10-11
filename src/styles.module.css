@@ -23,7 +23,7 @@ body {
 }
 .code-box .code-box-pre {
     background: #242424;
-    overflow: none;
+    overflow: visible;
     padding-top: 0px;
     padding-left: 1em;
 }
