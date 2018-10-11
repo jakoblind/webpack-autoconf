@@ -110,7 +110,7 @@ export const features = (() => {
                 const isVue = _.includes(configItems, "Vue");
                 const typescriptModule = {
                     test: /\.(ts|tsx)?$/,
-                    use: 'ts-loader',
+                    loader: 'ts-loader',
                     exclude: /node_modules/
                 };
                 if (isVue) {
