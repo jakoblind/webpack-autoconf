@@ -124,13 +124,38 @@ export const features = (() => {
         "CSS": {
             group: "Styling",
             devDependencies: (configItems) => _.concat(["css-loader"], getStyleLoaderDependencyIfNeeded(configItems)),
-            webpack: (webpackConfig, configItems) => addModuleRule(webpackConfig, {
+            webpack: (webpackConfig, configItems) => {
+                const rule = {
+                    test: /\.css$/,
+                    use: [
+                        getStyleLoaderOrVueStyleLoader(configItems),
+                        'css-loader'
+                    ]
+                };
+                if (_.includes(configItems, "CSS Modules")) {
+                    rule.exclude = "/\.module\.css$/"
+                }
+                return addModuleRule(webpackConfig, rule)
+            }
+        },
+        "CSS Modules": {
+            group: "Styling",
+            devDependencies: (configItems) => _.concat(["css-loader"], getStyleLoaderDependencyIfNeeded(configItems)),
+            webpack: (webpackConfig, configItems) =>
+
+            {
+                const rule = {
                 test: /\.css$/,
                 use: [
                     getStyleLoaderOrVueStyleLoader(configItems),
-                    'css-loader'
+                    'css-loader?modules&importLoaders=1&localIdentName=[name]__[local]___[hash:base64:5]'
                 ]
-            })
+            };
+                if (_.includes(configItems, "CSS")) {
+                    rule.include = "/\.module\.css$/"
+                }
+                return addModuleRule(webpackConfig, rule)
+            }
         },
         "Sass": {
             group: "Styling",
