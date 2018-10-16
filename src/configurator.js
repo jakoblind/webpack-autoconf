@@ -133,7 +133,7 @@ export const features = (() => {
                     ]
                 };
                 if (_.includes(configItems, "CSS Modules")) {
-                    rule.exclude = "/\.module\.css$/"
+                    rule.exclude = /\.module\.css$/
                 }
                 return addModuleRule(webpackConfig, rule)
             }
@@ -152,7 +152,7 @@ export const features = (() => {
                 ]
             };
                 if (_.includes(configItems, "CSS")) {
-                    rule.include = "/\.module\.css$/"
+                    rule.include = /\.module\.css$/
                 }
                 return addModuleRule(webpackConfig, rule)
             }

@@ -43,8 +43,8 @@ class CodeBox extends React.Component {
   }
   componentDidUpdate(props) {
     if (
-      props.code != this.props.code ||
-      props.highlightedLines != this.props.highlightedLines
+      props.code !== this.props.code ||
+      props.highlightedLines !== this.props.highlightedLines
     ) {
       Prism.highlightAll()
     }

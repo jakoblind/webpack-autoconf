@@ -5,7 +5,6 @@ import { Link } from 'gatsby'
 
 import {
   features,
-  createWebpackConfig,
   createBabelConfig,
   getNpmDependencies,
   getDefaultProjectName,
@@ -33,7 +32,7 @@ const Feature = ({
     {feature}
     <input
       checked={selected || false}
-      onClick={() => setSelected(feature)}
+      onChange={() => setSelected(feature)}
       type="checkbox"
     />
     <span className={styles.checkmark} />
