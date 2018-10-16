@@ -14,15 +14,19 @@ import {
   getDefaultProjectName,
   getPackageJson,
 } from './src/configurator'
-import { readmeFile } from './src/templates'
+import { readmeFile } from './src/templates/base'
 import {
   reactIndexJs,
   reactIndexTsx,
   reactHotIndexJs,
   reactIndexHtml,
-} from './static/react/index'
-import { emptyIndexJs } from './static/empty/index'
-import { indexTypescriptHTML, tsconfig, tsconfigReact } from './static/ts'
+} from './src/templates/react/index'
+import { emptyIndexJs } from './src/templates/empty/index'
+import {
+  indexTypescriptHTML,
+  tsconfig,
+  tsconfigReact,
+} from './src/templates/ts'
 import {
   vueHelloWorldJs,
   vueHelloWorldTS,
@@ -30,7 +34,7 @@ import {
   vueIndexHtml,
   vueIndexTs,
   vueShimType,
-} from './static/vue'
+} from './src/templates/vue'
 
 import projectGenerator from './src/project-generator'
 
