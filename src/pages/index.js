@@ -105,8 +105,8 @@ const Footer = () => (
       <a href="http://blog.jakoblind.no/3-ways-to-reduce-webpack-bundle-size/">
         best practices
       </a>
-      . Advanced optimizations such as code splitting is not (yet?) supported
-      with this tool.
+      . Advanced optimizations such as code splitting is not (yet?) fully
+      supported with this tool.
     </p>
     <h4>Want more?</h4>
     <p>
@@ -126,7 +126,17 @@ const Footer = () => (
       <a href="https://github.com/jakoblind/webpack-configurator">
         github repo
       </a>
-      . Yes this is open source.
+      . Yes this is open source. <br />
+      <br />
+      <a
+        className="github-button"
+        href="https://github.com/jakoblind/webpack-autoconf"
+        data-icon="octicon-star"
+        data-show-count="true"
+        aria-label="Star jakoblind/webpack-autoconf on GitHub"
+      >
+        Star
+      </a>
     </p>
     <h4>Who made this thing?</h4>
     <p>

@@ -32,6 +32,7 @@ const Layout = ({ children }) => (
             },
           ]}
         >
+          <script async defe src="https://buttons.github.io/buttons.js" />
           <html lang="en" />
         </Helmet>
         <div
