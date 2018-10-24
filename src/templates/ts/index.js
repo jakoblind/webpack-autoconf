@@ -47,7 +47,7 @@ export const indexTypescriptHTML = `
 <!DOCTYPE html>
 <html>
     <head>
-        <title>Typescirpt starter app</title>
+        <title>Typescript starter app</title>
     </head>
     <body>
         <h1>Typescript Project</h1>
