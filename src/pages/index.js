@@ -91,6 +91,7 @@ const Header = ({ selected, setSelected, showFeatures }) => {
   return (
     <div className={styles.header}>
       <h1>webpack config tool</h1>
+      <Link to="/course">Free webpack course</Link>
     </div>
   )
 }
@@ -308,16 +309,6 @@ class Configurator extends React.Component {
                 />
                 Get your project as a zip!
               </a>
-              <div className={styles.courseLinkContainer}>
-                <Link className={styles.myButton} to="/course">
-                  Free webpack course
-                </Link>
-              </div>
-            </div>
-            <div className={styles.smallScreensOnly}>
-              <div className={styles.courseLinkContainer}>
-                <Link to="/course">Free webpack course</Link>
-              </div>
             </div>
           </div>
           <div className={styles.codeContainer}>
