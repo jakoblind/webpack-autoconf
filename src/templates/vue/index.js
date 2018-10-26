@@ -12,7 +12,7 @@ export const vueIndexAppVue = `
     </div>
 </template>
 
-<script lang="ts">
+<script lang="js">
   import HelloComponent from "./Hello.vue";
   import Vue from "vue";
 
