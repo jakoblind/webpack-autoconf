@@ -1,7 +1,11 @@
 import React from 'react'
 import _ from 'lodash'
 
-import { getPackageJson, getDefaultProjectName } from './configurator'
+import {
+  getPackageJson,
+  getDefaultProjectName,
+  features as allFeatures,
+} from './configurator'
 
 import projectGenerator from './project-generator'
 import styles from './styles.module.css'
@@ -119,7 +123,20 @@ class FileBrowserContainer extends React.Component {
       packageJsonWithoutHighlightedFeature: null,
     }
     this.updatePackageJson = this.updatePackageJson.bind(this)
-    //loop through promises
+  }
+  /**
+     load all version of dependencies (and cache them) used on page load
+     to get a quicker loading speed when we show them.
+  */
+  loadAllDependencyVersions(features) {
+    const npmConfigAllFeatures = getNpmDependencies(features)
+    const allDependencies = _.concat(
+      npmConfigAllFeatures.dependencies,
+      npmConfigAllFeatures.devDependencies
+    )
+    _.forEach(allDependencies, dependency =>
+      this.getNodeVersionPromise(dependency)
+    )
   }
   componentDidUpdate(prevProps) {
     if (
@@ -131,6 +148,7 @@ class FileBrowserContainer extends React.Component {
   }
   componentDidMount() {
     this.updatePackageJson()
+    this.loadAllDependencyVersions(_.keys(allFeatures))
   }
   getNodeVersionPromise = memoizee(name =>
     fetch(`https://unpkg.com/${name}/package.json`)
