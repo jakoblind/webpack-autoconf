@@ -14,8 +14,6 @@ import { getDiffAsLineNumber } from './Diff'
 // import prettier from 'prettier/standalone'
 // const parserBabylon = require('prettier/parser-babylon')
 
-const JsDiff = require('diff')
-
 require('prismjs/themes/prism-tomorrow.css')
 require('./PrismLineHighlight')
 

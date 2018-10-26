@@ -50,7 +50,7 @@ export default () => {
         >
           <div>
             <input
-              autoFocus="true"
+              autoFocus={true}
               className={styles.signupField}
               placeholder="Your Email"
               type="email"
