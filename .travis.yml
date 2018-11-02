@@ -9,4 +9,4 @@ node_js:
 
 script:
   - npm install
-  - npm build
+  - gatsby build
