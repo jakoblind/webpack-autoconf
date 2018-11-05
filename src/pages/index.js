@@ -87,15 +87,6 @@ const logFeatureClickToGa = (feature, selected) => {
   })*/
 }
 
-const Header = ({ selected, setSelected, showFeatures }) => {
-  return (
-    <div className={styles.header}>
-      <h1>webpack config tool</h1>
-      <Link to="/course">Free webpack course</Link>
-    </div>
-  )
-}
-
 const Footer = () => (
   <div className={styles.footer}>
     <h3>What is this? </h3>
@@ -283,13 +274,9 @@ class Configurator extends React.Component {
     }
     return (
       <div>
-        <Header
-          selected={this.state.selected}
-          setSelected={this.setSelected}
-          showFeatures={showFeatures}
-        />
         <div className={styles.topContainer}>
           <div className={styles.featuresContainer}>
+            <h1>webpack config tool</h1>
             <h3>Select your features</h3>
             <Features
               features={showFeatures}
@@ -310,6 +297,8 @@ class Configurator extends React.Component {
                 Get your project as a zip!
               </a>
             </div>
+            <br />
+            <Link to="/course">Free webpack course</Link>
           </div>
           <div className={styles.codeContainer}>
             <FileBrowser

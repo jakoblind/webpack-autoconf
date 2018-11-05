@@ -82,10 +82,37 @@ body {
     }
 }
 
+@media only screen and (max-width: 550px) {
+    .header {
+        padding-top: 0.5em;
+        padding-bottom: 0.5em;
+    }
+    .header a {
+        text-align:  center;
+        display: block;
+        padding-bottom: 5px;
+        padding-top: 5px;
+        border-bottom: 1px solid grey;
+    }
+}
+
 .header {
-    max-width: 800px;
-    margin: 0 auto;
-    text-align: center;
+    width: 100%;
+    padding: 1em;
+    background-color:  #242424;
+    color: white;
+}
+
+
+.header a {
+    color: white;
+    text-decoration: none;
+    padding-right: 3em;
+}
+
+.header a:hover {
+    color: lightgrey;
+
 }
 
 .zip-icon-area {
@@ -133,7 +160,13 @@ body {
 }
 
 h1 {
+    margin-top:17px;
     font-size: small;
+    text-align: center;
+}
+
+.large {
+    font-size: 2em;
 }
 
 h2 {
@@ -295,6 +328,28 @@ textarea {
     transform: rotate(45deg);
 }
 
+.red {
+    color: red;
+    font-weight: bold;
+}
+.green {
+    color: green;
+    font-weight: bold;
+}
+.orange {
+    color: orange;
+    font-weight: bold;
+}
+.error {
+    padding: 1rem;
+    text-align: center;
+    border: 1px solid red;
+}
+.dropFileText {
+    max-width: 500px;
+    margin: 0 auto;
+    text-align: center;
+}
 h3 {
 
     clear:both;

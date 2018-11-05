@@ -2,10 +2,20 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import Helmet from 'react-helmet'
 import { StaticQuery, graphql } from 'gatsby'
-
+import { Link } from 'gatsby'
+import styles from '../styles.module.css'
 import './layout.css'
+const Header = () => {
+  return (
+    <div className={styles.header}>
+      <Link to="/">webpack config tool</Link>
+      <Link to="/optimize">Bundle optimizer</Link>
+      <Link to="/course">Free webpack course</Link>
+    </div>
+  )
+}
 
-const Layout = ({ children }) => (
+const Layout = ({ children, title }) => (
   <StaticQuery
     query={graphql`
       query SiteTitleQuery {
@@ -20,7 +30,7 @@ const Layout = ({ children }) => (
     render={data => (
       <>
         <Helmet
-          title={data.site.siteMetadata.title}
+          title={title || data.site.siteMetadata.title}
           meta={[
             {
               name: 'description',
@@ -35,12 +45,9 @@ const Layout = ({ children }) => (
           <script async defe src="https://buttons.github.io/buttons.js" />
           <html lang="en" />
         </Helmet>
-        <div
-          style={{
-            padding: '0px 1.0875rem 1.45rem',
-            paddingTop: 0,
-          }}
-        >
+
+        <div>
+          <Header />
           {children}
         </div>
       </>

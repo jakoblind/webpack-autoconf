@@ -28,7 +28,7 @@
     "bluebird": "^3.5.1",
     "combinations": "^0.1.1",
     "diff": "^3.5.0",
-    "gatsby": "^2.0.0",
+    "gatsby": "^2.0.38",
     "gatsby-plugin-drip-widget": "^1.0.2",
     "gatsby-plugin-favicon": "^3.1.4",
     "gatsby-plugin-google-analytics": "^2.0.5",
@@ -41,8 +41,9 @@
     "memoizee": "^0.4.14",
     "node-fetch": "^2.1.2",
     "prismjs": "^1.15.0",
-    "react": "^16.5.1",
-    "react-dom": "^16.5.1",
+    "react": "^16.6.0",
+    "react-dom": "^16.6.0",
+    "react-dropzone": "^7.0.1",
     "react-helmet": "^5.2.0"
   },
   "devDependencies": {
