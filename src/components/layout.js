@@ -15,7 +15,7 @@ const Header = () => {
   )
 }
 
-const Layout = ({ children, title }) => (
+const Layout = ({ children, title, metaDescription }) => (
   <StaticQuery
     query={graphql`
       query SiteTitleQuery {
@@ -34,7 +34,7 @@ const Layout = ({ children, title }) => (
           meta={[
             {
               name: 'description',
-              content: data.site.siteMetadata.description,
+              content: metaDescription || data.site.siteMetadata.description,
             },
             {
               name: 'google-site-verification',

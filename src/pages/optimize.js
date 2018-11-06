@@ -226,7 +226,10 @@ class WebpackStatsAnalyzer extends React.Component {
 
 export default () => {
   return (
-    <Layout title="Bundle optimize helper">
+    <Layout
+      title="Webpack bundle optimize helper"
+      metaDescription="Upload webpack stats.json and get a custom report on what you can do to optimize your webpack bundle size."
+    >
       <div className={styles.webpackConfigContainer}>
         <h1 className={styles.large}>Bundle optimize helper</h1>
         <p>
