@@ -82,6 +82,19 @@ body {
     }
 }
 
+.header {
+    width: 100%;
+    padding: 1em;
+    background-color:  #242424;
+    color: white;
+}
+
+.header a {
+    color: white;
+    text-decoration: none;
+    padding-right: 3em;
+}
+
 @media only screen and (max-width: 550px) {
     .header {
         padding-top: 0.5em;
@@ -92,22 +105,9 @@ body {
         display: block;
         padding-bottom: 5px;
         padding-top: 5px;
+        padding-right: 0;
         border-bottom: 1px solid grey;
     }
-}
-
-.header {
-    width: 100%;
-    padding: 1em;
-    background-color:  #242424;
-    color: white;
-}
-
-
-.header a {
-    color: white;
-    text-decoration: none;
-    padding-right: 3em;
 }
 
 .header a:hover {
