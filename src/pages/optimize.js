@@ -152,10 +152,31 @@ class WebpackStatsAnalyzer extends React.Component {
     const reader = new FileReader()
     reader.onload = () => {
       try {
+        if (_.isEmpty(reader.result)) {
+          this.setState({
+            error: true,
+            errorMessages: ['Your stats.json file is empty'],
+          })
+          return
+        }
         const fileAsBinaryString = JSON.parse(reader.result)
         const firstChild = fileAsBinaryString //_.first(fileAsBinaryString.children)
         if (!_.isEmpty(firstChild.errors)) {
-          this.setState({ error: true, errorMessages: firstChild.errors })
+          if (
+            firstChild.errors[0].startsWith(
+              "Entry module not found: Error: Can't resolve './src'"
+            )
+          ) {
+            const srcNotFoundError = [
+              "Webpack couldn't find the entry file. Try defining the path to your webpack.config.js file with --config <filename>",
+              'Are you using create-react-app? Then run the following commands instead:',
+              <code>npm run build -- --stats</code>,
+              <code>mv build/bundle-stats.json stats.json</code>,
+            ]
+            this.setState({ error: true, errorMessages: srcNotFoundError })
+          } else {
+            this.setState({ error: true, errorMessages: firstChild.errors })
+          }
         } else if (isValidStatsFile(firstChild)) {
           const help = getDataFromStatsJson(firstChild)
           this.setState({ help, error: false, errorMessages: null })
@@ -186,9 +207,8 @@ class WebpackStatsAnalyzer extends React.Component {
               {this.state.error ? (
                 <p className={styles.error}>
                   There was a problem loading the stats.json file. <br />
-                  <br />
                   {!_.isEmpty(this.state.errorMessages)
-                    ? _.map(this.state.errorMessages, e => e)
+                    ? _.map(this.state.errorMessages, e => <p>{e}</p>)
                     : null}
                 </p>
               ) : null}
