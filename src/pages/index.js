@@ -100,17 +100,6 @@ const Footer = () => (
       . Advanced optimizations such as code splitting is not (yet?) fully
       supported with this tool.
     </p>
-    <h4>Want more?</h4>
-    <p>
-      Want to be notified when I build more cool stuff like this? And also get
-      early access to articles?
-    </p>
-    <a
-      className={styles.myButton}
-      href="https://www.getdrip.com/forms/81916834/submissions/new"
-    >
-      Sign up to my newsletter
-    </a>
     <h4>Found a bug or want a feature?</h4>
     <p>
       Contact me on <a href="https://twitter.com/karljakoblind">twitter</a> or
@@ -130,13 +119,7 @@ const Footer = () => (
         Star
       </a>
     </p>
-    <h4>Who made this thing?</h4>
-    <p>
-      It's me, Jakob who made this. I write{' '}
-      <a href="http://blog.jakoblind.no">a blog about React</a> that you might
-      want to check out if you liked this! I am also on{' '}
-      <a href="https://twitter.com/karljakoblind">twitter</a>.
-    </p>
+    <br />
   </div>
 )
 

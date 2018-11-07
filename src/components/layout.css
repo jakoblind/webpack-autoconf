@@ -4,7 +4,8 @@ html {
   -webkit-text-size-adjust: 100%;
 }
 body {
-  margin: 0;
+    margin: 0;
+    margin-bottom: 100px;
 }
 
 h1 {

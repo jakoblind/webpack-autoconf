@@ -5,12 +5,14 @@ import { StaticQuery, graphql } from 'gatsby'
 import { Link } from 'gatsby'
 import styles from '../styles.module.css'
 import './layout.css'
+
 const Header = () => {
   return (
     <div className={styles.header}>
       <Link to="/">webpack config tool</Link>
       <Link to="/optimize">Bundle optimizer</Link>
       <Link to="/course">Free webpack course</Link>
+      <Link to="/about">About</Link>
     </div>
   )
 }
