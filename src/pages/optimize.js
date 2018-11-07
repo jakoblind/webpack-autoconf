@@ -196,7 +196,7 @@ class WebpackStatsAnalyzer extends React.Component {
               <br />
               <br />
               <code className="code">
-                webpack --mode production --profile --json > stats.json
+                npx webpack --mode production --profile --json > stats.json
               </code>
               <br />
               <br />
