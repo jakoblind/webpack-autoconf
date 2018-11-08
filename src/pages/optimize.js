@@ -139,6 +139,11 @@ const WebpackOptimizeHelper = ({ help, reset }) => {
     </div>
   )
 }
+const logToGa = ({action, category, label}) => {
+    if (process.env.GATSBY_LOG_GA === "true") {
+        window.ga('send', 'event', category, action, label);
+    }
+}
 
 class WebpackStatsAnalyzer extends React.Component {
   state = {
@@ -157,6 +162,8 @@ class WebpackStatsAnalyzer extends React.Component {
             error: true,
             errorMessages: ['Your stats.json file is empty'],
           })
+            logToGa({ category: "error", action: "upload-stats", label: "empty stats.json file" });
+
           return
         }
         const fileAsBinaryString = JSON.parse(reader.result)
@@ -167,24 +174,30 @@ class WebpackStatsAnalyzer extends React.Component {
               "Entry module not found: Error: Can't resolve './src'"
             )
           ) {
+
             const srcNotFoundError = [
               "Webpack couldn't find the entry file. Try defining the path to your webpack.config.js file with --config <filename>",
               'Are you using create-react-app? Then run the following commands instead:',
               <code>npm run build -- --stats</code>,
               <code>mv build/bundle-stats.json stats.json</code>,
             ]
-            this.setState({ error: true, errorMessages: srcNotFoundError })
+              this.setState({ error: true, errorMessages: srcNotFoundError })
+              logToGa({ category: "error", action: "upload-stats", label: "src not found" });
           } else {
+              logToGa({ category: "error", action: "upload-stats", label: _.join(firstChild.errors, ",") });
             this.setState({ error: true, errorMessages: firstChild.errors })
           }
         } else if (isValidStatsFile(firstChild)) {
-          const help = getDataFromStatsJson(firstChild)
+            const help = getDataFromStatsJson(firstChild)
+            logToGa({ category: "optimizer", action: "upload", label: "ok" });
           this.setState({ help, error: false, errorMessages: null })
         } else {
-          this.setState({ error: true, errorMessages: null })
+            logToGa({ category: "error", action: "upload-stats", label: "unkown error" });
+            this.setState({ error: true, errorMessages: null })
         }
       } catch (error) {
-        this.setState({ error: true, errorMessages: null })
+          this.setState({ error: true, errorMessages: null })
+          logToGa({ category: "error", action: "upload-stats", label: error });
       }
     }
     reader.onabort = () => console.log('file reading was aborted')
