@@ -20,7 +20,7 @@ const getDependencyNameFromModuleName = m => {
 }
 
 export function isValidStatsFile(json) {
-  return !!json.entrypoints
+  return !!json.entrypoints && !!json.modules && !!json.assets
 }
 export function getDataFromStatsJson(json) {
   if (!json) {

@@ -142,6 +142,8 @@ const WebpackOptimizeHelper = ({ help, reset }) => {
 const logToGa = ({action, category, label}) => {
     if (process.env.GATSBY_LOG_GA === "true") {
         window.ga('send', 'event', category, action, label);
+    } else {
+        console.log("GA send event: ", { category, action, label});
     }
 }
 
@@ -169,30 +171,31 @@ class WebpackStatsAnalyzer extends React.Component {
         const fileAsBinaryString = JSON.parse(reader.result)
         const firstChild = fileAsBinaryString //_.first(fileAsBinaryString.children)
         if (!_.isEmpty(firstChild.errors)) {
+            const webpackConfigError = [
+              "Try defining the path to your webpack.config.js file with --config <filename>",
+              'Are you using create-react-app? Then run the following commands instead:',
+              <code>npm run build -- --stats</code>,
+              <code>mv build/bundle-stats.json stats.json</code>,
+            ]
+
           if (
             firstChild.errors[0].startsWith(
               "Entry module not found: Error: Can't resolve './src'"
             )
           ) {
-
-            const srcNotFoundError = [
-              "Webpack couldn't find the entry file. Try defining the path to your webpack.config.js file with --config <filename>",
-              'Are you using create-react-app? Then run the following commands instead:',
-              <code>npm run build -- --stats</code>,
-              <code>mv build/bundle-stats.json stats.json</code>,
-            ]
-              this.setState({ error: true, errorMessages: srcNotFoundError })
+              this.setState({ error: true, errorMessages: webpackConfigError })
               logToGa({ category: "error", action: "upload-stats", label: "src not found" });
           } else {
               logToGa({ category: "error", action: "upload-stats", label: _.join(firstChild.errors, ",") });
-            this.setState({ error: true, errorMessages: firstChild.errors })
+            this.setState({ error: true, errorMessages: webpackConfigError })
           }
         } else if (isValidStatsFile(firstChild)) {
             const help = getDataFromStatsJson(firstChild)
             logToGa({ category: "optimizer", action: "upload", label: "ok" });
           this.setState({ help, error: false, errorMessages: null })
         } else {
-            logToGa({ category: "error", action: "upload-stats", label: "unkown error" });
+            const childrenSize = _.size(firstChild.children)
+            logToGa({ category: "error", action: "upload-stats", label: "no entrypoint, assets, modules, children size " + childrenSize });
             this.setState({ error: true, errorMessages: null })
         }
       } catch (error) {
