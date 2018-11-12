@@ -19,18 +19,48 @@ const getDependencyNameFromModuleName = m => {
   //return m
 }
 
+function getEntrypointAssets(entrypoints) {
+  const entrypointKeys = Object.keys(entrypoints)
+  return flatMap(entrypoint => entrypoints[entrypoint].assets, entrypointKeys)
+}
+
+export function entrypointsContainsJS(entrypoints) {
+  return (
+    getEntrypointAssets(entrypoints).filter(asset => asset.indexOf('.js') > 0)
+      .length > 0
+  )
+}
 export function isValidStatsFile(json) {
   return !!json.entrypoints && !!json.modules && !!json.assets
 }
-export function getDataFromStatsJson(json) {
-  if (!json) {
-    return {}
+
+function childHasJsEntry(child) {
+  if (isValidStatsFile(child)) {
+    return entrypointsContainsJS(child.entrypoints)
   }
-  const entrypoints = Object.keys(json.entrypoints)
-  const entrypointAssets = flatMap(
-    entrypoint => json.entrypoints[entrypoint].assets,
-    entrypoints
-  )
+  return false
+}
+export function findChildWithJSEntry(json) {
+  if (childHasJsEntry(json)) {
+    return json
+  } else {
+    if (json.children) {
+      return json.children.find(child => childHasJsEntry(child))
+    } else {
+      return null
+    }
+  }
+}
+
+export function getDataFromStatsJson(statsJson) {
+  if (!statsJson) {
+    return null
+  }
+  const json = findChildWithJSEntry(statsJson)
+  if (!json) {
+    return null
+  }
+  const entrypointAssets = getEntrypointAssets(json.entrypoints)
   const modules = json.modules.map(m => {
     const optimizationBailout = m.optimizationBailout.filter(
       b =>

@@ -15,8 +15,8 @@ const EntryPointView = ({ entrypointAssetSizes, entrypointAssetSizeTotal }) => {
     entrypointAssetSizeTotal <= 250000
       ? styles.green
       : entrypointAssetSizeTotal <= 500000
-        ? styles.orange
-        : styles.red
+      ? styles.orange
+      : styles.red
   return (
     <div>
       <h3>Your entrypoints</h3>
@@ -139,12 +139,12 @@ const WebpackOptimizeHelper = ({ help, reset }) => {
     </div>
   )
 }
-const logToGa = ({action, category, label}) => {
-    if (process.env.GATSBY_LOG_GA === "true") {
-        window.ga('send', 'event', category, action, label);
-    } else {
-        console.log("GA send event: ", { category, action, label});
-    }
+const logToGa = ({ action, category, label }) => {
+  if (process.env.GATSBY_LOG_GA === 'true') {
+    window.ga('send', 'event', category, action, label)
+  } else {
+    console.log('GA send event: ', { category, action, label })
+  }
 }
 
 class WebpackStatsAnalyzer extends React.Component {
@@ -154,32 +154,62 @@ class WebpackStatsAnalyzer extends React.Component {
     errorMessages: null,
   }
 
-    getReport(stats) {
-        if (!_.isEmpty(stats.errors)) {
-            const webpackConfigError = [
-              "Try defining the path to your webpack.config.js file with --config <filename>",
-              'Are you using create-react-app? Then run the following commands instead:',
-              <code>npm run build -- --stats</code>,
-              <code>mv build/bundle-stats.json stats.json</code>,
-            ]
+  getReport(stats) {
+    if (!_.isEmpty(stats.errors)) {
+      const webpackConfigError = [
+        'Try defining the path to your webpack.config.js file with --config <filename>',
+        'Are you using create-react-app? Then run the following commands instead:',
+        <code>npm run build -- --stats</code>,
+        <code>mv build/bundle-stats.json stats.json</code>,
+      ]
 
-          if (
-            stats.errors[0].startsWith(
-              "Entry module not found: Error: Can't resolve './src'"
-            )
-          ) {
-              return {error: true, errorMessages: webpackConfigError, ga: { category: "error", action: "upload-stats", label: "src not found" }}
-          } else {
-              return {error: true, errorMessages: webpackConfigError, ga: { category: "error", action: "upload-stats", label: _.join(stats.errors, ",") }}
-          }
-        } else if (isValidStatsFile(stats)) {
-            const help = getDataFromStatsJson(stats)
-            return {error: false, help, ga: { category: "optimizer", action: "upload", label: "ok" }};
-        } else {
-            return {tryChild: true, error: true, errorMessages: null, ga: { category: "error", action: "upload-stats", label: "no entrypoint, assets, modules" }}
+      if (
+        stats.errors[0].startsWith(
+          "Entry module not found: Error: Can't resolve './src'"
+        )
+      ) {
+        return {
+          error: true,
+          errorMessages: webpackConfigError,
+          ga: {
+            category: 'error',
+            action: 'upload-stats',
+            label: 'src not found',
+          },
         }
-
+      } else {
+        return {
+          error: true,
+          errorMessages: webpackConfigError,
+          ga: {
+            category: 'error',
+            action: 'upload-stats',
+            label: _.join(stats.errors, ','),
+          },
+        }
+      }
+    } else {
+      const help = getDataFromStatsJson(stats)
+      if (help) {
+        return {
+          error: false,
+          help,
+          ga: { category: 'optimizer', action: 'upload', label: 'ok' },
+        }
+      } else {
+        return {
+          tryChild: true,
+          error: true,
+          errorMessages: null,
+          ga: {
+            category: 'error',
+            action: 'upload-stats',
+            label: 'no entrypoint, assets, modules',
+          },
+        }
+      }
     }
+  }
   onDrop(acceptedFiles) {
     const file = acceptedFiles[0]
     const reader = new FileReader()
@@ -190,25 +220,33 @@ class WebpackStatsAnalyzer extends React.Component {
             error: true,
             errorMessages: ['Your stats.json file is empty'],
           })
-            logToGa({ category: "error", action: "upload-stats", label: "empty stats.json file" });
+          logToGa({
+            category: 'error',
+            action: 'upload-stats',
+            label: 'empty stats.json file',
+          })
 
           return
         }
         const fileAsBinaryString = JSON.parse(reader.result)
-          let report = this.getReport(fileAsBinaryString);
-          if (report.tryChild === true) {
-              const firstChild = _.first(fileAsBinaryString.children)
-              report = this.getReport(firstChild);
-          }
-          if (report.error) {
-              this.setState({ error: report.error, errorMessages: report.errorMessages })
-              logToGa(report.ga);
-          } else {
-              this.setState({ error: report.error, errorMessages: report.errorMessages, help: report.help })
-          }
+
+        const report = this.getReport(fileAsBinaryString)
+        if (report.error) {
+          this.setState({
+            error: report.error,
+            errorMessages: report.errorMessages,
+          })
+          logToGa(report.ga)
+        } else {
+          this.setState({
+            error: report.error,
+            errorMessages: report.errorMessages,
+            help: report.help,
+          })
+        }
       } catch (error) {
-          this.setState({ error: true, errorMessages: null })
-          logToGa({ category: "error", action: "upload-stats", label: error });
+        this.setState({ error: true, errorMessages: null })
+        logToGa({ category: 'error', action: 'upload-stats', label: error })
       }
     }
     reader.onabort = () => console.log('file reading was aborted')
@@ -236,9 +274,11 @@ class WebpackStatsAnalyzer extends React.Component {
                     : null}
                 </p>
               ) : null}
-            First run webpack the same way you do for a production build, but add <code>--profile --json > stats.json</code> at the end. Example:
-                <br />
-                <br />
+              First run webpack the same way you do for a production build, but
+              add <code>--profile --json > stats.json</code> at the end.
+              Example:
+              <br />
+              <br />
               <code className="code">
                 npx webpack --mode production --profile --json > stats.json
               </code>
