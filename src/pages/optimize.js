@@ -236,9 +236,9 @@ class WebpackStatsAnalyzer extends React.Component {
                     : null}
                 </p>
               ) : null}
-              First run this in your webpack project
-              <br />
-              <br />
+            First run webpack the same way you do for a production build, but add <code>--profile --json > stats.json</code> at the end. Example:
+                <br />
+                <br />
               <code className="code">
                 npx webpack --mode production --profile --json > stats.json
               </code>
