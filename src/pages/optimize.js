@@ -154,6 +154,32 @@ class WebpackStatsAnalyzer extends React.Component {
     errorMessages: null,
   }
 
+    getReport(stats) {
+        if (!_.isEmpty(stats.errors)) {
+            const webpackConfigError = [
+              "Try defining the path to your webpack.config.js file with --config <filename>",
+              'Are you using create-react-app? Then run the following commands instead:',
+              <code>npm run build -- --stats</code>,
+              <code>mv build/bundle-stats.json stats.json</code>,
+            ]
+
+          if (
+            stats.errors[0].startsWith(
+              "Entry module not found: Error: Can't resolve './src'"
+            )
+          ) {
+              return {error: true, errorMessages: webpackConfigError, ga: { category: "error", action: "upload-stats", label: "src not found" }}
+          } else {
+              return {error: true, errorMessages: webpackConfigError, ga: { category: "error", action: "upload-stats", label: _.join(stats.errors, ",") }}
+          }
+        } else if (isValidStatsFile(stats)) {
+            const help = getDataFromStatsJson(stats)
+            return {error: false, help, ga: { category: "optimizer", action: "upload", label: "ok" }};
+        } else {
+            return {tryChild: true, error: true, errorMessages: null, ga: { category: "error", action: "upload-stats", label: "no entrypoint, assets, modules" }}
+        }
+
+    }
   onDrop(acceptedFiles) {
     const file = acceptedFiles[0]
     const reader = new FileReader()
@@ -169,35 +195,17 @@ class WebpackStatsAnalyzer extends React.Component {
           return
         }
         const fileAsBinaryString = JSON.parse(reader.result)
-        const firstChild = fileAsBinaryString //_.first(fileAsBinaryString.children)
-        if (!_.isEmpty(firstChild.errors)) {
-            const webpackConfigError = [
-              "Try defining the path to your webpack.config.js file with --config <filename>",
-              'Are you using create-react-app? Then run the following commands instead:',
-              <code>npm run build -- --stats</code>,
-              <code>mv build/bundle-stats.json stats.json</code>,
-            ]
-
-          if (
-            firstChild.errors[0].startsWith(
-              "Entry module not found: Error: Can't resolve './src'"
-            )
-          ) {
-              this.setState({ error: true, errorMessages: webpackConfigError })
-              logToGa({ category: "error", action: "upload-stats", label: "src not found" });
-          } else {
-              logToGa({ category: "error", action: "upload-stats", label: _.join(firstChild.errors, ",") });
-            this.setState({ error: true, errorMessages: webpackConfigError })
+          let report = this.getReport(fileAsBinaryString);
+          if (report.tryChild === true) {
+              const firstChild = _.first(fileAsBinaryString.children)
+              report = this.getReport(firstChild);
           }
-        } else if (isValidStatsFile(firstChild)) {
-            const help = getDataFromStatsJson(firstChild)
-            logToGa({ category: "optimizer", action: "upload", label: "ok" });
-          this.setState({ help, error: false, errorMessages: null })
-        } else {
-            const childrenSize = _.size(firstChild.children)
-            logToGa({ category: "error", action: "upload-stats", label: "no entrypoint, assets, modules, children size " + childrenSize });
-            this.setState({ error: true, errorMessages: null })
-        }
+          if (report.error) {
+              this.setState({ error: report.error, errorMessages: report.errorMessages })
+              logToGa(report.ga);
+          } else {
+              this.setState({ error: report.error, errorMessages: report.errorMessages, help: report.help })
+          }
       } catch (error) {
           this.setState({ error: true, errorMessages: null })
           logToGa({ category: "error", action: "upload-stats", label: error });
