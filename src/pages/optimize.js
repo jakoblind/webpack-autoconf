@@ -246,7 +246,7 @@ class WebpackStatsAnalyzer extends React.Component {
         }
       } catch (error) {
         this.setState({ error: true, errorMessages: null })
-        logToGa({ category: 'error', action: 'upload-stats', label: error })
+        logToGa({ category: 'error', action: 'upload-stats', label: "Exception: "  + error.name + " " + error.message })
       }
     }
     reader.onabort = () => console.log('file reading was aborted')
