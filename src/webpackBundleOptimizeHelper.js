@@ -75,7 +75,7 @@ export function getDataFromStatsJson(statsJson) {
   //  const removeDuplicate = (elem, pos, arr) => arr.indexOf(elem) === pos
   const dependenciesNotEs6 = modules
     .filter(m => !m.name.startsWith('(webpack)'))
-    .filter(m => m.name.startsWith('./node_modules'))
+    .filter(m => m.name.startsWith('./node_modules') || m.name.startsWith('../node_modules'))
     .map(m =>
       Object.assign({}, m, {
         name: getDependencyNameFromModuleName(m.name),
