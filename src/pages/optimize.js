@@ -245,7 +245,7 @@ class WebpackStatsAnalyzer extends React.Component {
           })
         }
       } catch (error) {
-        this.setState({ error: true, errorMessages: null })
+        this.setState({ error: true, errorMessages: [error.message] })
         logToGa({ category: 'error', action: 'upload-stats', label: "Exception: "  + error.name + " " + error.message })
       }
     }
@@ -284,6 +284,10 @@ class WebpackStatsAnalyzer extends React.Component {
               </code>
               <br />
               <br />
+Open the stats.json file in a text editor and remove lines of text at the top that are not part of the JSON structure (if there are any)
+              <br />
+              <br />
+
             </div>{' '}
             <Dropzone
               onDrop={files => this.onDrop(files)}
