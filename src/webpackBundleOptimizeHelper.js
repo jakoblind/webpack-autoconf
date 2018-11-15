@@ -31,7 +31,7 @@ export function entrypointsContainsJS(entrypoints) {
   )
 }
 export function isValidStatsFile(json) {
-  return !!json.entrypoints && !!json.modules && !!json.assets
+  return !!json.entrypoints && !!json.assets
 }
 
 function childHasJsEntry(child) {
@@ -52,16 +52,11 @@ export function findChildWithJSEntry(json) {
   }
 }
 
-export function getDataFromStatsJson(statsJson) {
-  if (!statsJson) {
-    return null
+function getDependenciesNotEs6(modulesRaw) {
+  if (!modulesRaw) {
+    return []
   }
-  const json = findChildWithJSEntry(statsJson)
-  if (!json) {
-    return null
-  }
-  const entrypointAssets = getEntrypointAssets(json.entrypoints)
-  const modules = json.modules.map(m => {
+  const modules = modulesRaw.map(m => {
     const optimizationBailout = m.optimizationBailout.filter(
       b =>
         b === 'ModuleConcatenation bailout: Module is not an ECMAScript module'
@@ -100,6 +95,19 @@ export function getDataFromStatsJson(statsJson) {
   //.map(m => m.name)
   //.filter(removeDuplicate)
 
+  return dependenciesNotEs6
+}
+
+export function getDataFromStatsJson(statsJson) {
+  if (!statsJson) {
+    return null
+  }
+  const json = findChildWithJSEntry(statsJson)
+  if (!json) {
+    return null
+  }
+  const entrypointAssets = getEntrypointAssets(json.entrypoints)
+
   const entrypointAssetSizes = json.assets
     .filter(a => entrypointAssets.includes(a.name))
     .map(a => ({
@@ -119,7 +127,7 @@ export function getDataFromStatsJson(statsJson) {
   //console.log('entrypointAssetSizes', entrypointAssetSizes)
 
   return {
-    dependenciesNotEs6,
+    dependenciesNotEs6: getDependenciesNotEs6(json.modules),
     entrypointAssetSizes,
     entrypointAssetSizeTotal,
   }

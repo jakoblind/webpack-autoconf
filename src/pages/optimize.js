@@ -204,7 +204,7 @@ class WebpackStatsAnalyzer extends React.Component {
           ga: {
             category: 'error',
             action: 'upload-stats',
-            label: 'no entrypoint, assets, modules',
+            label: 'no entrypoint, assets',
           },
         }
       }
@@ -243,10 +243,15 @@ class WebpackStatsAnalyzer extends React.Component {
             errorMessages: report.errorMessages,
             help: report.help,
           })
+          logToGa(report.ga)
         }
       } catch (error) {
         this.setState({ error: true, errorMessages: [error.message] })
-        logToGa({ category: 'error', action: 'upload-stats', label: "Exception: "  + error.name + " " + error.message })
+        logToGa({
+          category: 'error',
+          action: 'upload-stats',
+          label: 'Exception: ' + error.name + ' ' + error.message,
+        })
       }
     }
     reader.onabort = () => console.log('file reading was aborted')
@@ -284,10 +289,11 @@ class WebpackStatsAnalyzer extends React.Component {
               </code>
               <br />
               <br />
-Open the stats.json file in a text editor and remove lines of text at the top that are not part of the JSON structure (if there are any)
+              Open the stats.json file in a text editor and remove lines of text
+              at the top that are not part of the JSON structure (if there are
+              any)
               <br />
               <br />
-
             </div>{' '}
             <Dropzone
               onDrop={files => this.onDrop(files)}
