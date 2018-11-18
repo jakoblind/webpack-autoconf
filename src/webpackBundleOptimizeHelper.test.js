@@ -1,7 +1,18 @@
 import {
   entrypointsContainsJS,
   findChildWithJSEntry,
+  trimJsonString,
 } from './webpackBundleOptimizeHelper'
+
+test('trimJsonString should trim json', () => {
+  const jsonString = `some stuff here
+{
+ "errors": []
+}`
+  expect(trimJsonString(jsonString)).toEqual(`{
+ "errors": []
+}`)
+})
 
 test('entrypointContainsJS contains js should return true', () => {
   const entrypointWithJs = {

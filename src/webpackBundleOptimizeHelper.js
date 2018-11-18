@@ -12,6 +12,10 @@ export function formatBytes(a, b) {
   return parseFloat((a / Math.pow(c, f)).toFixed(d)) + ' ' + e[f]
 }
 
+export function trimJsonString(json) {
+  return json.substring(json.indexOf('{'))
+}
+
 const getDependencyNameFromModuleName = m => {
   // eslint-disable-next-line
   const regexResult = /.\/node_modules\/([^\/]+)\/.*/.exec(m)
@@ -70,7 +74,11 @@ function getDependenciesNotEs6(modulesRaw) {
   //  const removeDuplicate = (elem, pos, arr) => arr.indexOf(elem) === pos
   const dependenciesNotEs6 = modules
     .filter(m => !m.name.startsWith('(webpack)'))
-    .filter(m => m.name.startsWith('./node_modules') || m.name.startsWith('../node_modules'))
+    .filter(
+      m =>
+        m.name.startsWith('./node_modules') ||
+        m.name.startsWith('../node_modules')
+    )
     .map(m =>
       Object.assign({}, m, {
         name: getDependencyNameFromModuleName(m.name),

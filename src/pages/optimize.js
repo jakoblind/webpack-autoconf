@@ -7,6 +7,7 @@ import {
   formatBytes,
   getDataFromStatsJson,
   isValidStatsFile,
+  trimJsonString,
 } from '../webpackBundleOptimizeHelper'
 import _ from 'lodash'
 
@@ -228,7 +229,8 @@ class WebpackStatsAnalyzer extends React.Component {
 
           return
         }
-        const fileAsBinaryString = JSON.parse(reader.result)
+        const resultTrimmed = trimJsonString(reader.result)
+        const fileAsBinaryString = JSON.parse(resultTrimmed)
 
         const report = this.getReport(fileAsBinaryString)
         if (report.error) {
@@ -287,11 +289,6 @@ class WebpackStatsAnalyzer extends React.Component {
               <code className="code">
                 npx webpack --mode production --profile --json > stats.json
               </code>
-              <br />
-              <br />
-              Open the stats.json file in a text editor and remove lines of text
-              at the top that are not part of the JSON structure (if there are
-              any)
               <br />
               <br />
             </div>{' '}
