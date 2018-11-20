@@ -2,6 +2,7 @@ import React from 'react'
 import styles from '../styles.module.css'
 import Dropzone from 'react-dropzone'
 import Layout from '../components/layout'
+import { GenericSignupForm } from '../SignupForms'
 
 import {
   formatBytes,
@@ -16,8 +17,8 @@ const EntryPointView = ({ entrypointAssetSizes, entrypointAssetSizeTotal }) => {
     entrypointAssetSizeTotal <= 250000
       ? styles.green
       : entrypointAssetSizeTotal <= 500000
-      ? styles.orange
-      : styles.red
+        ? styles.orange
+        : styles.red
   return (
     <div>
       <h3>Your entrypoints</h3>
@@ -137,6 +138,14 @@ const WebpackOptimizeHelper = ({ help, reset }) => {
       />
       <LargeDependencies dependencies={help.dependenciesNotEs6} />
       <DependenciesView dependenciesNotEs6={help.dependenciesNotEs6} />
+      <div>
+        <h3>Want to get notified when you can learn more?</h3>I create tools and
+        articles to help you be a more productive frontend dev. Be the first to
+        know when I create something new. Plus get exlusive discounts.
+        <div>
+          <GenericSignupForm buttonText="Sign me up!" />
+        </div>
+      </div>
     </div>
   )
 }
@@ -252,7 +261,13 @@ class WebpackStatsAnalyzer extends React.Component {
         logToGa({
           category: 'error',
           action: 'upload-stats',
-          label: 'Exception: ' + error.name + ' ' + error.message,
+          label:
+            'Exception: ' +
+            error.name +
+            ' ' +
+            error.message +
+            ' ' +
+            error.stack,
         })
       }
     }
@@ -275,7 +290,10 @@ class WebpackStatsAnalyzer extends React.Component {
               <h2>Instructions to generate your report</h2>
               {this.state.error ? (
                 <p className={styles.error}>
-                  There was a problem loading the stats.json file. <br />
+                  There was a problem loading the stats.json file (
+                  <a href="mailto:jakob@jakoblind.no">email</a> me and I will
+                  debug). <br />
+                  <br />
                   {!_.isEmpty(this.state.errorMessages)
                     ? _.map(this.state.errorMessages, e => <p>{e}</p>)
                     : null}

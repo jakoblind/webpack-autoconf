@@ -2,6 +2,7 @@ import React from 'react'
 import styles from '../styles.module.css'
 import { Link } from 'gatsby'
 import Layout from '../components/layout'
+import { CourseSignupForm } from '../SignupForms'
 
 export default () => {
   return (
@@ -46,44 +47,7 @@ export default () => {
           Level up your frontend skills and become a more solid, all-round
           frontend dev. Sign up to get lesson 1 right now!
         </p>
-        <div className={styles.signupFormArea}>
-          <form
-            action="https://www.getdrip.com/forms/138671466/submissions"
-            method="post"
-            data-drip-embedded-form="138671466"
-          >
-            <div>
-              <input
-                autoFocus={true}
-                className={styles.signupField}
-                placeholder="Your Email"
-                type="email"
-                id="drip-email"
-                name="fields[email]"
-              />
-            </div>
-            <div>
-              <input
-                className={styles.signupField}
-                placeholder="Your Name"
-                type="text"
-                id="drip-first-name"
-                name="fields[first_name]"
-              />
-            </div>
-            <div className={styles.signupButtonArea}>
-              <input
-                className={styles.myButton}
-                type="submit"
-                value="Send Me Lesson 1"
-                data-drip-attribute="sign-up-button"
-              />
-            </div>
-            <Link className={styles.backLink} to="/">
-              No thanks, take me back to the configurator
-            </Link>
-          </form>
-        </div>
+        <CourseSignupForm />
       </div>
     </Layout>
   )
