@@ -12,6 +12,7 @@ const Header = () => {
       <Link to="/">webpack config tool</Link>
       <Link to="/optimize">Bundle optimizer</Link>
       <Link to="/course">Free webpack course</Link>
+      <Link to="/book">webpack book</Link>
       <Link to="/about">About</Link>
     </div>
   )
@@ -45,6 +46,11 @@ const Layout = ({ children, title, metaDescription }) => (
           ]}
         >
           <script async defe src="https://buttons.github.io/buttons.js" />
+          <script
+            type="text/javascript"
+            src="https://transactions.sendowl.com/assets/sendowl.js"
+          />
+
           <html lang="en" />
         </Helmet>
 

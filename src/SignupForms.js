@@ -1,7 +1,7 @@
 import React from 'react'
 import styles from './styles.module.css'
 
-export const SignupForm = ({ buttonText, dripId }) => (
+export const SignupForm = ({ buttonText, buttonStyle, dripId }) => (
   <div className={styles.signupFormArea}>
     <form
       action={`https://www.getdrip.com/forms/${dripId}/submissions`}
@@ -29,7 +29,7 @@ export const SignupForm = ({ buttonText, dripId }) => (
       </div>
       <div className={styles.signupButtonArea}>
         <input
-          className={styles.myButton}
+          className={buttonStyle || styles.myButton}
           type="submit"
           value={buttonText || 'Send Me Lesson 1'}
           data-drip-attribute="sign-up-button"
@@ -37,6 +37,40 @@ export const SignupForm = ({ buttonText, dripId }) => (
       </div>
     </form>
   </div>
+)
+
+export function withHidden(WrappedComponent, text) {
+  return class extends React.Component {
+    constructor(props) {
+      super(props)
+      this.state = { hidden: true }
+      this.show = this.show.bind(this)
+    }
+    show() {
+      this.setState({ hidden: false })
+    }
+    render() {
+      return (
+        <div>
+          {this.state.hidden ? (
+            <button className={styles.link} onClick={this.show}>
+              {text}
+            </button>
+          ) : (
+            <WrappedComponent {...this.props} />
+          )}
+        </div>
+      )
+    }
+  }
+}
+
+export const SampleChapterSignupForm = ({ buttonText }) => (
+  <SignupForm
+    buttonText={buttonText || 'Send me a sample chapter'}
+    buttonStyle={styles.blueButton}
+    dripId={'78049842'}
+  />
 )
 
 export const GenericSignupForm = ({ buttonText }) => (
