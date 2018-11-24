@@ -61,10 +61,13 @@ function getDependenciesNotEs6(modulesRaw) {
     return []
   }
   const modules = modulesRaw.map(m => {
-    const optimizationBailout = m.optimizationBailout.filter(
-      b =>
-        b === 'ModuleConcatenation bailout: Module is not an ECMAScript module'
-    )
+    const optimizationBailout = m.optimizationBailout
+      ? m.optimizationBailout.filter(
+          b =>
+            b ===
+            'ModuleConcatenation bailout: Module is not an ECMAScript module'
+        )
+      : []
     return {
       name: m.name,
       notEs6: optimizationBailout.length !== 0,
