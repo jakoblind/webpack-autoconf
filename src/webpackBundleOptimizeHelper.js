@@ -109,6 +109,10 @@ function getDependenciesNotEs6(modulesRaw) {
   return dependenciesNotEs6
 }
 
+function endsWith(str, suffix) {
+  return str.indexOf(suffix, str.length - suffix.length) !== -1
+}
+
 export function getDataFromStatsJson(statsJson) {
   if (!statsJson) {
     return null
@@ -121,6 +125,7 @@ export function getDataFromStatsJson(statsJson) {
 
   const entrypointAssetSizes = json.assets
     .filter(a => entrypointAssets.includes(a.name))
+    .filter(a => !endsWith(a.name, '.map')) //don't show sourcemaps
     .map(a => ({
       name: a.name,
       size: formatBytes(a.size),
