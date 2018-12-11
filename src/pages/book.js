@@ -206,6 +206,7 @@ export default () => {
         <h3>Still not convinced?</h3>
         <p>
           <HiddenSampleChapterSignupForm />
+          <div style={{ clear: 'both' }} />
           <br /> It can also be good to know that I offer a 30-day money back
           guarantee if you are not happy with the book.
         </p>
