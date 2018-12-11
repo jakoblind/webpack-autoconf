@@ -1,7 +1,7 @@
 import React from 'react'
 import styles from './styles.module.css'
 
-export const SignupForm = ({ buttonText, buttonStyle, dripId }) => (
+export const SignupForm = ({ buttonText, buttonStyle, signupText, dripId }) => (
   <div className={styles.signupFormArea}>
     <form
       action={`https://www.getdrip.com/forms/${dripId}/submissions`}
@@ -34,6 +34,8 @@ export const SignupForm = ({ buttonText, buttonStyle, dripId }) => (
           value={buttonText || 'Send Me Lesson 1'}
           data-drip-attribute="sign-up-button"
         />
+        <br />
+        {signupText}
       </div>
     </form>
   </div>
@@ -69,6 +71,7 @@ export const SampleChapterSignupForm = ({ buttonText }) => (
   <SignupForm
     buttonText={buttonText || 'Send me a sample chapter'}
     buttonStyle={styles.blueButton}
+    signupText="You'll also get articles related to webpack and JavaScript once or twice per month"
     dripId={'78049842'}
   />
 )
