@@ -207,6 +207,23 @@ h2 {
     max-width: 1067px;
     margin: 0 auto;
 }
+.sectionsContainer {
+    display: flex;
+}
+.sectionsLeft {
+    width: 50%;
+}
+@media only screen and (max-width: 666px) {
+    .sectionsContainer {
+        display: block;
+    }
+}
+
+.shadow {
+    box-shadow: 0 2px 4px 0 rgba(0,0,0,.1);
+}
+
+
 .featuresContainer {
     max-width: 320px;
     display: block;
