@@ -119,6 +119,7 @@
         padding-top: 5px;
         padding-right: 0;
         border-bottom: 1px solid grey;
+        font-size: medium;
     }
 }
 
@@ -321,6 +322,7 @@ textarea {
 }
 
 .feature-container {
+    font-size: medium;
     display: block;
     text-align: left;
     width: 100px;
