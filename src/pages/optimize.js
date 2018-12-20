@@ -9,7 +9,7 @@ import {
   getDataFromStatsJson,
   isValidStatsFile,
   trimJsonString,
-} from '../webpackBundleOptimizeHelper'
+} from 'webpack-optimize-helper'
 import _ from 'lodash'
 
 const EntryPointView = ({ entrypointAssetSizes, entrypointAssetSizeTotal }) => {
@@ -355,7 +355,7 @@ export default () => {
           Does anything look wrong or weird? Let me know on twitter{' '}
           <a href="https://twitter.com/karljakoblind">@karljakoblind</a> or
           create an{' '}
-          <a href="https://github.com/jakoblind/webpack-autoconf">
+          <a href="https://github.com/jakoblind/webpack-optimize-helper">
             issue on github
           </a>
           .
