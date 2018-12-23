@@ -141,7 +141,7 @@
 
 }
 .webpack-config-container {
-    max-width: 800px;
+    max-width: 700px;
     margin: 0 auto;
     padding: 30px 20px;
 }
@@ -217,6 +217,9 @@ h2 {
 @media only screen and (max-width: 666px) {
     .sectionsContainer {
         display: block;
+    }
+    .sectionsLeft {
+        width: 100%;
     }
 }
 

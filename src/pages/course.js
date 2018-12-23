@@ -8,32 +8,17 @@ export default () => {
   return (
     <Layout title="Bundle optimize helper">
       <div className={styles.webpackConfigContainer}>
-        <h1 className={styles.large}>Time to learn webpack properly</h1>
+          <h1 className={styles.large}>Time to learn webpack properly</h1>
         <p>
-          You want to build modern, awesome web apps. And you know you must
-          learn webpack to do it.
+            Why do you need both a <code>.babelrc</code> file <i>and</i> a
+          <code> webpack.config.js</code> file? What's the difference between babel and webpack?
         </p>
-        <p>
-          But webpack is really advanced and difficult to learn. The config file
-          is huge.
-        </p>
-        <p>
-          Why do you need both a <code>.babelrc</code> file and a
-          <code> webpack.config.js</code> file? And why should you put CSS and
-          images in the JavaScript bundle?
-        </p>
-        <p>You just don't get webpack. </p>
 
-        <h3 />
+        <p>And why should you put CSS and images in the bundle? Isn't the bundle supposed to be a JavaScript file?</p>
+
         <h3>Free webpack email course</h3>
         <p>
-          With this email course we start from scratch and you'll learn webpack
-          from the ground up.
-        </p>
-
-        <p>
-          You start with a clean slate and build webpack configs with your bare
-          hands. Coding yourself is the best way to learn webpack.
+          With this email course you'll start with a clean slate and you will learn step-by-step how to build a complete webpack app. Coding yourself is the best way to learn webpack.
         </p>
         <p>
           You will be using industry best practices and latest version of
