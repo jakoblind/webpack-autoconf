@@ -51,7 +51,11 @@ const Layout = ({ children, title, metaDescription }) => (
             type="text/javascript"
             src="https://transactions.sendowl.com/assets/sendowl.js"
           />
-
+          <script
+            async
+            src="https://platform.twitter.com/widgets.js"
+            charSet="utf-8"
+          />
           <html lang="en" />
         </Helmet>
 

@@ -282,6 +282,19 @@ class Configurator extends React.Component {
             </div>
             <br />
             <Link to="/course">Free webpack course</Link>
+            <br />
+            <br />
+            <a
+              href="https://twitter.com/share?ref_src=twsrc%5Etfw"
+              className="twitter-share-button"
+              data-text="webpack config tool: create a webpack config in your browser"
+              data-url="https://webpack.jakoblind.no/"
+              data-via="karljakoblind"
+              data-lang="en"
+              data-show-count="false"
+            >
+              Tweet
+            </a>
           </div>
           <div className={styles.codeContainer}>
             <FileBrowser
