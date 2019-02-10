@@ -8,7 +8,7 @@ class App extends React.Component {
 }
 
 var mountNode = document.getElementById("app");
-ReactDOM.render(<App name="Jane" />, mountNode);`;
+ReactDOM.render(<App name="Jane" />, mountNode);`
 
 export const reactHotIndexJs = `import React from "react";
 import ReactDOM from "react-dom";
@@ -23,19 +23,19 @@ class App extends React.Component {
 const AppWithHot = hot(module)(App);
 
 var mountNode = document.getElementById("app");
-ReactDOM.render(<AppWithHot name="Jane" />, mountNode);`;
+ReactDOM.render(<AppWithHot name="Jane" />, mountNode);`
 
 export const reactIndexHtml = `<!DOCTYPE html>
 <html>
     <head>
         <title>React starter app</title>
+        <meta charset="utf-8">
     </head>
     <body>
         <div id="app"></div>
         <script src="bundle.js"></script>
     </body>
 </html>`
-
 
 export const reactIndexTsx = `import * as React from 'react';
 import * as ReactDOM from "react-dom";
