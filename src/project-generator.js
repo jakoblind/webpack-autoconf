@@ -75,6 +75,7 @@ function maybeSourceCodeTypescriptOnly(isTypescript, isReact, isVue) {
   it needs to fetch dependencies
 */
 function generateProject(features, name) {
+  const isBabel = _.includes(features, 'Babel')
   const isReact = _.includes(features, 'React')
   const isVue = _.includes(features, 'Vue')
   const isTypescript = _.includes(features, 'Typescript')
@@ -88,7 +89,9 @@ function generateProject(features, name) {
     isVue && isTypescript ? { 'vue-shim.d.ts': vueShimType } : null
 
   const maybeConfigBabel =
-    newBabelConfig && isReact ? { '.babelrc': newBabelConfig } : null
+    newBabelConfig && (isReact || isBabel)
+      ? { '.babelrc': newBabelConfig }
+      : null
 
   const maybeConfigTypescript = isTypescript
     ? isReact

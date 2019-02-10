@@ -3,7 +3,7 @@ import App from './App';
 new Vue({
   el: '#app',
   render: h => h(App),
-});`;
+});`
 export const vueIndexAppVue = `
 <template>
     <div>
@@ -28,18 +28,20 @@ export const vueIndexAppVue = `
     },
   });
 </script>
-`;
+`
 
 export const vueIndexHtml = `<!doctype html>
 <html>
-
+<head>
+    <meta charset="utf-8">
+</head>
 <body>
     <div id="app"></div>
 </body>
 
 <script src="bundle.js"></script>
 
-</html>`;
+</html>`
 
 export const vueHelloWorldTS = `<template>
     <div>
@@ -73,7 +75,7 @@ export default Vue.extend({
     }
 });
 </script>
-`;
+`
 
 export const vueHelloWorldJs = `<template>
     <div>
@@ -107,11 +109,11 @@ export default Vue.extend({
     }
 });
 </script>
-`;
+`
 
 export const vueShimType = `
 declare module "*.vue" {
   import Vue from 'vue'
   export default Vue
 }
-`;
+`

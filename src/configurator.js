@@ -91,17 +91,23 @@ export const features = (() => {
                 const webpackConfigWithRule = assignModuleRuleAndResolver(webpackConfig, [{
                     test: /\.vue$/,
                     loader: 'vue-loader'
-                }, {
-                    test: /\.js$/,
-                    loader: 'babel-loader'
-                }],  [ '.js', '.vue' ]);
+                }],  ['.js', '.vue' ]);
                 return addPlugin(webpackConfigWithRule, "CODE:new VueLoaderPlugin()");
             },
+            devDependencies: (configItems) => ["vue-loader", "vue-template-compiler", "babel-loader", "@babel/core", "@babel/preset-env"],
+            dependencies: (configItems) => ["vue"]
+        },
+        "Babel": {
+            group: "Transpiler",
             babel: (babelConfig) => Object.assign({}, babelConfig, {
                 "presets": [['@babel/preset-env', { modules: false }]]
             }),
-            devDependencies: (configItems) => ["vue-loader", "vue-template-compiler", "babel-loader", "@babel/core", "@babel/preset-env"],
-            dependencies: (configItems) => ["vue"]
+            devDependencies: (configItems) => ["babel-loader", "@babel/core", "@babel/preset-env"],
+webpack: (webpackConfig) => addModuleRule(webpackConfig, [{
+                test: /\.js$/,
+                use: 'babel-loader',
+                exclude: /node_modules/
+            }])
         },
         "Typescript": {
             group: "Transpiler",
