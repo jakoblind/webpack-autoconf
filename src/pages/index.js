@@ -206,12 +206,32 @@ class Configurator extends React.Component {
       selected['React'] = !setToSelected
       selected['React hot loader'] = false
     }
+    // if user tries to deselect babel, and react is set and typescript is not set, then don't allow it
+    if (
+      feature === 'Babel' &&
+      !setToSelected &&
+      this.state.selected['React'] &&
+      !this.state.selected['Typescript']
+    ) {
+      return
+    }
+    if (
+      feature === 'Typescript' &&
+      !setToSelected &&
+      this.state.selected['React'] &&
+      !this.state.selected['Babel']
+    ) {
+      return
+    }
     //
     if (feature === 'React') {
       if (setToSelected) {
         selected['Vue'] = !setToSelected
         // let's default react hot loader
         selected['React hot loader'] = true
+        if (!this.state.selected['Typescript']) {
+          selected['Babel'] = true
+        }
       } else {
         // cant have React hot loader without React
         selected['React hot loader'] = false
