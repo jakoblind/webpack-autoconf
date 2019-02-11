@@ -165,38 +165,26 @@ class WebpackStatsAnalyzer extends React.Component {
   }
 
   getReport(stats) {
-    if (!_.isEmpty(stats.errors)) {
+    if (
+      !_.isEmpty(stats.errors) &&
+      stats.errors[0].startsWith(
+        "Entry module not found: Error: Can't resolve './src'"
+      )
+    ) {
       const webpackConfigError = [
         'Try defining the path to your webpack.config.js file with --config <filename>',
         'Are you using create-react-app? Then run the following commands instead:',
         <code>npm run build -- --stats</code>,
         <code>mv build/bundle-stats.json stats.json</code>,
       ]
-
-      if (
-        stats.errors[0].startsWith(
-          "Entry module not found: Error: Can't resolve './src'"
-        )
-      ) {
-        return {
-          error: true,
-          errorMessages: webpackConfigError,
-          ga: {
-            category: 'error',
-            action: 'upload-stats',
-            label: 'src not found',
-          },
-        }
-      } else {
-        return {
-          error: true,
-          errorMessages: webpackConfigError,
-          ga: {
-            category: 'error',
-            action: 'upload-stats',
-            label: _.join(stats.errors, ','),
-          },
-        }
+      return {
+        error: true,
+        errorMessages: webpackConfigError,
+        ga: {
+          category: 'error',
+          action: 'upload-stats',
+          label: 'src not found',
+        },
       }
     } else {
       const help = getDataFromStatsJson(stats)
