@@ -88,6 +88,7 @@ function generateProject(requestedFeatures, { basePath, name }) {
   const isReact = _.includes(requestedFeatures, 'React')
   const isVue = _.includes(requestedFeatures, 'Vue')
   const isTypescript = _.includes(requestedFeatures, 'Typescript')
+  const isBabel = _.includes(requestedFeatures, 'Babel')
   const isHotReact = _.includes(requestedFeatures, 'React hot loader')
   const indexSuffix = isTypescript ? 'ts' : 'js'
 
@@ -105,6 +106,11 @@ function generateProject(requestedFeatures, { basePath, name }) {
     console.log(
       'React and Vue in same project not currently supported. Pick one'
     )
+    return
+  }
+
+  if (isReact && (!isTypescript && !isBabel)) {
+    console.log('Select either Babel or Typescript when using React')
     return
   }
 
