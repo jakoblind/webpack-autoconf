@@ -5,21 +5,24 @@ import {
   getPackageJson,
   getDefaultProjectName,
   features as allFeatures,
-} from './configurator'
+} from '../configurator/configurator'
 
-import projectGenerator from './project-generator'
-import styles from './styles.module.css'
-import './prism-line-highlight.css'
+import projectGenerator from '../configurator/project-generator'
+import styles from '../styles.module.css'
+import '../vendor/prism-line-highlight.css'
 import Prism from 'prismjs'
 import memoizee from 'memoizee'
-import { createWebpackConfig, getNpmDependencies } from './configurator'
-import { getDiffAsLineNumber } from './Diff'
+import {
+  createWebpackConfig,
+  getNpmDependencies,
+} from '../configurator/configurator'
+import { getDiffAsLineNumber } from '../configurator/Diff'
 // disable prettier for now.
 // import prettier from 'prettier/standalone'
 // const parserBabylon = require('prettier/parser-babylon')
 
 require('prismjs/themes/prism-tomorrow.css')
-require('./PrismLineHighlight')
+require('../vendor/PrismLineHighlight')
 
 const FileList = ({ files, selectedFile, onSelectFile }) => {
   const filesElements = _.map(files, file => (

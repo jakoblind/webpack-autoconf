@@ -1,4 +1,4 @@
-import { baseWebpack, baseWebpackImports, packageJson } from './templates/base'
+import { baseWebpack, baseWebpackImports, packageJson } from '../templates/base'
 
 const jsStringify = require('javascript-stringify')
 const _ = require('lodash')

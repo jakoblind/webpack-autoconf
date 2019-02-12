@@ -1,6 +1,6 @@
 import _ from 'lodash'
 
-import { readmeFile } from './templates/base'
+import { readmeFile } from '../templates/base'
 
 import {
   createWebpackConfig,
@@ -14,17 +14,17 @@ import {
   vueIndexHtml,
   vueIndexTs,
   vueShimType,
-} from './templates/vue'
+} from '../templates/vue'
 
 import {
   reactIndexJs,
   reactIndexTsx,
   reactHotIndexJs,
   reactIndexHtml,
-} from './templates/react/index'
-import { emptyIndexJs } from './templates/empty/index'
+} from '../templates/react/index'
+import { emptyIndexJs } from '../templates/empty/index'
 
-import { indexTypescriptHTML, tsconfig, tsconfigReact } from './templates/ts'
+import { indexTypescriptHTML, tsconfig, tsconfigReact } from '../templates/ts'
 
 function maybeSourceCodeVue(isVue, isTypescript) {
   if (isVue) {

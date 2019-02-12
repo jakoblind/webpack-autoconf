@@ -8,76 +8,12 @@ import {
   createBabelConfig,
   getNpmDependencies,
   getDefaultProjectName,
-} from '../configurator'
+} from '../configurator/configurator'
 
-import FileBrowser from '../FileBrowser'
+import FileBrowser from '../components/FileBrowser'
 
 import Layout from '../components/layout'
-
-const Feature = ({
-  feature,
-  selected,
-  setSelected,
-  onMouseEnter,
-  onMouseLeave,
-}) => (
-  <label
-    className={styles.featureContainer}
-    onMouseEnter={() => onMouseEnter(feature)}
-    onMouseLeave={() => onMouseLeave(feature)}
-    onTouchStart={() => onMouseEnter(feature)}
-    onTouchEnd={() => onMouseLeave(feature)}
-    onTouchCancel={() => onMouseLeave(feature)}
-  >
-    {feature}
-    <input
-      checked={selected || false}
-      onChange={() => setSelected(feature)}
-      type="checkbox"
-    />
-    <span className={styles.checkmark} />
-  </label>
-)
-
-class Features extends React.Component {
-  render() {
-    const {
-      features,
-      selected,
-      setSelected,
-      onMouseEnter,
-      onMouseLeave,
-    } = this.props
-    const groupedFeatures = _.chain(features)
-      .mapValues((v, k, o) => Object.assign({}, v, { feature: k }))
-      .groupBy('group')
-      .value()
-
-    return (
-      <div className={styles.features}>
-        {_.map(groupedFeatures, (featureList, group) => (
-          <div className={styles.featureGroup} key={group}>
-            <div className={styles.featureGroupName}>
-              {group !== 'undefined' ? group : ''}
-            </div>
-            <div className={styles.featureGroupContainer}>
-              {_.map(featureList, ({ feature }) => (
-                <Feature
-                  feature={feature}
-                  selected={selected[feature]}
-                  setSelected={setSelected}
-                  onMouseEnter={onMouseEnter}
-                  onMouseLeave={onMouseLeave}
-                  key={feature}
-                />
-              ))}
-            </div>
-          </div>
-        ))}
-      </div>
-    )
-  }
-}
+import Features from "../components/configurator/Features";
 
 const logFeatureClickToGa = (feature, selected) => {
   //const eventAction = selected ? 'select' : 'deselect'
