@@ -13,7 +13,7 @@ import {
   getNpmDependencies,
   getDefaultProjectName,
   getPackageJson,
-} from './src/configurator'
+} from './src/configurator/configurator'
 import { readmeFile } from './src/templates/base'
 import {
   reactIndexJs,

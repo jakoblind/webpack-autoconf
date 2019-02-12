@@ -1,5 +1,5 @@
 import React from 'react'
-import styles from './styles.module.css'
+import styles from '../styles.module.css'
 
 export const SignupForm = ({ buttonText, buttonStyle, signupText, dripId }) => (
   <div className={styles.signupFormArea}>

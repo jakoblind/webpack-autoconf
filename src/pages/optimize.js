@@ -2,7 +2,7 @@ import React from 'react'
 import styles from '../styles.module.css'
 import Dropzone from 'react-dropzone'
 import Layout from '../components/layout'
-import { GenericSignupForm } from '../SignupForms'
+import { GenericSignupForm } from '../components/SignupForms'
 
 import {
   formatBytes,

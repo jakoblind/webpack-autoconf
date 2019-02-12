@@ -2,7 +2,7 @@ import React from 'react'
 import styles from '../styles.module.css'
 import { Link } from 'gatsby'
 import Layout from '../components/layout'
-import { CourseSignupForm } from '../SignupForms'
+import { CourseSignupForm } from '../components/SignupForms'
 
 export default () => {
   return (

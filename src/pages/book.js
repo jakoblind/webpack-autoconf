@@ -1,7 +1,7 @@
 import React from 'react'
 import styles from '../styles.module.css'
 import { Link } from 'gatsby'
-import { SampleChapterSignupForm, withHidden } from '../SignupForms'
+import { SampleChapterSignupForm, withHidden } from '../components/SignupForms'
 import Layout from '../components/layout'
 
 export const HiddenSampleChapterSignupForm = withHidden(
