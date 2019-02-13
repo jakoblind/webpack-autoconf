@@ -2,9 +2,9 @@ import React from 'react'
 import _ from 'lodash'
 import styles from '../styles.module.css'
 import { Link } from 'gatsby'
+import { features } from '../configurator/configurator-config'
 
 import {
-  features,
   createBabelConfig,
   getNpmDependencies,
   getDefaultProjectName,
@@ -13,7 +13,7 @@ import {
 import FileBrowser from '../components/FileBrowser'
 
 import Layout from '../components/layout'
-import Features from "../components/configurator/Features";
+import Features from '../components/configurator/Features'
 
 const logFeatureClickToGa = (feature, selected) => {
   //const eventAction = selected ? 'select' : 'deselect'
@@ -256,7 +256,6 @@ class Configurator extends React.Component {
             <FileBrowser
               features={this.selectedArray()}
               highlightFeature={this.state.hoverFeature}
-              newNpmConfig={newNpmConfig}
             />
             <br />
             <div className={styles.smallScreensOnly}>
