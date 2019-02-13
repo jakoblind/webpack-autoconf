@@ -5,9 +5,9 @@ import Promise from 'bluebird'
 
 import fs from 'fs'
 import childProcess from 'child_process'
+import { features } from './src/configurator/configurator-config'
 
 import {
-  features,
   createWebpackConfig,
   createBabelConfig,
   getNpmDependencies,
@@ -36,7 +36,7 @@ import {
   vueShimType,
 } from './src/templates/vue'
 
-import projectGenerator from './src/project-generator'
+import projectGenerator from './src/configurator/project-generator'
 
 function exec(command) {
   return new Promise(function(resolve, reject) {
