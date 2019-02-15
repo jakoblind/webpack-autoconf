@@ -87,17 +87,10 @@ class FileBrowser extends React.Component {
   }
   render() {
     const { fileContentMap } = this.props
-    const content = _.get(fileContentMap, this.state.selectedFile, '')
+    const fileContent = _.get(fileContentMap, this.state.selectedFile, '')
 
     var extensionRegex = /\.[0-9a-z]+$/i
     const extension = this.state.selectedFile.match(extensionRegex)
-
-    let highlightedLines = null
-    if (this.state.selectedFile === 'webpack.config.js') {
-      highlightedLines = this.props.highlightedWebpackConfigLines
-    } else if (this.state.selectedFile === 'package.json') {
-      highlightedLines = this.props.highlightedPackageJsonLines
-    }
 
     return (
       <div className={styles.fileBrowser}>
@@ -108,10 +101,36 @@ class FileBrowser extends React.Component {
         />
         <CodeBox
           extension={extension}
-          code={content}
-          highlightedLines={highlightedLines}
+          code={fileContent.content}
+          highlightedLines={fileContent.highlightedLines}
         />
       </div>
+    )
+  }
+}
+
+class FileBrowserTransformer extends React.Component {
+  getDiffAsLineNumberMemoized = memoizee(getDiffAsLineNumber)
+  render() {
+    const fileContentMap = _.mapValues(this.props.files, (content, name) => {
+      let highlightedLines
+      if (content.previousContent !== content.currentContent) {
+        highlightedLines = this.getDiffAsLineNumberMemoized(
+          content.previousContent,
+          content.currentContent
+        )
+      }
+
+      return {
+        content: content.currentContent,
+        highlightedLines,
+      }
+    })
+    return (
+      <FileBrowser
+        fileContentMap={fileContentMap}
+        defaultSelection={this.props.defaultSelection}
+      />
     )
   }
 }
@@ -161,8 +180,6 @@ class FileBrowserContainer extends React.Component {
         { promise: true }
       )
   )
-  getDiffAsLineNumberMemoized = memoizee(getDiffAsLineNumber)
-
   updatePackageJson() {
     const { features, highlightFeature } = this.props
     const newNpmConfig = getNpmDependencies(features)
@@ -214,19 +231,6 @@ class FileBrowserContainer extends React.Component {
   getAllFeaturesExceptHighlighted = memoizee((features, highlightFeature) =>
     _.reject(features, f => f === highlightFeature)
   )
-  getWebpackLineNumbersToHighlight = memoizee((features, highlightFeature) => {
-    if (!_.includes(features, highlightFeature)) {
-      return
-    }
-    const webpackConfigWithoutHighlighted = createWebpackConfig(
-      this.getAllFeaturesExceptHighlighted(features, highlightFeature)
-    )
-    const webpackConfigCurrent = createWebpackConfig(features)
-    return this.getDiffAsLineNumberMemoized(
-      this.prettifyJson(webpackConfigWithoutHighlighted),
-      this.prettifyJson(webpackConfigCurrent)
-    )
-  })
   getProjectFiles = memoizee((features, packageJson) => {
     const files = _.assign(
       {},
@@ -246,18 +250,27 @@ class FileBrowserContainer extends React.Component {
   render() {
     const { features, highlightFeature } = this.props
 
+    const projectFiles = this.getProjectFiles(features, this.state.packageJson)
+
+    const files = _.mapValues(projectFiles, (currentContent, file) => {
+      let previousContent
+      if (file === 'webpack.config.js') {
+        previousContent = createWebpackConfig(
+          this.getAllFeaturesExceptHighlighted(features, highlightFeature)
+        )
+      } else if (file === 'package.json') {
+        previousContent = this.state.packageJsonWithoutHighlightedFeature
+      }
+
+      return {
+        currentContent,
+        previousContent,
+      }
+    })
     return (
-      <FileBrowser
+      <FileBrowserTransformer
         defaultSelection={'webpack.config.js'}
-        fileContentMap={this.getProjectFiles(features, this.state.packageJson)}
-        highlightedWebpackConfigLines={this.getWebpackLineNumbersToHighlight(
-          features,
-          highlightFeature
-        )}
-        highlightedPackageJsonLines={this.getDiffAsLineNumberMemoized(
-          this.state.packageJsonWithoutHighlightedFeature,
-          this.state.packageJson
-        )}
+        files={files}
       />
     )
   }
