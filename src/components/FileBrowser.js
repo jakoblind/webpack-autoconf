@@ -4,10 +4,8 @@ import _ from 'lodash'
 import {
   getPackageJson,
   getDefaultProjectName,
-  features as allFeatures,
 } from '../configurator/configurator'
 
-import projectGenerator from '../configurator/project-generator'
 import styles from '../styles.module.css'
 import '../vendor/prism-line-highlight.css'
 import Prism from 'prismjs'
@@ -151,7 +149,7 @@ class FileBrowserContainer extends React.Component {
   }
   componentDidMount() {
     this.updatePackageJson()
-    this.loadAllDependencyVersions(_.keys(allFeatures))
+    this.loadAllDependencyVersions(_.keys(this.props.featureConfig))
   }
   getNodeVersionPromise = memoizee(name =>
     fetch(`https://unpkg.com/${name}/package.json`)
@@ -230,9 +228,13 @@ class FileBrowserContainer extends React.Component {
     )
   })
   getProjectFiles = memoizee((features, packageJson) => {
-    const files = _.assign({}, projectGenerator(features, 'empty-project'), {
-      'package.json': packageJson,
-    })
+    const files = _.assign(
+      {},
+      this.props.projectGeneratorFunction(features, 'empty-project'),
+      {
+        'package.json': packageJson,
+      }
+    )
     const filesPrettified = _.forEach(files, (f, k) => {
       if (k === 'webpack.config.js') {
         files['webpack.config.js'] = this.prettifyJson(f)
