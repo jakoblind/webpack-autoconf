@@ -120,4 +120,28 @@ function generateProject(features, name) {
   )
 }
 
+export function generateParcelProject(features, name) {
+  const isBabel = _.includes(features, 'Babel')
+  const isReact = _.includes(features, 'React')
+  const newBabelConfig = createBabelConfig(features)
+  const projectName = name || getDefaultProjectName('empty-project', features)
+  const maybeConfigBabel =
+    newBabelConfig && (isReact || isBabel)
+      ? { '.babelrc': newBabelConfig }
+      : null
+  const maybeSourceCodeEmpty = !isReact
+    ? { 'src/index.js': emptyIndexJs }
+    : null
+
+  return _.assign(
+    {},
+    {
+      'README.md': readmeFile(projectName, isReact, false),
+    },
+    maybeConfigBabel,
+    maybeSourceCodeReact(isReact, false, false),
+    maybeSourceCodeEmpty
+  )
+}
+
 export default generateProject
