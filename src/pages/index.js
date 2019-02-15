@@ -14,6 +14,7 @@ import FileBrowser from '../components/FileBrowser'
 
 import Layout from '../components/layout'
 import Features from '../components/configurator/Features'
+import generateProject from '../configurator/project-generator'
 
 const logFeatureClickToGa = (feature, selected) => {
   //const eventAction = selected ? 'select' : 'deselect'
@@ -254,6 +255,8 @@ class Configurator extends React.Component {
           </div>
           <div className={styles.codeContainer}>
             <FileBrowser
+              projectGeneratorFunction={generateProject}
+              featureConfig={features}
               features={this.selectedArray()}
               highlightFeature={this.state.hoverFeature}
             />
