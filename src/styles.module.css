@@ -24,28 +24,32 @@
     text-align: center;
 }
 .code-box {
-    font-size: 15px;
+    font-size: 14px;
     height: 600px;
     width: 80%;
     overflow:auto;
-    background-color: #242424;
-    border-radius: 10px;
+    background-color: #0c0c0c;
+    border-radius: 0px 10px 10px 0px;
     cursor: text;
 }
 .code-box .code-box-pre {
-    background: #242424;
+    background: #0c0c0c;
     overflow: visible;
     margin: 0px;
     padding: 1em;
 }
 
 .file-browser {
-    color: #ccc;
-    background-color: #2d2d2d;
+    font-size:15px;
+    color: #969696;
+    background-color: #212121;
     margin-top: 14px;
     display: flex;
     cursor: pointer;
     border-radius: 10px;
+    -webkit-box-shadow: 0px 0px 33px 2px rgba(0,0,0,0.75);
+    -moz-box-shadow: 0px 0px 33px 2px rgba(0,0,0,0.75);
+    box-shadow: 0px 0px 33px 2px rgba(0,0,0,0.75);
 }
 
 .files {
@@ -59,12 +63,12 @@
 }
 
 .files li {
-    padding: 2px 25px;
+    padding: 3px 17px;
 }
 
 .files li.selected {
-    background: #145B98;
-    color: white;
+    background: #0c0c0c;
+    color: #e8e8e8;
 }
 
 @media only screen and (max-width: 40em) {
