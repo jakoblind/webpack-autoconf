@@ -303,3 +303,39 @@ export const features = (() => {
     return item
   })
 })()
+
+export const parcelFeatures = (() => {
+  const features = {
+    React: {
+      group: 'Main library',
+      dependencies: configItems => ['react', 'react-dom'],
+    },
+    Babel: {
+      group: 'Transpiler',
+      babel: (babelConfig, configItems) =>
+        Object.assign({}, babelConfig, {
+          presets: _.concat(
+            [['@babel/preset-env', { modules: false }]],
+            _.includes(configItems, 'React') ? '@babel/preset-react' : []
+          ),
+        }),
+      devDependencies: configItems =>
+        _.concat(
+          ['babel-loader', '@babel/core', '@babel/preset-env'],
+          _.includes(configItems, 'React') ? '@babel/preset-react' : null
+        ),
+    },
+  }
+  return _.mapValues(features, item => {
+    if (!item.babel) {
+      item.babel = _.identity
+    }
+    if (!item.dependencies) {
+      item.dependencies = () => []
+    }
+    if (!item.devDependencies) {
+      item.devDependencies = () => []
+    }
+    return item
+  })
+})()
