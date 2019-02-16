@@ -6,6 +6,8 @@ import {
   createWebpackConfig,
   createBabelConfig,
   getDefaultProjectName,
+  getNpmDependencies,
+  getPackageJson,
 } from './configurator'
 import {
   vueHelloWorldJs,
@@ -67,14 +69,10 @@ function maybeSourceCodeTypescriptOnly(isTypescript, isReact, isVue) {
 }
 
 /*
-  this function returns a map with all files
-  needed for the features selected.
-
-  package.json not included because it's generated
-  differently on backend and on frontend because
-  it needs to fetch dependencies
+  this function will call an external API to get version for node
+  dependencies. therefore its a good idea to memoize it
 */
-function generateProject(features, name) {
+function generateProject(features, name, getNodeVersionPromise) {
   const isBabel = _.includes(features, 'Babel')
   const isReact = _.includes(features, 'React')
   const isVue = _.includes(features, 'Vue')
@@ -82,6 +80,7 @@ function generateProject(features, name) {
   const isHotReact = _.includes(features, 'React hot loader')
 
   const newWebpackConfig = createWebpackConfig(features)
+  const newNpmConfig = getNpmDependencies(features)
   const newBabelConfig = createBabelConfig(features)
   const projectName = name || getDefaultProjectName('empty-project', features)
 
@@ -104,19 +103,28 @@ function generateProject(features, name) {
       ? { 'src/index.js': emptyIndexJs }
       : null
 
-  return _.assign(
-    {},
-    {
-      'webpack.config.js': newWebpackConfig,
-      'README.md': readmeFile(projectName, isReact, isHotReact),
-    },
-    maybeConfigBabel,
-    maybeConfigVue,
-    maybeConfigTypescript,
-    maybeSourceCodeVue(isVue, isTypescript),
-    maybeSourceCodeReact(isReact, isHotReact, isTypescript),
-    maybeSourceCodeTypescriptOnly(isTypescript, isReact, isVue),
-    maybeSourceCodeEmpty
+  return getPackageJson(
+    projectName,
+    newNpmConfig.dependencies,
+    newNpmConfig.devDependencies,
+    getNodeVersionPromise,
+    features
+  ).then(packageJson =>
+    _.assign(
+      {},
+      {
+        'webpack.config.js': newWebpackConfig,
+        'README.md': readmeFile(projectName, isReact, isHotReact),
+        'package.json': JSON.stringify(packageJson, null, 2),
+      },
+      maybeConfigBabel,
+      maybeConfigVue,
+      maybeConfigTypescript,
+      maybeSourceCodeVue(isVue, isTypescript),
+      maybeSourceCodeReact(isReact, isHotReact, isTypescript),
+      maybeSourceCodeTypescriptOnly(isTypescript, isReact, isVue),
+      maybeSourceCodeEmpty
+    )
   )
 }
 
