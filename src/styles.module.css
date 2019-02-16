@@ -72,6 +72,12 @@
     color: #e8e8e8;
 }
 
+.files li.highlighted {
+    box-shadow: 0 0 10pt 2pt #145B98;
+    border-radius: 10px;
+
+}
+
 @media only screen and (max-width: 40em) {
     .files  {
         width: 100%;
