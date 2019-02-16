@@ -23,9 +23,15 @@ require('prismjs/themes/prism-tomorrow.css')
 require('../vendor/PrismLineHighlight')
 
 const FileList = ({ files, selectedFile, onSelectFile }) => {
-  const filesElements = _.map(files, file => (
+  const filesElements = _.map(files, ({ highlightedFile }, file) => (
     <li
-      className={file === selectedFile ? styles.selected : ''}
+      className={
+        file === selectedFile
+          ? styles.selected
+          : highlightedFile
+            ? styles.highlighted
+            : null
+      }
       key={file}
       onClick={() => onSelectFile(file)}
     >
@@ -96,7 +102,7 @@ class FileBrowser extends React.Component {
       <div className={styles.fileBrowser}>
         <FileList
           selectedFile={this.state.selectedFile}
-          files={_.keys(fileContentMap)}
+          files={fileContentMap}
           onSelectFile={this.setSelectedFile}
         />
         <CodeBox
