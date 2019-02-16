@@ -108,7 +108,13 @@ class FileBrowser extends React.Component {
     )
   }
 }
-
+/*
+ This component takes files as props.
+  files is an object with file names as keys, and a map as value.
+  the map contains previousContent and currentContent. It takes
+  a diff of previous and current content and convert it to
+  highlightedLines
+*/
 class FileBrowserTransformer extends React.Component {
   getDiffAsLineNumberMemoized = memoizee(getDiffAsLineNumber)
   render() {
@@ -139,10 +145,9 @@ class FileBrowserContainer extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      packageJson: '// fetching dependency versions...',
-      packageJsonWithoutHighlightedFeature: null,
+      projectFiles: {},
+      projectFilesWithoutHighlightedFeature: {},
     }
-    this.updatePackageJson = this.updatePackageJson.bind(this)
   }
   /**
      load all version of dependencies (and cache them) used on page load
@@ -163,11 +168,11 @@ class FileBrowserContainer extends React.Component {
       !_.isEqual(this.props.highlightFeature, prevProps.highlightFeature) ||
       !_.isEqual(this.props.features, prevProps.features)
     ) {
-      this.updatePackageJson()
+      this.setProjectFilesInState()
     }
   }
   componentDidMount() {
-    this.updatePackageJson()
+    this.setProjectFilesInState()
     this.loadAllDependencyVersions(_.keys(this.props.featureConfig))
   }
   getNodeVersionPromise = memoizee(name =>
@@ -180,86 +185,47 @@ class FileBrowserContainer extends React.Component {
         { promise: true }
       )
   )
-  updatePackageJson() {
-    const { features, highlightFeature } = this.props
-    const newNpmConfig = getNpmDependencies(features)
-    getPackageJson(
-      getDefaultProjectName('empty-project', features),
-      newNpmConfig.dependencies,
-      newNpmConfig.devDependencies,
-      this.getNodeVersionPromise,
-      features
-    ).then(packageJson => {
-      this.setState({ packageJson: JSON.stringify(packageJson, null, 2) })
-      if (!highlightFeature) {
-        this.setState({ packageJsonWithoutHighlightedFeature: null })
-        return
-      }
-      const featuresWithoutHighlighted = this.getAllFeaturesExceptHighlighted(
-        features,
-        highlightFeature
-      )
-      const npmConfigWithoutHighlighted = getNpmDependencies(
-        featuresWithoutHighlighted
-      )
-      getPackageJson(
-        getDefaultProjectName('empty-project', features),
-        npmConfigWithoutHighlighted.dependencies,
-        npmConfigWithoutHighlighted.devDependencies,
-        this.getNodeVersionPromise,
-        featuresWithoutHighlighted
-      ).then(packageJsonWithoutHighlightedFeature => {
-        this.setState({
-          packageJsonWithoutHighlightedFeature: JSON.stringify(
-            packageJsonWithoutHighlightedFeature,
-            null,
-            2
-          ),
-        })
-      })
-    })
-  }
-  prettifyJson(json) {
-    // This is disabled for now.
-    // must adjust width to editor width to enable it
-    return json /*prettier.format(json, {
-      parser: 'babylon',
-      printWidth: 40, // TODO: dont auto use 40 widht
-      plugins: { babylon: parserBabylon },
-    })*/
-  }
   getAllFeaturesExceptHighlighted = memoizee((features, highlightFeature) =>
     _.reject(features, f => f === highlightFeature)
   )
-  getProjectFiles = memoizee((features, packageJson) => {
-    const files = _.assign(
-      {},
-      this.props.projectGeneratorFunction(features, 'empty-project'),
-      {
-        'package.json': packageJson,
-      }
-    )
-    const filesPrettified = _.forEach(files, (f, k) => {
-      if (k === 'webpack.config.js') {
-        files['webpack.config.js'] = this.prettifyJson(f)
-      }
-    })
+  setProjectFilesInState = () => {
+    this.props
+      .projectGeneratorFunction(
+        this.props.features,
+        'empty-project',
+        this.getNodeVersionPromise
+      )
+      .then(files => {
+        this.setState({ projectFiles: files })
+      })
 
-    return filesPrettified
-  })
+    if (!this.props.highlightFeature) {
+      this.setState({ projectFilesWithoutHighlightedFeature: {} })
+    } else {
+      const featuresWithoutHighlighted = this.getAllFeaturesExceptHighlighted(
+        this.props.features,
+        this.props.highlightFeature
+      )
+      this.props
+        .projectGeneratorFunction(
+          featuresWithoutHighlighted,
+          'empty-project',
+          this.getNodeVersionPromise
+        )
+        .then(files => {
+          this.setState({
+            projectFilesWithoutHighlightedFeature: files,
+          })
+        })
+    }
+  }
   render() {
-    const { features, highlightFeature } = this.props
-
-    const projectFiles = this.getProjectFiles(features, this.state.packageJson)
+    const projectFiles = this.state.projectFiles
 
     const files = _.mapValues(projectFiles, (currentContent, file) => {
       let previousContent
-      if (file === 'webpack.config.js') {
-        previousContent = createWebpackConfig(
-          this.getAllFeaturesExceptHighlighted(features, highlightFeature)
-        )
-      } else if (file === 'package.json') {
-        previousContent = this.state.packageJsonWithoutHighlightedFeature
+      if (this.state.projectFilesWithoutHighlightedFeature[file]) {
+        previousContent = this.state.projectFilesWithoutHighlightedFeature[file]
       }
 
       return {

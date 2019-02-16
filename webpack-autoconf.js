@@ -126,32 +126,21 @@ function generateProject(requestedFeatures, { basePath, name }) {
 
   mkDir(basePath)
   mkDir(fullPath)
-  const files = projectGenerator(requestedFeatures, name)
+  return projectGenerator(requestedFeatures, name, getNodeVersionPromise).then(
+    files => {
+      _.forEach(files, (content, filename) => {
+        // only support one level directories right now.
+        if (_.includes(filename, '/')) {
+          const dirs = _.split(filename, '/')
+          mkDir(fullPath + dirs[0])
+        }
 
-  _.forEach(files, (content, filename) => {
-    // only support one level directories right now.
-    if (_.includes(filename, '/')) {
-      const dirs = _.split(filename, '/')
-      mkDir(fullPath + dirs[0])
+        writeFile(fullPath + filename, content)
+      })
+      console.log('Done generating ' + projectName + '!')
+      return projectName
     }
-
-    writeFile(fullPath + filename, content)
-  })
-
-  return getPackageJson(
-    'empty-project-' + _.kebabCase(requestedFeatures),
-    newNpmConfig.dependencies,
-    newNpmConfig.devDependencies,
-    getNodeVersionPromise,
-    requestedFeatures
-  ).then(newPackageJson => {
-    writeFile(
-      fullPath + 'package.json',
-      JSON.stringify(newPackageJson, null, 2)
-    )
-    console.log('Done generating ' + projectName + '!')
-    return projectName
-  })
+  )
 }
 // TODO: check if all of requestedFeatures are supported
 const [a, b, command, name, ...requestedFeatures] = process.argv
