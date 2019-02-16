@@ -187,6 +187,9 @@ class FileBrowserContainer extends React.Component {
     }
   }
   componentDidMount() {
+    // fetch first without packagejson because package.json
+    // is slow because we need to fetch versions.
+    this.setProjectFilesInState(true)
     this.setProjectFilesInState()
     this.loadAllDependencyVersions(_.keys(this.props.featureConfig))
   }
@@ -203,12 +206,12 @@ class FileBrowserContainer extends React.Component {
   getAllFeaturesExceptHighlighted = memoizee((features, highlightFeature) =>
     _.reject(features, f => f === highlightFeature)
   )
-  setProjectFilesInState = () => {
+  setProjectFilesInState = excludePackageJson => {
     this.props
       .projectGeneratorFunction(
         this.props.features,
         'empty-project',
-        this.getNodeVersionPromise
+        excludePackageJson ? null : this.getNodeVersionPromise
       )
       .then(files => {
         this.setState({ projectFiles: files })
@@ -227,7 +230,7 @@ class FileBrowserContainer extends React.Component {
         .projectGeneratorFunction(
           featuresWithoutHighlighted,
           'empty-project',
-          this.getNodeVersionPromise
+          excludePackageJson ? null : this.getNodeVersionPromise
         )
         .then(files => {
           this.setState({

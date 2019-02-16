@@ -103,13 +103,18 @@ function generateProject(features, name, getNodeVersionPromise) {
       ? { 'src/index.js': emptyIndexJs }
       : null
 
-  return getPackageJson(
-    projectName,
-    newNpmConfig.dependencies,
-    newNpmConfig.devDependencies,
-    getNodeVersionPromise,
-    features
-  ).then(packageJson =>
+  let maybePackageJsonPromise = Promise.resolve('')
+  if (getNodeVersionPromise) {
+    maybePackageJsonPromise = getPackageJson(
+      projectName,
+      newNpmConfig.dependencies,
+      newNpmConfig.devDependencies,
+      getNodeVersionPromise,
+      features
+    )
+  }
+
+  return maybePackageJsonPromise.then(packageJson =>
     _.assign(
       {},
       {
