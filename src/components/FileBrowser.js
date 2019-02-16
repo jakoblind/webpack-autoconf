@@ -113,13 +113,21 @@ class FileBrowser extends React.Component {
   files is an object with file names as keys, and a map as value.
   the map contains previousContent and currentContent. It takes
   a diff of previous and current content and convert it to
-  highlightedLines
+  highlightedLines. if there was no previousContent then
+  that means the file didn't exist before, that means
+  the whole file should be highlighted
 */
 class FileBrowserTransformer extends React.Component {
   getDiffAsLineNumberMemoized = memoizee(getDiffAsLineNumber)
   render() {
     const fileContentMap = _.mapValues(this.props.files, (content, name) => {
       let highlightedLines
+      let highlightedFile = false
+      // if the file didn't exist previously
+      if (!content.previousContent) {
+        highlightedFile = true
+      }
+
       if (content.previousContent !== content.currentContent) {
         highlightedLines = this.getDiffAsLineNumberMemoized(
           content.previousContent,
@@ -130,6 +138,7 @@ class FileBrowserTransformer extends React.Component {
       return {
         content: content.currentContent,
         highlightedLines,
+        highlightedFile,
       }
     })
     return (
@@ -197,11 +206,13 @@ class FileBrowserContainer extends React.Component {
       )
       .then(files => {
         this.setState({ projectFiles: files })
+        if (!this.props.highlightFeature) {
+          // beacuse if there is no highligthed, then the previous content is the same as current content
+          this.setState({ projectFilesWithoutHighlightedFeature: files })
+        }
       })
 
-    if (!this.props.highlightFeature) {
-      this.setState({ projectFilesWithoutHighlightedFeature: {} })
-    } else {
+    if (this.props.highlightFeature) {
       const featuresWithoutHighlighted = this.getAllFeaturesExceptHighlighted(
         this.props.features,
         this.props.highlightFeature
