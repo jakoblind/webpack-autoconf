@@ -70,7 +70,10 @@ function maybeSourceCodeTypescriptOnly(isTypescript, isReact, isVue) {
 
 /*
   this function will call an external API to get version for node
-  dependencies. therefore its a good idea to memoize it
+  dependencies. therefore its a good idea to memoize it.
+  if getNodeVersionPromise is null, no external api calls is made
+  and the data is returned instead of in a promise
+
 */
 function generateProject(features, name, getNodeVersionPromise) {
   const isBabel = _.includes(features, 'Babel')
@@ -103,34 +106,36 @@ function generateProject(features, name, getNodeVersionPromise) {
       ? { 'src/index.js': emptyIndexJs }
       : null
 
-  let maybePackageJsonPromise = Promise.resolve('')
+  const fileMap = _.assign(
+    {},
+    {
+      'webpack.config.js': newWebpackConfig,
+      'README.md': readmeFile(projectName, isReact, isHotReact),
+      'package.json': 'empty package.json',
+    },
+    maybeConfigBabel,
+    maybeConfigVue,
+    maybeConfigTypescript,
+    maybeSourceCodeVue(isVue, isTypescript),
+    maybeSourceCodeReact(isReact, isHotReact, isTypescript),
+    maybeSourceCodeTypescriptOnly(isTypescript, isReact, isVue),
+    maybeSourceCodeEmpty
+  )
+
   if (getNodeVersionPromise) {
-    maybePackageJsonPromise = getPackageJson(
+    return getPackageJson(
       projectName,
       newNpmConfig.dependencies,
       newNpmConfig.devDependencies,
       getNodeVersionPromise,
       features
-    )
+    ).then(packageJson => {
+      fileMap['package.json'] = JSON.stringify(packageJson, null, 2)
+      return fileMap
+    })
+  } else {
+    return fileMap
   }
-
-  return maybePackageJsonPromise.then(packageJson =>
-    _.assign(
-      {},
-      {
-        'webpack.config.js': newWebpackConfig,
-        'README.md': readmeFile(projectName, isReact, isHotReact),
-        'package.json': JSON.stringify(packageJson, null, 2),
-      },
-      maybeConfigBabel,
-      maybeConfigVue,
-      maybeConfigTypescript,
-      maybeSourceCodeVue(isVue, isTypescript),
-      maybeSourceCodeReact(isReact, isHotReact, isTypescript),
-      maybeSourceCodeTypescriptOnly(isTypescript, isReact, isVue),
-      maybeSourceCodeEmpty
-    )
-  )
 }
 
 export function generateParcelProject(features, name) {
