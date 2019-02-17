@@ -129,12 +129,12 @@ class FileBrowserTransformer extends React.Component {
     const fileContentMap = _.mapValues(this.props.files, (content, name) => {
       let highlightedLines
       let highlightedFile = false
-      // if the file didn't exist previously
+      // if the file didn't exist previously, highlight it all
       if (!content.previousContent) {
-        highlightedFile = true
-      }
-
-      if (content.previousContent !== content.currentContent) {
+        //highlightedFile = true
+        const lines = content.currentContent.split(/\r\n|\r|\n/).length
+        highlightedLines = `1-${lines}`
+      } else if (content.previousContent !== content.currentContent) {
         highlightedLines = this.getDiffAsLineNumberMemoized(
           content.previousContent,
           content.currentContent
