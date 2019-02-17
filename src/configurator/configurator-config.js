@@ -16,7 +16,12 @@ export const features = (() => {
       dependencies: configItems => ['react', 'react-dom'],
       devDependencies: configItems => {
         const isTypescript = _.includes(configItems, 'Typescript')
-        return isTypescript ? ['@types/react', '@types/react-dom'] : []
+        const isBabel = _.includes(configItems, 'Babel')
+        return _.concat(
+          [],
+          isTypescript ? ['@types/react', '@types/react-dom'] : [],
+          isBabel ? ['@babel/preset-react'] : []
+        )
       },
     },
     Vue: {
@@ -55,11 +60,11 @@ export const features = (() => {
             _.includes(configItems, 'React') ? '@babel/preset-react' : []
           ),
         }),
-      devDependencies: configItems =>
-        _.concat(
-          ['babel-loader', '@babel/core', '@babel/preset-env'],
-          _.includes(configItems, 'React') ? '@babel/preset-react' : null
-        ),
+      devDependencies: configItems => [
+        'babel-loader',
+        '@babel/core',
+        '@babel/preset-env',
+      ],
       webpack: (webpackConfig, configItems) =>
         assignModuleRuleAndResolver(
           webpackConfig,
