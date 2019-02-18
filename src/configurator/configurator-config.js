@@ -309,11 +309,14 @@ export const webpackConfig = (() => {
   })
   return {
     features: featuresNoNulls,
-    packageJson: {
-      scripts: {
-        'build-dev': 'webpack -d --mode development',
-        'build-prod': 'webpack -p --mode production',
+    base: {
+      packageJson: {
+        scripts: {
+          'build-dev': 'webpack -d --mode development',
+          'build-prod': 'webpack -p --mode production',
+        },
       },
+      devDependencies: ['webpack', 'webpack-cli'],
     },
   }
 })()
@@ -354,11 +357,14 @@ export const parcelConfig = (() => {
   })
   return {
     features: featuresNoNulls,
-    packageJson: {
-      scripts: {
-        start: 'parcel index.js',
-        'build-prod': 'parcel build index.js',
+    base: {
+      packageJson: {
+        scripts: {
+          start: 'parcel index.js',
+          'build-prod': 'parcel build index.js',
+        },
       },
+      devDependencies: ['parcel-bundler'],
     },
   }
 })()
