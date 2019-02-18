@@ -1,6 +1,6 @@
 import _ from 'lodash'
 
-import { readmeFile } from '../templates/base'
+import { readmeFile, readmeFileParcel } from '../templates/base'
 
 import {
   createWebpackConfig,
@@ -154,7 +154,7 @@ export function generateParcelProject(features, name, getNodeVersionPromise) {
   const fileMap = _.assign(
     {},
     {
-      'README.md': readmeFile(projectName, isReact, false),
+      'README.md': readmeFileParcel(projectName, isReact, false),
     },
     maybeConfigBabel,
     maybeSourceCodeReact(isReact, false, false),
