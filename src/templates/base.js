@@ -21,8 +21,6 @@ export const packageJson = {
   license: 'ISC',
   scripts: {
     clean: 'rm dist/bundle.js',
-    'build-dev': 'webpack -d --mode development',
-    'build-prod': 'webpack -p --mode production',
   },
   //"devDependencies": {
   //    "react": "^16.4.1",

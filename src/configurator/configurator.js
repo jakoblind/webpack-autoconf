@@ -2,7 +2,9 @@ import jsStringify from 'javascript-stringify'
 import _ from 'lodash'
 
 import { baseWebpack, baseWebpackImports, packageJson } from '../templates/base'
-import { features } from './configurator-config'
+import { webpackConfig } from './configurator-config'
+
+const features = webpackConfig.features // TODO it should not be read from here
 
 export function getDefaultProjectName(name, features) {
   return name + '-' + _.kebabCase(_.sortBy(features))
@@ -93,6 +95,7 @@ module.exports = config;`
 }
 
 export function getPackageJson(
+  featureConfig,
   name,
   dependenciesNames,
   devDependenciesNames,
@@ -123,7 +126,7 @@ export function getPackageJson(
       const generatedPackageJson = Object.assign(
         {},
         { name },
-        packageJson,
+        _.merge(packageJson, featureConfig.packageJson),
         { dependencies },
         { devDependencies }
       )
