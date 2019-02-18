@@ -46,12 +46,12 @@ function createConfig(configItems, configType) {
   )
 }
 
-export function getNpmDependencies(configItems) {
+export function getNpmDependencies(featureConfig, configItems) {
   const dependencies = _.chain(configItems)
     .reduce(
       (acc, currentValue) =>
         _.concat(acc, features[currentValue]['dependencies'](configItems)),
-      []
+      _.get(featureConfig, 'base.dependencies', [])
     )
     .uniq()
     .value()
@@ -60,7 +60,7 @@ export function getNpmDependencies(configItems) {
     .reduce(
       (acc, currentValue) =>
         _.concat(acc, features[currentValue]['devDependencies'](configItems)),
-      ['webpack', 'webpack-cli']
+      _.get(featureConfig, 'base.devDependencies', [])
     )
     .uniq()
     .value()
@@ -97,11 +97,13 @@ module.exports = config;`
 export function getPackageJson(
   featureConfig,
   name,
-  dependenciesNames,
-  devDependenciesNames,
   getNodeVersionPromise,
   features
 ) {
+  const {
+    dependencies: dependenciesNames,
+    devDependencies: devDependenciesNames,
+  } = getNpmDependencies(featureConfig, features)
   const dependenciesVersionsPromises = _.map(
     dependenciesNames,
     getNodeVersionPromise
@@ -126,7 +128,7 @@ export function getPackageJson(
       const generatedPackageJson = Object.assign(
         {},
         { name },
-        _.merge(packageJson, featureConfig.packageJson),
+        _.merge(packageJson, featureConfig.base.packageJson),
         { dependencies },
         { devDependencies }
       )

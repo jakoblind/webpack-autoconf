@@ -1,10 +1,7 @@
 import React from 'react'
 import _ from 'lodash'
 
-import {
-  getPackageJson,
-  getDefaultProjectName,
-} from '../configurator/configurator'
+import { getDefaultProjectName } from '../configurator/configurator'
 
 import styles from '../styles.module.css'
 import '../vendor/prism-line-highlight.css'
@@ -161,6 +158,7 @@ class FileBrowserContainer extends React.Component {
     super(props)
 
     const projectFiles = this.props.projectGeneratorFunction(
+      this.props.featureConfig,
       this.props.features,
       'empty-project'
     )
@@ -174,8 +172,11 @@ class FileBrowserContainer extends React.Component {
      load all version of dependencies (and cache them) used on page load
      to get a quicker loading speed when we show them.
   */
-  loadAllDependencyVersions(features) {
-    const npmConfigAllFeatures = getNpmDependencies(features)
+  loadAllDependencyVersions() {
+    const npmConfigAllFeatures = getNpmDependencies(
+      this.props.featureConfig,
+      _.keys(this.props.featureConfig.features)
+    )
     const allDependencies = _.concat(
       npmConfigAllFeatures.dependencies,
       npmConfigAllFeatures.devDependencies
@@ -196,7 +197,7 @@ class FileBrowserContainer extends React.Component {
     // fetch first without packagejson because package.json
     // is slow because we need to fetch versions.
     this.setProjectFilesInState()
-    this.loadAllDependencyVersions(_.keys(this.props.featureConfig.features))
+    this.loadAllDependencyVersions()
   }
   getNodeVersionPromise = memoizee(name =>
     fetch(`https://unpkg.com/${name}/package.json`)
@@ -214,6 +215,7 @@ class FileBrowserContainer extends React.Component {
   setProjectFilesInState = () => {
     this.props
       .projectGeneratorFunction(
+        this.props.featureConfig,
         this.props.features,
         'empty-project',
         this.getNodeVersionPromise
@@ -233,6 +235,7 @@ class FileBrowserContainer extends React.Component {
       )
       this.props
         .projectGeneratorFunction(
+          this.props.featureConfig,
           featuresWithoutHighlighted,
           'empty-project',
           this.getNodeVersionPromise

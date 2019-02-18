@@ -76,7 +76,12 @@ function maybeSourceCodeTypescriptOnly(isTypescript, isReact, isVue) {
   and the data is returned instead of in a promise
 
 */
-const generateProject = (features, name, getNodeVersionPromise) => {
+const generateProject = (
+  featureConfig,
+  features,
+  name,
+  getNodeVersionPromise
+) => {
   const isBabel = _.includes(features, 'Babel')
   const isReact = _.includes(features, 'React')
   const isVue = _.includes(features, 'Vue')
@@ -84,7 +89,7 @@ const generateProject = (features, name, getNodeVersionPromise) => {
   const isHotReact = _.includes(features, 'React hot loader')
 
   const newWebpackConfig = createWebpackConfig(features)
-  const newNpmConfig = getNpmDependencies(features)
+  const newNpmConfig = getNpmDependencies(webpackConfig, features)
   const newBabelConfig = createBabelConfig(features)
   const projectName = name || getDefaultProjectName('empty-project', features)
 
@@ -127,8 +132,6 @@ const generateProject = (features, name, getNodeVersionPromise) => {
     return getPackageJson(
       webpackConfig,
       projectName,
-      newNpmConfig.dependencies,
-      newNpmConfig.devDependencies,
       getNodeVersionPromise,
       features
     ).then(packageJson => {
@@ -140,7 +143,12 @@ const generateProject = (features, name, getNodeVersionPromise) => {
   }
 }
 
-export function generateParcelProject(features, name, getNodeVersionPromise) {
+export function generateParcelProject(
+  featureConfig,
+  features,
+  name,
+  getNodeVersionPromise
+) {
   const isBabel = _.includes(features, 'Babel')
   const isReact = _.includes(features, 'React')
   const newBabelConfig = createBabelConfig(features)
@@ -163,14 +171,11 @@ export function generateParcelProject(features, name, getNodeVersionPromise) {
     maybeSourceCodeEmpty
   )
 
-  const newNpmConfig = getNpmDependencies(features)
   // TODO there is some duplicated code here. sorry
   if (getNodeVersionPromise) {
     return getPackageJson(
       parcelConfig,
       projectName,
-      newNpmConfig.dependencies,
-      newNpmConfig.devDependencies,
       getNodeVersionPromise,
       features
     ).then(packageJson => {

@@ -194,7 +194,7 @@ class Configurator extends React.Component {
   }
   render() {
     const newBabelConfig = createBabelConfig(this.selectedArray())
-    const newNpmConfig = getNpmDependencies(this.selectedArray())
+      const newNpmConfig = getNpmDependencies(webpackConfig, this.selectedArray())
 
     const isReact = _.includes(this.selectedArray(), 'React')
     const isTypescript = _.includes(this.selectedArray(), 'Typescript')
