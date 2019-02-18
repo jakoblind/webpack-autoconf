@@ -27,6 +27,7 @@ import {
 import { emptyIndexJs } from '../templates/empty/index'
 
 import { indexTypescriptHTML, tsconfig, tsconfigReact } from '../templates/ts'
+import { parcelConfig, webpackConfig } from './configurator-config'
 
 function maybeSourceCodeVue(isVue, isTypescript) {
   if (isVue) {
@@ -75,7 +76,7 @@ function maybeSourceCodeTypescriptOnly(isTypescript, isReact, isVue) {
   and the data is returned instead of in a promise
 
 */
-function generateProject(features, name, getNodeVersionPromise) {
+const generateProject = (features, name, getNodeVersionPromise) => {
   const isBabel = _.includes(features, 'Babel')
   const isReact = _.includes(features, 'React')
   const isVue = _.includes(features, 'Vue')
@@ -124,6 +125,7 @@ function generateProject(features, name, getNodeVersionPromise) {
 
   if (getNodeVersionPromise) {
     return getPackageJson(
+      webpackConfig,
       projectName,
       newNpmConfig.dependencies,
       newNpmConfig.devDependencies,
@@ -165,6 +167,7 @@ export function generateParcelProject(features, name, getNodeVersionPromise) {
   // TODO there is some duplicated code here. sorry
   if (getNodeVersionPromise) {
     return getPackageJson(
+      parcelConfig,
       projectName,
       newNpmConfig.dependencies,
       newNpmConfig.devDependencies,

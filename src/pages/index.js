@@ -2,7 +2,7 @@ import React from 'react'
 import _ from 'lodash'
 import styles from '../styles.module.css'
 import { Link } from 'gatsby'
-import { features } from '../configurator/configurator-config'
+import { webpackConfig } from '../configurator/configurator-config'
 
 import {
   createBabelConfig,
@@ -204,7 +204,7 @@ class Configurator extends React.Component {
       this.selectedArray()
     )
 
-    const showFeatures = _.clone(features)
+    const showFeatures = _.clone(webpackConfig.features)
 
     if (!isReact) {
       delete showFeatures['React hot loader']
@@ -255,7 +255,7 @@ class Configurator extends React.Component {
           <div className={styles.codeContainer}>
             <FileBrowser
               projectGeneratorFunction={generateProject}
-              featureConfig={features}
+              featureConfig={webpackConfig}
               features={this.selectedArray()}
               highlightFeature={this.state.hoverFeature}
             />

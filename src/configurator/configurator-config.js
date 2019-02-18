@@ -9,7 +9,7 @@ import {
   getStyleLoaderDependencyIfNeeded,
 } from './configurator-webpack-helpers'
 
-export const features = (() => {
+export const webpackConfig = (() => {
   const features = {
     React: {
       group: 'Main library',
@@ -289,7 +289,7 @@ export const features = (() => {
         }),
     },
   }
-  return _.mapValues(features, item => {
+  const featuresNoNulls = _.mapValues(features, item => {
     if (!item.babel) {
       item.babel = _.identity
     }
@@ -307,9 +307,18 @@ export const features = (() => {
     }
     return item
   })
+  return {
+    features: featuresNoNulls,
+    packageJson: {
+      scripts: {
+        'build-dev': 'webpack -d --mode development',
+        'build-prod': 'webpack -p --mode production',
+      },
+    },
+  }
 })()
 
-export const parcelFeatures = (() => {
+export const parcelConfig = (() => {
   const features = {
     React: {
       group: 'Main library',
@@ -331,7 +340,7 @@ export const parcelFeatures = (() => {
         ),
     },
   }
-  return _.mapValues(features, item => {
+  const featuresNoNulls = _.mapValues(features, item => {
     if (!item.babel) {
       item.babel = _.identity
     }
@@ -343,4 +352,13 @@ export const parcelFeatures = (() => {
     }
     return item
   })
+  return {
+    features: featuresNoNulls,
+    packageJson: {
+      scripts: {
+        start: 'parcel index.js',
+        'build-prod': 'parcel build index.js',
+      },
+    },
+  }
 })()

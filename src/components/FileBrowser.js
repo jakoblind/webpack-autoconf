@@ -196,7 +196,7 @@ class FileBrowserContainer extends React.Component {
     // fetch first without packagejson because package.json
     // is slow because we need to fetch versions.
     this.setProjectFilesInState()
-    this.loadAllDependencyVersions(_.keys(this.props.featureConfig))
+    this.loadAllDependencyVersions(_.keys(this.props.featureConfig.features))
   }
   getNodeVersionPromise = memoizee(name =>
     fetch(`https://unpkg.com/${name}/package.json`)

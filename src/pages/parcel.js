@@ -4,7 +4,7 @@ import { Link } from 'gatsby'
 import styles from '../styles.module.css'
 import Features, { withFeatureState } from '../components/configurator/Features'
 import FileBrowser from '../components/FileBrowser'
-import { parcelFeatures as features } from '../configurator/configurator-config'
+import { parcelConfig } from '../configurator/configurator-config'
 import { generateParcelProject } from '../configurator/project-generator'
 
 import {
@@ -91,7 +91,7 @@ class Configurator extends React.Component {
       this.selectedArray()
     )
 
-    const showFeatures = _.clone(features)
+    const showFeatures = _.clone(parcelConfig.features)
 
     if (!isReact) {
       delete showFeatures['React hot loader']
@@ -117,7 +117,7 @@ class Configurator extends React.Component {
           <div className={styles.codeContainer}>
             <FileBrowser
               projectGeneratorFunction={generateParcelProject}
-              featureConfig={features}
+              featureConfig={parcelConfig.features}
               features={this.selectedArray()}
               highlightFeature={this.state.hoverFeature}
             />
