@@ -49,12 +49,12 @@ function maybeSourceCodeReact(isReact, isHotReact, isTypescript) {
     if (isTypescript) {
       return {
         'src/index.tsx': reactIndexTsx,
-        'dist/index.html': reactIndexHtml,
+        'dist/index.html': reactIndexHtml(),
       }
     } else {
       return {
         'src/index.js': isHotReact ? reactHotIndexJs : reactIndexJs,
-        'dist/index.html': reactIndexHtml,
+        'dist/index.html': reactIndexHtml(),
       }
     }
   }
@@ -157,7 +157,12 @@ export function generateParcelProject(features, name, getNodeVersionPromise) {
       'README.md': readmeFileParcel(projectName, isReact, false),
     },
     maybeConfigBabel,
-    maybeSourceCodeReact(isReact, false, false),
+    isReact
+      ? {
+          'src/index.js': reactIndexJs,
+          'src/index.html': reactIndexHtml('index.js'),
+        }
+      : {},
     maybeSourceCodeEmpty
   )
 

@@ -287,6 +287,11 @@ export const webpackConfig = (() => {
             contentBase: './dist',
           },
         }),
+      packageJson: {
+        scripts: {
+          start: 'webpack-dev-server --hot --mode development',
+        },
+      },
     },
   }
   const featuresNoNulls = _.mapValues(features, item => {
@@ -305,6 +310,10 @@ export const webpackConfig = (() => {
     if (!item.devDependencies) {
       item.devDependencies = () => []
     }
+    if (!item.packageJson) {
+      item.packageJson = {}
+    }
+
     return item
   })
   return {
@@ -326,6 +335,12 @@ export const parcelConfig = (() => {
     React: {
       group: 'Main library',
       dependencies: configItems => ['react', 'react-dom'],
+      packageJson: {
+        scripts: {
+          start: 'parcel src/index.html',
+          'build-prod': 'parcel build src/index.html',
+        },
+      },
     },
     Babel: {
       group: 'Transpiler',
@@ -353,6 +368,10 @@ export const parcelConfig = (() => {
     if (!item.devDependencies) {
       item.devDependencies = () => []
     }
+    if (!item.packageJson) {
+      item.packageJson = {}
+    }
+
     return item
   })
   return {
