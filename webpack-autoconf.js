@@ -5,7 +5,10 @@ import Promise from 'bluebird'
 
 import fs from 'fs'
 import childProcess from 'child_process'
-import { features } from './src/configurator/configurator-config'
+import {
+  webpackConfig,
+  parcelConfig,
+} from './src/configurator/configurator-config'
 
 import {
   createWebpackConfig,
@@ -35,7 +38,9 @@ import {
   vueShimType,
 } from './src/templates/vue'
 
-import projectGenerator from './src/configurator/project-generator'
+import generateWebpackProject, {
+  generateParcelProject,
+} from './src/configurator/project-generator'
 
 function exec(command) {
   return new Promise(function(resolve, reject) {
@@ -49,7 +54,7 @@ function exec(command) {
   })
 }
 
-function getFeatureCombinations() {
+function getFeatureCombinations(features) {
   const allFeatures = _.keys(features)
   const notSupportedFeatures = []
 
@@ -83,7 +88,11 @@ function mkDir(path) {
   }
 }
 
-function generateProject(requestedFeatures, { basePath, name }) {
+function generateProject(
+  requestedFeatures,
+  { basePath, name },
+  projectGenerator
+) {
   const isReact = _.includes(requestedFeatures, 'React')
   const isVue = _.includes(requestedFeatures, 'Vue')
   const isTypescript = _.includes(requestedFeatures, 'Typescript')
@@ -117,7 +126,6 @@ function generateProject(requestedFeatures, { basePath, name }) {
     name || getDefaultProjectName('empty-project', requestedFeatures)
   const fullPath = (basePath || '.') + '/' + projectName + '/'
 
-  const newNpmConfig = getNpmDependencies(requestedFeatures)
   const newWebpackConfig = createWebpackConfig(requestedFeatures)
   const newBabelConfig = createBabelConfig(requestedFeatures)
 
@@ -145,13 +153,19 @@ function generateProject(requestedFeatures, { basePath, name }) {
 const [a, b, command, name, ...requestedFeatures] = process.argv
 
 if (command === 'new') {
-  generateProject(requestedFeatures, { name })
+  generateProject(requestedFeatures, { name }, generateWebpackProject)
 } else if (command === 'all') {
+  const isParcel = name === 'parcel'
+  const { features } = isParcel ? parcelConfig : webpackConfig
   // for some reason Promise.reduce ignores the first item in the list so we add one extra empty feature [[]]
-  const combinations = _.concat([[]], [[]], getFeatureCombinations())
-
+  const combinations = _.concat([[]], [[]], getFeatureCombinations(features))
   Promise.reduce(combinations, (_, features) => {
-    return generateProject(features, { basePath: 'generated' })
+    return generateProject(
+      features,
+      { basePath: 'generated' },
+      // use the name argument to define what build system to use
+      name === 'parcel' ? generateParcelProject : generateWebpackProject
+    )
   })
 } else {
   console.log('Usage: webpack-autoconf new [project-name] [features]')

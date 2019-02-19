@@ -360,8 +360,8 @@ export const parcelConfig = (() => {
     base: {
       packageJson: {
         scripts: {
-          start: 'parcel index.js',
-          'build-prod': 'parcel build index.js',
+          start: 'parcel watch src/index.js',
+          'build-prod': 'parcel build src/index.js',
         },
       },
       devDependencies: ['parcel-bundler'],
