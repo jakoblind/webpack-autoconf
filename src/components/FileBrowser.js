@@ -263,7 +263,7 @@ class FileBrowserContainer extends React.Component {
     })
     return (
       <FileBrowserTransformer
-        defaultSelection={'webpack.config.js'}
+        defaultSelection={this.props.defaultFile || 'webpack.config.js'}
         files={files}
       />
     )
