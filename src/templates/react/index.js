@@ -25,7 +25,7 @@ const AppWithHot = hot(module)(App);
 var mountNode = document.getElementById("app");
 ReactDOM.render(<AppWithHot name="Jane" />, mountNode);`
 
-export const reactIndexHtml = `<!DOCTYPE html>
+export const reactIndexHtml = (bundleFilename = 'bundle.js') => `<!DOCTYPE html>
 <html>
     <head>
         <title>React starter app</title>
@@ -33,7 +33,7 @@ export const reactIndexHtml = `<!DOCTYPE html>
     </head>
     <body>
         <div id="app"></div>
-        <script src="bundle.js"></script>
+        <script src="${bundleFilename}"></script>
     </body>
 </html>`
 

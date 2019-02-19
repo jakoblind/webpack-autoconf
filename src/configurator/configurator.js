@@ -94,6 +94,16 @@ const config = ${createConfig(configItems, 'webpack')}
 module.exports = config;`
 }
 
+// some config items can alter the package json. for example the scripts section
+function createPackageJsonConfig(featureConfig, configItems) {
+  return _.reduce(
+    configItems,
+    (acc, currentValue) =>
+      _.merge(acc, featureConfig.features[currentValue]['packageJson']),
+    {}
+  )
+}
+
 export function getPackageJson(
   featureConfig,
   name,
@@ -128,18 +138,15 @@ export function getPackageJson(
       const generatedPackageJson = Object.assign(
         {},
         { name },
-        _.merge(packageJson, featureConfig.base.packageJson),
+        _.merge(
+          {},
+          packageJson,
+          featureConfig.base.packageJson,
+          createPackageJsonConfig(featureConfig, features)
+        ),
         { dependencies },
         { devDependencies }
       )
-
-      const isHotReact = _.includes(features, 'React hot loader')
-
-      if (isHotReact) {
-        generatedPackageJson.scripts = Object.assign({}, packageJson.scripts, {
-          start: 'webpack-dev-server --hot --mode development',
-        })
-      }
 
       return generatedPackageJson
     })
