@@ -105,7 +105,6 @@ class Configurator extends React.Component {
         <div className={styles.topContainer}>
           <div className={styles.featuresContainer}>
             <h1>webpack config tool</h1>
-            <h3>Select your features</h3>
             <Features
               features={showFeatures}
               selected={this.state.selected}
@@ -116,6 +115,7 @@ class Configurator extends React.Component {
           </div>
           <div className={styles.codeContainer}>
             <FileBrowser
+              defaultFile="src/index.js"
               projectGeneratorFunction={generateParcelProject}
               featureConfig={parcelConfig.features}
               features={this.selectedArray()}
