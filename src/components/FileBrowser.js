@@ -158,7 +158,6 @@ class FileBrowserContainer extends React.Component {
     super(props)
 
     const projectFiles = this.props.projectGeneratorFunction(
-      this.props.featureConfig,
       this.props.features,
       'empty-project'
     )
@@ -215,7 +214,6 @@ class FileBrowserContainer extends React.Component {
   setProjectFilesInState = () => {
     this.props
       .projectGeneratorFunction(
-        this.props.featureConfig,
         this.props.features,
         'empty-project',
         this.getNodeVersionPromise
@@ -235,7 +233,6 @@ class FileBrowserContainer extends React.Component {
       )
       this.props
         .projectGeneratorFunction(
-          this.props.featureConfig,
           featuresWithoutHighlighted,
           'empty-project',
           this.getNodeVersionPromise

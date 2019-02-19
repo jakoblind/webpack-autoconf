@@ -76,12 +76,7 @@ function maybeSourceCodeTypescriptOnly(isTypescript, isReact, isVue) {
   and the data is returned instead of in a promise
 
 */
-const generateProject = (
-  featureConfig,
-  features,
-  name,
-  getNodeVersionPromise
-) => {
+const generateProject = (features, name, getNodeVersionPromise) => {
   const isBabel = _.includes(features, 'Babel')
   const isReact = _.includes(features, 'React')
   const isVue = _.includes(features, 'Vue')
@@ -143,12 +138,7 @@ const generateProject = (
   }
 }
 
-export function generateParcelProject(
-  featureConfig,
-  features,
-  name,
-  getNodeVersionPromise
-) {
+export function generateParcelProject(features, name, getNodeVersionPromise) {
   const isBabel = _.includes(features, 'Babel')
   const isReact = _.includes(features, 'React')
   const newBabelConfig = createBabelConfig(features)
