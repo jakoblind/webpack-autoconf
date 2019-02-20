@@ -1,6 +1,8 @@
-export const reactIndexJs = `import React from "react";
-import ReactDOM from "react-dom";
+import _ from 'lodash'
 
+export const reactIndexJs = (extraImports = []) => `import React from "react";
+import ReactDOM from "react-dom";
+${_.map(extraImports, i => i + '\n')}
 class App extends React.Component {
   render() {
     return <div>Hello {this.props.name}</div>;
@@ -10,10 +12,12 @@ class App extends React.Component {
 var mountNode = document.getElementById("app");
 ReactDOM.render(<App name="Jane" />, mountNode);`
 
-export const reactHotIndexJs = `import React from "react";
+export const reactHotIndexJs = (
+  extraImports = []
+) => `import React from "react";
 import ReactDOM from "react-dom";
 import { hot } from 'react-hot-loader'
-
+${_.map(extraImports, i => i + '\n')}
 class App extends React.Component {
   render() {
     return <div>Hello {this.props.name}</div>;
@@ -37,9 +41,11 @@ export const reactIndexHtml = (bundleFilename = 'bundle.js') => `<!DOCTYPE html>
     </body>
 </html>`
 
-export const reactIndexTsx = `import * as React from 'react';
+export const reactIndexTsx = (
+  extraImports = []
+) => `import * as React from 'react';
 import * as ReactDOM from "react-dom";
-
+${_.map(extraImports, i => i + '\n')}
 interface Props {
    name: string
 }
