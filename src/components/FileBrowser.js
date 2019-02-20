@@ -68,6 +68,9 @@ class CodeBox extends React.Component {
   }
 }
 
+const filenameRegex = /.+\./i
+const extensionRegex = /\.[0-9a-z]+$/i
+
 class FileBrowser extends React.Component {
   constructor(props) {
     super(props)
@@ -81,7 +84,20 @@ class FileBrowser extends React.Component {
       if (
         !_.includes(_.keys(this.props.fileContentMap), this.state.selectedFile)
       ) {
-        this.setState({ selectedFile: this.props.defaultSelection })
+        // if user has changed features which makes the currently
+        // selected file not available anymore
+        // then try to find another file with same file name
+        // but different extension
+        // for example if previous was index.js maybe new one is index.ts
+        if (this.state.selectedFile !== prevProps.defaultSelection) {
+          const filename = this.state.selectedFile.match(filenameRegex)
+          const newSelection = _.find(_.keys(this.props.fileContentMap), file =>
+            _.startsWith(file, filename)
+          )
+          this.setState({
+            selectedFile: newSelection || this.props.defaultSelection,
+          })
+        }
       }
     }
   }
@@ -92,7 +108,6 @@ class FileBrowser extends React.Component {
     const { fileContentMap } = this.props
     const fileContent = _.get(fileContentMap, this.state.selectedFile, '')
 
-    var extensionRegex = /\.[0-9a-z]+$/i
     const extension = this.state.selectedFile.match(extensionRegex)
 
     return (
