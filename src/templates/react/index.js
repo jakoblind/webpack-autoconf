@@ -1,8 +1,10 @@
 import _ from 'lodash'
 
+const joinToString = list => _.reduce(list, (all, i) => all + i + '\n', '')
+
 export const reactIndexJs = (extraImports = []) => `import React from "react";
 import ReactDOM from "react-dom";
-${_.map(extraImports, i => i + '\n')}
+${joinToString(extraImports)}
 class App extends React.Component {
   render() {
     return <div>Hello {this.props.name}</div>;
@@ -17,7 +19,7 @@ export const reactHotIndexJs = (
 ) => `import React from "react";
 import ReactDOM from "react-dom";
 import { hot } from 'react-hot-loader'
-${_.map(extraImports, i => i + '\n')}
+${joinToString(extraImports)}
 class App extends React.Component {
   render() {
     return <div>Hello {this.props.name}</div>;
@@ -45,7 +47,7 @@ export const reactIndexTsx = (
   extraImports = []
 ) => `import * as React from 'react';
 import * as ReactDOM from "react-dom";
-${_.map(extraImports, i => i + '\n')}
+${joinToString(extraImports)}
 interface Props {
    name: string
 }

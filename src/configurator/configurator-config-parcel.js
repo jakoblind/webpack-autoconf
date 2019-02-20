@@ -1,6 +1,6 @@
 import _ from 'lodash'
 
-import { css } from '../templates/styling'
+import { css, scss, less } from '../templates/styling'
 import { reactIndexJs, reactIndexHtml } from '../templates/react/index'
 
 export default (() => {
@@ -16,9 +16,13 @@ export default (() => {
       },
       files: configItems => {
         const isCss = _.includes(configItems, 'CSS')
+        const isSass = _.includes(configItems, 'Sass')
+        const isLess = _.includes(configItems, 'Less')
         const extraImports = _.concat(
           [],
-          isCss ? [`import "./styles.css"`] : []
+          isCss ? [`import "./styles.css";`] : [],
+          isSass ? [`import "./styles.scss";`] : [],
+          isLess ? [`import "./styles.less";`] : []
         )
 
         return {
@@ -45,6 +49,15 @@ export default (() => {
     CSS: {
       group: 'Styling',
       files: configItems => ({ 'src/styles.css': css }),
+    },
+    Sass: {
+      group: 'Styling',
+      //devDependencies: configItems => ['sass'],//ToDO is thiss needed?
+      files: configItems => ({ 'src/styles.scss': scss }),
+    },
+    Less: {
+      group: 'Styling',
+      files: configItems => ({ 'src/styles.less': less }),
     },
   }
   const featuresNoNulls = _.mapValues(features, item => {
