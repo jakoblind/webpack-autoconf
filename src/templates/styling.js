@@ -4,16 +4,14 @@ export const css = `body {
 }`
 
 export const scss = `$primary-color: white;
-$bg: white;
-
+$bg: black;
 body {
   color: $primary-color;
   background-color: $bg;
 }`
 
 export const less = `@primary-color: white;
-@bg: white;
-
+@bg: black;
 body {
   color: @primary-color;
   background-color: @bg;

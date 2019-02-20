@@ -1,33 +1,33 @@
-export const vueIndexTs = `import Vue from 'vue';
+import _ from 'lodash'
+
+const joinToString = list => _.reduce(list, (all, i) => all + i + '\n', '')
+export const vueIndexTs = (extraImports = []) => `import Vue from 'vue';
 import App from './App';
+${joinToString(extraImports)}
 new Vue({
   el: '#app',
   render: h => h(App),
 });`
-export const vueIndexAppVue = `
+export const vueIndexAppVue = styling => `
 <template>
-    <div>
-        Name: <input v-model="name" type="text">
-        <hello-component :name="name" :initialEnthusiasm="initialEnthusiasm"/>
-    </div>
+  <div>
+    {{name}}
+  </div>
 </template>
 
 <script lang="ts">
-  import HelloComponent from "./Hello.vue";
   import Vue from "vue";
 
   export default Vue.extend({
     data: function() {
       return {
-        name: 'World',
-        initialEnthusiasm: 5
+        name: 'Hello World!',
       }
-    },
-    components: {
-      HelloComponent,
     },
   });
 </script>
+
+${styling}
 `
 
 export const vueIndexHtml = `<!doctype html>
