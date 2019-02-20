@@ -26,7 +26,7 @@ import { emptyIndexJs } from '../templates/empty/index'
 
 import { indexTypescriptHTML, tsconfig, tsconfigReact } from '../templates/ts'
 
-import { css } from '../templates/styling'
+import { css, scss, less } from '../templates/styling'
 
 export default (() => {
   const features = {
@@ -46,9 +46,13 @@ export default (() => {
         const isTypescript = _.includes(configItems, 'Typescript')
         const isHotReact = _.includes(features, 'React hot loader')
         const isCss = _.includes(configItems, 'CSS')
+        const isSass = _.includes(configItems, 'Sass')
+        const isLess = _.includes(configItems, 'Less')
         const extraImports = _.concat(
           [],
-          isCss ? [`import "./styles.css"`] : []
+          isCss ? [`import "./styles.css";`] : [],
+          isSass ? [`import "./styles.scss";`] : [],
+          isLess ? [`import "./styles.less";`] : []
         )
 
         if (isTypescript) {
@@ -95,12 +99,30 @@ export default (() => {
       files: configItems => {
         const isTypescript = _.includes(configItems, 'Typescript')
         const indexFilename = isTypescript ? 'src/index.ts' : 'src/index.js'
+        const isCss = _.includes(configItems, 'CSS')
+        const isLess = _.includes(configItems, 'Less')
+        const isSass = _.includes(configItems, 'Sass')
+        const cssStyle = `<style>
+${css}
+</style>`
+        const lessStyle = `<style lang="less">
+${less}
+</style>`
+        const sassStyle = `<style lang="scss">
+${scss}
+</style>`
+        const styling = _.concat(
+          [],
+          isCss ? cssStyle : null,
+          isSass ? sassStyle : null,
+          isLess ? lessStyle : null
+        )
+
         return _.assign(
           {
-            'src/App.vue': vueIndexAppVue,
-            'src/Hello.vue': isTypescript ? vueHelloWorldTS : vueHelloWorldJs,
+            'src/App.vue': vueIndexAppVue(_.join(styling, '\n')),
             'dist/index.html': vueIndexHtml,
-            [indexFilename]: vueIndexTs,
+            [indexFilename]: vueIndexTs(),
           },
           isTypescript ? { 'vue-shim.d.ts': vueShimType } : {}
         )
@@ -185,7 +207,13 @@ export default (() => {
         }
         return addModuleRule(webpackConfig, rule)
       },
-      files: configItems => ({ 'src/styles.css': css }),
+      files: configItems => {
+        const isVue = _.includes(configItems, 'Vue')
+        if (isVue) {
+          return {}
+        }
+        return { 'src/styles.css': css }
+      },
     },
     'CSS Modules': {
       group: 'Styling',
@@ -221,12 +249,19 @@ export default (() => {
             'sass-loader',
           ],
         }),
+      files: configItems => {
+        const isVue = _.includes(configItems, 'Vue')
+        if (isVue) {
+          return {}
+        }
+        return { 'src/styles.scss': scss }
+      },
     },
     Less: {
       group: 'Styling',
       devDependencies: configItems =>
         _.concat(
-          ['css-loader', 'less-loader'],
+          ['css-loader', 'less-loader', 'less'],
           getStyleLoaderDependencyIfNeeded(configItems)
         ),
       webpack: (webpackConfig, configItems) =>
@@ -238,6 +273,13 @@ export default (() => {
             'less-loader',
           ],
         }),
+      files: configItems => {
+        const isVue = _.includes(configItems, 'Vue')
+        if (isVue) {
+          return {}
+        }
+        return { 'src/styles.less': less }
+      },
     },
     stylus: {
       group: 'Styling',
