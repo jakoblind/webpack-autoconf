@@ -162,7 +162,7 @@ class Configurator extends React.Component {
                   className={styles.icon}
                   src={require('../../images/zip.svg')}
                 />
-                Get your project as a zip!
+                Download project
               </a>
             </div>
             <br />
@@ -198,7 +198,7 @@ class Configurator extends React.Component {
                   className={styles.icon}
                   src={require('../../images/zip.svg')}
                 />
-                Get your project as a zip!
+                Download project
               </a>
             </div>
           </div>

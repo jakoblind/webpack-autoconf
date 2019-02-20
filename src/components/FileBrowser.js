@@ -20,20 +20,39 @@ require('prismjs/themes/prism-tomorrow.css')
 require('../vendor/PrismLineHighlight')
 
 const FileList = ({ files, selectedFile, onSelectFile }) => {
-  const filesElements = _.map(files, ({ highlightedFile }, file) => (
-    <li
-      className={
-        file === selectedFile
-          ? styles.selected
-          : highlightedFile
-            ? styles.highlighted
-            : null
+  const groupByHighlight = _.reduce(
+    files,
+    (result, value, key) => {
+      // get last group in list.
+      const lastGroup = _.last(result)
+      if (
+        lastGroup &&
+        _.get(lastGroup, 'highlighted') === !!value.highlightedFile
+      ) {
+        lastGroup.files.push(key)
+        return result
+      } else {
+        return _.concat(result, {
+          highlighted: !!value.highlightedFile,
+          files: [key],
+        })
       }
-      key={file}
-      onClick={() => onSelectFile(file)}
-    >
-      {file}
-    </li>
+    },
+    []
+  )
+
+  const filesElements = _.map(groupByHighlight, group => (
+    <div className={group.highlighted ? styles.highlighted : null}>
+      {_.map(group.files, file => (
+        <li
+          className={file === selectedFile ? styles.selected : null}
+          key={file}
+          onClick={() => onSelectFile(file)}
+        >
+          {file}
+        </li>
+      ))}
+    </div>
   ))
 
   return (
@@ -143,10 +162,11 @@ class FileBrowserTransformer extends React.Component {
       let highlightedFile = false
       // if the file didn't exist previously, highlight it all
       if (!content.previousContent) {
-        //highlightedFile = true
+        highlightedFile = true
         const lines = content.currentContent.split(/\r\n|\r|\n/).length
         highlightedLines = `1-${lines}`
       } else if (content.previousContent !== content.currentContent) {
+        highlightedFile = true
         highlightedLines = this.getDiffAsLineNumberMemoized(
           content.previousContent,
           content.currentContent
