@@ -1,19 +1,14 @@
 import _ from 'lodash'
 
 import { css, scss, less } from '../templates/styling'
-import { reactIndexJs, reactIndexHtml } from '../templates/react/index'
+import { reactIndexJs } from '../templates/react/index'
+import { indexHtml } from '../templates/base'
 
 export default (() => {
   const features = {
     React: {
       group: 'Main library',
       dependencies: configItems => ['react', 'react-dom'],
-      packageJson: {
-        scripts: {
-          start: 'parcel src/index.html',
-          'build-prod': 'parcel build src/index.html',
-        },
-      },
       files: configItems => {
         const isCss = _.includes(configItems, 'CSS')
         const isSass = _.includes(configItems, 'Sass')
@@ -27,7 +22,7 @@ export default (() => {
 
         return {
           'src/index.js': reactIndexJs(extraImports),
-          'src/index.html': reactIndexHtml('index.js'),
+          'src/index.html': indexHtml('index.js'),
         }
       },
     },
@@ -84,8 +79,8 @@ export default (() => {
     base: {
       packageJson: {
         scripts: {
-          start: 'parcel watch src/index.js',
-          'build-prod': 'parcel build src/index.js',
+          start: 'parcel watch src/index.html',
+          'build-prod': 'parcel build src/index.html',
         },
       },
       devDependencies: ['parcel-bundler'],

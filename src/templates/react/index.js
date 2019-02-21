@@ -1,6 +1,4 @@
-import _ from 'lodash'
-
-const joinToString = list => _.reduce(list, (all, i) => all + i + '\n', '')
+import { joinToString } from '../helperFunctions'
 
 export const reactIndexJs = (extraImports = []) => `import React from "react";
 import ReactDOM from "react-dom";
@@ -30,18 +28,6 @@ const AppWithHot = hot(module)(App);
 
 var mountNode = document.getElementById("app");
 ReactDOM.render(<AppWithHot name="Jane" />, mountNode);`
-
-export const reactIndexHtml = (bundleFilename = 'bundle.js') => `<!DOCTYPE html>
-<html>
-    <head>
-        <title>React starter app</title>
-        <meta charset="utf-8">
-    </head>
-    <body>
-        <div id="app"></div>
-        <script src="${bundleFilename}"></script>
-    </body>
-</html>`
 
 export const reactIndexTsx = (
   extraImports = []

@@ -3,7 +3,6 @@ import {
   reactIndexJs,
   reactIndexTsx,
   reactHotIndexJs,
-  reactIndexHtml,
 } from '../templates/react/index'
 
 import {
@@ -21,13 +20,24 @@ import {
   vueIndexTs,
   vueShimType,
 } from '../templates/vue'
-
+import { indexHtml } from '../templates/base'
 import { emptyIndexJs } from '../templates/empty/index'
 
 import { indexTypescriptHTML, tsconfig, tsconfigReact } from '../templates/ts'
 
 import { css, scss, less } from '../templates/styling'
 
+function getStyleImports(configItems) {
+  const isCss = _.includes(configItems, 'CSS')
+  const isSass = _.includes(configItems, 'Sass')
+  const isLess = _.includes(configItems, 'Less')
+  return _.concat(
+    [],
+    isCss ? [`import "./styles.css";`] : [],
+    isSass ? [`import "./styles.scss";`] : [],
+    isLess ? [`import "./styles.less";`] : []
+  )
+}
 export default (() => {
   const features = {
     React: {
@@ -45,27 +55,18 @@ export default (() => {
       files: configItems => {
         const isTypescript = _.includes(configItems, 'Typescript')
         const isHotReact = _.includes(features, 'React hot loader')
-        const isCss = _.includes(configItems, 'CSS')
-        const isSass = _.includes(configItems, 'Sass')
-        const isLess = _.includes(configItems, 'Less')
-        const extraImports = _.concat(
-          [],
-          isCss ? [`import "./styles.css";`] : [],
-          isSass ? [`import "./styles.scss";`] : [],
-          isLess ? [`import "./styles.less";`] : []
-        )
-
+        const extraImports = getStyleImports(configItems)
         if (isTypescript) {
           return {
             'src/index.tsx': reactIndexTsx(extraImports),
-            'dist/index.html': reactIndexHtml(),
+            'dist/index.html': indexHtml(),
           }
         } else {
           return {
             'src/index.js': isHotReact
               ? reactHotIndexJs(extraImports)
               : reactIndexJs(extraImports),
-            'dist/index.html': reactIndexHtml(),
+            'dist/index.html': indexHtml(),
           }
         }
       },
@@ -187,7 +188,7 @@ ${scss}
           !isReact && !isVue
             ? {
                 'dist/index.html': indexTypescriptHTML,
-                'src/index.ts': emptyIndexJs,
+                'src/index.ts': emptyIndexJs(),
               }
             : {}
         return _.assign(configFiles, sourceFiles)
@@ -443,6 +444,7 @@ ${scss}
         },
       },
       devDependencies: ['webpack', 'webpack-cli'],
+      files: [],
     },
   }
 })()
