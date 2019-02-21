@@ -16,3 +16,10 @@ body {
   color: @primary-color;
   background-color: @bg;
 }`
+
+export const stylus = `primary-color = white
+bg = black
+body
+  color: primary-color;
+  background-color: bg;
+`
