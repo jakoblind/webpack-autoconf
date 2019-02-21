@@ -23,7 +23,7 @@ import {
 import { indexHtml } from '../templates/base'
 import { emptyIndexJs } from '../templates/empty/index'
 
-import { indexTypescriptHTML, tsconfig, tsconfigReact } from '../templates/ts'
+import { tsconfig, tsconfigReact } from '../templates/ts'
 
 import { css, scss, less, stylus } from '../templates/styling'
 
@@ -194,7 +194,7 @@ ${stylus}
         const sourceFiles =
           !isReact && !isVue
             ? {
-                'dist/index.html': indexTypescriptHTML,
+                'dist/index.html': indexHtml(),
                 'src/index.ts': emptyIndexJs(),
               }
             : {}
