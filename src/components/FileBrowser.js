@@ -20,30 +20,38 @@ require('prismjs/themes/prism-tomorrow.css')
 require('../vendor/PrismLineHighlight')
 
 const FileList = ({ files, selectedFile, onSelectFile }) => {
+  // sort with folders on top, and in alphabetic order
+  const sortedFiles = _.chain(files)
+    .map(({ highlightedFile }, filename) => ({ filename, highlightedFile }))
+    .groupBy(({ filename }) => _.includes(filename, '/'))
+    .mapValues(group => _.sortBy(group, 'filename'))
+    .reduce((all, value, key) => _.concat(value, all), [])
+    .value()
+
+  // group adjacent files that are highlighted
+  // so that we can highlight  more than one
+  // file at the time
   const groupByHighlight = _.reduce(
-    files,
-    (result, value, key) => {
+    sortedFiles,
+    (result, { filename, highlightedFile }) => {
       // get last group in list.
       const lastGroup = _.last(result)
-      if (
-        lastGroup &&
-        _.get(lastGroup, 'highlighted') === !!value.highlightedFile
-      ) {
-        lastGroup.files.push(key)
+      if (lastGroup && _.get(lastGroup, 'highlighted') === !!highlightedFile) {
+        lastGroup.files.push(filename)
         return result
       } else {
         return _.concat(result, {
-          highlighted: !!value.highlightedFile,
-          files: [key],
+          highlighted: !!highlightedFile,
+          files: [filename],
         })
       }
     },
     []
   )
 
-  const filesElements = _.map(groupByHighlight, group => (
-    <div className={group.highlighted ? styles.highlighted : null}>
-      {_.map(group.files, file => (
+  const filesElements = _.map(groupByHighlight, ({ highlighted, files }, i) => (
+    <div className={highlighted ? styles.highlighted : null} key={i}>
+      {_.map(files, file => (
         <li
           className={file === selectedFile ? styles.selected : null}
           key={file}
