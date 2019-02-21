@@ -19,42 +19,6 @@ import Features, {
 } from '../components/configurator/Features'
 import generateProject from '../configurator/project-generator'
 
-const Footer = () => (
-  <div className={styles.footer}>
-    <h3>What is this? </h3>
-    <p>
-      When using this tool, you get a webpack.config.js that is created just for{' '}
-      <i>you</i>. It's a great starting point for further development. The
-      webpack.config.js will create an optimized bundle based on{' '}
-      <a href="http://blog.jakoblind.no/3-ways-to-reduce-webpack-bundle-size/">
-        best practices
-      </a>
-      . Advanced optimizations such as code splitting is not (yet?) fully
-      supported with this tool.
-    </p>
-    <h4>Found a bug or want a feature?</h4>
-    <p>
-      Contact me on <a href="https://twitter.com/karljakoblind">twitter</a> or
-      file an issue or even better make a PR on the{' '}
-      <a href="https://github.com/jakoblind/webpack-configurator">
-        github repo
-      </a>
-      . Yes this is open source. <br />
-      <br />
-      <a
-        className="github-button"
-        href="https://github.com/jakoblind/webpack-autoconf"
-        data-icon="octicon-star"
-        data-show-count="true"
-        aria-label="Star jakoblind/webpack-autoconf on GitHub"
-      >
-        Star
-      </a>
-    </p>
-    <br />
-  </div>
-)
-
 const StepByStepArea = ({
   features,
   newNpmConfig,
@@ -212,7 +176,6 @@ class Configurator extends React.Component {
             isReact={isReact}
           />
         </div>
-        <Footer />
       </div>
     )
   }
