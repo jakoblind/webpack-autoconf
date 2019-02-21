@@ -25,17 +25,19 @@ import { emptyIndexJs } from '../templates/empty/index'
 
 import { indexTypescriptHTML, tsconfig, tsconfigReact } from '../templates/ts'
 
-import { css, scss, less } from '../templates/styling'
+import { css, scss, less, stylus } from '../templates/styling'
 
 function getStyleImports(configItems) {
   const isCss = _.includes(configItems, 'CSS')
   const isSass = _.includes(configItems, 'Sass')
   const isLess = _.includes(configItems, 'Less')
+  const isStylus = _.includes(configItems, 'stylus')
   return _.concat(
     [],
     isCss ? [`import "./styles.css";`] : [],
     isSass ? [`import "./styles.scss";`] : [],
-    isLess ? [`import "./styles.less";`] : []
+    isLess ? [`import "./styles.less";`] : [],
+    isStylus ? [`import "./styles.styl";`] : []
   )
 }
 export default (() => {
@@ -103,6 +105,7 @@ export default (() => {
         const isCss = _.includes(configItems, 'CSS')
         const isLess = _.includes(configItems, 'Less')
         const isSass = _.includes(configItems, 'Sass')
+        const isStylus = _.includes(configItems, 'stylus')
         const cssStyle = `<style>
 ${css}
 </style>`
@@ -112,11 +115,15 @@ ${less}
         const sassStyle = `<style lang="scss">
 ${scss}
 </style>`
+        const stylusStyle = `<style lang="styl">
+${stylus}
+</style>`
         const styling = _.concat(
           [],
-          isCss ? cssStyle : null,
-          isSass ? sassStyle : null,
-          isLess ? lessStyle : null
+          isCss ? cssStyle : [],
+          isSass ? sassStyle : [],
+          isLess ? lessStyle : [],
+          isStylus ? stylusStyle : []
         )
 
         return _.assign(
@@ -286,7 +293,7 @@ ${scss}
       group: 'Styling',
       devDependencies: configItems =>
         _.concat(
-          ['css-loader', 'stylus-loader'],
+          ['css-loader', 'stylus-loader', 'stylus'],
           getStyleLoaderDependencyIfNeeded(configItems)
         ),
       webpack: (webpackConfig, configItems) =>
@@ -298,6 +305,13 @@ ${scss}
             'stylus-loader',
           ],
         }),
+      files: configItems => {
+        const isVue = _.includes(configItems, 'Vue')
+        if (isVue) {
+          return {}
+        }
+        return { 'src/styles.styl': stylus }
+      },
     },
     SVG: {
       group: 'Image',
