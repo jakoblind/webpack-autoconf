@@ -105,12 +105,13 @@ function createPackageJsonConfig(featureConfig, configItems) {
 }
 // some config items can alter the package json. for example the scripts section
 export function createAdditionalFilesMap(featureConfig, configItems) {
-  return _.reduce(
+  const filesFromFeatures = _.reduce(
     configItems,
     (acc, currentValue) =>
       _.assign(acc, featureConfig.features[currentValue]['files'](configItems)),
     {}
   )
+  return _.assign(filesFromFeatures, featureConfig.base.files(configItems))
 }
 
 export function getPackageJson(

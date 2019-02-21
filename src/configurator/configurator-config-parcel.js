@@ -3,25 +3,27 @@ import _ from 'lodash'
 import { css, scss, less } from '../templates/styling'
 import { reactIndexJs } from '../templates/react/index'
 import { indexHtml } from '../templates/base'
+import { emptyIndexJs } from '../templates/empty/index'
 
+function getStyleImports(configItems) {
+  const isCss = _.includes(configItems, 'CSS')
+  const isSass = _.includes(configItems, 'Sass')
+  const isLess = _.includes(configItems, 'Less')
+  return _.concat(
+    [],
+    isCss ? [`import "./styles.css";`] : [],
+    isSass ? [`import "./styles.scss";`] : [],
+    isLess ? [`import "./styles.less";`] : []
+  )
+}
 export default (() => {
   const features = {
     React: {
       group: 'Main library',
       dependencies: configItems => ['react', 'react-dom'],
       files: configItems => {
-        const isCss = _.includes(configItems, 'CSS')
-        const isSass = _.includes(configItems, 'Sass')
-        const isLess = _.includes(configItems, 'Less')
-        const extraImports = _.concat(
-          [],
-          isCss ? [`import "./styles.css";`] : [],
-          isSass ? [`import "./styles.scss";`] : [],
-          isLess ? [`import "./styles.less";`] : []
-        )
-
         return {
-          'src/index.js': reactIndexJs(extraImports),
+          'src/index.js': reactIndexJs(getStyleImports(configItems)),
           'src/index.html': indexHtml('index.js'),
         }
       },
@@ -79,11 +81,23 @@ export default (() => {
     base: {
       packageJson: {
         scripts: {
-          start: 'parcel watch src/index.html',
+          start: 'parcel src/index.html',
           'build-prod': 'parcel build src/index.html',
         },
       },
       devDependencies: ['parcel-bundler'],
+      files: configItems => {
+        const isReact = _.includes(configItems, 'React')
+
+        if (!isReact) {
+          return {
+            'src/index.js': emptyIndexJs(getStyleImports(configItems)),
+            'src/index.html': indexHtml('index.js'),
+          }
+        } else {
+          return []
+        }
+      },
     },
   }
 })()

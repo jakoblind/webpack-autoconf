@@ -39,11 +39,6 @@ const generateProject = (features, name, getNodeVersionPromise) => {
       ? { '.babelrc': newBabelConfig }
       : null
 
-  const maybeSourceCodeEmpty =
-    !isTypescript && !isReact && !isVue
-      ? { 'src/index.js': emptyIndexJs(), 'dist/index.html': indexHtml() }
-      : null
-
   const fileMap = _.assign(
     {},
     {
@@ -52,8 +47,7 @@ const generateProject = (features, name, getNodeVersionPromise) => {
       'package.json': 'empty package.json',
     },
     additionalFilesMap,
-    maybeConfigBabel,
-    maybeSourceCodeEmpty
+    maybeConfigBabel
   )
 
   if (getNodeVersionPromise) {
@@ -81,12 +75,6 @@ export function generateParcelProject(features, name, getNodeVersionPromise) {
     newBabelConfig && (isReact || isBabel)
       ? { '.babelrc': newBabelConfig }
       : null
-  const maybeSourceCodeEmpty = !isReact
-    ? {
-        'src/index.js': emptyIndexJs(),
-        'src/index.html': indexHtml(),
-      }
-    : null
 
   const fileMap = _.assign(
     {},
@@ -94,8 +82,7 @@ export function generateParcelProject(features, name, getNodeVersionPromise) {
       'README.md': readmeFileParcel(projectName, isReact, false),
     },
     maybeConfigBabel,
-    additionalFilesMap,
-    maybeSourceCodeEmpty
+    additionalFilesMap
   )
 
   // TODO there is some duplicated code here. sorry
