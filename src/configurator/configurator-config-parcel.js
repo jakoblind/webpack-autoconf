@@ -1,10 +1,10 @@
 import _ from 'lodash'
 
 import { css, scss, less, stylus } from '../templates/styling'
-import { reactIndexJs } from '../templates/react/index'
+import { reactIndexJs, reactIndexTsx } from '../templates/react/index'
 import { indexHtml } from '../templates/base'
 import { emptyIndexJs } from '../templates/empty/index'
-
+import { tsconfig, tsconfigReact, indexTypescript } from '../templates/ts'
 function getStyleImports(configItems) {
   const isCss = _.includes(configItems, 'CSS')
   const isSass = _.includes(configItems, 'Sass')
@@ -24,9 +24,19 @@ export default (() => {
       group: 'Main library',
       dependencies: configItems => ['react', 'react-dom'],
       files: configItems => {
-        return {
-          'src/index.js': reactIndexJs(getStyleImports(configItems)),
-          'src/index.html': indexHtml('index.js'),
+        const isTypescript = _.includes(configItems, 'Typescript')
+        const extraImports = getStyleImports(configItems)
+
+        if (isTypescript) {
+          return {
+            'src/index.tsx': reactIndexTsx(extraImports),
+            'src/index.html': indexHtml('index.tsx'),
+          }
+        } else {
+          return {
+            'src/index.js': reactIndexJs(extraImports),
+            'src/index.html': indexHtml('index.js'),
+          }
         }
       },
     },
@@ -44,6 +54,24 @@ export default (() => {
           ['babel-loader', '@babel/core', '@babel/preset-env'],
           _.includes(configItems, 'React') ? '@babel/preset-react' : null
         ),
+    },
+    Typescript: {
+      group: 'Transpiler',
+      files: configItems => {
+        const isReact = _.includes(configItems, 'React')
+        //const isVue = _.includes(configItems, 'Vue')
+
+        const configFiles = isReact
+          ? { 'tsconfig.json': tsconfigReact }
+          : { 'tsconfig.json': tsconfig }
+        const sourceFiles = !isReact // && !isVue
+          ? {
+              'src/index.html': indexHtml('index.ts'),
+              'src/index.ts': emptyIndexJs(),
+            }
+          : {}
+        return _.assign(configFiles, sourceFiles)
+      },
     },
     CSS: {
       group: 'Styling',
@@ -94,8 +122,8 @@ export default (() => {
       devDependencies: ['parcel-bundler'],
       files: configItems => {
         const isReact = _.includes(configItems, 'React')
-
-        if (!isReact) {
+        const isTypescript = _.includes(configItems, 'Typescript')
+        if (!isReact && !isTypescript) {
           return {
             'src/index.js': emptyIndexJs(getStyleImports(configItems)),
             'src/index.html': indexHtml('index.js'),

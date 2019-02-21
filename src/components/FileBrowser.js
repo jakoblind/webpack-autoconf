@@ -116,15 +116,16 @@ class FileBrowser extends React.Component {
         // then try to find another file with same file name
         // but different extension
         // for example if previous was index.js maybe new one is index.ts
-        if (this.state.selectedFile !== prevProps.defaultSelection) {
-          const filename = this.state.selectedFile.match(filenameRegex)
-          const newSelection = _.find(_.keys(this.props.fileContentMap), file =>
-            _.startsWith(file, filename)
-          )
-          this.setState({
-            selectedFile: newSelection || this.props.defaultSelection,
-          })
-        }
+
+        const filename = this.state.selectedFile.match(filenameRegex)
+        const newSelection = _.find(
+          _.keys(this.props.fileContentMap),
+          // we don't want to go from index.js to index.html
+          file => _.startsWith(file, filename) && !_.endsWith(file, 'html')
+        )
+        this.setState({
+          selectedFile: newSelection || this.props.defaultSelection,
+        })
       }
     }
   }
