@@ -30,7 +30,7 @@ export const vueIndexAppVue = styling => `
 ${styling}
 `
 
-export const vueIndexHtml = `<!doctype html>
+export const vueIndexHtml = `<!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8">

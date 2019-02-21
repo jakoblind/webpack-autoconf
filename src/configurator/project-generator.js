@@ -11,6 +11,7 @@ import {
   createAdditionalFilesMap,
 } from './configurator'
 import { emptyIndexJs } from '../templates/empty/index'
+import { indexHtml } from '../templates/base'
 
 import { parcelConfig, webpackConfig } from './configurator-config'
 
@@ -40,7 +41,7 @@ const generateProject = (features, name, getNodeVersionPromise) => {
 
   const maybeSourceCodeEmpty =
     !isTypescript && !isReact && !isVue
-      ? { 'src/index.js': emptyIndexJs }
+      ? { 'src/index.js': emptyIndexJs(), 'dist/index.html': indexHtml() }
       : null
 
   const fileMap = _.assign(
@@ -81,7 +82,10 @@ export function generateParcelProject(features, name, getNodeVersionPromise) {
       ? { '.babelrc': newBabelConfig }
       : null
   const maybeSourceCodeEmpty = !isReact
-    ? { 'src/index.js': emptyIndexJs }
+    ? {
+        'src/index.js': emptyIndexJs(),
+        'src/index.html': indexHtml(),
+      }
     : null
 
   const fileMap = _.assign(
