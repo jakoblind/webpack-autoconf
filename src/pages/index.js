@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import _ from 'lodash'
 import styles from '../styles.module.css'
 import { Link } from 'gatsby'
-import { webpackConfig } from '../configurator/configurator-config'
+import { webpackConfig, parcelConfig } from '../configurator/configurator-config'
 
 import {
   createBabelConfig,
@@ -17,7 +17,7 @@ import Features, {
   withFeatureState,
   selectionRules as allSelectionRules,
 } from '../components/configurator/Features'
-import generateProject from '../configurator/project-generator'
+import generateProject, {generateParcelProject} from '../configurator/project-generator'
 
 const StepByStepArea = ({
   features,
@@ -80,48 +80,39 @@ const StepByStepArea = ({
     </div>
   )
 }
-class Tabs extends React.Component {
-  constructor(props) {
-    super(props)
-    this.state = { selected: 'webpack' }
-    this.setSelected = this.setSelected.bind(this)
-  }
-  setSelected(selected) {
-    this.setState({ selected })
-  }
 
-  render() {
+function Tabs({selected, setSelected}) {
     return (
       <div className={styles.tabsContainer}>
         <nav className={styles.tabs}>
           <a
-            onClick={() => this.setSelected('webpack')}
+            onClick={() => setSelected('webpack')}
             href="#"
             style={{ width: '135px' }}
             className={
-              this.state.selected === 'webpack' ? styles.selectedTab : null
+              selected === 'webpack' ? styles.selectedTab : null
             }
           >
             <img
               width="40"
               src={require(`../../images/webpack-logo${
-                this.state.selected === 'webpack' ? '-color' : ''
+                selected === 'webpack' ? '-color' : ''
               }.png`)}
             />
             <div>Webpack</div>
           </a>
           <a
-            onClick={() => this.setSelected('parcel')}
+            onClick={() => setSelected('parcel')}
             href="#"
             style={{ width: '105px' }}
             className={
-              this.state.selected === 'parcel' ? styles.selectedTab : null
+              selected === 'parcel' ? styles.selectedTab : null
             }
           >
             <img
               width="37"
               src={require(`../../images/parcel-logo${
-                this.state.selected === 'parcel' ? '-color' : ''
+                selected === 'parcel' ? '-color' : ''
               }.png`)}
             />
             <div>Parcel</div>
@@ -129,7 +120,6 @@ class Tabs extends React.Component {
         </nav>
       </div>
     )
-  }
 }
 
 const Button = ({ url }) => (
@@ -159,7 +149,9 @@ class Configurator extends React.Component {
       this.props.selectedArray
     )
 
-    const showFeatures = _.clone(webpackConfig.features)
+      const featureConfig = this.props.selectedBuildTool === "webpack" ? webpackConfig : parcelConfig;
+      const projectGeneratorFunction=this.props.selectedBuildTool === "webpack" ? generateProject:generateParcelProject;
+    const showFeatures = _.clone(featureConfig.features)
 
     if (!isReact) {
       delete showFeatures['React hot loader']
@@ -201,8 +193,8 @@ class Configurator extends React.Component {
           </div>
           <div className={styles.codeContainer}>
             <FileBrowser
-              projectGeneratorFunction={generateProject}
-              featureConfig={webpackConfig}
+              projectGeneratorFunction={projectGeneratorFunction}
+              featureConfig={featureConfig}
               features={this.props.selectedArray}
               highlightFeature={this.props.hoverFeature}
             />
@@ -239,13 +231,24 @@ const selectionRules = {
   ],
 }
 
-const ConfiguratorWithState = withFeatureState(selectionRules, Configurator)
+const parcelSelectionRules = {
+  stopSelectFunctions: [],
+  additionalSelectFunctions: [
+    allSelectionRules.additionalSelectFunctions.addBabelIfReact,
+  ],
+}
 
-const App = () => (
+const WebpackConfiguratorWithState = withFeatureState(selectionRules, Configurator)
+const ParcelConfiguratorWithState = withFeatureState(parcelSelectionRules, Configurator)
+
+function App(){
+    const [selected, setSelected] = useState("webpack")
+  return (
   <Layout>
-    <Tabs />
-    <ConfiguratorWithState />
+      <Tabs selected={selected} setSelected={setSelected}/>
+      {selected === "webpack" ? <WebpackConfiguratorWithState selectedBuildTool={selected}/> : <ParcelConfiguratorWithState selectedBuildTool={selected}/>}
   </Layout>
 )
+}
 
 export default App
