@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import _ from 'lodash'
 import styles from '../styles.module.css'
 import { Link } from 'gatsby'
@@ -80,6 +80,57 @@ const StepByStepArea = ({
     </div>
   )
 }
+class Tabs extends React.Component {
+  constructor(props) {
+    super(props)
+    this.state = { selected: 'webpack' }
+    this.setSelected = this.setSelected.bind(this)
+  }
+  setSelected(selected) {
+    this.setState({ selected })
+  }
+
+  render() {
+    return (
+      <div className={styles.tabsContainer}>
+        <nav className={styles.tabs}>
+          <a
+            onClick={() => this.setSelected('webpack')}
+            href="#"
+            style={{ width: '135px' }}
+            className={
+              this.state.selected === 'webpack' ? styles.selectedTab : null
+            }
+          >
+            <img
+              width="40"
+              src={require(`../../images/webpack-logo${
+                this.state.selected === 'webpack' ? '-color' : ''
+              }.png`)}
+            />
+            <div>Webpack</div>
+          </a>
+          <a
+            onClick={() => this.setSelected('parcel')}
+            href="#"
+            style={{ width: '105px' }}
+            className={
+              this.state.selected === 'parcel' ? styles.selectedTab : null
+            }
+          >
+            <img
+              width="37"
+              src={require(`../../images/parcel-logo${
+                this.state.selected === 'parcel' ? '-color' : ''
+              }.png`)}
+            />
+            <div>Parcel</div>
+          </a>
+        </nav>
+      </div>
+    )
+  }
+}
 
 class Configurator extends React.Component {
   render() {
@@ -107,9 +158,10 @@ class Configurator extends React.Component {
     }
     return (
       <div>
+        <Tabs />
+
         <div className={styles.topContainer}>
           <div className={styles.featuresContainer}>
-            <h1>webpack config tool</h1>
             <Features
               features={showFeatures}
               selected={this.props.selected}

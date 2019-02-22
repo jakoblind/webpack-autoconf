@@ -59,10 +59,7 @@ const Layout = ({ children, title, metaDescription }) => (
           <html lang="en" />
         </Helmet>
 
-        <div>
-          <Header />
-          {children}
-        </div>
+        <div>{children}</div>
       </>
     )}
   />
