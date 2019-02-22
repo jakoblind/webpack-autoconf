@@ -260,11 +260,12 @@ h2 {
 
 .tabsContainer {
     width: 100%;
-//    background-color: #F3F3F3;
+    background-color: #F3F3F3;
     color: white;
-    height: 50px;
+    height: 51px;
     margin-bottom: 20px;
     border-bottom: 1px solid #E3E3E3;
+    border-top: 1px solid #E3E3E3;
 }
 .tabs {
     max-width: 1067px;
@@ -273,7 +274,7 @@ h2 {
 .tabs a {
     border-radius: 5px 5px 0 0 ;
     color: #969696;
-//    background-color: #F3F3F3;
+    background-color: #F3F3F3;
     display: block;
     margin-top: 10px;
     padding-top:0px;
