@@ -132,6 +132,17 @@ class Tabs extends React.Component {
   }
 }
 
+const Button = ({ url }) => (
+  <a href={url} className={styles.btn}>
+    <img
+      alt="zip-file"
+      className={styles.icon}
+      src={require('../../images/zip.svg')}
+    />
+    <span>Download</span>
+  </a>
+)
+
 class Configurator extends React.Component {
   render() {
     const newBabelConfig = createBabelConfig(this.props.selectedArray)
@@ -158,8 +169,6 @@ class Configurator extends React.Component {
     }
     return (
       <div>
-        <Tabs />
-
         <div className={styles.topContainer}>
           <div className={styles.featuresContainer}>
             <Features
@@ -170,16 +179,9 @@ class Configurator extends React.Component {
               onMouseLeave={this.props.onMouseLeaveFeature}
             />
             <div className={styles.desktopOnly}>
-              <a
-                href={`https://s3-eu-west-1.amazonaws.com/jakoblind/zips/${projectname}.zip`}
-              >
-                <img
-                  alt="zip-file"
-                  className={styles.icon}
-                  src={require('../../images/zip.svg')}
-                />
-                Download project
-              </a>
+              <Button
+                url={`https://s3-eu-west-1.amazonaws.com/jakoblind/zips/${projectname}.zip`}
+              />
             </div>
             <br />
             <Link to="/course">Free webpack course</Link>
@@ -206,16 +208,9 @@ class Configurator extends React.Component {
             />
             <br />
             <div className={styles.smallScreensOnly}>
-              <a
-                href={`https://s3-eu-west-1.amazonaws.com/jakoblind/zips/${projectname}.zip`}
-              >
-                <img
-                  alt="zip-file"
-                  className={styles.icon}
-                  src={require('../../images/zip.svg')}
-                />
-                Download project
-              </a>
+              <Button
+                url={`https://s3-eu-west-1.amazonaws.com/jakoblind/zips/${projectname}.zip`}
+              />
             </div>
           </div>
         </div>
@@ -248,6 +243,7 @@ const ConfiguratorWithState = withFeatureState(selectionRules, Configurator)
 
 const App = () => (
   <Layout>
+    <Tabs />
     <ConfiguratorWithState />
   </Layout>
 )
