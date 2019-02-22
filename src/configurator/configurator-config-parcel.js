@@ -5,6 +5,14 @@ import { reactIndexJs, reactIndexTsx } from '../templates/react/index'
 import { indexHtml } from '../templates/base'
 import { emptyIndexJs } from '../templates/empty/index'
 import { tsconfig, tsconfigReact, indexTypescript } from '../templates/ts'
+import {
+  vueHelloWorldJs,
+  vueHelloWorldTS,
+  vueIndexAppVue,
+  vueIndexTs,
+  vueShimType,
+} from '../templates/vue'
+
 function getStyleImports(configItems) {
   const isCss = _.includes(configItems, 'CSS')
   const isSass = _.includes(configItems, 'Sass')
@@ -40,6 +48,47 @@ export default (() => {
         }
       },
     },
+    Vue: {
+      group: 'Main library',
+      dependencies: configItems => ['vue'],
+      files: configItems => {
+        const isTypescript = _.includes(configItems, 'Typescript')
+        const indexExtension = isTypescript ? 'ts' : 'js'
+        const isCss = _.includes(configItems, 'CSS')
+        const isLess = _.includes(configItems, 'Less')
+        const isSass = _.includes(configItems, 'Sass')
+        const isStylus = _.includes(configItems, 'stylus')
+        const cssStyle = `<style>
+${css}
+</style>`
+        const lessStyle = `<style lang="less">
+${less}
+</style>`
+        const sassStyle = `<style lang="scss">
+${scss}
+</style>`
+        const stylusStyle = `<style lang="styl">
+${stylus}
+</style>`
+        const styling = _.concat(
+          [],
+          isCss ? cssStyle : [],
+          isSass ? sassStyle : [],
+          isLess ? lessStyle : [],
+          isStylus ? stylusStyle : []
+        )
+
+        return _.assign(
+          {
+            'src/App.vue': vueIndexAppVue(_.join(styling, '\n')),
+            'src/index.html': indexHtml(`index.${indexExtension}`),
+            [`src/index.${indexExtension}`]: vueIndexTs(),
+          },
+          isTypescript ? { 'vue-shim.d.ts': vueShimType } : {}
+        )
+      },
+    },
+
     Babel: {
       group: 'Transpiler',
       babel: (babelConfig, configItems) =>
@@ -59,17 +108,18 @@ export default (() => {
       group: 'Transpiler',
       files: configItems => {
         const isReact = _.includes(configItems, 'React')
-        //const isVue = _.includes(configItems, 'Vue')
+        const isVue = _.includes(configItems, 'Vue')
 
         const configFiles = isReact
           ? { 'tsconfig.json': tsconfigReact }
           : { 'tsconfig.json': tsconfig }
-        const sourceFiles = !isReact // && !isVue
-          ? {
-              'src/index.html': indexHtml('index.ts'),
-              'src/index.ts': emptyIndexJs(),
-            }
-          : {}
+        const sourceFiles =
+          !isReact && !isVue
+            ? {
+                'src/index.html': indexHtml('index.ts'),
+                'src/index.ts': emptyIndexJs(),
+              }
+            : {}
         return _.assign(configFiles, sourceFiles)
       },
     },
@@ -123,7 +173,8 @@ export default (() => {
       files: configItems => {
         const isReact = _.includes(configItems, 'React')
         const isTypescript = _.includes(configItems, 'Typescript')
-        if (!isReact && !isTypescript) {
+        const isVue = _.includes(configItems, 'Vue')
+        if (!isReact && !isTypescript && !isVue) {
           return {
             'src/index.js': emptyIndexJs(getStyleImports(configItems)),
             'src/index.html': indexHtml('index.js'),

@@ -30,19 +30,6 @@ export const vueIndexAppVue = styling => `
 ${styling}
 `
 
-export const vueIndexHtml = `<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="utf-8">
-</head>
-<body>
-    <div id="app"></div>
-</body>
-
-<script src="bundle.js"></script>
-
-</html>`
-
 export const vueHelloWorldTS = `<template>
     <div>
         <div class="greeting">Hello {{name}}{{exclamationMarks}}</div>
