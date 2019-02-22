@@ -175,7 +175,7 @@ class FileBrowserTransformer extends React.Component {
         const lines = content.currentContent.split(/\r\n|\r|\n/).length
         highlightedLines = `1-${lines}`
       } else if (content.previousContent !== content.currentContent) {
-        highlightedFile = true
+        //highlightedFile = true
         highlightedLines = this.getDiffAsLineNumberMemoized(
           content.previousContent,
           content.currentContent
