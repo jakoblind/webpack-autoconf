@@ -16,7 +16,6 @@ import {
   vueHelloWorldJs,
   vueHelloWorldTS,
   vueIndexAppVue,
-  vueIndexHtml,
   vueIndexTs,
   vueShimType,
 } from '../templates/vue'
@@ -129,7 +128,7 @@ ${stylus}
         return _.assign(
           {
             'src/App.vue': vueIndexAppVue(_.join(styling, '\n')),
-            'dist/index.html': vueIndexHtml,
+            'dist/index.html': indexHtml(),
             [indexFilename]: vueIndexTs(),
           },
           isTypescript ? { 'vue-shim.d.ts': vueShimType } : {}
