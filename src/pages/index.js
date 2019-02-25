@@ -145,8 +145,9 @@ const selectionRules = {
 }
 
 const parcelSelectionRules = {
-  stopSelectFunctions: [],
-  additionalSelectFunctions: [
+  stopSelectFunctions: [allSelectionRules.stopSelectFunctions.stopIfNotBabelOrTypescriptForReact],
+    additionalSelectFunctions: [
+        allSelectionRules.additionalSelectFunctions.enforceEitherReactOrVue,
     allSelectionRules.additionalSelectFunctions.addBabelIfReact,
   ],
 }
@@ -248,12 +249,8 @@ function Configurator(props) {
 
   const projectname = getDefaultProjectName('empty-project', selectedArray)
 
-  const featureConfig =
-    state.selectedTab === 'webpack' ? webpackConfig : parcelConfig
-  const projectGeneratorFunction =
-    state.selectedTab === 'webpack' ? generateProject : generateParcelProject
-  const defaultFile =
-    state.selectedTab === 'webpack' ? 'webpack.config.js' : 'package.json'
+    const {featureConfig, projectGeneratorFunction, defaultFile} =
+        buildConfigConfig[state.selectedTab];
   const showFeatures = _.clone(featureConfig.features)
 
   if (!isReact) {
