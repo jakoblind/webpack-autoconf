@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useReducer } from 'react'
 import _ from 'lodash'
 import styles from '../styles.module.css'
 import { Link } from 'gatsby'
@@ -133,50 +133,155 @@ const Button = ({ url }) => (
   </a>
 )
 
-class Configurator extends React.Component {
-  render() {
-    const newBabelConfig = createBabelConfig(this.props.selectedArray)
-    const newNpmConfig = getNpmDependencies(
-      webpackConfig,
-      this.props.selectedArray
-    )
+const selectionRules = {
+  stopSelectFunctions: [
+    allSelectionRules.stopSelectFunctions.stopIfNotBabelOrTypescriptForReact,
+  ],
+  additionalSelectFunctions: [
+    allSelectionRules.additionalSelectFunctions.enforceEitherReactOrVue,
+    allSelectionRules.additionalSelectFunctions.addBabelIfReact,
+    allSelectionRules.additionalSelectFunctions.addOrRemoveReactHotLoader,
+  ],
+}
 
-    const isReact = _.includes(this.props.selectedArray, 'React')
-    const isTypescript = _.includes(this.props.selectedArray, 'Typescript')
+const parcelSelectionRules = {
+  stopSelectFunctions: [],
+  additionalSelectFunctions: [
+    allSelectionRules.additionalSelectFunctions.addBabelIfReact,
+  ],
+}
 
-    const projectname = getDefaultProjectName(
-      'empty-project',
-      this.props.selectedArray
-    )
+const buildConfigConfig = {
+  webpack: {
+    featureConfig: webpackConfig,
+    projectGeneratorFunction: generateProject,
+    defaultFile: 'webpack.config.js',
+    selectionRules,
+  },
+  parcel: {
+    featureConfig: parcelConfig,
+    projectGeneratorFunction: generateParcelProject,
+    defaultFile: 'package.json',
+    selectionRules: parcelSelectionRules,
+  },
+}
 
-    const featureConfig =
-      this.props.selectedBuildTool === 'webpack' ? webpackConfig : parcelConfig
-    const projectGeneratorFunction =
-      this.props.selectedBuildTool === 'webpack'
-        ? generateProject
-        : generateParcelProject
-    const defaultFile =
-      this.props.selectedBuildTool === 'webpack'
-        ? 'webpack.config.js'
-        : 'package.json'
-    const showFeatures = _.clone(featureConfig.features)
+const initialState = { selectedTab: 'webpack', selectedFeatures: {} }
 
-    if (!isReact) {
-      delete showFeatures['React hot loader']
-    }
-    if (isReact && isTypescript) {
-      delete showFeatures['React hot loader']
-    }
-    return (
+function reducer(state, action) {
+  switch (action.type) {
+    case 'setSelectedTab':
+      const newAllPossibleFeatures = _.keys(
+        buildConfigConfig[action.selectedTab].featureConfig.features
+      )
+      const selectedFeatures = _.chain(state.selectedFeatures)
+        .map((selected, feature) => (selected ? feature : null))
+        .reject(_.isNull)
+        .value()
+
+      const filteredFeatures = _.mapValues(
+        state.selectedFeatures,
+        (selected, feature) =>
+          _.includes(newAllPossibleFeatures, feature) && selected
+      )
+
+      return {
+        ...state,
+        selectedTab: action.selectedTab,
+        selectedFeatures: filteredFeatures,
+      }
+    case 'setSelectedFeatures':
+      const setToSelected = !state.selectedFeatures[action.feature]
+      //logFeatureClickToGa(feature, setToSelected)
+
+      const selectedFature = Object.assign({}, state.selectedFeatures, {
+        [action.feature]: setToSelected,
+      })
+
+      if (
+        _.some(
+          _.map(
+            buildConfigConfig[state.selectedTab].selectionRules
+              .stopSelectFunctions,
+            fn => fn(selectedFature, action.feature, setToSelected)
+          )
+        )
+      ) {
+        return state
+      }
+
+      const newSelected = _.reduce(
+        buildConfigConfig[state.selectedTab].selectionRules
+          .additionalSelectFunctions,
+        (currentSelectionMap, fn) =>
+          fn(currentSelectionMap, action.feature, setToSelected),
+        selectedFature
+      )
+      return { ...state, selectedFeatures: newSelected }
+
+    default:
+      throw new Error()
+  }
+}
+
+function Configurator(props) {
+  const [state, dispatch] = useReducer(reducer, initialState)
+  const [hoverFeature, setHoverFeature] = useState({})
+
+  function onMouseEnterFeature(feature) {
+    setHoverFeature(feature)
+  }
+  function onMouseLeaveFeature() {
+    setHoverFeature(null)
+  }
+
+  const selectedArray = _.chain(state.selectedFeatures)
+    .map((v, k) => (v ? k : null))
+    .reject(_.isNull)
+    .value()
+
+  const newBabelConfig = createBabelConfig(selectedArray)
+  const newNpmConfig = getNpmDependencies(webpackConfig, selectedArray)
+
+  const isReact = _.includes(selectedArray, 'React')
+  const isTypescript = _.includes(selectedArray, 'Typescript')
+
+  const projectname = getDefaultProjectName('empty-project', selectedArray)
+
+  const featureConfig =
+    state.selectedTab === 'webpack' ? webpackConfig : parcelConfig
+  const projectGeneratorFunction =
+    state.selectedTab === 'webpack' ? generateProject : generateParcelProject
+  const defaultFile =
+    state.selectedTab === 'webpack' ? 'webpack.config.js' : 'package.json'
+  const showFeatures = _.clone(featureConfig.features)
+
+  if (!isReact) {
+    delete showFeatures['React hot loader']
+  }
+  if (isReact && isTypescript) {
+    delete showFeatures['React hot loader']
+  }
+
+  return (
+    <div>
+      <Tabs
+        selected={state.selectedTab}
+        setSelected={selectedTab =>
+          dispatch({ type: 'setSelectedTab', selectedTab })
+        }
+      />
       <div>
         <div className={styles.topContainer}>
           <div className={styles.featuresContainer}>
             <Features
               features={showFeatures}
-              selected={this.props.selected}
-              setSelected={this.props.setSelected}
-              onMouseEnter={this.props.onMouseEnterFeature}
-              onMouseLeave={this.props.onMouseLeaveFeature}
+              selected={state.selectedFeatures}
+              setSelected={feature =>
+                dispatch({ type: 'setSelectedFeatures', feature })
+              }
+              onMouseEnter={onMouseEnterFeature}
+              onMouseLeave={onMouseLeaveFeature}
             />
             <div className={styles.desktopOnly}>
               <Button
@@ -203,8 +308,8 @@ class Configurator extends React.Component {
             <FileBrowser
               projectGeneratorFunction={projectGeneratorFunction}
               featureConfig={featureConfig}
-              features={this.props.selectedArray}
-              highlightFeature={this.props.hoverFeature}
+              features={selectedArray}
+              highlightFeature={hoverFeature}
               defaultFile={defaultFile}
             />
             <br />
@@ -218,92 +323,13 @@ class Configurator extends React.Component {
         <div className={styles.container}>
           <div className={styles.container} />
           <StepByStepArea
-            features={this.props.selectedArray}
+            features={selectedArray}
             newNpmConfig={newNpmConfig}
             newBabelConfig={newBabelConfig}
             isReact={isReact}
           />
         </div>
       </div>
-    )
-  }
-}
-
-const selectionRules = {
-  stopSelectFunctions: [
-    allSelectionRules.stopSelectFunctions.stopIfNotBabelOrTypescriptForReact,
-  ],
-  additionalSelectFunctions: [
-    allSelectionRules.additionalSelectFunctions.enforceEitherReactOrVue,
-    allSelectionRules.additionalSelectFunctions.addBabelIfReact,
-    allSelectionRules.additionalSelectFunctions.addOrRemoveReactHotLoader,
-  ],
-}
-
-const parcelSelectionRules = {
-  stopSelectFunctions: [],
-  additionalSelectFunctions: [
-    allSelectionRules.additionalSelectFunctions.addBabelIfReact,
-  ],
-}
-
-function ConfiguratorContainer(props) {
-  const [selected, setSelected] = useState({})
-  const [selectedTab, setSelectedTab] = useState('webpack')
-
-  const [hoverFeature, setHoverFeature] = useState({})
-  function setSelectedFeature(feature) {
-    const setToSelected = !selected[feature]
-    //logFeatureClickToGa(feature, setToSelected)
-
-    const selectedFature = Object.assign({}, selectedFature, {
-      [feature]: setToSelected,
-    })
-
-    if (
-      _.some(
-        _.map(selectionRules.stopSelectFunctions, fn =>
-          fn(selectedFature, feature, setToSelected)
-        )
-      )
-    ) {
-      return
-    }
-
-    const newSelected = _.reduce(
-      selectionRules.additionalSelectFunctions,
-      (currentSelectionMap, fn) =>
-        fn(currentSelectionMap, feature, setToSelected),
-      selectedFature
-    )
-
-    setSelected(newSelected)
-  }
-
-  function onMouseEnterFeature(feature) {
-    setHoverFeature(feature)
-  }
-  function onMouseLeaveFeature() {
-    setHoverFeature(null)
-  }
-
-  const selectedArray = _.chain(selected)
-    .map((v, k) => (v ? k : null))
-    .reject(_.isNull)
-    .value()
-
-  return (
-    <div>
-      <Tabs selected={selectedTab} setSelected={setSelectedTab} />
-      <Configurator
-        selected={selected}
-        hoverFeature={hoverFeature}
-        setSelected={setSelectedFeature}
-        onMouseEnterFeature={onMouseEnterFeature}
-        onMouseLeaveFeature={onMouseLeaveFeature}
-        selectedArray={selectedArray}
-        selectedBuildTool={selectedTab}
-      />
     </div>
   )
 }
@@ -311,7 +337,7 @@ function ConfiguratorContainer(props) {
 function App() {
   return (
     <Layout>
-      <ConfiguratorContainer />
+      <Configurator />
     </Layout>
   )
 }
