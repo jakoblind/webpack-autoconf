@@ -231,7 +231,8 @@ class FileBrowserContainer extends React.Component {
   componentDidUpdate(prevProps) {
     if (
       !_.isEqual(this.props.highlightFeature, prevProps.highlightFeature) ||
-      !_.isEqual(this.props.features, prevProps.features)
+      !_.isEqual(this.props.features, prevProps.features) ||
+      !_.isEqual(this.props.featureConfig, prevProps.featureConfig)
     ) {
       this.setProjectFilesInState()
     }

@@ -2,7 +2,10 @@ import React, { useState } from 'react'
 import _ from 'lodash'
 import styles from '../styles.module.css'
 import { Link } from 'gatsby'
-import { webpackConfig, parcelConfig } from '../configurator/configurator-config'
+import {
+  webpackConfig,
+  parcelConfig,
+} from '../configurator/configurator-config'
 
 import {
   createBabelConfig,
@@ -14,10 +17,11 @@ import FileBrowser from '../components/FileBrowser'
 
 import Layout from '../components/layout'
 import Features, {
-  withFeatureState,
   selectionRules as allSelectionRules,
 } from '../components/configurator/Features'
-import generateProject, {generateParcelProject} from '../configurator/project-generator'
+import generateProject, {
+  generateParcelProject,
+} from '../configurator/project-generator'
 
 const StepByStepArea = ({
   features,
@@ -81,45 +85,41 @@ const StepByStepArea = ({
   )
 }
 
-function Tabs({selected, setSelected}) {
-    return (
-      <div className={styles.tabsContainer}>
-        <nav className={styles.tabs}>
-          <a
-            onClick={() => setSelected('webpack')}
-            href="#"
-            style={{ width: '135px' }}
-            className={
-              selected === 'webpack' ? styles.selectedTab : null
-            }
-          >
-            <img
-              width="40"
-              src={require(`../../images/webpack-logo${
-                selected === 'webpack' ? '-color' : ''
-              }.png`)}
-            />
-            <div>Webpack</div>
-          </a>
-          <a
-            onClick={() => setSelected('parcel')}
-            href="#"
-            style={{ width: '105px' }}
-            className={
-              selected === 'parcel' ? styles.selectedTab : null
-            }
-          >
-            <img
-              width="37"
-              src={require(`../../images/parcel-logo${
-                selected === 'parcel' ? '-color' : ''
-              }.png`)}
-            />
-            <div>Parcel</div>
-          </a>
-        </nav>
-      </div>
-    )
+function Tabs({ selected, setSelected }) {
+  return (
+    <div className={styles.tabsContainer}>
+      <nav className={styles.tabs}>
+        <a
+          onClick={() => setSelected('webpack')}
+          href="#"
+          style={{ width: '135px' }}
+          className={selected === 'webpack' ? styles.selectedTab : null}
+        >
+          <img
+            width="40"
+            src={require(`../../images/webpack-logo${
+              selected === 'webpack' ? '-color' : ''
+            }.png`)}
+          />
+          <div>Webpack</div>
+        </a>
+        <a
+          onClick={() => setSelected('parcel')}
+          href="#"
+          style={{ width: '105px' }}
+          className={selected === 'parcel' ? styles.selectedTab : null}
+        >
+          <img
+            width="37"
+            src={require(`../../images/parcel-logo${
+              selected === 'parcel' ? '-color' : ''
+            }.png`)}
+          />
+          <div>Parcel</div>
+        </a>
+      </nav>
+    </div>
+  )
 }
 
 const Button = ({ url }) => (
@@ -149,8 +149,16 @@ class Configurator extends React.Component {
       this.props.selectedArray
     )
 
-      const featureConfig = this.props.selectedBuildTool === "webpack" ? webpackConfig : parcelConfig;
-      const projectGeneratorFunction=this.props.selectedBuildTool === "webpack" ? generateProject:generateParcelProject;
+    const featureConfig =
+      this.props.selectedBuildTool === 'webpack' ? webpackConfig : parcelConfig
+    const projectGeneratorFunction =
+      this.props.selectedBuildTool === 'webpack'
+        ? generateProject
+        : generateParcelProject
+    const defaultFile =
+      this.props.selectedBuildTool === 'webpack'
+        ? 'webpack.config.js'
+        : 'package.json'
     const showFeatures = _.clone(featureConfig.features)
 
     if (!isReact) {
@@ -197,6 +205,7 @@ class Configurator extends React.Component {
               featureConfig={featureConfig}
               features={this.props.selectedArray}
               highlightFeature={this.props.hoverFeature}
+              defaultFile={defaultFile}
             />
             <br />
             <div className={styles.smallScreensOnly}>
@@ -238,17 +247,73 @@ const parcelSelectionRules = {
   ],
 }
 
-const WebpackConfiguratorWithState = withFeatureState(selectionRules, Configurator)
-const ParcelConfiguratorWithState = withFeatureState(parcelSelectionRules, Configurator)
+function ConfiguratorContainer(props) {
+  const [selected, setSelected] = useState({})
+  const [selectedTab, setSelectedTab] = useState('webpack')
 
-function App(){
-    const [selected, setSelected] = useState("webpack")
+  const [hoverFeature, setHoverFeature] = useState({})
+  function setSelectedFeature(feature) {
+    const setToSelected = !selected[feature]
+    //logFeatureClickToGa(feature, setToSelected)
+
+    const selectedFature = Object.assign({}, selectedFature, {
+      [feature]: setToSelected,
+    })
+
+    if (
+      _.some(
+        _.map(selectionRules.stopSelectFunctions, fn =>
+          fn(selectedFature, feature, setToSelected)
+        )
+      )
+    ) {
+      return
+    }
+
+    const newSelected = _.reduce(
+      selectionRules.additionalSelectFunctions,
+      (currentSelectionMap, fn) =>
+        fn(currentSelectionMap, feature, setToSelected),
+      selectedFature
+    )
+
+    setSelected(newSelected)
+  }
+
+  function onMouseEnterFeature(feature) {
+    setHoverFeature(feature)
+  }
+  function onMouseLeaveFeature() {
+    setHoverFeature(null)
+  }
+
+  const selectedArray = _.chain(selected)
+    .map((v, k) => (v ? k : null))
+    .reject(_.isNull)
+    .value()
+
   return (
-  <Layout>
-      <Tabs selected={selected} setSelected={setSelected}/>
-      {selected === "webpack" ? <WebpackConfiguratorWithState selectedBuildTool={selected}/> : <ParcelConfiguratorWithState selectedBuildTool={selected}/>}
-  </Layout>
-)
+    <div>
+      <Tabs selected={selectedTab} setSelected={setSelectedTab} />
+      <Configurator
+        selected={selected}
+        hoverFeature={hoverFeature}
+        setSelected={setSelectedFeature}
+        onMouseEnterFeature={onMouseEnterFeature}
+        onMouseLeaveFeature={onMouseLeaveFeature}
+        selectedArray={selectedArray}
+        selectedBuildTool={selectedTab}
+      />
+    </div>
+  )
+}
+
+function App() {
+  return (
+    <Layout>
+      <ConfiguratorContainer />
+    </Layout>
+  )
 }
 
 export default App
