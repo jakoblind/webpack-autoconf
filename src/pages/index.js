@@ -157,13 +157,15 @@ const buildConfigConfig = {
     featureConfig: webpackConfig,
     projectGeneratorFunction: generateProject,
     defaultFile: 'webpack.config.js',
-    selectionRules,
+      selectionRules,
+      downloadUrlBase: "https://s3-eu-west-1.amazonaws.com/jakoblind/zips/"
   },
   parcel: {
     featureConfig: parcelConfig,
     projectGeneratorFunction: generateParcelProject,
     defaultFile: 'package.json',
-    selectionRules: parcelSelectionRules,
+      selectionRules: parcelSelectionRules,
+      downloadUrlBase: "https://s3-eu-west-1.amazonaws.com/jakoblind/zips-parcel/"
   },
 }
 
@@ -282,7 +284,7 @@ function Configurator(props) {
             />
             <div className={styles.desktopOnly}>
               <Button
-                url={`https://s3-eu-west-1.amazonaws.com/jakoblind/zips/${projectname}.zip`}
+                url={`${buildConfigConfig[state.selectedTab].downloadUrlBase}${projectname}.zip`}
               />
             </div>
             <br />
@@ -312,7 +314,7 @@ function Configurator(props) {
             <br />
             <div className={styles.smallScreensOnly}>
               <Button
-                url={`https://s3-eu-west-1.amazonaws.com/jakoblind/zips/${projectname}.zip`}
+                url={`${buildConfigConfig[state.selectedTab].downloadUrlBase}${projectname}.zip`}
               />
             </div>
           </div>
