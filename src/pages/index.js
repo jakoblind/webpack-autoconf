@@ -160,7 +160,8 @@ const buildConfigConfig = {
     projectGeneratorFunction: generateProject,
     defaultFile: 'webpack.config.js',
     selectionRules,
-    downloadUrlBase: 'https://s3-eu-west-1.amazonaws.com/jakoblind/zips/',
+    downloadUrlBase:
+      'https://s3-eu-west-1.amazonaws.com/jakoblind/zips-webpack/',
     extraElements: [
       <br />,
       <Link to="/webpack-course">Free webpack course</Link>,
