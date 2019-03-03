@@ -89,9 +89,8 @@ function Tabs({ selected, setSelected }) {
   return (
     <div className={styles.tabsContainer}>
       <nav className={styles.tabs}>
-        <a
+        <button
           onClick={() => setSelected('webpack')}
-          href="#"
           style={{ width: '135px' }}
           className={selected === 'webpack' ? styles.selectedTab : null}
         >
@@ -102,10 +101,9 @@ function Tabs({ selected, setSelected }) {
             }.png`)}
           />
           <div>Webpack</div>
-        </a>
-        <a
+        </button>
+        <button
           onClick={() => setSelected('parcel')}
-          href="#"
           style={{ width: '105px' }}
           className={selected === 'parcel' ? styles.selectedTab : null}
         >
@@ -116,7 +114,7 @@ function Tabs({ selected, setSelected }) {
             }.png`)}
           />
           <div>Parcel</div>
-        </a>
+        </button>
       </nav>
     </div>
   )
