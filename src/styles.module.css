@@ -243,6 +243,9 @@ h2 {
     max-width: 1067px;
     margin: 0 auto;
 }
+.marginsContainer {
+    margin: 10px;
+}
 .sectionsContainer {
     display: flex;
 }
@@ -264,42 +267,50 @@ h2 {
     color: white;
     height: 51px;
     margin-bottom: 20px;
+    padding-left: 10px;
     border-bottom: 1px solid #E3E3E3;
     border-top: 1px solid #E3E3E3;
 }
+
 .tabs {
     max-width: 1067px;
     margin: 0 auto;
 }
 .tabs button {
+    cursor: pointer;
     outline: none;
     font-size: 16px;
     border-radius: 5px 5px 0 0 ;
     color: #969696;
     background-color: #F3F3F3;
     display: block;
-    margin-top: 10px;
-    padding-top:0px;
-    height: 40px;
     float: left;
+    text-align: center;
+
+    margin-top: 8px;
+    padding-top:0px;
+    padding-bottom: 0px;
+    height: 42px;
+    border-top-width: 0px;
+    border-bottom-width: 1px;
+
     margin-right: 9px;
     margin-left: 1px;
-    text-align: center;
     border-color: #E3E3E3;
     border-style: solid;
     border-left-width: 0px;
     border-right-width: 0px;
-    border-top-width: 0px;
-    border-bottom-width: 1px;
-    text-decoration: none;
-    box-sizing: border-box;
+    vertical-align: middle;
 }
 .tabs img {
     float:left;
-    margin-left: 5px;
+    width: 40px;
+    margin-left: 0px;
+    margin-right: 5px;
 }
 .tabs div {
     float:left;
+
     margin-top: 11px;
 }
 
@@ -309,16 +320,33 @@ h2 {
 .tabs button.selectedTab {
     border-left-width: 1px;
     border-right-width: 1px;
+
     border-top-width: 1px;
     border-bottom-width: 0px;
-    margin-top:9px;
-    height: 41px;
+    margin-top:6px;
+    height: 44px;
+
     margin-left: 0px;
     margin-right:10px;
     color: #0c0c0c;
     background-color: white;
 }
-
+.parcelTab {
+    width: 115px;
+}
+.parcelTab img {
+    height: 35px;
+    width: 35px;
+}
+.parcelTab div {
+    margin-top:9px;
+}
+.webpackTab {
+    width: 135px;
+}
+.webpackTab img {
+    margin-left: -2px;
+}
 .shadow {
     box-shadow: 0 2px 4px 0 rgba(0,0,0,.1);
 }
@@ -330,6 +358,7 @@ h2 {
     float: left;
     width: 30%;
     margin-top: 20px;
+
 }
 .codeContainer {
     display: block;

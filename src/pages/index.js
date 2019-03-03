@@ -91,11 +91,12 @@ function Tabs({ selected, setSelected }) {
       <nav className={styles.tabs}>
         <button
           onClick={() => setSelected('webpack')}
-          style={{ width: '135px' }}
-          className={selected === 'webpack' ? styles.selectedTab : null}
+          className={[
+            selected === 'webpack' ? styles.selectedTab : null,
+            styles.webpackTab,
+          ].join(' ')}
         >
           <img
-            width="40"
             src={require(`../../images/webpack-logo${
               selected === 'webpack' ? '-color' : ''
             }.png`)}
@@ -104,11 +105,12 @@ function Tabs({ selected, setSelected }) {
         </button>
         <button
           onClick={() => setSelected('parcel')}
-          style={{ width: '105px' }}
-          className={selected === 'parcel' ? styles.selectedTab : null}
+          className={[
+            selected === 'parcel' ? styles.selectedTab : null,
+            styles.parcelTab,
+          ].join(' ')}
         >
           <img
-            width="37"
             src={require(`../../images/parcel-logo${
               selected === 'parcel' ? '-color' : ''
             }.png`)}
@@ -283,8 +285,9 @@ function Configurator(props) {
           dispatch({ type: 'setSelectedTab', selectedTab })
         }}
       />
-      <div>
-        <div className={styles.topContainer}>
+
+      <div className={styles.topContainer}>
+        <div className={styles.marginsContainer}>
           <div className={styles.featuresContainer}>
             <Features
               features={showFeatures}
