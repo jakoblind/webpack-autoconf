@@ -281,7 +281,7 @@ function Configurator(props) {
       <Tabs
         selected={state.selectedTab}
         setSelected={selectedTab => {
-          window.history.replaceState(null, null, selectedTab)
+          window.history.replaceState(null, null, `/${selectedTab}`)
           dispatch({ type: 'setSelectedTab', selectedTab })
         }}
       />
