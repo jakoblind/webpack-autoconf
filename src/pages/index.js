@@ -177,7 +177,10 @@ const buildConfigConfig = {
   },
 }
 
-const initialState = { selectedTab: 'webpack', selectedFeatures: {} }
+const initialState = (selectedTab = 'webpack') => ({
+  selectedTab,
+  selectedFeatures: {},
+})
 
 function reducer(state, action) {
   switch (action.type) {
@@ -236,7 +239,7 @@ function reducer(state, action) {
 }
 
 function Configurator(props) {
-  const [state, dispatch] = useReducer(reducer, initialState)
+  const [state, dispatch] = useReducer(reducer, initialState(props.selectedTab))
   const [hoverFeature, setHoverFeature] = useState({})
 
   function onMouseEnterFeature(feature) {
@@ -277,9 +280,10 @@ function Configurator(props) {
     <div>
       <Tabs
         selected={state.selectedTab}
-        setSelected={selectedTab =>
+        setSelected={selectedTab => {
+          window.history.replaceState(null, null, selectedTab)
           dispatch({ type: 'setSelectedTab', selectedTab })
-        }
+        }}
       />
       <div>
         <div className={styles.topContainer}>
@@ -346,10 +350,14 @@ function Configurator(props) {
   )
 }
 
-function App() {
+function App(props) {
+  const {
+    pageContext: { selectedTab },
+  } = props
+  //console.log('props', props.location.search)
   return (
     <Layout>
-      <Configurator />
+      <Configurator selectedTab={selectedTab} />
     </Layout>
   )
 }
