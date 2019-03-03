@@ -271,7 +271,9 @@ h2 {
     max-width: 1067px;
     margin: 0 auto;
 }
-.tabs a {
+.tabs button {
+    outline: none;
+    font-size: 16px;
     border-radius: 5px 5px 0 0 ;
     color: #969696;
     background-color: #F3F3F3;
@@ -301,10 +303,10 @@ h2 {
     margin-top: 11px;
 }
 
-.tabs a:hover {
+.tabs button:hover {
     color: #0c0c0c;
 }
-.tabs a.selectedTab {
+.tabs button.selectedTab {
     border-left-width: 1px;
     border-right-width: 1px;
     border-top-width: 1px;
@@ -313,8 +315,6 @@ h2 {
     height: 41px;
     margin-left: 0px;
     margin-right:10px;
-
-
     color: #0c0c0c;
     background-color: white;
 }
