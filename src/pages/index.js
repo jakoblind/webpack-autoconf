@@ -80,7 +80,7 @@ const StepByStepArea = ({
         {babelStep}
         {srcFoldersStep}
       </ol>
-      <Link to="/course">Need more detailed instructions?</Link>
+      <Link to="/webpack-course">Need more detailed instructions?</Link>
     </div>
   )
 }
@@ -163,7 +163,7 @@ const buildConfigConfig = {
     downloadUrlBase: 'https://s3-eu-west-1.amazonaws.com/jakoblind/zips/',
     extraElements: [
       <br />,
-      <Link to="/course">Free webpack course</Link>,
+      <Link to="/webpack-course">Free webpack course</Link>,
       <br />,
     ],
   },

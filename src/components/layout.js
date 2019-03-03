@@ -10,7 +10,7 @@ const Header = () => {
   return (
     <div className={styles.header}>
       <Link to="/">Create App</Link>
-      <Link to="/course">Free webpack course</Link>
+      <Link to="/webpack-course">Free webpack course</Link>
       <a href="http://blog.jakoblind.no/">Articles</a>
       <Link to="/about">About</Link>
     </div>
