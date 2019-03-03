@@ -145,9 +145,11 @@ const selectionRules = {
 }
 
 const parcelSelectionRules = {
-  stopSelectFunctions: [allSelectionRules.stopSelectFunctions.stopIfNotBabelOrTypescriptForReact],
-    additionalSelectFunctions: [
-        allSelectionRules.additionalSelectFunctions.enforceEitherReactOrVue,
+  stopSelectFunctions: [
+    allSelectionRules.stopSelectFunctions.stopIfNotBabelOrTypescriptForReact,
+  ],
+  additionalSelectFunctions: [
+    allSelectionRules.additionalSelectFunctions.enforceEitherReactOrVue,
     allSelectionRules.additionalSelectFunctions.addBabelIfReact,
   ],
 }
@@ -157,15 +159,21 @@ const buildConfigConfig = {
     featureConfig: webpackConfig,
     projectGeneratorFunction: generateProject,
     defaultFile: 'webpack.config.js',
-      selectionRules,
-      downloadUrlBase: "https://s3-eu-west-1.amazonaws.com/jakoblind/zips/"
+    selectionRules,
+    downloadUrlBase: 'https://s3-eu-west-1.amazonaws.com/jakoblind/zips/',
+    extraElements: [
+      <br />,
+      <Link to="/course">Free webpack course</Link>,
+      <br />,
+    ],
   },
   parcel: {
     featureConfig: parcelConfig,
     projectGeneratorFunction: generateParcelProject,
     defaultFile: 'package.json',
-      selectionRules: parcelSelectionRules,
-      downloadUrlBase: "https://s3-eu-west-1.amazonaws.com/jakoblind/zips-parcel/"
+    selectionRules: parcelSelectionRules,
+    downloadUrlBase:
+      'https://s3-eu-west-1.amazonaws.com/jakoblind/zips-parcel/',
   },
 }
 
@@ -251,8 +259,11 @@ function Configurator(props) {
 
   const projectname = getDefaultProjectName('empty-project', selectedArray)
 
-    const {featureConfig, projectGeneratorFunction, defaultFile} =
-        buildConfigConfig[state.selectedTab];
+  const {
+    featureConfig,
+    projectGeneratorFunction,
+    defaultFile,
+  } = buildConfigConfig[state.selectedTab]
   const showFeatures = _.clone(featureConfig.features)
 
   if (!isReact) {
@@ -284,12 +295,12 @@ function Configurator(props) {
             />
             <div className={styles.desktopOnly}>
               <Button
-                url={`${buildConfigConfig[state.selectedTab].downloadUrlBase}${projectname}.zip`}
+                url={`${
+                  buildConfigConfig[state.selectedTab].downloadUrlBase
+                }${projectname}.zip`}
               />
             </div>
-            <br />
-            <Link to="/course">Free webpack course</Link>
-            <br />
+            {buildConfigConfig[state.selectedTab].extraElements}
             <br />
             <a
               href="https://twitter.com/share?ref_src=twsrc%5Etfw"
@@ -314,7 +325,9 @@ function Configurator(props) {
             <br />
             <div className={styles.smallScreensOnly}>
               <Button
-                url={`${buildConfigConfig[state.selectedTab].downloadUrlBase}${projectname}.zip`}
+                url={`${
+                  buildConfigConfig[state.selectedTab].downloadUrlBase
+                }${projectname}.zip`}
               />
             </div>
           </div>
