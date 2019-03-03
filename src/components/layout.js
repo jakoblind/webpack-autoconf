@@ -9,11 +9,9 @@ import './layout.css'
 const Header = () => {
   return (
     <div className={styles.header}>
-      <Link to="/">Webpack config tool</Link>
-      <Link to="/optimize">Bundle optimizer</Link>
-      <Link to="/course">Free course</Link>
+      <Link to="/">Create App</Link>
+      <Link to="/course">Free webpack course</Link>
       <a href="http://blog.jakoblind.no/">Articles</a>
-      <Link to="/book">Book</Link>
       <Link to="/about">About</Link>
     </div>
   )
