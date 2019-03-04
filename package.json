@@ -43,7 +43,6 @@
     "prismjs": "^1.15.0",
     "react": "^16.8.3",
     "react-dom": "^16.8.3",
-    "react-dropzone": "^8.2.0",
     "react-helmet": "^5.2.0",
     "webpack-optimize-helper": "^1.0.0"
   },
