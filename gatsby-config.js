@@ -39,5 +39,8 @@ module.exports = {
         account: '8328291',
       },
     },
+    {
+      resolve: `gatsby-plugin-netlify`,
+    },
   ],
 }
