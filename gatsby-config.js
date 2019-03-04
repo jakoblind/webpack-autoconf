@@ -1,8 +1,9 @@
 module.exports = {
   siteMetadata: {
-    title: 'Webpack config tool',
+    title:
+      'Create App - your tool for starting a new webpack or Parcel project',
     description:
-      'Webpack config tool - create your own webpack config with React, Vue, Typescript and other libraries',
+      'Create your own webpack config or Parcel app with React, Vue, Typescript, CSS, SCSS, SASS, less, codesplitting, etc, with this online tool',
   },
   plugins: [
     'gatsby-plugin-react-helmet',

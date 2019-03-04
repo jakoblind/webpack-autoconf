@@ -3,6 +3,10 @@
     width: 20px;
 }
 
+.logo {
+    color: black;
+}
+
 .miniBook{
     padding: 10px;
     margin-bottom: 20px;
@@ -108,7 +112,7 @@
 .header {
     width: 625px;
     margin: 0 auto;
-    padding: 1em;
+    padding: 15px;
 }
 
 .header a {
