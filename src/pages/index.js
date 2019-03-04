@@ -28,6 +28,7 @@ const StepByStepArea = ({
   newNpmConfig,
   newBabelConfig,
   isReact,
+  isWebpack,
 }) => {
   const npmInstallCommand = _.isEmpty(newNpmConfig.dependencies)
     ? ''
@@ -60,6 +61,15 @@ const StepByStepArea = ({
       </div>
     )
   }
+  let webpackStep = null
+  if (isWebpack) {
+    webpackStep = (
+      <li>
+        Create <i>webpack.config.js</i> in the root and copy the contents of the
+        generated file
+      </li>
+    )
+  }
 
   let srcFoldersStep = (
     <li>Create folders src and dist and create source code files</li>
@@ -71,11 +81,7 @@ const StepByStepArea = ({
       <ol>
         <li>Create an NPM project and install dependencies</li>
         <textarea readOnly={true} rows="6" cols="50" value={npmCommand} />
-
-        <li>
-          Create <i>webpack.config.js</i> in the root and copy the contents of
-          the generated file
-        </li>
+        {webpackStep}
 
         {babelStep}
         {srcFoldersStep}
@@ -345,6 +351,7 @@ function Configurator(props) {
             newNpmConfig={newNpmConfig}
             newBabelConfig={newBabelConfig}
             isReact={isReact}
+            isWebpack={state.selectedTab === 'webpack'}
           />
         </div>
       </div>
@@ -356,7 +363,6 @@ function App(props) {
   const {
     pageContext: { selectedTab },
   } = props
-  //console.log('props', props.location.search)
   return (
     <Layout>
       <Configurator selectedTab={selectedTab} />
