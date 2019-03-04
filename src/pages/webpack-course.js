@@ -6,7 +6,7 @@ import { CourseSignupForm } from '../components/SignupForms'
 
 export default () => {
   return (
-    <Layout title="Bundle optimize helper">
+    <Layout title="Free webpack course">
       <div className={styles.webpackConfigContainer}>
           <h1 className={styles.large}>Time to learn webpack properly</h1>
         <p>
