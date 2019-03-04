@@ -169,9 +169,11 @@ const buildConfigConfig = {
     downloadUrlBase:
       'https://s3-eu-west-1.amazonaws.com/jakoblind/zips-webpack/',
     extraElements: [
-      <br />,
-      <Link to="/webpack-course">Free webpack course</Link>,
-      <br />,
+      <br key={1} />,
+      <Link key={2} to="/webpack-course">
+        Free webpack course
+      </Link>,
+      <br key={3} />,
     ],
   },
   parcel: {

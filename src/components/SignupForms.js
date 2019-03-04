@@ -10,7 +10,7 @@ export const SignupForm = ({ buttonText, buttonStyle, signupText, dripId }) => (
     >
       <div>
         <input
-          autoFocus="true"
+          autoFocus={true}
           className={styles.signupField}
           placeholder="Your Email"
           type="email"
