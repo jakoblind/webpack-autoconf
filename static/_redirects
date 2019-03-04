@@ -1,3 +1,4 @@
-/       https://createapp.dev/                  301
-/course https://createapp.dev/webpack-course    301
-/book   https://createapp.dev/webpack-book      301
+# redirect to createapp.dev
+/               https://createapp.dev/
+/course         https://createapp.dev/webpack-course
+/book           https://createapp.dev/webpack-book
