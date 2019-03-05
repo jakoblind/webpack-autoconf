@@ -319,8 +319,8 @@ function Configurator(props) {
             <a
               href="https://twitter.com/share?ref_src=twsrc%5Etfw"
               className="twitter-share-button"
-              data-text="webpack config tool: create a webpack config in your browser"
-              data-url="https://webpack.jakoblind.no/"
+              data-text="createapp.dev: create a webpack or a parcel project in your browser"
+              data-url="https://createapp.dev/"
               data-via="karljakoblind"
               data-lang="en"
               data-show-count="false"
