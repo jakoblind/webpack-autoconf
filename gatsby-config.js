@@ -17,7 +17,7 @@ module.exports = {
         display: 'minimal-ui',
       },
     },
-    'gatsby-plugin-offline',
+    'gatsby-plugin-remove-serviceworker',
     {
       resolve: `gatsby-plugin-google-analytics`,
       options: {
