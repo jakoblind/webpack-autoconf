@@ -247,6 +247,14 @@ function reducer(state, action) {
   }
 }
 
+function trackPageView(newUrl) {
+  if (!window.ga) {
+    return
+  }
+  window.ga('set', 'page', newUrl)
+  window.ga('send', 'pageview')
+}
+
 function Configurator(props) {
   const [state, dispatch] = useReducer(reducer, initialState(props.selectedTab))
   const [hoverFeature, setHoverFeature] = useState({})
@@ -290,7 +298,10 @@ function Configurator(props) {
       <Tabs
         selected={state.selectedTab}
         setSelected={selectedTab => {
-          window.history.replaceState(null, null, `/${selectedTab}`)
+          const newUrl = `/${selectedTab}`
+          trackPageView(newUrl)
+          window.history.replaceState(null, null, newUrl)
+
           dispatch({ type: 'setSelectedTab', selectedTab })
         }}
       />
