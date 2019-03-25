@@ -128,8 +128,8 @@ function Tabs({ selected, setSelected }) {
   )
 }
 
-const Button = ({ url }) => (
-  <a href={url} className={styles.btn}>
+const Button = ({ url, onClick }) => (
+  <a href={url} className={styles.btn} onClick={onClick}>
     <img
       alt="zip-file"
       className={styles.icon}
@@ -255,6 +255,29 @@ function trackPageView(newUrl) {
   window.ga('send', 'pageview')
 }
 
+function gaSendEvent({ eventCategory, eventAction, eventLabel }) {
+  if (!window.ga) {
+    console.log(
+      'Ga debug: ',
+      'send',
+      'event',
+      eventCategory,
+      eventAction,
+      eventLabel
+    )
+    return
+  }
+  window.ga('send', 'event', eventCategory, eventAction, eventLabel)
+}
+
+function trackDownload(selectedTab, selectedFeatures) {
+  gaSendEvent({
+    eventCategory: 'Project download',
+    eventAction: selectedTab,
+    eventLabel: selectedFeatures,
+  })
+}
+
 function Configurator(props) {
   const [state, dispatch] = useReducer(reducer, initialState(props.selectedTab))
   const [hoverFeature, setHoverFeature] = useState({})
@@ -320,6 +343,7 @@ function Configurator(props) {
             />
             <div className={styles.desktopOnly}>
               <Button
+                onClick={e => trackDownload(state.selectedTab, selectedArray)}
                 url={`${
                   buildConfigConfig[state.selectedTab].downloadUrlBase
                 }${projectname}.zip`}
@@ -350,6 +374,7 @@ function Configurator(props) {
             <br />
             <div className={styles.smallScreensOnly}>
               <Button
+                onClick={e => trackDownload(state.selectedTab, selectedArray)}
                 url={`${
                   buildConfigConfig[state.selectedTab].downloadUrlBase
                 }${projectname}.zip`}
