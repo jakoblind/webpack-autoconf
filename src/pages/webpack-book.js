@@ -31,79 +31,91 @@ export default () => {
             <HiddenSampleChapterSignupForm />
           </p>
         </div>
-        <h3>You cant learn webpack from shiny tools</h3>
+        <h3>Webpack configuration makes me feel really dumb</h3>
         <p>
-          If you ask on reddit or discord how to approach the frontend ecosystem
-          they will tell you to learn one thing at once.
-        </p>
-        <p>
-          A common recommendation is to start with JavaScript, and then move on
-          to React when you are ready. You should use create-react-app (CRA) to
-          create your project. You can learn webpack “later”.
-        </p>
-        <p>
-          The problem with this strategy is that later never comes. And suddenly
-          you have grown out of CRA and need to extend it. So you eject your app
-          and get this thrown in your face:
+          Webpack says it’s zero-config but that is only partly true. It’s
+          zero-config if you don’t need any features at all. But if want to do
+          anything non-trivial like, you know... creating an app that supports
+          ES6 and styles then you are back to config hell.
         </p>
         <img
           src={require('../../images/webpackmedium.webm.gif')}
           width="100%"
+          style={{ textAlgin: 'center' }}
         />
         <p>
-          You get not only one – but three webpack config files. At a total of
-          989 lines of code. And that’s just the webpack configs. There are more
-          config files and build scripts that got generated for you. That is
-          overwhelming.
+          Loaders, plugins, rules, modules, resolve. What is what? And don’t get
+          me started if you want code splitting and hot module reloading. And
+          babel is supposed to be in there somehow.
         </p>
         <p>
-          The webpack config file is well commented, but it doesn’t help when
-          you have no idea how webpack works.
+          You do your best to set up the config by copy-pasting boilerplates,
+          reading tutorials that might or might not be outdated, and reading the
+          official docs which only partly answers the questions you have.
         </p>
-        <p>You can’t learn webpack by reading a huge config file.</p>
-        <p />
-        <h3>A strategy for learning webpack that works</h3>
-        <p>You already know how to learn a new language or tool:</p>
-        <ol className={styles.bookFeatures}>
-          <li>You start by reading about the most basic features.</li>
-          <li>
-            Then you write some code yourself implementing these basic features
-            in a small project.
-          </li>
-          <li>It works! Your confidence grows.</li>
-          <li>
-            Now you are ready for some more advanced concepts. You read about it
-            and repeat the process.
-          </li>
-        </ol>
+        <div className={styles.twoColumns}>
+          <div>
+            <p>
+              When you finally have managed to put together a webpack config
+              that actually seems to work you don’t dare to touch it in case you
+              break everything. Your webpack project is like a digital version
+              of a house of cards (not the tv-series but you know... real cards)
+            </p>
+
+            <p>
+              You are terrified when you change the code splitting setup or
+              adding typescript - because everything might suddenly just fall
+              apart.
+            </p>
+          </div>
+          <img src={require('../../images/house-of-cards.jpg')} />
+        </div>
         <p>
-          An essential aspect of learning programming is to write code yourself.
-          Only reading is not enough.
-        </p>
-        <p>
-          You know how this works because you have already learned JavaScript,
-          React and probably lots of other languages and tools.
+          Creating and maintaining frontend projects shouldn’t be this hard.
         </p>
         <p>
-          The feeling of knowing how everything works – including the build
-          setup – in your app is awesome.
+          You know webpack gets stuff done efficiently, but how many weeks or
+          months do you have to spend to learn it properly?
+        </p>
+        <h3>With great complexity comes great power.</h3>
+        <p>
+          There is a reason that almost all major toolkits like Gatsby and
+          Nextjs use webpack under-the-hood. There is a reason that webpack is
+          so popular in enterprise applications, and large full stack and
+          frontend apps.{' '}
         </p>
         <p>
-          With such depth in your skills and knowledge, you are a frontend dev
-          that knows how to set up any kind webpack project. You are able to go
-          in and upgrade, tweak and optimize existing webpack projects.{' '}
+          The reason is that webpack is super powerful. It’s ugly but it gets
+          the job done better than any other tool. No build tool has the
+          position that webpack has in the community - the user base is insanely
+          big. It’s the industry standard whether you like it or not.
         </p>
-        <h3>New book: Learn webpack</h3>
         <p>
-          In this book you'll start with a clean slate - just you and an empty
-          text editor. You will learn step-by-step how to build the{' '}
+          Knowing webpack is one thing that will make you stand out from other
+          frontend devs. Most devs have enough troubles to learn CSS grids
+          layouts and ES6 features. Not everyone takes the time to learn
+          webpack. If webpack was part of a Microsoft certification program
+          (thank god it’s not) then this would be part of the Gold platinum
+          certification.
+        </p>
+        <p>
+          Webpack is tough to learn. You’ll have to do the work. But with the
+          right learning resource you can be a confident webpack coder already
+          next week.
+        </p>
+        <h3>A complete handbook for webpack beginners</h3>
+        <p>
+          In "Learn webpack", you'll start with a clean slate - just you and an
+          empty text editor. You will learn step-by-step how to build the{' '}
           <code>webpack.config.js</code>, <code>package.json</code>,{' '}
           <code>.babelrc</code> and all other files required to build a modern
-          web apps with webpack.
+          web apps with webpack. This approach makes webpack super easy to learn
+          - even if you don’t have much dev experience.
         </p>
         <p>
-          This is a <i>complete</i> and <i>up-to-date</i> resource for webpack
-          beginners.
+          This is a <i>complete</i> and <i>up-to-date</i> book for webpack
+          beginners. It covers the latest stable version of webpack which is
+          version 4.
         </p>
         <h3>What does the book cover?</h3>
         <p>
