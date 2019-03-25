@@ -252,6 +252,9 @@ class FileBrowserContainer extends React.Component {
         },
         { promise: true }
       )
+      .catch(err => {
+        return 'latest'
+      })
   )
   getAllFeaturesExceptHighlighted = memoizee((features, highlightFeature) =>
     _.reject(features, f => f === highlightFeature)
