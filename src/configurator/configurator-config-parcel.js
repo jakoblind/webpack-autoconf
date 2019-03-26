@@ -100,8 +100,8 @@ ${stylus}
         }),
       devDependencies: configItems =>
         _.concat(
-          ['babel-loader', '@babel/core', '@babel/preset-env'],
-          _.includes(configItems, 'React') ? '@babel/preset-react' : null
+          ['@babel/core', '@babel/preset-env'],
+          _.includes(configItems, 'React') ? '@babel/preset-react' : []
         ),
     },
     Typescript: {

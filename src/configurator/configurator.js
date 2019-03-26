@@ -50,7 +50,7 @@ export function getNpmDependencies(featureConfig, configItems) {
   const dependencies = _.chain(configItems)
     .reduce(
       (acc, currentValue) =>
-        _.concat(acc, features[currentValue]['dependencies'](configItems)),
+        _.concat(acc, featureConfig.features[currentValue]['dependencies'](configItems)),
       _.get(featureConfig, 'base.dependencies', [])
     )
     .uniq()
@@ -59,7 +59,7 @@ export function getNpmDependencies(featureConfig, configItems) {
   const devDependencies = _.chain(configItems)
     .reduce(
       (acc, currentValue) =>
-        _.concat(acc, features[currentValue]['devDependencies'](configItems)),
+        _.concat(acc, featureConfig.features[currentValue]['devDependencies'](configItems)),
       _.get(featureConfig, 'base.devDependencies', [])
     )
     .uniq()
@@ -124,6 +124,8 @@ export function getPackageJson(
     dependencies: dependenciesNames,
     devDependencies: devDependenciesNames,
   } = getNpmDependencies(featureConfig, features)
+
+    console.log("dependenciesNames", devDependenciesNames);
   const dependenciesVersionsPromises = _.map(
     dependenciesNames,
     getNodeVersionPromise
