@@ -31,6 +31,19 @@
 
 }
 
+.discountBox {
+    padding: 5px;
+    text-align: center;
+    display: block;
+    color: black;
+    background: yellow;
+    margin-bottom: 20px;
+}
+
+.discountBox span {
+    font-weight: bold;
+}
+
 @media only screen and (max-width: 40em) {
 .twoColumns {
     display: block;
