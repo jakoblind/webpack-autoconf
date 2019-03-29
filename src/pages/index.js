@@ -183,6 +183,13 @@ const buildConfigConfig = {
     selectionRules: parcelSelectionRules,
     downloadUrlBase:
       'https://s3-eu-west-1.amazonaws.com/jakoblind/zips-parcel/',
+    extraElements: [
+      <br key={1} />,
+      <Link key={2} to="/parcel-course">
+        Free parcel course
+      </Link>,
+      <br key={3} />,
+    ],
   },
 }
 
