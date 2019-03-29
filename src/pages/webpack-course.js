@@ -8,17 +8,23 @@ export default () => {
   return (
     <Layout title="Free webpack course">
       <div className={styles.webpackConfigContainer}>
-          <h1 className={styles.large}>Time to learn webpack properly</h1>
+        <h1 className={styles.large}>Time to learn webpack properly</h1>
         <p>
-            Why do you need both a <code>.babelrc</code> file <i>and</i> a
-          <code> webpack.config.js</code> file? What's the difference between babel and webpack?
+          Why do you need both a <code>.babelrc</code> file <i>and</i> a
+          <code> webpack.config.js</code> file? What's the difference between
+          babel and webpack?
         </p>
 
-        <p>And why should you put CSS and images in the bundle? Isn't the bundle supposed to be a JavaScript file?</p>
+        <p>
+          And why should you put CSS and images in the bundle? Isn't the bundle
+          supposed to be a JavaScript file?
+        </p>
 
         <h3>Free webpack email course</h3>
         <p>
-          With this email course you'll start with a clean slate and you will learn step-by-step how to build a complete webpack app. Coding yourself is the best way to learn webpack.
+          With this email course you'll start with a clean slate and you will
+          learn step-by-step how to build a complete webpack app. Coding
+          yourself is the best way to learn webpack.
         </p>
         <p>
           You will be using industry best practices and latest version of
@@ -38,16 +44,23 @@ export default () => {
           </div>
           <img src={require('../../images/email-course.jpg')} />
         </div>
-        <p>
-          Level up your frontend skills and become a more solid, all-round
-          frontend dev.
-        </p>
-        <CourseSignupForm />
-        <h3>What are others saying about the course? </h3>
+        <p>Here is what people are saying about the course: </p>
         <img
           className={styles.shadow}
           src={require('../../images/email-course-feedback1.png')}
         />
+        <p>
+          <i>
+            "It helped to learn/solidify very important concepts about webpack"
+          </i>
+        </p>
+        <p>
+          Level up your frontend skills and become a more solid, all-round
+          frontend dev. Get started right now, the first lesson takes only 10
+          minutes to complete.
+        </p>
+        <CourseSignupForm />
+        <br />
       </div>
     </Layout>
   )
