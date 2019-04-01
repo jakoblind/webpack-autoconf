@@ -81,6 +81,9 @@ ${
     : '```sh\nnode dist/bundle.js\n```'
 }
 
+## Credits
+
+Created with [createapp.dev - an online tool for creating webpack and parcel projects](https://createapp.dev/)
 `
 
 export const readmeFileParcel = (name, isReact) => `# ${name}
@@ -114,5 +117,9 @@ ${
     ? 'Open the file `dist/index.html` in your browser'
     : '```sh\nnode dist/bundle.js\n```'
 }
+
+## Credits
+
+Created with [createapp.dev - an online tool for creating webpack and parcel projects](https://createapp.dev/)
 
 `
