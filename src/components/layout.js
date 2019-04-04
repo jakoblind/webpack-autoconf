@@ -13,6 +13,7 @@ const Header = () => {
         Create App
       </Link>
       <Link to="/webpack-course">Free webpack course</Link>
+      <Link to="/webpack-book">Webpack book</Link>
       <a href="http://blog.jakoblind.no/">Articles</a>
       <Link to="/about">About</Link>
     </div>
