@@ -3,6 +3,7 @@ import styles from '../styles.module.css'
 import { Link } from 'gatsby'
 import { SampleChapterSignupForm, withHidden } from '../components/SignupForms'
 import Layout from '../components/layout'
+import Countdown from 'react-countdown-now'
 
 export const HiddenSampleChapterSignupForm = withHidden(
   SampleChapterSignupForm,
@@ -19,6 +20,26 @@ const BuyButton = () => (
   </a>
 )
 
+const renderer = ({ days, hours, minutes, seconds, completed }) => {
+  if (completed) {
+    return <span>Time's out</span>
+  } else {
+    return (
+      <span>
+        {days} days, {hours} hours and {minutes} minutes
+      </span>
+    )
+  }
+}
+const Discount = () => (
+  <div className={styles.discountBox}>
+    Spring sale! Use the discount code <span>spring</span> in the checkout to
+    get 10% off. <br />
+    Discount expires in{' '}
+    <Countdown date={new Date('2019-04-12T00:00:00')} renderer={renderer} />
+  </div>
+)
+
 export default () => {
   return (
     <Layout title="Learn webpack">
@@ -26,6 +47,7 @@ export default () => {
         <h1 className={styles.large}>Learn webpack</h1>
         <h2 className={styles.subtitle}>A handbook for webpack beginners</h2>
         <div className={styles.center}>
+          <Discount />
           <BuyButton />
           <p>
             <HiddenSampleChapterSignupForm />
@@ -212,6 +234,7 @@ export default () => {
           </tr>
         </table>
         <p />
+        <Discount />
         <BuyButton />
         <p>It's time for you to take back control of your webpack config!</p>
         <div style={{ clear: 'both' }} />
