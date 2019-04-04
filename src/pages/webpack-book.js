@@ -34,7 +34,7 @@ const renderer = ({ days, hours, minutes, seconds, completed }) => {
 const Discount = () => (
   <div className={styles.discountBox}>
     Spring sale! Use the discount code <span>spring</span> in the checkout to
-    get 10% off. <br />
+    get 25% off. <br />
     Discount expires in{' '}
     <Countdown date={new Date('2019-04-12T00:00:00')} renderer={renderer} />
   </div>
