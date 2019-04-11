@@ -47,7 +47,6 @@ export default () => {
         <h1 className={styles.large}>Learn webpack</h1>
         <h2 className={styles.subtitle}>A handbook for webpack beginners</h2>
         <div className={styles.center}>
-          <Discount />
           <BuyButton />
           <p>
             <HiddenSampleChapterSignupForm />
@@ -234,7 +233,6 @@ export default () => {
           </tr>
         </table>
         <p />
-        <Discount />
         <BuyButton />
         <p>It's time for you to take back control of your webpack config!</p>
         <div style={{ clear: 'both' }} />
