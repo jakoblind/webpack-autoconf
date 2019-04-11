@@ -226,16 +226,6 @@
     padding-bottom: 60px;
 }
 
-.menuDiscount {
-    background: yellow;
-    font-weight: bold;
-    color: black;
-    position: absolute;
-    margin-left: -50px;
-    margin-top: -16px;
-    transform: rotate(0.02turn)
-}
-
 .signup-button-area {
     margin-bottom: 15px;
 }
