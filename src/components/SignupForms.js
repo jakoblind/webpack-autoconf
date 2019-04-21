@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import styles from '../styles.module.css'
 
+/*DRIP form. currently not in use.*/
 const SignupForm = ({ buttonText, buttonStyle, signupText, dripId }) => (
   <div className={styles.signupFormArea}>
     <form
@@ -145,11 +146,11 @@ export function withHidden(WrappedComponent, text) {
 }
 
 export const SampleChapterSignupForm = ({ buttonText }) => (
-  <SignupForm
+  <ConvertKitSignupForm
     buttonText={buttonText || 'Send me a sample chapter'}
     buttonStyle={styles.blueButton}
     signupText="You'll also get articles related to webpack and JavaScript once or twice per month"
-    dripId={'78049842'}
+    formId="918254"
   />
 )
 
