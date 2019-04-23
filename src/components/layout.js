@@ -64,6 +64,29 @@ const Layout = ({ children, title, metaDescription }) => (
           <Header />
           {children}
         </div>
+        <footer>
+          <br />
+          <br />
+          <br />
+          <ul
+            style={{
+              display: `flex`,
+              flexWrap: `wrap`,
+              justifyContent: `space-around`,
+              listStyle: `none`,
+              color: 'black',
+              width: '200px',
+              margin: 'auto',
+            }}
+          >
+            <li>
+              <a href="https://twitter.com/karljakoblind">Twitter</a>
+            </li>
+            <li>
+              <a href="https://github.com/jakoblind">Github</a>
+            </li>
+          </ul>
+        </footer>
       </>
     )}
   />
