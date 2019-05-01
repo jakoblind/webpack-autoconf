@@ -84,7 +84,7 @@ function ConvertKitSignupForm({
             style={
               errorMessage && email === '' ? { border: '1px solid red' } : {}
             }
-            autofocus={true}
+            autoFocus={true}
             placeholder="Your Email"
             name="email_address"
             type="email"

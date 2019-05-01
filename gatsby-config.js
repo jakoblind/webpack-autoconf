@@ -34,11 +34,5 @@ module.exports = {
         logo: './images/favicon.png',
       },
     },
-    {
-      resolve: `gatsby-plugin-drip-widget`,
-      options: {
-        account: '8328291',
-      },
-    },
   ],
 }

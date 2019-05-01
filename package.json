@@ -45,6 +45,8 @@
     "react-countdown-now": "^2.1.0",
     "react-dom": "^16.8.3",
     "react-helmet": "^5.2.0",
+    "react-modal": "^3.8.1",
+    "react-share": "^2.4.0",
     "webpack-optimize-helper": "^1.0.0"
   },
   "devDependencies": {
