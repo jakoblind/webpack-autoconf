@@ -20,7 +20,7 @@ export default () => {
           supposed to be a JavaScript file?
         </p>
 
-        <h3>Free webpack email course</h3>
+        <h2>Free webpack email course</h2>
         <p>
           With this email course you'll start with a clean slate and you will
           learn step-by-step how to build a complete webpack app. Coding
@@ -30,8 +30,23 @@ export default () => {
           You will be using industry best practices and latest version of
           webpack (version 4).
         </p>
-
-        <div className={styles.sectionsContainer}>
+        <h3>Here is what people are saying about the course: </h3>
+        <img
+          className={styles.shadow}
+          src={require('../../images/email-course-feedback1.png')}
+        />
+        <p>
+          <i>
+            "It helped to learn/solidify very important concepts about webpack"
+          </i>
+        </p>
+<p>
+          <i>
+            "Great introduction, understood quite some things about webpack for the first time."
+          </i>
+        </p>
+<h3>Learn the basics of webpack in less than a week</h3>
+<div className={styles.sectionsContainer}>
           <div className={styles.sectionsLeft}>
             <p>You get 5 emails in 5 days.</p>
             <ul>
@@ -44,16 +59,6 @@ export default () => {
           </div>
           <img src={require('../../images/email-course.jpg')} />
         </div>
-        <p>Here is what people are saying about the course: </p>
-        <img
-          className={styles.shadow}
-          src={require('../../images/email-course-feedback1.png')}
-        />
-        <p>
-          <i>
-            "It helped to learn/solidify very important concepts about webpack"
-          </i>
-        </p>
         <p>
           Level up your frontend skills and become a more solid, all-round
           frontend dev. Get started right now, the first lesson takes only 10
