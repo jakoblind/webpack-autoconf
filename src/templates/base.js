@@ -83,7 +83,7 @@ ${
 
 ## Credits
 
-Created with [createapp.dev - an online tool for creating webpack and parcel projects](https://createapp.dev/)
+Made with [createapp.dev](https://createapp.dev/)
 `
 
 export const readmeFileParcel = (name, isReact) => `# ${name}
@@ -120,6 +120,6 @@ ${
 
 ## Credits
 
-Created with [createapp.dev - an online tool for creating webpack and parcel projects](https://createapp.dev/)
+Made with [createapp.dev](https://createapp.dev/)
 
 `
