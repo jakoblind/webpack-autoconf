@@ -1,7 +1,10 @@
-import React, { useState, useReducer } from 'react'
+import React, { useState, useReducer, useEffect } from 'react'
 import _ from 'lodash'
 import styles from '../styles.module.css'
 import { Link } from 'gatsby'
+import Modal from 'react-modal'
+import { GenericSignupForm } from '../components/SignupForms'
+
 import {
   webpackConfig,
   parcelConfig,
@@ -128,16 +131,74 @@ function Tabs({ selected, setSelected }) {
   )
 }
 
-const Button = ({ url, onClick }) => (
-  <a href={url} className={styles.btn} onClick={onClick}>
-    <img
-      alt="zip-file"
-      className={styles.icon}
-      src={require('../../images/zip.svg')}
-    />
-    <span>Download</span>
-  </a>
-)
+Modal.setAppElement('#___gatsby')
+
+function DownloadButton({ url, onClick }) {
+  const [modalOpen, setModalOpen] = useState(false)
+  const customStyles = {
+    content: {
+      top: '50%',
+      left: '50%',
+      right: 'auto',
+      bottom: 'auto',
+      marginRight: '-50%',
+      transform: 'translate(-50%, -50%)',
+    },
+  }
+  useEffect(() => {
+    //funkar inte
+    window.twttr && window.twttr.widgets && window.twttr.widgets.load()
+  })
+
+  return (
+    <div>
+      <a
+        href={url}
+        className={styles.btn}
+        onClick={() => {
+          onClick()
+          setModalOpen(true)
+        }}
+      >
+        <img
+          alt="zip-file"
+          className={styles.icon}
+          src={require('../../images/zip.svg')}
+        />
+        <span>Download</span>
+      </a>
+      <Modal
+        isOpen={modalOpen}
+        onRequestClose={() => setModalOpen(false)}
+        style={customStyles}
+        contentLabel="Example Modal"
+      >
+        <h2 style={{ width: '90%', float: 'left' }}>Downloading...</h2>
+        <button
+          style={{ borderRadius: '100px', float: 'left' }}
+          onClick={() => setModalOpen(false)}
+        >
+          X
+        </button>
+        <h3>Spread the word about createapp.dev</h3>
+        <a
+          href="https://twitter.com/share?ref_src=twsrc%5Etfw"
+          className="twitter-share-button"
+          data-text="createapp.dev: create a webpack or a parcel project in your browser"
+          data-url="https://createapp.dev/"
+          data-via="karljakoblind"
+          data-lang="en"
+          data-show-count="false"
+        >
+          Tweet
+        </a>
+        <h3>Signup for updates</h3>
+        <p>Also get fresh articles and exclusive offers.</p>
+        <GenericSignupForm />
+      </Modal>
+    </div>
+  )
+}
 
 const selectionRules = {
   stopSelectFunctions: [
@@ -349,7 +410,7 @@ function Configurator(props) {
               onMouseLeave={onMouseLeaveFeature}
             />
             <div className={styles.desktopOnly}>
-              <Button
+              <DownloadButton
                 onClick={e => trackDownload(state.selectedTab, selectedArray)}
                 url={`${
                   buildConfigConfig[state.selectedTab].downloadUrlBase
@@ -380,7 +441,7 @@ function Configurator(props) {
             />
             <br />
             <div className={styles.smallScreensOnly}>
-              <Button
+              <DownloadButton
                 onClick={e => trackDownload(state.selectedTab, selectedArray)}
                 url={`${
                   buildConfigConfig[state.selectedTab].downloadUrlBase
