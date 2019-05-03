@@ -27,13 +27,12 @@ import generateProject, {
   generateParcelProject,
 } from '../configurator/project-generator'
 
-const StepByStepArea = ({
-  features,
-  newNpmConfig,
-  newBabelConfig,
-  isReact,
-  isWebpack,
-}) => {
+const StepByStepArea = ({ features, newBabelConfig, isReact, isWebpack }) => {
+  const newNpmConfig = getNpmDependencies(
+    isWebpack ? webpackConfig : parcelConfig,
+    features
+  )
+
   const npmInstallCommand = _.isEmpty(newNpmConfig.dependencies)
     ? ''
     : '\nnpm install ' + newNpmConfig.dependencies.join(' ')
@@ -357,7 +356,6 @@ function Configurator(props) {
     .value()
 
   const newBabelConfig = createBabelConfig(selectedArray)
-  const newNpmConfig = getNpmDependencies(webpackConfig, selectedArray)
 
   const isReact = _.includes(selectedArray, 'React')
   const isTypescript = _.includes(selectedArray, 'Typescript')
@@ -446,7 +444,6 @@ function Configurator(props) {
           <div className={styles.container} />
           <StepByStepArea
             features={selectedArray}
-            newNpmConfig={newNpmConfig}
             newBabelConfig={newBabelConfig}
             isReact={isReact}
             isWebpack={state.selectedTab === 'webpack'}
