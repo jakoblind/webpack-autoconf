@@ -246,7 +246,7 @@ export default () => {
         <h3>About the author</h3>
         <img
           className={styles.authorImage}
-          src="https://blog.jakoblind.no/wp-content/uploads/2017/07/jakobprofil-liten.jpg"
+          src={require('../../images/profile-pic.jpg')}
         />
         Hi, I'm Jakob Lind (
         <a href="https://twitter.com/karljakoblind">@karljakoblind</a>
