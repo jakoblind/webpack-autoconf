@@ -155,7 +155,7 @@ export const SampleChapterSignupForm = ({ buttonText }) => (
 )
 
 export const GenericSignupForm = ({ buttonText }) => (
-  <ConvertKitSignupForm buttonText={'Sign up'} />
+  <ConvertKitSignupForm buttonText={'Sign up'} formId="931959" />
 )
 
 export const CourseSignupForm = ({ buttonText }) => (
