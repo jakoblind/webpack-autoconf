@@ -23,5 +23,5 @@ test('Vue project', () => {
 test('Empty project', () => {
   const project = projectGenerator([])
 
-  expect(_.size(project)).toBe(3)
+  expect(_.size(project)).toBe(5)
 })
