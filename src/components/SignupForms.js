@@ -48,6 +48,7 @@ function ConvertKitSignupForm({
   buttonStyle,
   signupText,
   formId = '915821',
+  tags,
 }) {
   const [errorMessage, setErrorMessage] = useState('')
   const [email, setEmail] = useState('')
@@ -104,6 +105,11 @@ function ConvertKitSignupForm({
             placeholder="Your Name"
           />
         </div>
+        {tags ? (
+          <input type="hidden" name="tags" value={JSON.stringify(tags)} />
+        ) : (
+          <div />
+        )}
         <input type="hidden" name="api_key" value="qEqWamI6-oY7MOPZSU7qfw" />
         <div className={styles.signupButtonArea}>
           <input
@@ -158,6 +164,6 @@ export const GenericSignupForm = ({ buttonText }) => (
   <ConvertKitSignupForm buttonText={'Sign up'} formId="931959" />
 )
 
-export const CourseSignupForm = ({ buttonText }) => (
-  <ConvertKitSignupForm buttonText={buttonText} formId="917789" />
+export const CourseSignupForm = ({ buttonText, tags }) => (
+  <ConvertKitSignupForm buttonText={buttonText} formId="917789" tags={tags} />
 )

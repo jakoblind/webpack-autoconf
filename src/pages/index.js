@@ -3,7 +3,7 @@ import _ from 'lodash'
 import styles from '../styles.module.css'
 import { Link } from 'gatsby'
 import Modal from 'react-modal'
-import { GenericSignupForm } from '../components/SignupForms'
+import { CourseSignupForm } from '../components/SignupForms'
 import { TwitterShareButton, TwitterIcon } from 'react-share'
 
 import {
@@ -176,18 +176,23 @@ function DownloadButton({ url, onClick, filename }) {
         >
           X
         </button>
-        <h3>help me spread the word about createapp.dev</h3>
-        <TwitterShareButton
-          url={'https://createapp.dev/'}
-          via="karljakoblind"
-          title="Create a webpack or a parcel project in your browser"
-        >
-          <TwitterIcon size={40} round={true} />
-          Tweet
-        </TwitterShareButton>
-        <h3>Signup for updates</h3>
-        <p>You'll also get fresh articles and exclusive offers.</p>
-        <GenericSignupForm />
+        <br />
+        <br />
+        <p>Enjoy your newly created webpack project!</p>
+
+        <h3>Learn webpack with my free email course</h3>
+        <div>
+          <p>You get 5 emails in 5 days.</p>
+          <ul>
+            <li>Lesson 1: What does webpack do? (an overview)</li>
+            <li>Lesson 2: Create your first webpack project</li>
+            <li>Lesson 3: The webpack.config.js and Babel</li>
+            <li>Lesson 4: Create a React app with webpack</li>
+            <li>Lesson 5: Styling with webpack</li>
+          </ul>
+        </div>
+        <p>Level up your frontend skills and create awesome apps</p>
+        <CourseSignupForm tags={917914} />
       </Modal>
     </div>
   )
