@@ -83,7 +83,13 @@ const StepByStepArea = ({ features, newBabelConfig, isReact, isWebpack }) => {
       <h3>How to create your project yourself</h3>
       <ol>
         <li>Create an NPM project and install dependencies</li>
-        <textarea readOnly={true} rows="6" cols="50" value={npmCommand} />
+        <textarea
+          aria-label="npm commands to install dependencies"
+          readOnly={true}
+          rows="6"
+          cols="50"
+          value={npmCommand}
+        />
         {webpackStep}
 
         {babelStep}
