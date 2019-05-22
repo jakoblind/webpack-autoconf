@@ -40,13 +40,14 @@ export default () => {
             "It helped to learn/solidify very important concepts about webpack"
           </i>
         </p>
-<p>
+        <p>
           <i>
-            "Great introduction, understood quite some things about webpack for the first time."
+            "Great introduction, understood quite some things about webpack for
+            the first time."
           </i>
         </p>
-<h3>Learn the basics of webpack in less than a week</h3>
-<div className={styles.sectionsContainer}>
+        <h3>Learn the basics of webpack in less than a week</h3>
+        <div className={styles.sectionsContainer}>
           <div className={styles.sectionsLeft}>
             <p>You get 5 emails in 5 days.</p>
             <ul>
@@ -57,7 +58,10 @@ export default () => {
               <li>Lesson 5: Styling with webpack</li>
             </ul>
           </div>
-          <img src={require('../../images/email-course.jpg')} />
+          <img
+            alt="webpack email course"
+            src={require('../../images/email-course.jpg')}
+          />
         </div>
         <p>
           Level up your frontend skills and become a more solid, all-round

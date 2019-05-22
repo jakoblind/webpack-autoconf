@@ -106,6 +106,7 @@ function Tabs({ selected, setSelected }) {
           ].join(' ')}
         >
           <img
+            alt="webpack logo"
             src={require(`../../images/webpack-logo${
               selected === 'webpack' ? '-color' : ''
             }.png`)}
@@ -120,6 +121,7 @@ function Tabs({ selected, setSelected }) {
           ].join(' ')}
         >
           <img
+            alt="parcel logo"
             src={require(`../../images/parcel-logo${
               selected === 'parcel' ? '-color' : ''
             }.png`)}
@@ -157,6 +159,7 @@ function DownloadButton({ url, onClick, filename }) {
         }}
       >
         <img
+          alt="zip file"
           alt="zip-file"
           className={styles.icon}
           src={require('../../images/zip.svg')}

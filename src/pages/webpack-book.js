@@ -60,6 +60,7 @@ export default () => {
           ES6 and styles then you are back to config hell.
         </p>
         <img
+          alt="ejected cra webpack config"
           src={require('../../images/webpackmedium.webm.gif')}
           width="100%"
           style={{ textAlgin: 'center' }}
@@ -89,7 +90,10 @@ export default () => {
               apart.
             </p>
           </div>
-          <img src={require('../../images/house-of-cards.jpg')} />
+          <img
+            alt="house of cards"
+            src={require('../../images/house-of-cards.jpg')}
+          />
         </div>
         <p>
           Creating and maintaining frontend projects shouldn’t be this hard.
@@ -245,6 +249,7 @@ export default () => {
         </p>
         <h3>About the author</h3>
         <img
+          alt="Jakob Lind"
           className={styles.authorImage}
           src={require('../../images/profile-pic.jpg')}
         />
