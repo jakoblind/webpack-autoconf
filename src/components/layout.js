@@ -47,8 +47,10 @@ const Layout = ({ children, title, metaDescription }) => (
             },
           ]}
         >
-          <script async defe src="https://buttons.github.io/buttons.js" />
+          <script async defer src="https://buttons.github.io/buttons.js" />
           <script
+            async
+            defer
             type="text/javascript"
             src="https://transactions.sendowl.com/assets/sendowl.js"
           />
