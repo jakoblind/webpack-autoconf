@@ -165,10 +165,11 @@
         width: 100%;
     }
     .header a {
+        height: 48px;
         text-align:  center;
         display: block;
         padding-bottom: 5px;
-        padding-top: 5px;
+        padding-top: 15px;
         padding-right: 0;
         border-bottom: 1px solid grey;
         font-size: medium;
