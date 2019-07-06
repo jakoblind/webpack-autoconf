@@ -153,6 +153,16 @@ function stopIfNotBabelOrTypescriptForReact(
   //
 }
 
+function addCssIfPostCSS(allFeatureStates, affectedFeature, setToSelected) {
+  return {
+    ...allFeatureStates,
+    CSS:
+      affectedFeature === 'PostCSS' && setToSelected
+        ? true
+        : allFeatureStates['CSS'],
+  }
+}
+
 function addBabelIfReact(allFeatureStates, affectedFeature, setToSelected) {
   const forceBabel =
     allFeatureStates['React'] && !allFeatureStates['Typescript']
@@ -166,12 +176,17 @@ function addBabelIfReact(allFeatureStates, affectedFeature, setToSelected) {
 // these are all possible selection rules.
 // a selection rule is a rule that alters a users selection
 // one example is that you must have React to pick React hot loader
+// these are callback functions that are called with the following arguments:
+// - allFeatureStates: an object with all features as key and whether they are selected as value
+// - affectedFeature: the feature the user just clicked
+// - setToSelected: true if the feature the user just clicked is clicked to be selected
 export const selectionRules = {
   stopSelectFunctions: { stopIfNotBabelOrTypescriptForReact },
   additionalSelectFunctions: {
     enforceEitherReactOrVue,
     addBabelIfReact,
     addOrRemoveReactHotLoader,
+    addCssIfPostCSS,
   },
 }
 

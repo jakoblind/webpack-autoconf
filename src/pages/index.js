@@ -215,6 +215,7 @@ const selectionRules = {
     allSelectionRules.additionalSelectFunctions.enforceEitherReactOrVue,
     allSelectionRules.additionalSelectFunctions.addBabelIfReact,
     allSelectionRules.additionalSelectFunctions.addOrRemoveReactHotLoader,
+    allSelectionRules.additionalSelectFunctions.addCssIfPostCSS,
   ],
 }
 
