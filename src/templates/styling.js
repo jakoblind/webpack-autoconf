@@ -23,3 +23,10 @@ body
   color: primary-color;
   background-color: bg;
 `
+
+export const postCssConfig = `module.exports = {
+  plugins: [
+    require('precss'),
+    require('autoprefixer')
+  ]
+}`

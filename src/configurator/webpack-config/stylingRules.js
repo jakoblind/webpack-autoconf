@@ -6,7 +6,7 @@ import {
   getStyleLoaderDependencyIfNeeded,
 } from '../configurator-webpack-helpers'
 
-import { css, scss, less, stylus } from '../../templates/styling'
+import { css, scss, less, stylus, postCssConfig } from '../../templates/styling'
 
 function cssRules() {
   return {
@@ -135,10 +135,20 @@ function stylusRules() {
   }
 }
 
+function postCssRules() {
+  return {
+    group: 'Styling',
+    files: configItems => {
+      return { 'postcss.config.js': postCssConfig }
+    },
+  }
+}
+
 export default {
   css: cssRules(),
   cssModules: cssModulesRules(),
   sass: sassRules(),
   less: lessRules(),
   stylus: stylusRules(),
+  postCss: postCssRules(),
 }

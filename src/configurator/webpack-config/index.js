@@ -203,6 +203,7 @@ ${stylus}
     },
     CSS: stylingRules.css,
     'CSS Modules': stylingRules.cssModules,
+    PostCSS: stylingRules.postCss,
     Sass: stylingRules.sass,
     Less: stylingRules.less,
     stylus: stylingRules.stylus,
