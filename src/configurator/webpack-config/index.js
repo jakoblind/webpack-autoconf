@@ -3,7 +3,7 @@ import {
   reactIndexJs,
   reactIndexTsx,
   reactHotIndexJs,
-} from '../templates/react/index'
+} from '../../templates/react/index'
 
 import {
   addPlugin,
@@ -11,20 +11,20 @@ import {
   addModuleRule,
   getStyleLoaderOrVueStyleLoader,
   getStyleLoaderDependencyIfNeeded,
-} from './configurator-webpack-helpers'
+} from '../configurator-webpack-helpers'
 import {
   vueHelloWorldJs,
   vueHelloWorldTS,
   vueIndexAppVue,
   vueIndexTs,
   vueShimType,
-} from '../templates/vue'
-import { indexHtml } from '../templates/base'
-import { emptyIndexJs } from '../templates/empty/index'
+} from '../../templates/vue'
+import { indexHtml } from '../../templates/base'
+import { emptyIndexJs } from '../../templates/empty/index'
 
-import { tsconfig, tsconfigReact } from '../templates/ts'
+import { tsconfig, tsconfigReact } from '../../templates/ts'
 
-import { css, scss, less, stylus } from '../templates/styling'
+import { css, scss, less, stylus } from '../../templates/styling'
 
 function getStyleImports(configItems) {
   const isCss = _.includes(configItems, 'CSS')

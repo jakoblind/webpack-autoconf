@@ -1,17 +1,17 @@
 import _ from 'lodash'
 
-import { css, scss, less, stylus } from '../templates/styling'
-import { reactIndexJs, reactIndexTsx } from '../templates/react/index'
-import { indexHtml } from '../templates/base'
-import { emptyIndexJs } from '../templates/empty/index'
-import { tsconfig, tsconfigReact, indexTypescript } from '../templates/ts'
+import { css, scss, less, stylus } from '../../templates/styling'
+import { reactIndexJs, reactIndexTsx } from '../../templates/react/index'
+import { indexHtml } from '../../templates/base'
+import { emptyIndexJs } from '../../templates/empty/index'
+import { tsconfig, tsconfigReact, indexTypescript } from '../../templates/ts'
 import {
   vueHelloWorldJs,
   vueHelloWorldTS,
   vueIndexAppVue,
   vueIndexTs,
   vueShimType,
-} from '../templates/vue'
+} from '../../templates/vue'
 
 function getStyleImports(configItems) {
   const isCss = _.includes(configItems, 'CSS')
