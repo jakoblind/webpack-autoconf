@@ -14,9 +14,21 @@ function cssRules() {
     devDependencies: configItems =>
       _.concat(['css-loader'], getStyleLoaderDependencyIfNeeded(configItems)),
     webpack: (webpackConfig, configItems) => {
+      const isPostCss = _.includes(configItems, 'PostCSS')
+      const cssLoader = isPostCss
+        ? {
+            loader: 'css-loader',
+            options: {
+              importLoaders: 1,
+            },
+          }
+        : 'css-loader'
       const rule = {
         test: /\.css$/,
-        use: [getStyleLoaderOrVueStyleLoader(configItems), 'css-loader'],
+        use: _.concat(
+          [getStyleLoaderOrVueStyleLoader(configItems), cssLoader],
+          isPostCss ? 'postcss-loader' : []
+        ),
       }
       if (_.includes(configItems, 'CSS Modules')) {
         rule.exclude = /\.module\.css$/
@@ -39,18 +51,22 @@ function cssModulesRules() {
     devDependencies: configItems =>
       _.concat(['css-loader'], getStyleLoaderDependencyIfNeeded(configItems)),
     webpack: (webpackConfig, configItems) => {
+      const isPostCss = _.includes(configItems, 'PostCSS')
       const rule = {
         test: /\.css$/,
-        use: [
-          getStyleLoaderOrVueStyleLoader(configItems),
-          {
-            loader: 'css-loader',
-            options: {
-              importLoaders: 1,
-              modules: true,
+        use: _.concat(
+          [
+            getStyleLoaderOrVueStyleLoader(configItems),
+            {
+              loader: 'css-loader',
+              options: {
+                importLoaders: 1,
+                modules: true,
+              },
             },
-          },
-        ],
+          ],
+          isPostCss ? 'postcss-loader' : []
+        ),
       }
       if (_.includes(configItems, 'CSS')) {
         rule.include = /\.module\.css$/
