@@ -25,6 +25,7 @@ import { emptyIndexJs } from '../../templates/empty/index'
 import { tsconfig, tsconfigReact } from '../../templates/ts'
 
 import { css, scss, less, stylus } from '../../templates/styling'
+import stylingRules from './stylingRules'
 
 function getStyleImports(configItems) {
   const isCss = _.includes(configItems, 'CSS')
@@ -200,118 +201,11 @@ ${stylus}
         return _.assign(configFiles, sourceFiles)
       },
     },
-    CSS: {
-      group: 'Styling',
-      devDependencies: configItems =>
-        _.concat(['css-loader'], getStyleLoaderDependencyIfNeeded(configItems)),
-      webpack: (webpackConfig, configItems) => {
-        const rule = {
-          test: /\.css$/,
-          use: [getStyleLoaderOrVueStyleLoader(configItems), 'css-loader'],
-        }
-        if (_.includes(configItems, 'CSS Modules')) {
-          rule.exclude = /\.module\.css$/
-        }
-        return addModuleRule(webpackConfig, rule)
-      },
-      files: configItems => {
-        const isVue = _.includes(configItems, 'Vue')
-        if (isVue) {
-          return {}
-        }
-        return { 'src/styles.css': css }
-      },
-    },
-    'CSS Modules': {
-      group: 'Styling',
-      devDependencies: configItems =>
-        _.concat(['css-loader'], getStyleLoaderDependencyIfNeeded(configItems)),
-      webpack: (webpackConfig, configItems) => {
-        const rule = {
-          test: /\.css$/,
-          use: [
-            getStyleLoaderOrVueStyleLoader(configItems),
-            'css-loader?modules&importLoaders=1&localIdentName=[name]__[local]___[hash:base64:5]',
-          ],
-        }
-        if (_.includes(configItems, 'CSS')) {
-          rule.include = /\.module\.css$/
-        }
-        return addModuleRule(webpackConfig, rule)
-      },
-    },
-    Sass: {
-      group: 'Styling',
-      devDependencies: configItems =>
-        _.concat(
-          ['css-loader', 'sass-loader', 'node-sass'],
-          getStyleLoaderDependencyIfNeeded(configItems)
-        ),
-      webpack: (webpackConfig, configItems) =>
-        addModuleRule(webpackConfig, {
-          test: /\.scss$/,
-          use: [
-            getStyleLoaderOrVueStyleLoader(configItems),
-            'css-loader',
-            'sass-loader',
-          ],
-        }),
-      files: configItems => {
-        const isVue = _.includes(configItems, 'Vue')
-        if (isVue) {
-          return {}
-        }
-        return { 'src/styles.scss': scss }
-      },
-    },
-    Less: {
-      group: 'Styling',
-      devDependencies: configItems =>
-        _.concat(
-          ['css-loader', 'less-loader', 'less'],
-          getStyleLoaderDependencyIfNeeded(configItems)
-        ),
-      webpack: (webpackConfig, configItems) =>
-        addModuleRule(webpackConfig, {
-          test: /\.less$/,
-          use: [
-            getStyleLoaderOrVueStyleLoader(configItems),
-            'css-loader',
-            'less-loader',
-          ],
-        }),
-      files: configItems => {
-        const isVue = _.includes(configItems, 'Vue')
-        if (isVue) {
-          return {}
-        }
-        return { 'src/styles.less': less }
-      },
-    },
-    stylus: {
-      group: 'Styling',
-      devDependencies: configItems =>
-        _.concat(
-          ['css-loader', 'stylus-loader', 'stylus'],
-          getStyleLoaderDependencyIfNeeded(configItems)
-        ),
-      webpack: (webpackConfig, configItems) =>
-        addModuleRule(webpackConfig, {
-          test: /\.styl$/,
-          use: [
-            getStyleLoaderOrVueStyleLoader(configItems),
-            'css-loader',
-            'stylus-loader',
-          ],
-        }),
-      files: configItems => {
-        const isVue = _.includes(configItems, 'Vue')
-        if (isVue) {
-          return {}
-        }
-        return { 'src/styles.styl': stylus }
-      },
-    },
+    CSS: stylingRules.css,
+    'CSS Modules': stylingRules.cssModules,
+    Sass: stylingRules.sass,
+    Less: stylingRules.less,
+    stylus: stylingRules.stylus,
     SVG: {
       group: 'Image',
       devDependencies: configItems => ['file-loader'],
