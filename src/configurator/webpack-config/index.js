@@ -26,6 +26,7 @@ import { tsconfig, tsconfigReact } from '../../templates/ts'
 
 import { css, scss, less, stylus } from '../../templates/styling'
 import stylingRules from './stylingRules'
+import lintingRules from '../common-config/linting'
 
 function getStyleImports(configItems) {
   const isCss = _.includes(configItems, 'CSS')
@@ -252,6 +253,8 @@ ${stylus}
       webpack: webpackConfig =>
         addPlugin(webpackConfig, 'CODE:new LodashModuleReplacementPlugin'),
     },
+    ESLint: lintingRules.eslint,
+    Prettier: lintingRules.prettier,
     'Code split vendors': {
       group: 'Optimization',
       devDependencies: configItems => [

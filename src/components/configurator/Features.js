@@ -153,6 +153,19 @@ function stopIfNotBabelOrTypescriptForReact(
   //
 }
 
+function removeEslintIfTypscript(
+  allFeatureStates,
+  affectedFeature,
+  setToSelected
+) {
+  const toTypescript = affectedFeature === 'Typescript' && setToSelected
+
+  return {
+    ...allFeatureStates,
+    ESLint: toTypescript ? false : allFeatureStates['ESLint'],
+  }
+}
+
 function addCssIfPostCSS(allFeatureStates, affectedFeature, setToSelected) {
   return {
     ...allFeatureStates,
@@ -187,6 +200,7 @@ export const selectionRules = {
     addBabelIfReact,
     addOrRemoveReactHotLoader,
     addCssIfPostCSS,
+    removeEslintIfTypscript,
   },
 }
 

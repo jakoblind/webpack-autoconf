@@ -216,6 +216,7 @@ const selectionRules = {
     allSelectionRules.additionalSelectFunctions.addBabelIfReact,
     allSelectionRules.additionalSelectFunctions.addOrRemoveReactHotLoader,
     allSelectionRules.additionalSelectFunctions.addCssIfPostCSS,
+    allSelectionRules.additionalSelectFunctions.removeEslintIfTypscript,
   ],
 }
 
@@ -389,6 +390,10 @@ function Configurator(props) {
   }
   if (isReact && isTypescript) {
     delete showFeatures['React hot loader']
+  }
+
+  if (isTypescript) {
+    delete showFeatures['ESLint']
   }
 
   return (

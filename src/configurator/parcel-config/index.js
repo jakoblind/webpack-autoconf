@@ -13,6 +13,8 @@ import {
   vueShimType,
 } from '../../templates/vue'
 
+import lintingRules from '../common-config/linting'
+
 function getStyleImports(configItems) {
   const isCss = _.includes(configItems, 'CSS')
   const isSass = _.includes(configItems, 'Sass')
@@ -140,6 +142,8 @@ ${stylus}
       group: 'Styling',
       files: configItems => ({ 'src/styles.styl': stylus }),
     },
+    ESLint: lintingRules.eslint,
+    Prettier: lintingRules.prettier,
   }
   const featuresNoNulls = _.mapValues(features, item => {
     if (!item.babel) {
