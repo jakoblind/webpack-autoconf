@@ -239,8 +239,6 @@ const buildConfigConfig = {
     projectGeneratorFunction: generateProject,
     defaultFile: 'webpack.config.js',
     selectionRules,
-    downloadUrlBase:
-      'https://s3-eu-west-1.amazonaws.com/jakoblind/zips-webpack/',
     extraElements: [
       <br key={1} />,
       <Link key={2} to="/webpack-course">
@@ -254,8 +252,6 @@ const buildConfigConfig = {
     projectGeneratorFunction: generateParcelProject,
     defaultFile: 'package.json',
     selectionRules: parcelSelectionRules,
-    downloadUrlBase:
-      'https://s3-eu-west-1.amazonaws.com/jakoblind/zips-parcel/',
     extraElements: [
       <br key={1} />,
       <Link key={2} to="/parcel-course">
@@ -449,9 +445,6 @@ function Configurator(props) {
                   downloadZip()
                   trackDownload(state.selectedTab, selectedArray)
                 }}
-                url={`${
-                  buildConfigConfig[state.selectedTab].downloadUrlBase
-                }${projectname}.zip`}
               />
             </div>
             {buildConfigConfig[state.selectedTab].extraElements}
@@ -476,10 +469,10 @@ function Configurator(props) {
             <div className={styles.smallScreensOnly}>
               <DownloadButton
                 filename={`${projectname}.zip`}
-                onClick={e => trackDownload(state.selectedTab, selectedArray)}
-                url={`${
-                  buildConfigConfig[state.selectedTab].downloadUrlBase
-                }${projectname}.zip`}
+                onClick={e => {
+                  downloadZip()
+                  trackDownload(state.selectedTab, selectedArray)
+                }}
               />
             </div>
           </div>
