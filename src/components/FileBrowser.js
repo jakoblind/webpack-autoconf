@@ -12,6 +12,8 @@ import {
   getNpmDependencies,
 } from '../configurator/configurator'
 import { getDiffAsLineNumber } from '../configurator/Diff'
+import npmVersionPromise from '../fetch-npm-version'
+
 // disable prettier for now.
 // import prettier from 'prettier/standalone'
 // const parserBabylon = require('prettier/parser-babylon')
@@ -224,9 +226,7 @@ class FileBrowserContainer extends React.Component {
       npmConfigAllFeatures.dependencies,
       npmConfigAllFeatures.devDependencies
     )
-    _.forEach(allDependencies, dependency =>
-      this.getNodeVersionPromise(dependency)
-    )
+    _.forEach(allDependencies, dependency => npmVersionPromise(dependency))
   }
   componentDidUpdate(prevProps) {
     if (
@@ -243,19 +243,7 @@ class FileBrowserContainer extends React.Component {
     this.setProjectFilesInState()
     this.loadAllDependencyVersions()
   }
-  getNodeVersionPromise = memoizee(name =>
-    fetch(`https://unpkg.com/${name}/package.json`)
-      .then(res => res.json())
-      .then(
-        r => {
-          return '^' + r.version
-        },
-        { promise: true }
-      )
-      .catch(err => {
-        return 'latest'
-      })
-  )
+
   getAllFeaturesExceptHighlighted = memoizee((features, highlightFeature) =>
     _.reject(features, f => f === highlightFeature)
   )
@@ -264,7 +252,7 @@ class FileBrowserContainer extends React.Component {
       .projectGeneratorFunction(
         this.props.features,
         'empty-project',
-        this.getNodeVersionPromise
+        npmVersionPromise
       )
       .then(files => {
         this.setState({ projectFiles: files })
@@ -283,7 +271,7 @@ class FileBrowserContainer extends React.Component {
         .projectGeneratorFunction(
           featuresWithoutHighlighted,
           'empty-project',
-          this.getNodeVersionPromise
+          npmVersionPromise
         )
         .then(files => {
           this.setState({
