@@ -178,8 +178,8 @@
 
 .header a:hover {
     color: #111;
-
 }
+
 .btn {
     width: 115px;
     font-size: 14px;
@@ -192,6 +192,7 @@
     text-decoration: none;
     border-radius: 5px;
     height: 42px;
+    cursor:pointer;
 }
 .btn img {
     float:left;

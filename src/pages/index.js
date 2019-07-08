@@ -1,10 +1,12 @@
-import React, { useState, useReducer, useEffect } from 'react'
+import React, { useState, useReducer } from 'react'
 import _ from 'lodash'
 import styles from '../styles.module.css'
 import { Link } from 'gatsby'
 import Modal from 'react-modal'
+import jszip from 'jszip'
+import npmVersionPromise from '../fetch-npm-version'
+
 import { CourseSignupForm } from '../components/SignupForms'
-import { TwitterShareButton, TwitterIcon } from 'react-share'
 
 import {
   webpackConfig,
@@ -26,6 +28,8 @@ import Features, {
 import generateProject, {
   generateParcelProject,
 } from '../configurator/project-generator'
+
+import { saveAs } from 'file-saver'
 
 const StepByStepArea = ({ features, newBabelConfig, isReact, isWebpack }) => {
   const newNpmConfig = getNpmDependencies(
@@ -156,8 +160,7 @@ function DownloadButton({ url, onClick, filename }) {
 
   return (
     <div>
-      <a
-        href={url}
+      <button
         className={styles.btn}
         onClick={() => {
           onClick()
@@ -171,7 +174,7 @@ function DownloadButton({ url, onClick, filename }) {
           src={require('../../images/zip.svg')}
         />
         <span>Download</span>
-      </a>
+      </button>
       <Modal
         isOpen={modalOpen}
         onRequestClose={() => setModalOpen(false)}
@@ -359,6 +362,17 @@ function Configurator(props) {
   const [state, dispatch] = useReducer(reducer, initialState(props.selectedTab))
   const [hoverFeature, setHoverFeature] = useState({})
 
+  const {
+    featureConfig,
+    projectGeneratorFunction,
+    defaultFile,
+  } = buildConfigConfig[state.selectedTab]
+
+  const selectedArray = _.chain(state.selectedFeatures)
+    .map((v, k) => (v ? k : null))
+    .reject(_.isNull)
+    .value()
+
   function onMouseEnterFeature(feature) {
     setHoverFeature(feature)
   }
@@ -366,10 +380,22 @@ function Configurator(props) {
     setHoverFeature(null)
   }
 
-  const selectedArray = _.chain(state.selectedFeatures)
-    .map((v, k) => (v ? k : null))
-    .reject(_.isNull)
-    .value()
+  function downloadZip() {
+    const project = projectGeneratorFunction(
+      selectedArray,
+      'empty-project',
+      npmVersionPromise
+    ).then(res => {
+      const zip = new jszip()
+      _.forEach(res, (content, file) => {
+        zip.file(file, content)
+      })
+
+      zip.generateAsync({ type: 'blob' }).then(function(blob) {
+        saveAs(blob, 'empty-project.zip')
+      })
+    })
+  }
 
   const newBabelConfig = createBabelConfig(selectedArray)
 
@@ -378,11 +404,6 @@ function Configurator(props) {
 
   const projectname = getDefaultProjectName('empty-project', selectedArray)
 
-  const {
-    featureConfig,
-    projectGeneratorFunction,
-    defaultFile,
-  } = buildConfigConfig[state.selectedTab]
   const showFeatures = _.clone(featureConfig.features)
 
   if (!isReact) {
@@ -424,7 +445,10 @@ function Configurator(props) {
             <div className={styles.desktopOnly}>
               <DownloadButton
                 filename={`${projectname}.zip`}
-                onClick={e => trackDownload(state.selectedTab, selectedArray)}
+                onClick={e => {
+                  downloadZip()
+                  trackDownload(state.selectedTab, selectedArray)
+                }}
                 url={`${
                   buildConfigConfig[state.selectedTab].downloadUrlBase
                 }${projectname}.zip`}
