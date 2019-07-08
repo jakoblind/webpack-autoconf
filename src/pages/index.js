@@ -432,13 +432,13 @@ function Configurator(props) {
             </div>
             {buildConfigConfig[state.selectedTab].extraElements}
             <br />
-            <TwitterShareButton
-              url={'https://createapp.dev/'}
-              via="karljakoblind"
-              title="Create a webpack or a parcel project in your browser"
+            <a
+              class="github-button"
+              href="https://github.com/jakoblind/webpack-autoconf/issues"
+              aria-label="Issue jakoblind/webpack-autoconf on GitHub"
             >
-              <TwitterIcon size={32} round={true} />
-            </TwitterShareButton>
+              Issue
+            </a>{' '}
           </div>
           <div className={styles.codeContainer}>
             <FileBrowser

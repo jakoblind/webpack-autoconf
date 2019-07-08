@@ -54,6 +54,7 @@ const Layout = ({ children, title, metaDescription }) => (
             type="text/javascript"
             src="https://transactions.sendowl.com/assets/sendowl.js"
           />
+
           <html lang="en" />
         </Helmet>
 
