@@ -169,7 +169,6 @@ function DownloadButton({ url, onClick, filename }) {
       >
         <img
           alt="zip file"
-          alt="zip-file"
           className={styles.icon}
           src={require('../../images/zip.svg')}
         />
@@ -273,10 +272,6 @@ function reducer(state, action) {
       const newAllPossibleFeatures = _.keys(
         buildConfigConfig[action.selectedTab].featureConfig.features
       )
-      const selectedFeatures = _.chain(state.selectedFeatures)
-        .map((selected, feature) => (selected ? feature : null))
-        .reject(_.isNull)
-        .value()
 
       const filteredFeatures = _.mapValues(
         state.selectedFeatures,
@@ -377,7 +372,7 @@ function Configurator(props) {
   }
 
   function downloadZip() {
-    const project = projectGeneratorFunction(
+    projectGeneratorFunction(
       selectedArray,
       'empty-project',
       npmVersionPromise

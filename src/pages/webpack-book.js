@@ -1,9 +1,8 @@
 import React from 'react'
 import styles from '../styles.module.css'
-import { Link } from 'gatsby'
 import { SampleChapterSignupForm, withHidden } from '../components/SignupForms'
 import Layout from '../components/layout'
-import Countdown from 'react-countdown-now'
+//import Countdown from 'react-countdown-now'
 
 export const HiddenSampleChapterSignupForm = withHidden(
   SampleChapterSignupForm,
@@ -20,7 +19,7 @@ const BuyButton = () => (
   </a>
 )
 
-const renderer = ({ days, hours, minutes, seconds, completed }) => {
+/*const renderer = ({ days, hours, minutes, seconds, completed }) => {
   if (completed) {
     return <span>Time's out</span>
   } else {
@@ -38,7 +37,7 @@ const Discount = () => (
     Discount expires in{' '}
     <Countdown date={new Date('2019-04-12T00:00:00')} renderer={renderer} />
   </div>
-)
+)*/
 
 export default () => {
   return (

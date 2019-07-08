@@ -9,16 +9,8 @@ import {
   addPlugin,
   assignModuleRuleAndResolver,
   addModuleRule,
-  getStyleLoaderOrVueStyleLoader,
-  getStyleLoaderDependencyIfNeeded,
 } from '../configurator-webpack-helpers'
-import {
-  vueHelloWorldJs,
-  vueHelloWorldTS,
-  vueIndexAppVue,
-  vueIndexTs,
-  vueShimType,
-} from '../../templates/vue'
+import { vueIndexAppVue, vueIndexTs, vueShimType } from '../../templates/vue'
 import { indexHtml } from '../../templates/base'
 import { emptyIndexJs } from '../../templates/empty/index'
 

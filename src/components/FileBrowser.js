@@ -1,16 +1,11 @@
 import React from 'react'
 import _ from 'lodash'
 
-import { getDefaultProjectName } from '../configurator/configurator'
-
 import styles from '../styles.module.css'
 import '../vendor/prism-line-highlight.css'
 import Prism from 'prismjs'
 import memoizee from 'memoizee'
-import {
-  createWebpackConfig,
-  getNpmDependencies,
-} from '../configurator/configurator'
+import { getNpmDependencies } from '../configurator/configurator'
 import { getDiffAsLineNumber } from '../configurator/Diff'
 import npmVersionPromise from '../fetch-npm-version'
 

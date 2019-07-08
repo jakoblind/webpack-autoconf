@@ -1,6 +1,5 @@
 import React from 'react'
 import styles from '../styles.module.css'
-import { Link } from 'gatsby'
 import Layout from '../components/layout'
 import { CourseSignupForm } from '../components/SignupForms'
 
@@ -32,6 +31,7 @@ export default () => {
         </p>
         <h3>Here is what people are saying about the course: </h3>
         <img
+            alt="webpack email course feedback"
           className={styles.shadow}
           src={require('../../images/email-course-feedback1.png')}
         />

@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import styles from '../styles.module.css'
 
 /*DRIP form. currently not in use.*/
+// eslint-disable-next-line
 const SignupForm = ({ buttonText, buttonStyle, signupText, dripId }) => (
   <div className={styles.signupFormArea}>
     <form

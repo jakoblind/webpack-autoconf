@@ -6,12 +6,9 @@ import {
   createWebpackConfig,
   createBabelConfig,
   getDefaultProjectName,
-  getNpmDependencies,
   getPackageJson,
   createAdditionalFilesMap,
 } from './configurator'
-import { emptyIndexJs } from '../templates/empty/index'
-import { indexHtml } from '../templates/base'
 
 import { parcelConfig, webpackConfig } from './configurator-config'
 
@@ -25,12 +22,9 @@ import { parcelConfig, webpackConfig } from './configurator-config'
 const generateProject = (features, name, getNodeVersionPromise) => {
   const isBabel = _.includes(features, 'Babel')
   const isReact = _.includes(features, 'React')
-  const isVue = _.includes(features, 'Vue')
-  const isTypescript = _.includes(features, 'Typescript')
   const isHotReact = _.includes(features, 'React hot loader')
   const additionalFilesMap = createAdditionalFilesMap(webpackConfig, features)
   const newWebpackConfig = createWebpackConfig(features)
-  const newNpmConfig = getNpmDependencies(webpackConfig, features)
   const newBabelConfig = createBabelConfig(features)
   const projectName = name || getDefaultProjectName('empty-project', features)
 

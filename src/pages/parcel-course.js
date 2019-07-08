@@ -1,6 +1,5 @@
 import React from 'react'
 import styles from '../styles.module.css'
-import { Link } from 'gatsby'
 import Layout from '../components/layout'
 import { GenericSignupForm } from '../components/SignupForms'
 

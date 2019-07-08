@@ -123,8 +123,6 @@ function addOrRemoveReactHotLoader(
     ...allFeatureStates,
     'React hot loader': setReactHotLoader,
   }
-
-  return allFeatureStates
 }
 
 function stopIfNotBabelOrTypescriptForReact(
@@ -203,8 +201,8 @@ export const selectionRules = {
     removeEslintIfTypscript,
   },
 }
-
-const logFeatureClickToGa = (feature, selected) => {
+// eslint-disable-next-line
+const logFeaturCelickToGa = (feature, selected) => {
   //const eventAction = selected ? 'select' : 'deselect'
   /*window.gtag('event', eventAction, {
     event_category: 'features',
