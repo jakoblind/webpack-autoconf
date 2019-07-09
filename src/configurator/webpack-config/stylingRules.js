@@ -160,6 +160,7 @@ function stylusRules() {
 function postCssRules() {
   return {
     group: 'Styling',
+    devDependencies: configItems => ['postcss-loader', 'autoprefixer'],
     files: configItems => {
       return { 'postcss.config.js': postCssConfig }
     },
