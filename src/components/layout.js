@@ -54,11 +54,6 @@ const Layout = ({ children, title, metaDescription }) => (
             type="text/javascript"
             src="https://transactions.sendowl.com/assets/sendowl.js"
           />
-          <script
-            async
-            defer
-            src="https://cl.qualaroo.com/ki.js/73453/h4f.js"
-          />
           <html lang="en" />
         </Helmet>
 
