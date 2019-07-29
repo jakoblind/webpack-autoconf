@@ -5,6 +5,7 @@ import { Link } from 'gatsby'
 import Modal from 'react-modal'
 import jszip from 'jszip'
 import npmVersionPromise from '../fetch-npm-version'
+import Joyride from 'react-joyride'
 
 import { CourseSignupForm } from '../components/SignupForms'
 
@@ -84,29 +85,33 @@ const StepByStepArea = ({ features, newBabelConfig, isReact, isWebpack }) => {
 
   return (
     <div className={styles.rightSection}>
-      <h3>How to create your project yourself</h3>
-      <ol>
-        <li>Create an NPM project and install dependencies</li>
-        <textarea
-          aria-label="npm commands to install dependencies"
-          readOnly={true}
-          rows="6"
-          cols="50"
-          value={npmCommand}
-        />
-        {webpackStep}
+      <div>
+        <h3 id="step-by-step-instructions">
+          How to create your project yourself
+        </h3>
+        <ol>
+          <li>Create an NPM project and install dependencies</li>
+          <textarea
+            aria-label="npm commands to install dependencies"
+            readOnly={true}
+            rows="6"
+            cols="50"
+            value={npmCommand}
+          />
+          {webpackStep}
 
-        {babelStep}
-        {srcFoldersStep}
-      </ol>
-      <Link to="/webpack-course">Need more detailed instructions?</Link>
+          {babelStep}
+          {srcFoldersStep}
+        </ol>
+        <Link to="/webpack-course">Need more detailed instructions?</Link>
+      </div>
     </div>
   )
 }
 
 function Tabs({ selected, setSelected }) {
   return (
-    <div className={styles.tabsContainer}>
+    <div className={styles.tabsContainer} id="tabs">
       <nav className={styles.tabs}>
         <button
           onClick={() => setSelected('webpack')}
@@ -166,6 +171,7 @@ function DownloadButton({ url, onClick, filename }) {
           onClick()
           setModalOpen(true)
         }}
+        id="download"
       >
         <img
           alt="zip file"
@@ -349,6 +355,13 @@ function trackDownload(selectedTab, selectedFeatures) {
   })
 }
 
+function trackHelpClick(eventAction) {
+  gaSendEvent({
+    eventCategory: 'Help clicked',
+    eventAction,
+  })
+}
+
 function Configurator(props) {
   const [state, dispatch] = useReducer(reducer, initialState(props.selectedTab))
   const [hoverFeature, setHoverFeature] = useState({})
@@ -486,15 +499,60 @@ function Configurator(props) {
   )
 }
 
-function App(props) {
-  const {
-    pageContext: { selectedTab },
-  } = props
-  return (
-    <Layout>
-      <Configurator selectedTab={selectedTab} />
-    </Layout>
-  )
+export class App extends React.Component {
+  state = {
+    steps: [
+      {
+        target: '#file-browser',
+        content:
+          "Welcome to createapp.dev! Use this tool to learn how to create awesome frontend apps with webpack or Parcel. What you are looking at here is your generated project. By default it's a minimal webpack/Parcel project. You can look at the different files by clicking them just like in your IDE. It's useful to start here to see what the most simple project set up looks like. The next step is to add some features to it.",
+      },
+      {
+        target: '#features',
+        content:
+          "The default project generated is super minimalistic. To add more features select them here. When adding a feature the code will automatically be generated in the code window to the right that you looked at previously. If you want to see what code was generated for a specific feature, hover over the selected feature in this list and you'll see its code highlighted to the right in the code browser",
+      },
+
+      {
+        target: '#tabs',
+        content:
+          'You can generate either webpack or Parcel project. Make your choice with these buttons',
+      },
+      {
+        target: '#download',
+        content:
+          'When you are happy with your project, you can download a zip with all the files so you can run it on your machine. Check out the README.md for installation and running instructions.',
+      },
+      {
+        target: '#step-by-step-instructions',
+        content:
+          'If you prefer to create the project yourself instead of downloading a zip, these instructions can be helpful! Good luck! If you run into any problems or have questions, please open an issue on github or send a tweet.',
+      },
+    ],
+  }
+  joyrideCallback({ lifecycle, step: { target } }) {
+    if (lifecycle === 'tooltip') {
+      trackHelpClick(target)
+    }
+  }
+
+  render() {
+    const {
+      pageContext: { selectedTab },
+    } = this.props
+    const { steps } = this.state
+
+    return (
+      <Layout>
+        <Joyride
+          steps={steps}
+          continuous={true}
+          callback={this.joyrideCallback}
+        />
+        <Configurator selectedTab={selectedTab} />
+      </Layout>
+    )
+  }
 }
 
 export default App

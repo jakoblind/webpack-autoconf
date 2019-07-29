@@ -136,7 +136,7 @@ class FileBrowser extends React.Component {
     const extension = this.state.selectedFile.match(extensionRegex)
 
     return (
-      <div className={styles.fileBrowser}>
+      <div className={styles.fileBrowser} id="file-browser">
         <FileList
           selectedFile={this.state.selectedFile}
           files={fileContentMap}

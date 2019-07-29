@@ -42,7 +42,7 @@ export default class Features extends React.Component {
       .value()
 
     return (
-      <div className={styles.features}>
+      <div className={styles.features} id="features">
         {_.map(groupedFeatures, (featureList, group) => (
           <div className={styles.featureGroup} key={group}>
             <div className={styles.featureGroupName}>
