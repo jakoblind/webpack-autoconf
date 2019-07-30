@@ -27,6 +27,13 @@ export default (() => {
     React: {
       group: 'Main library',
       dependencies: configItems => ['react', 'react-dom'],
+      devDependencies: configItems => {
+        const isTypescript = _.includes(configItems, 'Typescript')
+        return _.concat(
+          [],
+          isTypescript ? ['@types/react', '@types/react-dom'] : []
+        )
+      },
       files: configItems => {
         const isTypescript = _.includes(configItems, 'Typescript')
         const extraImports = getStyleImports(configItems)
