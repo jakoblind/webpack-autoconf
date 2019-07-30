@@ -289,10 +289,19 @@ h2 {
 .featuresContainer {
     width: 320px;
     margin-top: 20px;
-
 }
 .codeContainer {
     width: 861px;
+}
+
+.docsContainer {
+    max-width: 1181px;
+    margin: 0 auto;
+    padding: 10px;
+
+    box-shadow: 0 0 10pt 2pt #145B98;
+    border-radius: 10px;
+
 }
 
 @media only screen and (max-width: 666px) {
