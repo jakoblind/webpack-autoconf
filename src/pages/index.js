@@ -86,9 +86,7 @@ const StepByStepArea = ({ features, newBabelConfig, isReact, isWebpack }) => {
   return (
     <div className={styles.rightSection}>
       <div>
-        <h3 id="step-by-step-instructions">
-          How to create your project yourself
-        </h3>
+        <h3>How to create your project yourself</h3>
         <ol>
           <li>Create an NPM project and install dependencies</li>
           <textarea
@@ -434,66 +432,63 @@ function Configurator(props) {
         }}
       />
 
-      <div className={styles.topContainer}>
-        <div className={styles.marginsContainer}>
-          <div className={styles.featuresContainer}>
-            <Features
-              features={showFeatures}
-              selected={state.selectedFeatures}
-              setSelected={feature =>
-                dispatch({ type: 'setSelectedFeatures', feature })
-              }
-              onMouseEnter={onMouseEnterFeature}
-              onMouseLeave={onMouseLeaveFeature}
-            />
-            <div className={styles.desktopOnly}>
-              <DownloadButton
-                filename={`${projectname}.zip`}
-                onClick={e => {
-                  downloadZip()
-                  trackDownload(state.selectedTab, selectedArray)
-                }}
-              />
-            </div>
-            {buildConfigConfig[state.selectedTab].extraElements}
-            <br />
-            <a
-              className="github-button"
-              href="https://github.com/jakoblind/webpack-autoconf/issues"
-              aria-label="Issue jakoblind/webpack-autoconf on GitHub"
-            >
-              Issue
-            </a>{' '}
-          </div>
-          <div className={styles.codeContainer}>
-            <FileBrowser
-              projectGeneratorFunction={projectGeneratorFunction}
-              featureConfig={featureConfig}
-              features={selectedArray}
-              highlightFeature={hoverFeature}
-              defaultFile={defaultFile}
-            />
-            <br />
-            <div className={styles.smallScreensOnly}>
-              <DownloadButton
-                filename={`${projectname}.zip`}
-                onClick={e => {
-                  downloadZip()
-                  trackDownload(state.selectedTab, selectedArray)
-                }}
-              />
-            </div>
-          </div>
-        </div>
-        <div className={styles.container}>
-          <div className={styles.container} />
-          <StepByStepArea
-            features={selectedArray}
-            newBabelConfig={newBabelConfig}
-            isReact={isReact}
-            isWebpack={state.selectedTab === 'webpack'}
+      <div className={styles.mainContainer}>
+        <div className={styles.featuresContainer}>
+          <Features
+            features={showFeatures}
+            selected={state.selectedFeatures}
+            setSelected={feature =>
+              dispatch({ type: 'setSelectedFeatures', feature })
+            }
+            onMouseEnter={onMouseEnterFeature}
+            onMouseLeave={onMouseLeaveFeature}
           />
+          <div className={styles.desktopOnly}>
+            <DownloadButton
+              filename={`${projectname}.zip`}
+              onClick={e => {
+                downloadZip()
+                trackDownload(state.selectedTab, selectedArray)
+              }}
+            />
+          </div>
+          {buildConfigConfig[state.selectedTab].extraElements}
+          <br />
+          <a
+            className="github-button"
+            href="https://github.com/jakoblind/webpack-autoconf/issues"
+            aria-label="Issue jakoblind/webpack-autoconf on GitHub"
+          >
+            Issue
+          </a>{' '}
         </div>
+        <div className={styles.codeContainer}>
+          <FileBrowser
+            projectGeneratorFunction={projectGeneratorFunction}
+            featureConfig={featureConfig}
+            features={selectedArray}
+            highlightFeature={hoverFeature}
+            defaultFile={defaultFile}
+          />
+          <br />
+          <div className={styles.smallScreensOnly}>
+            <DownloadButton
+              filename={`${projectname}.zip`}
+              onClick={e => {
+                downloadZip()
+                trackDownload(state.selectedTab, selectedArray)
+              }}
+            />
+          </div>
+        </div>
+      </div>
+      <div className={styles.container} id="step-by-step-instructions">
+        <StepByStepArea
+          features={selectedArray}
+          newBabelConfig={newBabelConfig}
+          isReact={isReact}
+          isWebpack={state.selectedTab === 'webpack'}
+        />
       </div>
     </div>
   )

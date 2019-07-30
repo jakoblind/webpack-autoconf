@@ -281,13 +281,32 @@ h2 {
     margin-top: 0px;
 }
 
-.topContainer {
-    max-width: 1067px;
-    margin: 0 auto;
+.mainContainer {
+    display: flex;
+    justify-content: center;
 }
-.marginsContainer {
-    margin: 10px;
+
+.featuresContainer {
+    width: 320px;
+    margin-top: 20px;
+
 }
+.codeContainer {
+    width: 861px;
+}
+
+@media only screen and (max-width: 666px) {
+    .mainContainer {
+        flex-direction:column;
+    }
+    .codeContainer {
+        max-width: 861px;
+        width: auto;
+    }
+
+}
+
+
 .sectionsContainer {
     display: flex;
 }
@@ -393,20 +412,6 @@ h2 {
     box-shadow: 0 2px 4px 0 rgba(0,0,0,.1);
 }
 
-
-.featuresContainer {
-    max-width: 320px;
-    display: block;
-    float: left;
-    width: 30%;
-    margin-top: 20px;
-
-}
-.codeContainer {
-    display: block;
-    float: left;
-    width: 70%;
-}
 .desktopOnly {
     display: block;
 }
@@ -414,11 +419,6 @@ h2 {
     display: none;
 }
 
-@media only screen and (min-width: 1900px) {
-    .topContainer {
-        max-width: 1250px;
-    }
-}
 
 @media only screen and (max-width: 666px) {
     .desktopOnly {
@@ -427,22 +427,12 @@ h2 {
     .smallScreensOnly {
         display: block;
     }
-
-    .featuresContainer {
-        float:none;
-        width: 100%;
-        margin: 0 auto;
-    }
-    .codeContainer {
-        float:none;
-        width: 100%;
-        margin: 0 auto;
-    }
 }
 
 .container {
     max-width: 800px;
     margin: 0 auto;
+    background: white;
 }
 
 .left-section,
