@@ -444,6 +444,7 @@ function Configurator(props) {
             }
             onMouseEnter={onMouseEnterFeature}
             onMouseLeave={onMouseLeaveFeature}
+            selectedBuildTool={state.selectedTab}
           />
           <div className={styles.desktopOnly}>
             <DownloadButton

@@ -1,30 +1,71 @@
 import React, { useState, useEffect, useRef } from 'react'
 import _ from 'lodash'
 import styles from '../../styles.module.css'
+import Modal from 'react-modal'
+import { docsMap } from '../DocsViewer'
 
+function FeatureHelp({ featureName, selectedBuildTool }) {
+  const customStyles = {
+    content: {
+      top: '30%',
+      left: '50%',
+      right: 'auto',
+      bottom: 'auto',
+      marginRight: '-50%',
+      width: '1000px',
+      transform: 'translate(-50%, -50%)',
+    },
+  }
+
+  const [modalOpen, setModalOpen] = useState(false)
+  const helpText = docsMap(selectedBuildTool)[featureName]
+  if (!helpText) {
+    return null
+  }
+  return (
+    <>
+      <button onClick={() => setModalOpen(true)} className={styles.helpCircle}>
+        ?
+      </button>
+      <Modal
+        isOpen={modalOpen}
+        onRequestClose={() => setModalOpen(false)}
+        style={customStyles}
+        contentLabel="Help"
+      >
+        <h2>Help for {featureName}</h2>
+        {helpText}
+      </Modal>
+    </>
+  )
+}
 const Feature = ({
   feature,
   selected,
   setSelected,
   onMouseEnter,
   onMouseLeave,
+  selectedBuildTool,
 }) => (
-  <label
-    className={styles.featureContainer}
-    onMouseEnter={() => onMouseEnter(feature)}
-    onMouseLeave={() => onMouseLeave(feature)}
-    onTouchStart={() => onMouseEnter(feature)}
-    onTouchEnd={() => onMouseLeave(feature)}
-    onTouchCancel={() => onMouseLeave(feature)}
-  >
-    {feature}
-    <input
-      checked={selected || false}
-      onChange={() => setSelected(feature)}
-      type="checkbox"
-    />
-    <span className={styles.checkmark} />
-  </label>
+  <>
+    <label
+      className={styles.featureContainer}
+      onMouseEnter={() => onMouseEnter(feature)}
+      onMouseLeave={() => onMouseLeave(feature)}
+      onTouchStart={() => onMouseEnter(feature)}
+      onTouchEnd={() => onMouseLeave(feature)}
+      onTouchCancel={() => onMouseLeave(feature)}
+    >
+      {feature}
+      <input
+        checked={selected || false}
+        onChange={() => setSelected(feature)}
+        type="checkbox"
+      />
+      <span className={styles.checkmark} />{' '}
+    </label>
+    <FeatureHelp featureName={feature} selectedBuildTool={selectedBuildTool} />
+  </>
 )
 function usePrevious(value) {
   const ref = useRef()
@@ -41,6 +82,7 @@ function FeatureGroup({
   setSelected,
   onMouseEnter,
   onMouseLeave,
+  selectedBuildTool,
 }) {
   const [expanded, setExpanded] = useState(
     group === 'Main library' ? true : false
@@ -79,6 +121,7 @@ function FeatureGroup({
               setSelected={setSelected}
               onMouseEnter={onMouseEnter}
               onMouseLeave={onMouseLeave}
+              selectedBuildTool={selectedBuildTool}
               key={feature}
             />
           ))}
@@ -96,6 +139,7 @@ export default class Features extends React.Component {
       setSelected,
       onMouseEnter,
       onMouseLeave,
+      selectedBuildTool,
     } = this.props
     const groupedFeatures = _.chain(features)
       .mapValues((v, k, o) => Object.assign({}, v, { feature: k }))
@@ -112,6 +156,7 @@ export default class Features extends React.Component {
             selected={selected}
             onMouseEnter={onMouseEnter}
             onMouseLeave={onMouseLeave}
+            selectedBuildTool={selectedBuildTool}
             key={group}
           />
         ))}

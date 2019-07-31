@@ -502,8 +502,9 @@ textarea {
 .feature-container {
     font-size: medium;
     display: block;
+    width: 160px;
+    float: left;
     text-align: left;
-    width: 120px;
     position: relative;
     margin-bottom: 12px;
     padding-left: 45px;
@@ -513,6 +514,23 @@ textarea {
     -ms-user-select: none;
     user-select: none;}
 
+.helpCircle {
+    color: #969696;
+    float: left;
+    border: 1px solid #969696;
+    border-radius: 41px;
+    width: 19px;
+    display: inline-block;
+    text-align: center;
+    background: white;
+    cursor: pointer;
+    padding: 0px;
+}
+.helpCircle:hover {
+    color: black;
+    border-color: black;
+
+}
 /* Hide the browser's default checkbox */
 .feature-container input {
     position: absolute;

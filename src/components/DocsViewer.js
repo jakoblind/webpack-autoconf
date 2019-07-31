@@ -268,19 +268,20 @@ const commonDocsMap = {
     </div>
   ),
 }
+export const docsMap = buildTool =>
+  buildTool === 'webpack'
+    ? _.assign({}, webpackDocsMap, commonDocsMap)
+    : _.assign({}, parcelDocsMap, commonDocsMap)
+
 export default function DocsViewer({
   hoverFeature,
   selectedFeatures,
   buildTool,
 }) {
-  const docsMap =
-    buildTool === 'webpack'
-      ? _.assign({}, webpackDocsMap, commonDocsMap)
-      : _.assign({}, parcelDocsMap, commonDocsMap)
   const defaultDocs = <div />
   const hoverSelectedFeature = _.find(selectedFeatures, f => hoverFeature === f)
 
-  const theDoc = docsMap[hoverSelectedFeature]
+  const theDoc = docsMap(buildTool)[hoverSelectedFeature]
 
   if (!hoverSelectedFeature || !theDoc) {
     return null
