@@ -204,8 +204,7 @@ class FileBrowserContainer extends React.Component {
 
     const projectFiles = this.props.projectGeneratorFunction(
       this.props.features,
-      'empty-project',
-      npmVersionPromise
+      'empty-project'
     )
 
     this.state = {
