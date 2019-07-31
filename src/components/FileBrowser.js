@@ -128,6 +128,9 @@ class FileBrowser extends React.Component {
   }
   setSelectedFile(selectedFile) {
     this.setState({ selectedFile })
+    if (selectedFile === 'package.json') {
+      this.props.onSelectPackageJson()
+    }
   }
   render() {
     const { fileContentMap } = this.props
@@ -187,6 +190,7 @@ class FileBrowserTransformer extends React.Component {
     })
     return (
       <FileBrowser
+        onSelectPackageJson={this.props.onSelectPackageJson}
         fileContentMap={fileContentMap}
         defaultSelection={this.props.defaultSelection}
       />
@@ -200,7 +204,8 @@ class FileBrowserContainer extends React.Component {
 
     const projectFiles = this.props.projectGeneratorFunction(
       this.props.features,
-      'empty-project'
+      'empty-project',
+      npmVersionPromise
     )
 
     this.state = {
@@ -291,6 +296,7 @@ class FileBrowserContainer extends React.Component {
     })
     return (
       <FileBrowserTransformer
+        onSelectPackageJson={() => this.setProjectFilesInState()}
         defaultSelection={this.props.defaultFile || 'webpack.config.js'}
         files={files}
       />
