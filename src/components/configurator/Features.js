@@ -3,6 +3,14 @@ import _ from 'lodash'
 import styles from '../../styles.module.css'
 import Modal from 'react-modal'
 import { docsMap } from '../DocsViewer'
+import { gaSendEvent } from '../../googleAnalytics'
+
+function trackHelpIconClick(eventAction) {
+  gaSendEvent({
+    eventCategory: 'Help Icon clicked',
+    eventAction,
+  })
+}
 
 function FeatureHelp({ featureName, selectedBuildTool }) {
   const customStyles = {
@@ -24,7 +32,13 @@ function FeatureHelp({ featureName, selectedBuildTool }) {
   }
   return (
     <>
-      <button onClick={() => setModalOpen(true)} className={styles.helpCircle}>
+      <button
+        onClick={() => {
+          trackHelpIconClick(featureName)
+          setModalOpen(true)
+        }}
+        className={styles.helpCircle}
+      >
         ?
       </button>
       <Modal
@@ -33,7 +47,15 @@ function FeatureHelp({ featureName, selectedBuildTool }) {
         style={customStyles}
         contentLabel="Help"
       >
-        <h2>Help for {featureName}</h2>
+        <h2 style={{ width: '90%', float: 'left' }}>Help for {featureName}</h2>
+        <button
+          style={{ borderRadius: '100px', float: 'left' }}
+          onClick={() => setModalOpen(false)}
+        >
+          X
+        </button>
+        <br />
+        <br />
         {helpText}
       </Modal>
     </>
