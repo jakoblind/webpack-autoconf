@@ -63,7 +63,7 @@ function FeatureGroup({
   }, [selected])
 
   return (
-    <div className={styles.featureGroup} key={group}>
+    <div className={styles.featureGroup}>
       <div
         className={styles.featureGroupName}
         onClick={() => setExpanded(!expanded)}
@@ -112,6 +112,7 @@ export default class Features extends React.Component {
             selected={selected}
             onMouseEnter={onMouseEnter}
             onMouseLeave={onMouseLeave}
+            key={group}
           />
         ))}
       </div>

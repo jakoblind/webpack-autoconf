@@ -147,22 +147,25 @@
 }
 
 .header {
-    width: 745px;
+    width: 900px;
     margin: 0 auto;
     padding: 15px;
+    display: flex;
+    justify-content: space-around;
 }
 
 .header a {
     color: #757575;
     text-decoration: none;
-    padding-right: 3em;
+
 }
 
 @media only screen and (max-width: 550px) {
     .header {
         padding-top: 0.5em;
         padding-bottom: 0.5em;
-        width: 100%;
+        flex-direction: column;
+        width: 100%
     }
     .header a {
         height: 48px;
@@ -480,6 +483,7 @@ textarea {
     background: white;
     max-width: 520px;
     margin: 0 auto;
+    margin-bottom: 15px;
 }
 
 .feature-group {
