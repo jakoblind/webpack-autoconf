@@ -33,6 +33,7 @@ import generateProject, {
 import { saveAs } from 'file-saver'
 import onboardingHelp from '../onboardingHelp'
 import DocsViewer from '../components/DocsViewer'
+import { trackPageView, gaSendEvent } from '../googleAnalytics'
 
 const StepByStepArea = ({ features, newBabelConfig, isReact, isWebpack }) => {
   const newNpmConfig = getNpmDependencies(
@@ -322,29 +323,6 @@ function reducer(state, action) {
     default:
       throw new Error()
   }
-}
-
-function trackPageView(newUrl) {
-  if (!window.ga) {
-    return
-  }
-  window.ga('set', 'page', newUrl)
-  window.ga('send', 'pageview')
-}
-
-function gaSendEvent({ eventCategory, eventAction, eventLabel }) {
-  if (!window.ga) {
-    console.log(
-      'Ga debug: ',
-      'send',
-      'event',
-      eventCategory,
-      eventAction,
-      eventLabel
-    )
-    return
-  }
-  window.ga('send', 'event', eventCategory, eventAction, eventLabel)
 }
 
 function trackDownload(selectedTab, selectedFeatures) {
