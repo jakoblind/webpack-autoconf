@@ -1,5 +1,3 @@
-import memoizee from 'memoizee'
-
 const versionCache = {
   //react: {resolved: true, version: "xxx", promise: ..., error: false}
 }
@@ -33,6 +31,7 @@ function fetchVersion(name) {
 }
 
 // this function is useful for testing
+// eslint-disable-next-line
 function delay(t, v) {
   return new Promise(function(resolve) {
     setTimeout(resolve.bind(null, v), t)
