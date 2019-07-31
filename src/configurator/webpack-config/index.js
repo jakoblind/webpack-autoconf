@@ -292,7 +292,7 @@ ${stylus}
       },
     },
     'React hot loader': {
-      group: '',
+      group: 'React',
       babel: babelConfig =>
         Object.assign({}, babelConfig, {
           plugins: ['react-hot-loader/babel'],

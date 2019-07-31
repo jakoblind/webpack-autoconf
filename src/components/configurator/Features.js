@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import _ from 'lodash'
 import styles from '../../styles.module.css'
 
@@ -26,6 +26,67 @@ const Feature = ({
     <span className={styles.checkmark} />
   </label>
 )
+function usePrevious(value) {
+  const ref = useRef()
+  useEffect(() => {
+    ref.current = value
+  })
+  return ref.current
+}
+
+function FeatureGroup({
+  featureList,
+  group,
+  selected,
+  setSelected,
+  onMouseEnter,
+  onMouseLeave,
+}) {
+  const [expanded, setExpanded] = useState(
+    group === 'Main library' ? true : false
+  )
+  const prevSelected = usePrevious(selected)
+  useEffect(() => {
+    const anyChanged = _.reduce(
+      featureList,
+      (result, { feature }) => {
+        return (
+          result ||
+          selected[feature] !== (prevSelected && prevSelected[feature])
+        )
+      },
+      false
+    )
+    if (anyChanged) {
+      setExpanded(true)
+    }
+  }, [selected])
+
+  return (
+    <div className={styles.featureGroup} key={group}>
+      <div
+        className={styles.featureGroupName}
+        onClick={() => setExpanded(!expanded)}
+      >
+        {group !== 'undefined' ? (expanded ? '− ' : '+ ') + group : ''}
+      </div>
+      {expanded ? (
+        <div className={styles.featureGroupContainer}>
+          {_.map(featureList, ({ feature }) => (
+            <Feature
+              feature={feature}
+              selected={selected[feature]}
+              setSelected={setSelected}
+              onMouseEnter={onMouseEnter}
+              onMouseLeave={onMouseLeave}
+              key={feature}
+            />
+          ))}
+        </div>
+      ) : null}
+    </div>
+  )
+}
 
 export default class Features extends React.Component {
   render() {
@@ -44,23 +105,14 @@ export default class Features extends React.Component {
     return (
       <div className={styles.features} id="features">
         {_.map(groupedFeatures, (featureList, group) => (
-          <div className={styles.featureGroup} key={group}>
-            <div className={styles.featureGroupName}>
-              {group !== 'undefined' ? group : ''}
-            </div>
-            <div className={styles.featureGroupContainer}>
-              {_.map(featureList, ({ feature }) => (
-                <Feature
-                  feature={feature}
-                  selected={selected[feature]}
-                  setSelected={setSelected}
-                  onMouseEnter={onMouseEnter}
-                  onMouseLeave={onMouseLeave}
-                  key={feature}
-                />
-              ))}
-            </div>
-          </div>
+          <FeatureGroup
+            featureList={featureList}
+            group={group}
+            setSelected={setSelected}
+            selected={selected}
+            onMouseEnter={onMouseEnter}
+            onMouseLeave={onMouseLeave}
+          />
         ))}
       </div>
     )
