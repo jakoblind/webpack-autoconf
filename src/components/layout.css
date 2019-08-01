@@ -73,7 +73,7 @@ body {
 .modal {
     position: absolute;
     width: 600px;
-    top: 30%;
+    top: 50%;
     left: 50%;
     right: auto;
     bottom: auto;
@@ -86,6 +86,8 @@ body {
     border-radius: 4px;
     outline: none;
     padding: 20px;
+    max-height: 100vh;
+    overflow-y: auto;
 
 }
 

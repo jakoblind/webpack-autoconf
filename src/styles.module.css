@@ -307,6 +307,21 @@ h2 {
 
 }
 
+.feedbackForm button {
+    padding: 11px;
+    font-size: medium;
+    border-radius: 5px;
+    margin: 10px;
+
+}
+.feedbackForm input, textarea {
+    padding: 11px;
+    font-size: medium;
+    border-radius: 5px;
+    margin: 10px;
+    width: 90%;
+
+}
 @media only screen and (max-width: 666px) {
 
     .mainContainer {

@@ -12,6 +12,59 @@ function trackHelpIconClick(eventAction) {
   })
 }
 
+function FeedbackForm({ feature }) {
+  const [email, setEmail] = useState('')
+  const [comment, setComment] = useState('')
+  const [isSent, setIsSent] = useState(false)
+  const submit = e => {
+    e.preventDefault()
+    fetch(`https://hooks.zapier.com/hooks/catch/1239764/oo73gyz/`, {
+      method: 'POST',
+      body: JSON.stringify({ email, comment }),
+    }).then(() => setIsSent(true))
+  }
+  const thankYouMessage = <p>Thank you for your input!</p>
+  const form = (
+    <>
+      <p>
+        I'm looking to constantly improve this site to make it a relevant as
+        possible. Your input is very valuable. Leave your email if you want a
+        personal reply! :){' '}
+      </p>
+      <form className={styles.feedbackForm}>
+        <label htmlFor="comment">Your question or comment</label>
+        <textarea
+          name="comment"
+          value={comment}
+          onChange={e => setComment(e.target.value)}
+        />
+        <br />
+        <label htmlFor="email">Email (optional)</label> <br />
+        <input
+          type="email"
+          name="email"
+          value={email}
+          placeholder="will only be used to send you a reply"
+          onChange={e => setEmail(e.target.value)}
+        />{' '}
+        <br />
+        <button type="submit" onClick={submit}>
+          Send it!
+        </button>
+        <br />
+        <br />
+      </form>
+    </>
+  )
+  return (
+    <>
+      {' '}
+      <h3>Do you have a question about {feature}?</h3>
+      {isSent ? thankYouMessage : form}
+    </>
+  )
+}
+
 function FeatureHelp({ featureName, selectedBuildTool }) {
   const [modalOpen, setModalOpen] = useState(false)
   const helpText = docsMap(selectedBuildTool)[featureName]
@@ -45,6 +98,7 @@ function FeatureHelp({ featureName, selectedBuildTool }) {
         <br />
         <br />
         {helpText}
+        <FeedbackForm feature={featureName} />
       </Modal>
     </>
   )
