@@ -308,12 +308,17 @@ h2 {
 }
 
 @media only screen and (max-width: 666px) {
+
     .mainContainer {
         flex-direction:column;
     }
     .codeContainer {
         max-width: 861px;
         width: auto;
+    }
+
+    .featuresContainer {
+        margin: auto;
     }
 
 }

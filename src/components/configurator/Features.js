@@ -13,18 +13,6 @@ function trackHelpIconClick(eventAction) {
 }
 
 function FeatureHelp({ featureName, selectedBuildTool }) {
-  const customStyles = {
-    content: {
-      top: '30%',
-      left: '50%',
-      right: 'auto',
-      bottom: 'auto',
-      marginRight: '-50%',
-      width: '1000px',
-      transform: 'translate(-50%, -50%)',
-    },
-  }
-
   const [modalOpen, setModalOpen] = useState(false)
   const helpText = docsMap(selectedBuildTool)[featureName]
   if (!helpText) {
@@ -44,7 +32,7 @@ function FeatureHelp({ featureName, selectedBuildTool }) {
       <Modal
         isOpen={modalOpen}
         onRequestClose={() => setModalOpen(false)}
-        style={customStyles}
+        className="modal"
         contentLabel="Help"
       >
         <h2 style={{ width: '90%', float: 'left' }}>Help for {featureName}</h2>
