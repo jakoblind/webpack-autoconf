@@ -12,7 +12,7 @@ function trackHelpIconClick(eventAction) {
   })
 }
 
-function FeedbackForm({ feature }) {
+function FeedbackForm({ feature, children }) {
   const [email, setEmail] = useState('')
   const [comment, setComment] = useState('')
   const [isSent, setIsSent] = useState(false)
@@ -20,17 +20,13 @@ function FeedbackForm({ feature }) {
     e.preventDefault()
     fetch(`https://hooks.zapier.com/hooks/catch/1239764/oo73gyz/`, {
       method: 'POST',
-      body: JSON.stringify({ email, comment }),
+      body: JSON.stringify({ email, comment, key: feature }),
     }).then(() => setIsSent(true))
   }
   const thankYouMessage = <p>Thank you for your input!</p>
   const form = (
     <>
-      <p>
-        I'm looking to constantly improve this site to make it a relevant as
-        possible. Your input is very valuable. Leave your email if you want a
-        personal reply! :){' '}
-      </p>
+      {children}
       <form className={styles.feedbackForm}>
         <label htmlFor="comment">Your question or comment</label>
         <textarea
@@ -56,13 +52,7 @@ function FeedbackForm({ feature }) {
       </form>
     </>
   )
-  return (
-    <>
-      {' '}
-      <h3>Do you have a question about {feature}?</h3>
-      {isSent ? thankYouMessage : form}
-    </>
-  )
+  return <>{isSent ? thankYouMessage : form}</>
 }
 
 function FeatureHelp({ featureName, selectedBuildTool }) {
@@ -98,7 +88,15 @@ function FeatureHelp({ featureName, selectedBuildTool }) {
         <br />
         <br />
         {helpText}
-        <FeedbackForm feature={featureName} />
+
+        <h3>Do you have a question about {featureName}?</h3>
+        <FeedbackForm feature={featureName}>
+          <p>
+            I'm looking to constantly improve this site to make it a relevant as
+            possible. Your input is very valuable. Leave your email if you want
+            a personal reply! :){' '}
+          </p>
+        </FeedbackForm>
       </Modal>
     </>
   )
