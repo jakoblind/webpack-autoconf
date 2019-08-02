@@ -46,95 +46,151 @@ export default () => {
         <h1 className={styles.large}>Learn webpack</h1>
         <h2 className={styles.subtitle}>A handbook for webpack beginners</h2>
         <div className={styles.center}>
-          <BuyButton />
+          <a href="#buy" className={styles.myButton}>
+            Buy Now
+          </a>
           <p>
             <HiddenSampleChapterSignupForm />
           </p>
         </div>
-        <h3>Webpack configuration makes me feel really dumb</h3>
+        <h3>Why do you even need webpack and how does it work?</h3>
         <p>
-          Webpack says it’s zero-config but that is only partly true. It’s
-          zero-config if you don’t need any features at all. But if want to do
-          anything non-trivial like, you know... creating an app that supports
-          ES6 and styles then you are back to config hell.
+          You know you can use webpack to create a bundle that makes your app
+          faster. And you know webpack can enable ES6 for your app.
+        </p>
+        <p>
+          But <i>why</i> do we need webpack for that? And <i>how</i> does it do
+          it?
+        </p>
+        <p>
+          The syntax for the <code>webpack.config.js</code> is...non-intuitive.
         </p>
         <img
-          alt="ejected cra webpack config"
-          src={require('../../images/webpackmedium.webm.gif')}
+          alt="webpack config wtf"
+          src={require('../../images/webpack-config-wtf.png')}
           width="100%"
           style={{ textAlgin: 'center' }}
         />
         <p>
-          Loaders, plugins, rules, modules, resolve. What is what? And don’t get
-          me started if you want code splitting and hot module reloading. And
-          babel is supposed to be in there somehow.
+          This config supposedly can turn your app into a production-ready web
+          app. But how does it work?
+        </p>
+        <p>It all looks like magic. And you’re not a wizard (yet?)</p>
+        <h3>Javascript fatigue before hello world</h3>
+        <p>
+          To create a simple hello world app with webpack, you have to install
+          LOTs of dependencies. First, there's <code>webpack</code>, which is
+          fine. You already expected to install that. But then you
+          <i>also</i> have to install all of the following as well:
+        </p>
+        <ul>
+          <li>
+            <code>webpack-cli</code>
+          </li>
+          <li>
+            <code>webpack-dev-server</code>
+          </li>
+          <li>
+            <code>babel-loader</code>
+          </li>
+          <li>
+            <code>@babel/preset-react</code>
+          </li>
+          <li>
+            <code>@babel/core</code>
+          </li>
+          <li>
+            <code>@babel/preset-env</code>
+          </li>
+        </ul>
+        <img
+          alt="webpack config wtf"
+          src={require('../../images/dependency-hell-overlay.png')}
+          width="100%"
+          style={{ textAlgin: 'center' }}
+        />
+        <p>
+          These dependencies are only used for building the app — you haven’t
+          even coded a single feature yet.
         </p>
         <p>
-          You do your best to set up the config by copy-pasting boilerplates,
-          reading tutorials that might or might not be outdated, and reading the
-          official docs which only partly answers the questions you have.
-        </p>
-        <div className={styles.twoColumns}>
-          <div>
-            <p>
-              When you finally have managed to put together a webpack config
-              that actually seems to work you don’t dare to touch it in case you
-              break everything. Your webpack project is like a digital version
-              of a house of cards (not the tv-series but you know... real cards)
-            </p>
-
-            <p>
-              You are terrified when you change the code splitting setup or
-              adding typescript - because everything might suddenly just fall
-              apart.
-            </p>
-          </div>
-          <img
-            alt="house of cards"
-            src={require('../../images/house-of-cards.jpg')}
-          />
-        </div>
-        <p>
-          Creating and maintaining frontend projects shouldn’t be this hard.
+          You very quickly lose control over whats going on. You desperately
+          start googling “babel”, “babel-preset-env” to learn what it’s doing
+          but you just get overwhelmed with all the information.{' '}
         </p>
         <p>
-          You know webpack gets stuff done efficiently, but how many weeks or
-          months do you have to spend to learn it properly?
-        </p>
-        <h3>With great complexity comes great power.</h3>
-        <p>
-          There is a reason that almost all major toolkits like Gatsby and
-          Nextjs use webpack under-the-hood. There is a reason that webpack is
-          so popular in enterprise applications, and large full stack and
-          frontend apps.{' '}
+          And you’re worried that all these dependencies will bloat your bundle.
+          But it’s difficult to know because you don’t know what’s going on
+          under-the-hood in webpack. Maybe webpack is smart and doesn’t put
+          these in the output bundle? You are not sure.
         </p>
         <p>
-          The reason is that webpack is super powerful. It’s ugly but it gets
-          the job done better than any other tool. No build tool has the
-          position that webpack has in the community - the user base is insanely
-          big. It’s the industry standard whether you like it or not.
+          You want to be an awesome frontend dev knowing modern tools - but is
+          it really supposed to be this hard just to get started coding a simple
+          webpack app in 2019?
+        </p>
+        <h3>
+          What if you could write fast, well-organized and scalable webpack
+          apps?
+        </h3>
+        <p>
+          What if you could use webpack to make fast apps by using the latest
+          and greatest tech - without shipping too much to the end-user. Your
+          apps would get quicker load speed and better overall performance. You
+          would use powerful techniques like minifying and uglifying like a pro.
+        </p>
+        <img
+          alt="100 web app speed"
+          src={require('../../images/100-on-speed.png')}
+          width="100%"
+          style={{ textAlgin: 'center' }}
+        />
+        <p>
+          Your app would be well-organized. The code would be easier to maintain
+          even for big and complex code bases. And your build setup would be
+          highly customizable and ready for the enterprise. You would never
+          paint yourself into a corner.
         </p>
         <p>
-          Knowing webpack is one thing that will make you stand out from other
-          frontend devs. Most devs have enough troubles to learn CSS grids
-          layouts and ES6 features. Not everyone takes the time to learn
-          webpack. If webpack was part of a Microsoft certification program
-          (thank god it’s not) then this would be part of the Gold platinum
-          certification.
+          You would take full benefit of ES6 in your codebase. It would be a
+          true future-focused app using the latest tech to make you as
+          productive and up-to-date as possible. You could create apps with Vue,
+          React, or whatever you want. The possibilities are endless.
         </p>
         <p>
-          Webpack is tough to learn. You’ll have to do the work. But with the
-          right learning resource you can be a confident webpack coder already
-          next week.
+          But most importantly you would understand frontend development much
+          deeper. You would grow your skills and become a better dev. You would
+          be a well-rounded developer in a really good position to get the job
+          you want.
         </p>
-        <h3>A complete handbook for webpack beginners</h3>
+        <h3>Learn webpack is a complete handbook for webpack beginners</h3>
         <p>
-          In "Learn webpack", you'll start with a clean slate - just you and an
-          empty text editor. You will learn step-by-step how to build the{' '}
+          Learn webpack is an e-book designed to make the process of learning
+          webpack as quick and smooth as possible for you.
+        </p>
+        <p>
+          To <i>deeply</i> learn webpack, you’ll start with a clean slate. No
+          more copy-pasting boilerplates and ejecting CRA to try to figure out
+          things backward. You’ll start with an empty editor and you'll write
+          the whole <code>webpack.config.js</code> yourself.
+        </p>
+        <p>
+          You will learn step-by-step how to build the{' '}
           <code>webpack.config.js</code>, <code>package.json</code>,{' '}
           <code>.babelrc</code> and all other files required to build a modern
-          web apps with webpack. This approach makes webpack super easy to learn
-          - even if you don’t have much dev experience.
+          web app with webpack. This approach makes webpack super easy to learn.
+        </p>
+        <p>
+          But it’s not enough just to learn the syntax. You’ll learn all about
+          the dependencies like Babel, webpack-dev-server, and React hot loader.
+          You learn what they do and why you need them. This way you can use the
+          dependencies to your advantage, to make your app fast and beautiful
+          for your users.
+        </p>
+        <p>
+          You’ll also learn how to squeeze out every juice of webpack to make
+          your app as fast as possible by using advanced techniques such as code
+          splitting and tree shaking.
         </p>
         <p>
           This is a <i>complete</i> and <i>up-to-date</i> book for webpack
@@ -182,7 +238,7 @@ export default () => {
           You’ll learn how to configure an awesome developer experience that
           makes you super productive <i>and</i> use tools and techniques to get
           the lowest possible bundle size for the production build. You’ll also
-          learn about the internals of webpacks. Loaders, plugins, manifests and
+          learn about the internals of webpack. Loaders, plugins, manifests and
           chunks will no longer feel like magic
         </p>
         <p>
@@ -203,7 +259,7 @@ export default () => {
           This is a short book - only 100 pages. It's to the point. And it has
           absolutely zero fluff - just actionable advice.{' '}
         </p>
-        <h3>Buy Learn webpack</h3>
+        <h3 id="buy">Buy Learn webpack</h3>
         <p>
           As a developer, the best investment you can make is to invest in your
           skills. When you know webpack you will be a more complete frontend
@@ -243,7 +299,7 @@ export default () => {
         <p>
           <HiddenSampleChapterSignupForm />
           <div style={{ clear: 'both' }} />
-          <br /> It can also be good to know that I offer a 30-day money back
+          <br /> It can also be good to know that I offer a 30-day money-back
           guarantee if you are not happy with the book.
         </p>
         <h3>About the author</h3>
@@ -272,7 +328,7 @@ export default () => {
         <p>
           <b>Q: What if I don't like the book?</b>
         </p>
-        <p>A: I offer a 30-day no-questions-asked money-back-guarantee</p>
+        <p>A: I offer a 30-day no-questions-asked money-back guarantee</p>
         <p>
           <b>Q: What version of webpack do the book use?</b>
         </p>
@@ -285,7 +341,7 @@ export default () => {
         </p>
         <p>
           A: Included in the price is a lifetime of updates! Whenever I update
-          the book because there is a new version of webpack or if i extend the
+          the book because there is a new version of webpack or if I extend the
           book with new material, you will get the update straight in your inbox
           with no additional cost.{' '}
         </p>
@@ -293,7 +349,7 @@ export default () => {
           <b>Q: What formats do I get?</b>
         </p>
         <p>
-          A: You'll get PDF and EPUB. If I some time in the future offer more
+          A: You'll get PDF and EPUB. If I sometime in the future offer more
           formats, you will get them also of course.
         </p>
         <p>
