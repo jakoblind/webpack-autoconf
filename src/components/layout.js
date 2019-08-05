@@ -72,7 +72,7 @@ const Layout = ({ children, title, metaDescription }) => (
               justifyContent: `space-around`,
               listStyle: `none`,
               color: 'black',
-              width: '200px',
+              width: '220px',
               margin: 'auto',
             }}
           >
@@ -81,6 +81,15 @@ const Layout = ({ children, title, metaDescription }) => (
             </li>
             <li>
               <a href="https://github.com/jakoblind">Github</a>
+            </li>
+            <li>
+              <a
+                className="github-button"
+                href="https://github.com/jakoblind/webpack-autoconf/issues"
+                aria-label="Issue jakoblind/webpack-autoconf on GitHub"
+              >
+                Issue
+              </a>
             </li>
           </ul>
         </footer>

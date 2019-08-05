@@ -435,13 +435,6 @@ function Configurator(props) {
           </div>
           {buildConfigConfig[state.selectedTab].extraElements}
           <br />
-          <a
-            className="github-button"
-            href="https://github.com/jakoblind/webpack-autoconf/issues"
-            aria-label="Issue jakoblind/webpack-autoconf on GitHub"
-          >
-            Issue
-          </a>{' '}
         </div>
         <div className={styles.codeContainer}>
           <FileBrowser
