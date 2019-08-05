@@ -88,15 +88,8 @@ function FeatureHelp({ featureName, selectedBuildTool }) {
         <br />
         <br />
         {helpText}
-
         <h3>Do you have a question about {featureName}?</h3>
-        <FeedbackForm feature={featureName}>
-          <p>
-            I'm looking to constantly improve this site to make it a relevant as
-            possible. Your input is very valuable. Leave your email if you want
-            a personal reply! :){' '}
-          </p>
-        </FeedbackForm>
+        <FeedbackForm feature={featureName} />
       </Modal>
     </>
   )
