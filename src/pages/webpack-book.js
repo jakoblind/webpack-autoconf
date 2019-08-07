@@ -53,29 +53,47 @@ export default () => {
             <HiddenSampleChapterSignupForm />
           </p>
         </div>
-        <h3>Why do you even need webpack and how does it work?</h3>
-        <p>
-          You know you can use webpack to create a bundle that makes your app
-          faster. And you know webpack can enable ES6 for your app.
-        </p>
-        <p>
-          But <i>why</i> do we need webpack for that? And <i>how</i> does it do
-          it?
-        </p>
-        <p>
-          The syntax for the <code>webpack.config.js</code> is...non-intuitive.
+        <h3>Configuring webpack is painful</h3>
+        <p style={{ marginBottom: 0 }}>
+          The heart of webpack — the <code>webpack.config.js</code> — has a
+          syntax that probably makes sense for hackers on the internals of
+          webpack. But for devs just wanting to create a new project, it's a
+          nightmare to write.
         </p>
         <img
           alt="webpack config wtf"
-          src={require('../../images/webpack-config-wtf.png')}
+          src={require('../../images/webpack-config.png')}
           width="100%"
           style={{ textAlgin: 'center' }}
         />
-        <p>
-          This config supposedly can turn your app into a production-ready web
-          app. But how does it work?
+        <p style={{ marginTop: 0 }}>
+          You see keywords like <code>module</code>, <code>rules</code>,{' '}
+          <code>use</code>, <code>entry</code>, <code>plugins</code>. But what
+          does that all even mean in the context of a build setup for a web app?
         </p>
-        <p>It all looks like magic. And you’re not a wizard (yet?)</p>
+        <p>
+          You stumble around with webpack, browsing the docs, tutorials, blogs
+          and YouTube to trying to make sense of it all. And you're really
+          struggling.
+        </p>
+        <p>
+          <i>
+            The problem is that every tutorial has their creative way of
+            configuring webpack.
+          </i>
+        </p>
+        <p>
+          One tutorial tells you to use the <code>html-webpack-plugin</code>{' '}
+          (whatever that is?) and another tutorial doesn't mention that at all.
+        </p>
+        <p>
+          One tutorial uses babel-preset-env and another uses something else.
+        </p>
+        <p>
+          There just doesn't seem to be one standard way of implementing
+          anything with webpack. This makes it very difficult to know what is
+          the best practice way to configure it.
+        </p>
         <h3>Javascript fatigue before hello world</h3>
         <p>
           To create a simple hello world app with webpack, you have to install
@@ -130,8 +148,8 @@ export default () => {
           webpack app in 2019?
         </p>
         <h3>
-          What if you could write fast, well-organized and scalable webpack
-          apps?
+          What if you had one source of truth for learning how to build fast,
+          well-organized and scalable webpack apps?
         </h3>
         <p>
           What if you could use webpack to make fast apps by using the latest
