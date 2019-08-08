@@ -87,7 +87,8 @@ export default () => {
           (whatever that is?) and another tutorial doesn't mention that at all.
         </p>
         <p>
-          One tutorial uses babel-preset-env and another uses something else.
+          One tutorial uses <code>babel-preset-env</code> and another uses
+          something else.
         </p>
         <p>
           There just doesn't seem to be one standard way of implementing
@@ -99,7 +100,7 @@ export default () => {
           To create a simple hello world app with webpack, you have to install
           LOTs of dependencies. First, there's <code>webpack</code>, which is
           fine. You already expected to install that. But then you
-          <i>also</i> have to install all of the following as well:
+          <i>also</i> have to install all of the following:
         </p>
         <ul>
           <li>
@@ -153,7 +154,7 @@ export default () => {
         </h3>
         <p>
           What if you could use webpack to make fast apps by using the latest
-          and greatest tech - without shipping too much to the end-user. Your
+          and greatest tech — without shipping too much to the end-user. Your
           apps would get quicker load speed and better overall performance. You
           would use powerful techniques like minifying and uglifying like a pro.
         </p>
