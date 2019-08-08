@@ -63,6 +63,14 @@ const webpackDocsMap = {
         <code>style-loader</code> adds the CSS to the DOM so that the styles are
         active and visible on the page.
       </p>
+      <h3>Learn more</h3>
+      <ul>
+        <li>
+          <a href="https://blog.jakoblind.no/css-modules-webpack/" target="new">
+            How to configure CSS and CSS modules with webpack
+          </a>
+        </li>
+      </ul>
     </div>
   ),
   'CSS Modules': (
@@ -79,6 +87,14 @@ const webpackDocsMap = {
         This is configured with the <code>exclude</code> and{' '}
         <code>include</code> keywords in <code>webpack.config.js</code>
       </p>
+      <h3>Learn more</h3>
+      <ul>
+        <li>
+          <a href="https://blog.jakoblind.no/css-modules-webpack/" target="new">
+            How to configure CSS and CSS modules with webpack
+          </a>
+        </li>
+      </ul>
     </div>
   ),
   PostCSS: (
