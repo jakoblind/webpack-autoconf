@@ -2,7 +2,7 @@ import _ from 'lodash'
 import {
   reactIndexJs,
   reactIndexTsx,
-  reactHotIndexJs,
+  reactAppJs,
 } from '../../templates/react/index'
 
 import {
@@ -49,7 +49,7 @@ export default (() => {
       },
       files: configItems => {
         const isTypescript = _.includes(configItems, 'Typescript')
-        const isHotReact = _.includes(features, 'React hot loader')
+        const isHotReact = _.includes(configItems, 'React hot loader') // Bug fix: Should check on configItems
         const extraImports = getStyleImports(configItems)
         if (isTypescript) {
           return {
@@ -58,9 +58,8 @@ export default (() => {
           }
         } else {
           return {
-            'src/index.js': isHotReact
-              ? reactHotIndexJs(extraImports)
-              : reactIndexJs(extraImports),
+            'src/app.js': reactAppJs(isHotReact),
+            'src/index.js': reactIndexJs(extraImports),
             'dist/index.html': indexHtml(),
           }
         }
