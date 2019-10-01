@@ -5,7 +5,7 @@ test('React project', () => {
   const project = projectGenerator(['React'])
 
   expect(project['.babelrc']).not.toBeNull()
-  expect(_.size(project)).toBe(5)
+  expect(_.size(project)).toBe(6)
 })
 
 test('Vue project', () => {
