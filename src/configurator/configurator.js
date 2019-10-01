@@ -97,7 +97,13 @@ export function createWebpackConfig(configItems) {
 
 const config = ${createConfig(configItems, 'webpack')}
 
-module.exports = config;`
+module.exports = (env, argv) => {
+  if (argv.hot) {
+    config.output.filename = '[name].[hash].js';
+  }
+
+  return config;
+}`
 }
 
 // some config items can alter the package json. for example the scripts section
