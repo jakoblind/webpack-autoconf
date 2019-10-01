@@ -21,6 +21,7 @@ function stringifyReplacer(value, indent, stringify) {
 function createConfig(configItems, configType) {
   const isReact = _.includes(configItems, 'React')
   const isTypescript = _.includes(configItems, 'Typescript')
+  const isHotReact = _.includes(configItems, 'React hot loader')
 
   let entryExtension = 'js'
   if (isTypescript) {
@@ -31,7 +32,15 @@ function createConfig(configItems, configType) {
     }
   }
 
-  const entry = `./src/index.${entryExtension}`
+  let entry = `./src/index.${entryExtension}`
+  if (isTypescript && isHotReact) {
+    entry = [
+      'react-hot-loader/patch', // activate HMR for React
+      'webpack-dev-server/client?http://localhost:8080', // bundle the client for webpack-dev-server and connect to the provided endpoint
+      'webpack/hot/only-dev-server', // bundle the client for hot reloading, only- means to only hot reload for successful updates
+      `./src/index.${entryExtension}`,
+    ]
+  }
   const baseWebpackTsSupport = _.assignIn(baseWebpack, { entry })
   const base = configType === 'webpack' ? baseWebpackTsSupport : {}
   return jsStringify(

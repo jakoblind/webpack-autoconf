@@ -264,9 +264,6 @@ function addOrRemoveReactHotLoader(
       setReactHotLoader = false
     }
   }
-  if (allFeatureStates['Typescript'] && allFeatureStates['React']) {
-    setReactHotLoader = false
-  }
   if (setReactHotLoader === undefined) {
     return allFeatureStates
   }

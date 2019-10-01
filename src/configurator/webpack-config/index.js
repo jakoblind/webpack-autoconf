@@ -3,6 +3,7 @@ import {
   reactIndexJs,
   reactIndexTsx,
   reactAppJs,
+  reactAppTsx,
 } from '../../templates/react/index'
 
 import {
@@ -53,7 +54,8 @@ export default (() => {
         const extraImports = getStyleImports(configItems)
         if (isTypescript) {
           return {
-            'src/index.tsx': reactIndexTsx(extraImports),
+            'src/app.tsx': reactAppTsx(isHotReact),
+            'src/index.tsx': reactIndexTsx(extraImports, isHotReact),
             'dist/index.html': indexHtml(),
           }
         } else {

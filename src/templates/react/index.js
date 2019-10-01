@@ -21,20 +21,41 @@ ${joinToString(extraImports)}
 var mountNode = document.getElementById("app");
 ReactDOM.render(<App name="Jane" />, mountNode);`
 
-export const reactIndexTsx = (
-  extraImports = []
-) => `import * as React from 'react';
-import * as ReactDOM from "react-dom";
-${joinToString(extraImports)}
+export const reactAppTsx = isHot => `
+import * as React from 'react';
+${isHot ? 'import { hot } from "react-hot-loader";\n' : ''}
 interface Props {
    name: string
 }
 
 class App extends React.Component<Props> {
   render() {
-    return <div>Hello {this.props.name}</div>;
+    const { name } = this.props;
+    return <div>Hello {name}</div>;
   }
 }
 
+${isHot ? 'declare let module: any;\n' : ''}
+export default ${isHot ? 'hot(module)(App)' : 'App'};
+`
+
+export const reactIndexTsx = (
+  extraImports = [],
+  isHot
+) => `import * as React from 'react';
+import * as ReactDOM from "react-dom";
+
+import App from './app';
+${joinToString(extraImports)}
+
 var mountNode = document.getElementById("app");
-ReactDOM.render(<App name="Jane" />, mountNode);`
+ReactDOM.render(<App name="Jane" />, mountNode);
+
+${
+  isHot
+    ? `declare let module: any;
+    
+if (module.hot)
+  module.hot.accept();`
+    : ''
+}`
