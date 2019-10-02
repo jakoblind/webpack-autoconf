@@ -294,7 +294,6 @@ export default function DocsViewer({
   selectedFeatures,
   buildTool,
 }) {
-  const defaultDocs = <div />
   const hoverSelectedFeature = _.find(selectedFeatures, f => hoverFeature === f)
 
   const theDoc = docsMap(buildTool)[hoverSelectedFeature]
