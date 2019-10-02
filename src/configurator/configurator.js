@@ -91,17 +91,31 @@ export function createBabelConfig(configItems) {
   return config === '{}' ? null : config
 }
 
+function createHotReloadModifier(configItems) {
+  const isCodeSplit = _.includes(configItems, 'Code split vendors')
+  const isHotReact = _.includes(configItems, 'React hot loader')
+
+  if (!isCodeSplit || !isHotReact) {
+    return ''
+  }
+
+  return `
+  if (argv.hot) {
+    // Cannot use 'contenthash' when hot reloading is enabled.
+    config.output.filename = '[name].[hash].js';
+  }
+  `
+}
+
 export function createWebpackConfig(configItems) {
   const imports = _.concat(baseWebpackImports, getWebpackImports(configItems))
+
   return `${imports.join('\n')}
 
 const config = ${createConfig(configItems, 'webpack')}
 
 module.exports = (env, argv) => {
-  if (argv.hot) {
-    config.output.filename = '[name].[hash].js';
-  }
-
+  ${createHotReloadModifier(configItems)}
   return config;
 }`
 }
