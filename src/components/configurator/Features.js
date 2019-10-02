@@ -12,6 +12,7 @@ function trackHelpIconClick(eventAction) {
   })
 }
 
+// eslint-disable-next-line no-unused-vars
 function FeedbackForm({ feature, children }) {
   const [email, setEmail] = useState('')
   const [comment, setComment] = useState('')
