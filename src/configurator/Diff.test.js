@@ -80,7 +80,7 @@ test('real example with json input', () => {
   expect(getDiffAsLineNumber(json1, json2)).toBe('4-5,10-13')
 })
 
-test.only('real example with string input', () => {
+test('real example with string input', () => {
   const json1 = JSON.stringify(
     {
       name: 'empty-project-react-react-hot-loader',
