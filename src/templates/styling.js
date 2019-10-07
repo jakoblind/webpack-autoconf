@@ -28,4 +28,4 @@ export const postCssConfig = `module.exports = {
   plugins: [
     require('autoprefixer')
   ]
-}`
+};`
