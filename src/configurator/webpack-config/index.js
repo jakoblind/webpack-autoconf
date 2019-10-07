@@ -253,7 +253,7 @@ ${stylus}
         'html-webpack-template',
       ],
       webpackImports: [
-        "const HtmlWebpackPlugin = require('html-webpack-plugin')",
+        "const HtmlWebpackPlugin = require('html-webpack-plugin');",
       ],
       webpack: webpackConfig => {
         const withPlugin = addPlugin(
