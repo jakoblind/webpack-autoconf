@@ -99,41 +99,37 @@ function createHotReloadModifier(configItems) {
     return null
   }
 
-  return (
-` if (argv.hot) {
+  // More info here: https://stackoverflow.com/a/50217641
+  return `if (argv.hot) {
     // Cannot use 'contenthash' when hot reloading is enabled.
     config.output.filename = '[name].[hash].js';
   }
 `
-  )
+}
+
+function createWebpackConfigExportStatement(configItems) {
+  const hotReloadModifier = createHotReloadModifier(configItems)
+  if (!hotReloadModifier) {
+    return `config`
+  }
+
+  return `(env, argv) => {
+  ${hotReloadModifier}
+  return config;
+}`
 }
 
 export function createWebpackConfig(configItems) {
   const imports = _.concat(baseWebpackImports, getWebpackImports(configItems))
   const importsLines = imports.join('\n')
   const config = createConfig(configItems, 'webpack')
-  const hotReloadModifier = createHotReloadModifier(configItems)
+  const exportStatement = createWebpackConfigExportStatement(configItems)
 
-  if (!hotReloadModifier) {
-    return (
-`${importsLines}
-
-module.exports = ${config};
-`
-    )
-  }
-
-  return (
-`${importsLines}
+  return `${importsLines}
 
 const config = ${config};
 
-module.exports = (env, argv) => {
-  ${hotReloadModifier}
-  return config;
-};
-`
-  )
+module.exports = ${exportStatement};`
 }
 
 // some config items can alter the package json. for example the scripts section
