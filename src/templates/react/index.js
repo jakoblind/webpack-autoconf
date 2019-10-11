@@ -2,7 +2,7 @@ import { joinToString } from '../helperFunctions'
 
 export const reactAppJs = isHot => `
 import React from "react";
-${isHot ? `import { hot } from "react-hot-loader";\n` : ''}
+${isHot ? `import { hot } from 'react-hot-loader/root';\n` : ''}
 class App extends React.Component {
   render() {
     const { name } = this.props;
@@ -10,7 +10,7 @@ class App extends React.Component {
   }
 }
 
-export default ${isHot ? 'hot(module)(App)' : 'App'};
+export default ${isHot ? 'hot(App)' : 'App'};
 `
 
 export const reactIndexJs = (extraImports = []) => `import React from "react";
@@ -23,7 +23,7 @@ ReactDOM.render(<App name="Jane" />, mountNode);`
 
 export const reactAppTsx = isHot => `
 import * as React from 'react';
-${isHot ? 'import { hot } from "react-hot-loader";\n' : ''}
+${isHot ? 'import { hot } from "react-hot-loader/root";' : ''}
 interface Props {
    name: string
 }
@@ -35,8 +35,7 @@ class App extends React.Component<Props> {
   }
 }
 
-${isHot ? 'declare let module: any;\n' : ''}
-export default ${isHot ? 'hot(module)(App)' : 'App'};
+export default ${isHot ? 'hot(App)' : 'App'};
 `
 
 export const reactIndexTsx = (
@@ -47,15 +46,6 @@ import * as ReactDOM from "react-dom";
 
 import App from './app';
 ${joinToString(extraImports)}
-
 var mountNode = document.getElementById("app");
 ReactDOM.render(<App name="Jane" />, mountNode);
-
-${
-  isHot
-    ? `declare let module: any;
-    
-if (module.hot)
-  module.hot.accept();`
-    : ''
-}`
+`

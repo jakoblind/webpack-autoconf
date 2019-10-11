@@ -14,11 +14,13 @@ export function addPlugin(webpackConfig, plugin) {
 export function assignModuleRuleAndResolver(
   webpackConfig,
   rules,
-  resolverExts
+  resolverExts,
+  aliases = {}
 ) {
+  // console.log({ webpackConfig, rules, resolverExts })
   const newWebpackConfig = addModuleRule(webpackConfig, rules)
   return resolverExts
-    ? addResolverExtensions(newWebpackConfig, resolverExts)
+    ? addResolverExtensions(newWebpackConfig, resolverExts, aliases)
     : newWebpackConfig
 }
 
@@ -39,7 +41,7 @@ export function addModuleRule(webpackConfig, ruleOrRules) {
   return newWebpackConfig
 }
 
-export function addResolverExtensions(webpackConfig, extOrExts) {
+export function addResolverExtensions(webpackConfig, extOrExts, alias) {
   const isManyExtensions = _.isArray(extOrExts)
   const extensions = isManyExtensions ? extOrExts : [extOrExts]
 
@@ -47,6 +49,7 @@ export function addResolverExtensions(webpackConfig, extOrExts) {
     return Object.assign({}, webpackConfig, {
       resolve: {
         extensions,
+        alias,
       },
     })
   }
