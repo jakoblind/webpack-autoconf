@@ -12,7 +12,6 @@ export const baseWebpackImports = [
 ];
 
 export const packageJson = {
-  // "name": "empty-project-react-less-png-production-mode",
   version: '1.0.0',
   description: '',
   main: 'index.js',
@@ -22,9 +21,6 @@ export const packageJson = {
   scripts: {
     clean: 'rm dist/bundle.js',
   },
-  // "devDependencies": {
-  //    "react": "^16.4.1",
-  // }
 };
 
 export const indexHtml = (bundleFilename = 'bundle.js') => `<!DOCTYPE html>
