@@ -366,11 +366,9 @@ ${stylus}
       },
       devDependencies: ['webpack', 'webpack-cli'],
       files: configItems => {
-        const isReact = _.includes(configItems, 'React')
-        const isVue = _.includes(configItems, 'Vue')
         const isTypescript = _.includes(configItems, 'Typescript')
         const extraImports = getStyleImports(configItems)
-        if (!isTypescript && !isReact && !isVue) {
+        if (!isTypescript) {
           return {
             'src/index.js': emptyIndexJs(extraImports),
             'dist/index.html': indexHtml(),
