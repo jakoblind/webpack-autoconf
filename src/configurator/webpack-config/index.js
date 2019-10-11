@@ -36,6 +36,33 @@ function getStyleImports(configItems) {
     isStylus ? [`import "./styles.styl";`] : []
   )
 }
+
+function getStyleTags(configItems) {
+  const isCss = _.includes(configItems, 'CSS')
+  const isLess = _.includes(configItems, 'Less')
+  const isSass = _.includes(configItems, 'Sass')
+  const isStylus = _.includes(configItems, 'stylus')
+  const cssStyle = `<style>
+${css}
+</style>`
+  const lessStyle = `<style lang="less">
+${less}
+</style>`
+  const sassStyle = `<style lang="scss">
+${scss}
+</style>`
+  const stylusStyle = `<style lang="styl">
+${stylus}
+</style>`
+  return _.concat(
+    [],
+    isCss ? cssStyle : [],
+    isSass ? sassStyle : [],
+    isLess ? lessStyle : [],
+    isStylus ? stylusStyle : []
+  )
+}
+
 export default (() => {
   const features = {
     React: {
@@ -71,7 +98,11 @@ export default (() => {
     },
     Svelte: {
       group: 'Main library',
-      devDependencies: configItems => ['svelte', 'svelte-loader'],
+      devDependencies: configItems => [
+        'svelte',
+        'svelte-loader',
+        'svelte-preprocess',
+      ],
       webpack: webpackConfig => {
         const webpackConfigWithRule = assignModuleRuleAndResolver(
           webpackConfig,
@@ -79,6 +110,9 @@ export default (() => {
             {
               test: /\.svelte$/,
               loader: 'svelte-loader',
+              options: {
+                preprocess: `CODE: require('svelte-preprocess')({})`,
+              },
             },
           ],
           ['.mjs', '.js', '.svelte']
@@ -86,9 +120,10 @@ export default (() => {
         return webpackConfigWithRule
       },
       files: configItems => {
+        const styling = getStyleTags(configItems)
         return {
           'src/index.js': svelteIndexJs(),
-          'src/App.svelte': svelteAppSvelte(),
+          'src/App.svelte': svelteAppSvelte(_.join(styling, '\n\n')),
           'dist/index.html': indexHtml(),
         }
       },
@@ -122,29 +157,8 @@ export default (() => {
       files: configItems => {
         const isTypescript = _.includes(configItems, 'Typescript')
         const indexFilename = isTypescript ? 'src/index.ts' : 'src/index.js'
-        const isCss = _.includes(configItems, 'CSS')
-        const isLess = _.includes(configItems, 'Less')
-        const isSass = _.includes(configItems, 'Sass')
-        const isStylus = _.includes(configItems, 'stylus')
-        const cssStyle = `<style>
-${css}
-</style>`
-        const lessStyle = `<style lang="less">
-${less}
-</style>`
-        const sassStyle = `<style lang="scss">
-${scss}
-</style>`
-        const stylusStyle = `<style lang="styl">
-${stylus}
-</style>`
-        const styling = _.concat(
-          [],
-          isCss ? cssStyle : [],
-          isSass ? sassStyle : [],
-          isLess ? lessStyle : [],
-          isStylus ? stylusStyle : []
-        )
+
+        const styling = getStyleTags(configItems)
 
         return _.assign(
           {
