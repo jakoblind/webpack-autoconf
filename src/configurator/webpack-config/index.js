@@ -6,6 +6,8 @@ import {
   reactAppTsx,
 } from '../../templates/react/index'
 
+import { svelteIndexJs, svelteAppSvelte } from '../../templates/svelte/index'
+
 import {
   addPlugin,
   assignModuleRuleAndResolver,
@@ -64,6 +66,30 @@ export default (() => {
             'src/index.js': reactIndexJs(extraImports),
             'dist/index.html': indexHtml(),
           }
+        }
+      },
+    },
+    Svelte: {
+      group: 'Main library',
+      devDependencies: configItems => ['svelte', 'svelte-loader'],
+      webpack: webpackConfig => {
+        const webpackConfigWithRule = assignModuleRuleAndResolver(
+          webpackConfig,
+          [
+            {
+              test: /\.svelte$/,
+              loader: 'svelte-loader',
+            },
+          ],
+          ['.mjs', '.js', '.svelte']
+        )
+        return webpackConfigWithRule
+      },
+      files: configItems => {
+        return {
+          'src/index.js': svelteIndexJs(),
+          'src/App.svelte': svelteAppSvelte(),
+          'dist/index.html': indexHtml(),
         }
       },
     },
