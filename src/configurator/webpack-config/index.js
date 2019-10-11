@@ -50,7 +50,7 @@ export default (() => {
       },
       files: configItems => {
         const isTypescript = _.includes(configItems, 'Typescript')
-        const isHotReact = _.includes(configItems, 'React hot loader') // Bug fix: Should check on configItems
+        const isHotReact = _.includes(configItems, 'React hot loader')
         const extraImports = getStyleImports(configItems)
         if (isTypescript) {
           return {
