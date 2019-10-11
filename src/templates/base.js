@@ -123,3 +123,20 @@ ${
 Made with [createapp.dev](https://createapp.dev/)
 
 `;
+
+export const gitignore = () => `
+.cache/
+coverage/
+dist/
+node_modules/
+*.log
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+`;
