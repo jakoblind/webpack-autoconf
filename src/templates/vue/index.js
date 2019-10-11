@@ -10,9 +10,9 @@ new Vue({
 });`
 export const vueIndexAppVue = styling => `
 <template>
-  <div>
+  <h1>
     {{name}}
-  </div>
+  </h1>
 </template>
 
 <script lang="ts">
