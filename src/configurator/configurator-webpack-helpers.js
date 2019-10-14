@@ -15,9 +15,8 @@ export function assignModuleRuleAndResolver(
   webpackConfig,
   rules,
   resolverExts,
-  aliases = {}
+  aliases
 ) {
-  // console.log({ webpackConfig, rules, resolverExts })
   const newWebpackConfig = addModuleRule(webpackConfig, rules)
   return resolverExts
     ? addResolverExtensions(newWebpackConfig, resolverExts, aliases)
@@ -49,7 +48,7 @@ export function addResolverExtensions(webpackConfig, extOrExts, alias) {
     return Object.assign({}, webpackConfig, {
       resolve: {
         extensions,
-        alias,
+        ...(alias && Object.keys(alias).length ? { alias } : {}),
       },
     })
   }
