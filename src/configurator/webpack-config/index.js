@@ -310,11 +310,7 @@ ${stylus}
     'React hot loader': {
       group: 'React',
       babel: (babelConfig, configItems) => {
-        if (
-          _.includes(configItems, 'React hot loader') &&
-          !_.includes(configItems, 'Babel')
-        )
-          return {} // We don't need babelrc for typescript
+        if (!_.includes(configItems, 'Babel')) return {} // We don't need babelrc for typescript
         return Object.assign({}, babelConfig, {
           plugins: ['react-hot-loader/babel'],
         })

@@ -48,7 +48,7 @@ export function addResolverExtensions(webpackConfig, extOrExts, alias) {
     return Object.assign({}, webpackConfig, {
       resolve: {
         extensions,
-        ...(alias && Object.keys(alias).length ? { alias } : {}),
+        ...(_.isEmpty(alias) ? {} : { alias }),
       },
     })
   }
