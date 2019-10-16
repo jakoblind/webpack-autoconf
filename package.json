@@ -85,7 +85,7 @@
     "src/**/*.{js,jsx,ts,tsx}": [
       "eslint --fix",
       "prettier —write",
-      "jest test",
+      "npm test",
       "git add"
     ]
   }
