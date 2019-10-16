@@ -391,9 +391,6 @@ function Configurator(props) {
   if (!isReact) {
     delete showFeatures['React hot loader']
   }
-  if (isReact && isTypescript) {
-    delete showFeatures['React hot loader']
-  }
 
   if (isTypescript) {
     delete showFeatures['ESLint']

@@ -3,6 +3,7 @@ import {
   reactIndexJs,
   reactIndexTsx,
   reactAppJs,
+  reactAppTsx,
 } from '../../templates/react/index'
 
 import {
@@ -53,7 +54,8 @@ export default (() => {
         const extraImports = getStyleImports(configItems)
         if (isTypescript) {
           return {
-            'src/index.tsx': reactIndexTsx(extraImports),
+            'src/app.tsx': reactAppTsx(isHotReact),
+            'src/index.tsx': reactIndexTsx(extraImports, isHotReact),
             'dist/index.html': indexHtml(),
           }
         } else {
@@ -137,11 +139,12 @@ ${stylus}
             _.includes(configItems, 'React') ? '@babel/preset-react' : []
           ),
         }),
-      devDependencies: configItems => [
-        'babel-loader',
-        '@babel/core',
-        '@babel/preset-env',
-      ],
+      devDependencies: configItems => {
+        const devDepList = ['babel-loader', '@babel/core', '@babel/preset-env']
+        if (_.includes(configItems, 'React hot loader'))
+          devDepList.push('@hot-loader/react-dom')
+        return devDepList
+      },
       webpack: (webpackConfig, configItems) =>
         assignModuleRuleAndResolver(
           webpackConfig,
@@ -152,17 +155,25 @@ ${stylus}
               exclude: /node_modules/,
             },
           ],
-          _.includes(configItems, 'React') ? ['.js', '.jsx'] : null
+          _.includes(configItems, 'React') ? ['.js', '.jsx'] : null,
+          _.includes(configItems, 'React hot loader')
+            ? { 'react-dom': '@hot-loader/react-dom' }
+            : {}
         ),
     },
     Typescript: {
       group: 'Transpiler',
-      devDependencies: configItems => ['typescript', 'ts-loader'],
+      devDependencies: configItems => {
+        const devDepList = ['typescript', 'awesome-typescript-loader']
+        if (_.includes(configItems, 'React hot loader'))
+          devDepList.push('@hot-loader/react-dom')
+        return devDepList
+      },
       webpack: (webpackConfig, configItems) => {
         const isVue = _.includes(configItems, 'Vue')
         const typescriptModule = {
-          test: /\.(ts|tsx)?$/,
-          loader: 'ts-loader',
+          test: /\.ts(x)?$/,
+          use: ['awesome-typescript-loader'],
           exclude: /node_modules/,
         }
         if (isVue) {
@@ -170,11 +181,17 @@ ${stylus}
             appendTsSuffixTo: [/\.vue$/],
           }
         }
-        return assignModuleRuleAndResolver(webpackConfig, typescriptModule, [
-          '.tsx',
-          '.ts',
-          '.js',
-        ])
+        const aliases = {}
+        const isHot = _.includes(configItems, 'React hot loader')
+        if (isHot) {
+          aliases['react-dom'] = '@hot-loader/react-dom'
+        }
+        return assignModuleRuleAndResolver(
+          webpackConfig,
+          typescriptModule,
+          ['.tsx', '.ts', '.js'],
+          aliases
+        )
       },
       files: configItems => {
         const isReact = _.includes(configItems, 'React')
@@ -292,10 +309,12 @@ ${stylus}
     },
     'React hot loader': {
       group: 'React',
-      babel: babelConfig =>
-        Object.assign({}, babelConfig, {
+      babel: (babelConfig, configItems) => {
+        if (!_.includes(configItems, 'Babel')) return {} // We don't need babelrc for typescript
+        return Object.assign({}, babelConfig, {
           plugins: ['react-hot-loader/babel'],
-        }),
+        })
+      },
       dependencies: configItems => ['react-hot-loader'],
       devDependencies: configItems => ['webpack-dev-server'],
       webpack: webpackConfig =>

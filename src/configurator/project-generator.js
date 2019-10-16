@@ -62,6 +62,7 @@ const generateProject = (features, name, getNodeVersionPromise) => {
 export function generateParcelProject(features, name, getNodeVersionPromise) {
   const isBabel = _.includes(features, 'Babel')
   const isReact = _.includes(features, 'React')
+  const isTypescript = _.includes(features, 'Typescript')
   const newBabelConfig = createBabelConfig(features)
   const additionalFilesMap = createAdditionalFilesMap(parcelConfig, features)
   const projectName = name || getDefaultProjectName('empty-project', features)
