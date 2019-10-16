@@ -1,30 +1,30 @@
-import React, { useState, useEffect, useRef } from 'react'
-import _ from 'lodash'
-import styles from '../../styles.module.css'
-import Modal from 'react-modal'
-import { docsMap } from '../DocsViewer'
-import { gaSendEvent } from '../../googleAnalytics'
+import React, { useState, useEffect, useRef } from 'react';
+import _ from 'lodash';
+import Modal from 'react-modal';
+import styles from '../../styles.module.css';
+import { docsMap } from '../DocsViewer';
+import { gaSendEvent } from '../../googleAnalytics';
 
 function trackHelpIconClick(eventAction) {
   gaSendEvent({
     eventCategory: 'Help Icon clicked',
     eventAction,
-  })
+  });
 }
 
 // eslint-disable-next-line no-unused-vars
 function FeedbackForm({ feature, children }) {
-  const [email, setEmail] = useState('')
-  const [comment, setComment] = useState('')
-  const [isSent, setIsSent] = useState(false)
+  const [email, setEmail] = useState('');
+  const [comment, setComment] = useState('');
+  const [isSent, setIsSent] = useState(false);
   const submit = e => {
-    e.preventDefault()
+    e.preventDefault();
     fetch(`https://hooks.zapier.com/hooks/catch/1239764/oo73gyz/`, {
       method: 'POST',
       body: JSON.stringify({ email, comment, key: feature }),
-    }).then(() => setIsSent(true))
-  }
-  const thankYouMessage = <p>Thank you for your input!</p>
+    }).then(() => setIsSent(true));
+  };
+  const thankYouMessage = <p>Thank you for your input!</p>;
   const form = (
     <>
       {children}
@@ -52,22 +52,22 @@ function FeedbackForm({ feature, children }) {
         <br />
       </form>
     </>
-  )
-  return <>{isSent ? thankYouMessage : form}</>
+  );
+  return <>{isSent ? thankYouMessage : form}</>;
 }
 
 function FeatureHelp({ featureName, selectedBuildTool }) {
-  const [modalOpen, setModalOpen] = useState(false)
-  const helpText = docsMap(selectedBuildTool)[featureName]
+  const [modalOpen, setModalOpen] = useState(false);
+  const helpText = docsMap(selectedBuildTool)[featureName];
   if (!helpText) {
-    return null
+    return null;
   }
   return (
     <>
       <button
         onClick={() => {
-          trackHelpIconClick(featureName)
-          setModalOpen(true)
+          trackHelpIconClick(featureName);
+          setModalOpen(true);
         }}
         className={styles.helpCircle}
       >
@@ -91,7 +91,7 @@ function FeatureHelp({ featureName, selectedBuildTool }) {
         {helpText}
       </Modal>
     </>
-  )
+  );
 }
 const Feature = ({
   feature,
@@ -120,13 +120,13 @@ const Feature = ({
     </label>
     <FeatureHelp featureName={feature} selectedBuildTool={selectedBuildTool} />
   </>
-)
+);
 function usePrevious(value) {
-  const ref = useRef()
+  const ref = useRef();
   useEffect(() => {
-    ref.current = value
-  })
-  return ref.current
+    ref.current = value;
+  });
+  return ref.current;
 }
 
 function FeatureGroup({
@@ -138,10 +138,8 @@ function FeatureGroup({
   onMouseLeave,
   selectedBuildTool,
 }) {
-  const [expanded, setExpanded] = useState(
-    group === 'Main library' ? true : false
-  )
-  const prevSelected = usePrevious(selected)
+  const [expanded, setExpanded] = useState(group === 'Main library');
+  const prevSelected = usePrevious(selected);
   useEffect(() => {
     const anyChanged = _.reduce(
       featureList,
@@ -149,14 +147,14 @@ function FeatureGroup({
         return (
           result ||
           selected[feature] !== (prevSelected && prevSelected[feature])
-        )
+        );
       },
       false
-    )
+    );
     if (anyChanged) {
-      setExpanded(true)
+      setExpanded(true);
     }
-  }, [selected])
+  }, [selected]);
 
   return (
     <div className={styles.featureGroup}>
@@ -182,7 +180,7 @@ function FeatureGroup({
         </div>
       ) : null}
     </div>
-  )
+  );
 }
 
 export default class Features extends React.Component {
@@ -194,11 +192,11 @@ export default class Features extends React.Component {
       onMouseEnter,
       onMouseLeave,
       selectedBuildTool,
-    } = this.props
+    } = this.props;
     const groupedFeatures = _.chain(features)
-      .mapValues((v, k, o) => Object.assign({}, v, { feature: k }))
+      .mapValues((v, k, o) => ({ ...v, feature: k }))
       .groupBy('group')
-      .value()
+      .value();
 
     return (
       <div className={styles.features} id="features">
@@ -215,7 +213,7 @@ export default class Features extends React.Component {
           />
         ))}
       </div>
-    )
+    );
   }
 }
 
@@ -233,18 +231,19 @@ function enforceEitherReactOrVue(
     return {
       ...allFeatureStates,
       React: !setToSelected,
-    }
+    };
     // deselect vue if user selects react
-  } else if (affectedFeature === 'React') {
+  }
+  if (affectedFeature === 'React') {
     if (setToSelected) {
       return {
         ...allFeatureStates,
         Vue: !setToSelected,
-      }
+      };
     }
   }
 
-  return allFeatureStates
+  return allFeatureStates;
 }
 
 function addOrRemoveReactHotLoader(
@@ -252,26 +251,26 @@ function addOrRemoveReactHotLoader(
   affectedFeature,
   setToSelected
 ) {
-  let setReactHotLoader
+  let setReactHotLoader;
 
   if (affectedFeature === 'Vue' && setToSelected) {
-    setReactHotLoader = false
+    setReactHotLoader = false;
   }
 
   if (affectedFeature === 'React') {
     if (setToSelected) {
-      setReactHotLoader = true
+      setReactHotLoader = true;
     } else {
-      setReactHotLoader = false
+      setReactHotLoader = false;
     }
   }
   if (setReactHotLoader === undefined) {
-    return allFeatureStates
+    return allFeatureStates;
   }
   return {
     ...allFeatureStates,
     'React hot loader': setReactHotLoader,
-  }
+  };
 }
 
 function stopIfNotBabelOrTypescriptForReact(
@@ -283,20 +282,20 @@ function stopIfNotBabelOrTypescriptForReact(
   if (
     affectedFeature === 'Babel' &&
     !setToSelected &&
-    allFeatureStates['React'] &&
-    !allFeatureStates['Typescript']
+    allFeatureStates.React &&
+    !allFeatureStates.Typescript
   ) {
-    return true
+    return true;
   }
   if (
     affectedFeature === 'Typescript' &&
     !setToSelected &&
-    allFeatureStates['React'] &&
-    !allFeatureStates['Babel']
+    allFeatureStates.React &&
+    !allFeatureStates.Babel
   ) {
-    return true
+    return true;
   }
-  return false
+  return false;
   //
 }
 
@@ -305,12 +304,12 @@ function removeEslintIfTypscript(
   affectedFeature,
   setToSelected
 ) {
-  const toTypescript = affectedFeature === 'Typescript' && setToSelected
+  const toTypescript = affectedFeature === 'Typescript' && setToSelected;
 
   return {
     ...allFeatureStates,
-    ESLint: toTypescript ? false : allFeatureStates['ESLint'],
-  }
+    ESLint: toTypescript ? false : allFeatureStates.ESLint,
+  };
 }
 
 function addCssIfPostCSS(allFeatureStates, affectedFeature, setToSelected) {
@@ -319,18 +318,17 @@ function addCssIfPostCSS(allFeatureStates, affectedFeature, setToSelected) {
     CSS:
       affectedFeature === 'PostCSS' && setToSelected
         ? true
-        : allFeatureStates['CSS'],
-  }
+        : allFeatureStates.CSS,
+  };
 }
 
 function addBabelIfReact(allFeatureStates, affectedFeature, setToSelected) {
-  const forceBabel =
-    allFeatureStates['React'] && !allFeatureStates['Typescript']
+  const forceBabel = allFeatureStates.React && !allFeatureStates.Typescript;
 
   return {
     ...allFeatureStates,
-    Babel: forceBabel || allFeatureStates['Babel'],
-  }
+    Babel: forceBabel || allFeatureStates.Babel,
+  };
 }
 
 // these are all possible selection rules.
@@ -349,12 +347,12 @@ export const selectionRules = {
     addCssIfPostCSS,
     removeEslintIfTypscript,
   },
-}
+};
 // eslint-disable-next-line
 const logFeaturCelickToGa = (feature, selected) => {
-  //const eventAction = selected ? 'select' : 'deselect'
-  /*window.gtag('event', eventAction, {
+  // const eventAction = selected ? 'select' : 'deselect'
+  /* window.gtag('event', eventAction, {
     event_category: 'features',
     event_label: feature,
-  })*/
-}
+  }) */
+};

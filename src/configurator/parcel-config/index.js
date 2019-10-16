@@ -1,26 +1,26 @@
-import _ from 'lodash'
+import _ from 'lodash';
 
-import { css, scss, less, stylus } from '../../templates/styling'
-import { reactIndexJs, reactIndexTsx } from '../../templates/react/index'
-import { indexHtml } from '../../templates/base'
-import { emptyIndexJs } from '../../templates/empty/index'
-import { tsconfig, tsconfigReact } from '../../templates/ts'
-import { vueIndexAppVue, vueIndexTs, vueShimType } from '../../templates/vue'
+import { css, scss, less, stylus } from '../../templates/styling';
+import { reactIndexJs, reactIndexTsx } from '../../templates/react/index';
+import { indexHtml } from '../../templates/base';
+import { emptyIndexJs } from '../../templates/empty/index';
+import { tsconfig, tsconfigReact } from '../../templates/ts';
+import { vueIndexAppVue, vueIndexTs, vueShimType } from '../../templates/vue';
 
-import lintingRules from '../common-config/linting'
+import lintingRules from '../common-config/linting';
 
 function getStyleImports(configItems) {
-  const isCss = _.includes(configItems, 'CSS')
-  const isSass = _.includes(configItems, 'Sass')
-  const isLess = _.includes(configItems, 'Less')
-  const isStylus = _.includes(configItems, 'stylus')
+  const isCss = _.includes(configItems, 'CSS');
+  const isSass = _.includes(configItems, 'Sass');
+  const isLess = _.includes(configItems, 'Less');
+  const isStylus = _.includes(configItems, 'stylus');
   return _.concat(
     [],
     isCss ? [`import "./styles.css";`] : [],
     isSass ? [`import "./styles.scss";`] : [],
     isLess ? [`import "./styles.less";`] : [],
     isStylus ? [`import "./styles.styl";`] : []
-  )
+  );
 }
 export default (() => {
   const features = {
@@ -28,58 +28,57 @@ export default (() => {
       group: 'Main library',
       dependencies: configItems => ['react', 'react-dom'],
       devDependencies: configItems => {
-        const isTypescript = _.includes(configItems, 'Typescript')
+        const isTypescript = _.includes(configItems, 'Typescript');
         return _.concat(
           [],
           isTypescript ? ['@types/react', '@types/react-dom'] : []
-        )
+        );
       },
       files: configItems => {
-        const isTypescript = _.includes(configItems, 'Typescript')
-        const extraImports = getStyleImports(configItems)
+        const isTypescript = _.includes(configItems, 'Typescript');
+        const extraImports = getStyleImports(configItems);
 
         if (isTypescript) {
           return {
             'src/index.tsx': reactIndexTsx(extraImports),
             'src/index.html': indexHtml('index.tsx'),
-          }
-        } else {
-          return {
-            'src/index.js': reactIndexJs(extraImports),
-            'src/index.html': indexHtml('index.js'),
-          }
+          };
         }
+        return {
+          'src/index.js': reactIndexJs(extraImports),
+          'src/index.html': indexHtml('index.js'),
+        };
       },
     },
     Vue: {
       group: 'Main library',
       dependencies: configItems => ['vue'],
       files: configItems => {
-        const isTypescript = _.includes(configItems, 'Typescript')
-        const indexExtension = isTypescript ? 'ts' : 'js'
-        const isCss = _.includes(configItems, 'CSS')
-        const isLess = _.includes(configItems, 'Less')
-        const isSass = _.includes(configItems, 'Sass')
-        const isStylus = _.includes(configItems, 'stylus')
+        const isTypescript = _.includes(configItems, 'Typescript');
+        const indexExtension = isTypescript ? 'ts' : 'js';
+        const isCss = _.includes(configItems, 'CSS');
+        const isLess = _.includes(configItems, 'Less');
+        const isSass = _.includes(configItems, 'Sass');
+        const isStylus = _.includes(configItems, 'stylus');
         const cssStyle = `<style>
 ${css}
-</style>`
+</style>`;
         const lessStyle = `<style lang="less">
 ${less}
-</style>`
+</style>`;
         const sassStyle = `<style lang="scss">
 ${scss}
-</style>`
+</style>`;
         const stylusStyle = `<style lang="styl">
 ${stylus}
-</style>`
+</style>`;
         const styling = _.concat(
           [],
           isCss ? cssStyle : [],
           isSass ? sassStyle : [],
           isLess ? lessStyle : [],
           isStylus ? stylusStyle : []
-        )
+        );
 
         return _.assign(
           {
@@ -88,19 +87,19 @@ ${stylus}
             [`src/index.${indexExtension}`]: vueIndexTs(),
           },
           isTypescript ? { 'vue-shim.d.ts': vueShimType } : {}
-        )
+        );
       },
     },
 
     Babel: {
       group: 'Transpiler',
-      babel: (babelConfig, configItems) =>
-        Object.assign({}, babelConfig, {
-          presets: _.concat(
-            [['@babel/preset-env', { modules: false }]],
-            _.includes(configItems, 'React') ? '@babel/preset-react' : []
-          ),
-        }),
+      babel: (babelConfig, configItems) => ({
+        ...babelConfig,
+        presets: _.concat(
+          [['@babel/preset-env', { modules: false }]],
+          _.includes(configItems, 'React') ? '@babel/preset-react' : []
+        ),
+      }),
       devDependencies: configItems =>
         _.concat(
           ['@babel/core', '@babel/preset-env'],
@@ -110,20 +109,20 @@ ${stylus}
     Typescript: {
       group: 'Transpiler',
       files: configItems => {
-        const isReact = _.includes(configItems, 'React')
-        const isVue = _.includes(configItems, 'Vue')
+        const isReact = _.includes(configItems, 'React');
+        const isVue = _.includes(configItems, 'Vue');
 
         const configFiles = isReact
           ? { 'tsconfig.json': tsconfigReact }
-          : { 'tsconfig.json': tsconfig }
+          : { 'tsconfig.json': tsconfig };
         const sourceFiles =
           !isReact && !isVue
             ? {
                 'src/index.html': indexHtml('index.ts'),
                 'src/index.ts': emptyIndexJs(),
               }
-            : {}
-        return _.assign(configFiles, sourceFiles)
+            : {};
+        return _.assign(configFiles, sourceFiles);
       },
     },
     CSS: {
@@ -132,7 +131,7 @@ ${stylus}
     },
     Sass: {
       group: 'Styling',
-      //devDependencies: configItems => ['sass'],//ToDO is thiss needed?
+      // devDependencies: configItems => ['sass'],//ToDO is thiss needed?
       files: configItems => ({ 'src/styles.scss': scss }),
     },
     Less: {
@@ -145,26 +144,26 @@ ${stylus}
     },
     ESLint: lintingRules.eslint,
     Prettier: lintingRules.prettier,
-  }
+  };
   const featuresNoNulls = _.mapValues(features, item => {
     if (!item.babel) {
-      item.babel = _.identity
+      item.babel = _.identity;
     }
     if (!item.dependencies) {
-      item.dependencies = () => []
+      item.dependencies = () => [];
     }
     if (!item.devDependencies) {
-      item.devDependencies = () => []
+      item.devDependencies = () => [];
     }
     if (!item.packageJson) {
-      item.packageJson = {}
+      item.packageJson = {};
     }
     if (!item.files) {
-      item.files = () => {}
+      item.files = () => {};
     }
 
-    return item
-  })
+    return item;
+  });
   return {
     features: featuresNoNulls,
     base: {
@@ -176,18 +175,17 @@ ${stylus}
       },
       devDependencies: ['parcel-bundler'],
       files: configItems => {
-        const isReact = _.includes(configItems, 'React')
-        const isTypescript = _.includes(configItems, 'Typescript')
-        const isVue = _.includes(configItems, 'Vue')
+        const isReact = _.includes(configItems, 'React');
+        const isTypescript = _.includes(configItems, 'Typescript');
+        const isVue = _.includes(configItems, 'Vue');
         if (!isReact && !isTypescript && !isVue) {
           return {
             'src/index.js': emptyIndexJs(getStyleImports(configItems)),
             'src/index.html': indexHtml('index.js'),
-          }
-        } else {
-          return []
+          };
         }
+        return [];
       },
     },
-  }
-})()
+  };
+})();

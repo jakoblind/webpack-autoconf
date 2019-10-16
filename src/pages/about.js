@@ -1,6 +1,6 @@
-import React from 'react'
-import styles from '../styles.module.css'
-import Layout from '../components/layout'
+import React from 'react';
+import styles from '../styles.module.css';
+import Layout from '../components/layout';
 
 export default () => {
   return (
@@ -27,5 +27,5 @@ export default () => {
         </a>
       </div>
     </Layout>
-  )
-}
+  );
+};

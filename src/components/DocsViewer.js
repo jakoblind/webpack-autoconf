@@ -1,6 +1,7 @@
-import React from 'react'
-import _ from 'lodash'
-import styles from '../styles.module.css'
+import React from 'react';
+import _ from 'lodash';
+import styles from '../styles.module.css';
+
 const webpackDocsMap = {
   Vue: (
     <div>
@@ -213,7 +214,7 @@ const webpackDocsMap = {
       </p>
     </div>
   ),
-}
+};
 
 const parcelDocsMap = {
   Babel: (
@@ -255,7 +256,7 @@ const parcelDocsMap = {
       </p>
     </div>
   ),
-}
+};
 
 const commonDocsMap = {
   React: (
@@ -283,24 +284,27 @@ const commonDocsMap = {
       </p>
     </div>
   ),
-}
+};
 export const docsMap = buildTool =>
   buildTool === 'webpack'
     ? _.assign({}, webpackDocsMap, commonDocsMap)
-    : _.assign({}, parcelDocsMap, commonDocsMap)
+    : _.assign({}, parcelDocsMap, commonDocsMap);
 
 export default function DocsViewer({
   hoverFeature,
   selectedFeatures,
   buildTool,
 }) {
-  const hoverSelectedFeature = _.find(selectedFeatures, f => hoverFeature === f)
+  const hoverSelectedFeature = _.find(
+    selectedFeatures,
+    f => hoverFeature === f
+  );
 
-  const theDoc = docsMap(buildTool)[hoverSelectedFeature]
+  const theDoc = docsMap(buildTool)[hoverSelectedFeature];
 
   if (!hoverSelectedFeature || !theDoc) {
-    return null
+    return null;
   }
 
-  return <div className={styles.docsContainer}>{theDoc}</div>
+  return <div className={styles.docsContainer}>{theDoc}</div>;
 }

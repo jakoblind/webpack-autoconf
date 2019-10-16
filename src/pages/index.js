@@ -1,56 +1,55 @@
-import React, { useState, useReducer } from 'react'
-import _ from 'lodash'
-import styles from '../styles.module.css'
-import { Link } from 'gatsby'
-import Modal from 'react-modal'
-import jszip from 'jszip'
-import npmVersionPromise from '../fetch-npm-version'
-import Joyride from 'react-joyride'
+import React, { useState, useReducer } from 'react';
+import _ from 'lodash';
+import { Link } from 'gatsby';
+import Modal from 'react-modal';
+import jszip from 'jszip';
+import Joyride from 'react-joyride';
+import { saveAs } from 'file-saver';
+import styles from '../styles.module.css';
+import npmVersionPromise from '../fetch-npm-version';
 
-import { CourseSignupForm } from '../components/SignupForms'
+import { CourseSignupForm } from '../components/SignupForms';
 
 import {
   webpackConfig,
   parcelConfig,
-} from '../configurator/configurator-config'
+} from '../configurator/configurator-config';
 
 import {
   createBabelConfig,
   getNpmDependencies,
   getDefaultProjectName,
-} from '../configurator/configurator'
+} from '../configurator/configurator';
 
-import FileBrowser from '../components/FileBrowser'
+import FileBrowser from '../components/FileBrowser';
 
-import Layout from '../components/layout'
+import Layout from '../components/layout';
 import Features, {
   selectionRules as allSelectionRules,
-} from '../components/configurator/Features'
+} from '../components/configurator/Features';
 import generateProject, {
   generateParcelProject,
-} from '../configurator/project-generator'
+} from '../configurator/project-generator';
 
-import { saveAs } from 'file-saver'
-import onboardingHelp from '../onboardingHelp'
-import DocsViewer from '../components/DocsViewer'
-import { trackPageView, gaSendEvent } from '../googleAnalytics'
+import onboardingHelp from '../onboardingHelp';
+import DocsViewer from '../components/DocsViewer';
+import { trackPageView, gaSendEvent } from '../googleAnalytics';
 
 const StepByStepArea = ({ features, newBabelConfig, isReact, isWebpack }) => {
   const newNpmConfig = getNpmDependencies(
     isWebpack ? webpackConfig : parcelConfig,
     features
-  )
+  );
 
   const npmInstallCommand = _.isEmpty(newNpmConfig.dependencies)
     ? ''
-    : '\nnpm install ' + newNpmConfig.dependencies.join(' ')
-  const npmCommand =
-    'mkdir myapp\ncd myapp\nnpm init -y\nnpm install --save-dev ' +
-    newNpmConfig.devDependencies.join(' ') +
-    npmInstallCommand
-  const isTypescript = _.includes(features, 'Typescript')
+    : `\nnpm install ${newNpmConfig.dependencies.join(' ')}`;
+  const npmCommand = `mkdir myapp\ncd myapp\nnpm init -y\nnpm install --save-dev ${newNpmConfig.devDependencies.join(
+    ' '
+  )}${npmInstallCommand}`;
+  const isTypescript = _.includes(features, 'Typescript');
 
-  let babelStep = null
+  let babelStep = null;
   if (newBabelConfig) {
     babelStep = (
       <div>
@@ -59,9 +58,9 @@ const StepByStepArea = ({ features, newBabelConfig, isReact, isWebpack }) => {
           generated file
         </li>
       </div>
-    )
+    );
   } else if (isTypescript) {
-    //currently, you cannt use both typescript and babel.
+    // currently, you cannt use both typescript and babel.
     // if typescript is selected you must have a tsconf
     babelStep = (
       <div>
@@ -70,21 +69,21 @@ const StepByStepArea = ({ features, newBabelConfig, isReact, isWebpack }) => {
           generated file
         </li>
       </div>
-    )
+    );
   }
-  let webpackStep = null
+  let webpackStep = null;
   if (isWebpack) {
     webpackStep = (
       <li>
         Create <i>webpack.config.js</i> in the root and copy the contents of the
         generated file
       </li>
-    )
+    );
   }
 
-  let srcFoldersStep = (
+  const srcFoldersStep = (
     <li>Create folders src and dist and create source code files</li>
-  )
+  );
 
   return (
     <div className={styles.rightSection}>
@@ -94,7 +93,7 @@ const StepByStepArea = ({ features, newBabelConfig, isReact, isWebpack }) => {
           <li>Create an NPM project and install dependencies</li>
           <textarea
             aria-label="npm commands to install dependencies"
-            readOnly={true}
+            readOnly
             rows="6"
             cols="50"
             value={npmCommand}
@@ -107,8 +106,8 @@ const StepByStepArea = ({ features, newBabelConfig, isReact, isWebpack }) => {
         <Link to="/webpack-course">Need more detailed instructions?</Link>
       </div>
     </div>
-  )
-}
+  );
+};
 
 function Tabs({ selected, setSelected }) {
   return (
@@ -146,13 +145,13 @@ function Tabs({ selected, setSelected }) {
         </button>
       </nav>
     </div>
-  )
+  );
 }
 
-Modal.setAppElement('#___gatsby')
+Modal.setAppElement('#___gatsby');
 
 function DownloadButton({ url, onClick, filename }) {
-  const [modalOpen, setModalOpen] = useState(false)
+  const [modalOpen, setModalOpen] = useState(false);
   const customStyles = {
     content: {
       top: '50%',
@@ -162,15 +161,15 @@ function DownloadButton({ url, onClick, filename }) {
       marginRight: '-50%',
       transform: 'translate(-50%, -50%)',
     },
-  }
+  };
 
   return (
     <div>
       <button
         className={styles.btn}
         onClick={() => {
-          onClick()
-          setModalOpen(true)
+          onClick();
+          setModalOpen(true);
         }}
         id="download"
       >
@@ -213,7 +212,7 @@ function DownloadButton({ url, onClick, filename }) {
         <CourseSignupForm tags={917914} />
       </Modal>
     </div>
-  )
+  );
 }
 
 const selectionRules = {
@@ -227,7 +226,7 @@ const selectionRules = {
     allSelectionRules.additionalSelectFunctions.addCssIfPostCSS,
     allSelectionRules.additionalSelectFunctions.removeEslintIfTypscript,
   ],
-}
+};
 
 const parcelSelectionRules = {
   stopSelectFunctions: [
@@ -237,7 +236,7 @@ const parcelSelectionRules = {
     allSelectionRules.additionalSelectFunctions.enforceEitherReactOrVue,
     allSelectionRules.additionalSelectFunctions.addBabelIfReact,
   ],
-}
+};
 
 const buildConfigConfig = {
   webpack: {
@@ -266,38 +265,39 @@ const buildConfigConfig = {
       <br key={3} />,
     ],
   },
-}
+};
 
 const initialState = (selectedTab = 'webpack') => ({
   selectedTab,
   selectedFeatures: {},
-})
+});
 
 function reducer(state, action) {
   switch (action.type) {
     case 'setSelectedTab':
       const newAllPossibleFeatures = _.keys(
         buildConfigConfig[action.selectedTab].featureConfig.features
-      )
+      );
 
       const filteredFeatures = _.mapValues(
         state.selectedFeatures,
         (selected, feature) =>
           _.includes(newAllPossibleFeatures, feature) && selected
-      )
+      );
 
       return {
         ...state,
         selectedTab: action.selectedTab,
         selectedFeatures: filteredFeatures,
-      }
+      };
     case 'setSelectedFeatures':
-      const setToSelected = !state.selectedFeatures[action.feature]
-      //logFeatureClickToGa(feature, setToSelected)
+      const setToSelected = !state.selectedFeatures[action.feature];
+      // logFeatureClickToGa(feature, setToSelected)
 
-      const selectedFature = Object.assign({}, state.selectedFeatures, {
+      const selectedFature = {
+        ...state.selectedFeatures,
         [action.feature]: setToSelected,
-      })
+      };
 
       if (
         _.some(
@@ -308,7 +308,7 @@ function reducer(state, action) {
           )
         )
       ) {
-        return state
+        return state;
       }
 
       const newSelected = _.reduce(
@@ -317,11 +317,11 @@ function reducer(state, action) {
         (currentSelectionMap, fn) =>
           fn(currentSelectionMap, action.feature, setToSelected),
         selectedFature
-      )
-      return { ...state, selectedFeatures: newSelected }
+      );
+      return { ...state, selectedFeatures: newSelected };
 
     default:
-      throw new Error()
+      throw new Error();
   }
 }
 
@@ -330,36 +330,39 @@ function trackDownload(selectedTab, selectedFeatures) {
     eventCategory: 'Project download',
     eventAction: selectedTab,
     eventLabel: JSON.stringify(selectedFeatures),
-  })
+  });
 }
 
 function trackHelpClick(eventAction) {
   gaSendEvent({
     eventCategory: 'Help clicked',
     eventAction,
-  })
+  });
 }
 
 function Configurator(props) {
-  const [state, dispatch] = useReducer(reducer, initialState(props.selectedTab))
-  const [hoverFeature, setHoverFeature] = useState({})
+  const [state, dispatch] = useReducer(
+    reducer,
+    initialState(props.selectedTab)
+  );
+  const [hoverFeature, setHoverFeature] = useState({});
 
   const {
     featureConfig,
     projectGeneratorFunction,
     defaultFile,
-  } = buildConfigConfig[state.selectedTab]
+  } = buildConfigConfig[state.selectedTab];
 
   const selectedArray = _.chain(state.selectedFeatures)
     .map((v, k) => (v ? k : null))
     .reject(_.isNull)
-    .value()
+    .value();
 
   function onMouseEnterFeature(feature) {
-    setHoverFeature(feature)
+    setHoverFeature(feature);
   }
   function onMouseLeaveFeature() {
-    setHoverFeature(null)
+    setHoverFeature(null);
   }
 
   function downloadZip() {
@@ -368,32 +371,32 @@ function Configurator(props) {
       'empty-project',
       npmVersionPromise
     ).then(res => {
-      const zip = new jszip()
+      const zip = new jszip();
       _.forEach(res, (content, file) => {
-        zip.file(file, content)
-      })
+        zip.file(file, content);
+      });
 
       zip.generateAsync({ type: 'blob' }).then(function(blob) {
-        saveAs(blob, 'empty-project.zip')
-      })
-    })
+        saveAs(blob, 'empty-project.zip');
+      });
+    });
   }
 
-  const newBabelConfig = createBabelConfig(selectedArray)
+  const newBabelConfig = createBabelConfig(selectedArray);
 
-  const isReact = _.includes(selectedArray, 'React')
-  const isTypescript = _.includes(selectedArray, 'Typescript')
+  const isReact = _.includes(selectedArray, 'React');
+  const isTypescript = _.includes(selectedArray, 'Typescript');
 
-  const projectname = getDefaultProjectName('empty-project', selectedArray)
+  const projectname = getDefaultProjectName('empty-project', selectedArray);
 
-  const showFeatures = _.clone(featureConfig.features)
+  const showFeatures = _.clone(featureConfig.features);
 
   if (!isReact) {
-    delete showFeatures['React hot loader']
+    delete showFeatures['React hot loader'];
   }
 
   if (isTypescript) {
-    delete showFeatures['ESLint']
+    delete showFeatures.ESLint;
   }
 
   return (
@@ -401,11 +404,11 @@ function Configurator(props) {
       <Tabs
         selected={state.selectedTab}
         setSelected={selectedTab => {
-          const newUrl = `/${selectedTab}`
-          trackPageView(newUrl)
-          window.history.replaceState(null, null, newUrl)
+          const newUrl = `/${selectedTab}`;
+          trackPageView(newUrl);
+          window.history.replaceState(null, null, newUrl);
 
-          dispatch({ type: 'setSelectedTab', selectedTab })
+          dispatch({ type: 'setSelectedTab', selectedTab });
         }}
       />
 
@@ -425,8 +428,8 @@ function Configurator(props) {
             <DownloadButton
               filename={`${projectname}.zip`}
               onClick={e => {
-                downloadZip()
-                trackDownload(state.selectedTab, selectedArray)
+                downloadZip();
+                trackDownload(state.selectedTab, selectedArray);
               }}
             />
           </div>
@@ -446,8 +449,8 @@ function Configurator(props) {
             <DownloadButton
               filename={`${projectname}.zip`}
               onClick={e => {
-                downloadZip()
-                trackDownload(state.selectedTab, selectedArray)
+                downloadZip();
+                trackDownload(state.selectedTab, selectedArray);
               }}
             />
           </div>
@@ -467,32 +470,32 @@ function Configurator(props) {
         />
       </div>
     </div>
-  )
+  );
 }
 
 export class App extends React.Component {
   joyrideCallback({ lifecycle, step: { target } }) {
     if (lifecycle === 'tooltip') {
-      trackHelpClick(target)
+      trackHelpClick(target);
     }
   }
 
   render() {
     const {
       pageContext: { selectedTab },
-    } = this.props
+    } = this.props;
 
     return (
       <Layout>
         <Joyride
           steps={onboardingHelp}
-          continuous={true}
+          continuous
           callback={this.joyrideCallback}
         />
         <Configurator selectedTab={selectedTab} />
       </Layout>
-    )
+    );
   }
 }
 
-export default App
+export default App;

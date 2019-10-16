@@ -1,36 +1,33 @@
-const JsDiff = require('diff')
+const JsDiff = require('diff');
 
 export function getDiffAsLineNumber(json1, json2, diffLines) {
   if (!json1 || !json2) {
-    return null
+    return null;
   }
 
-  let diff
+  let diff;
   if (diffLines) {
-    diff = JsDiff.diffLines(json1, json2)
+    diff = JsDiff.diffLines(json1, json2);
   } else {
-    diff = JsDiff.diffJson(json1, json2)
+    diff = JsDiff.diffJson(json1, json2);
   }
 
-  let highlightedLines = ''
-  let currentLineNumber = 0
+  let highlightedLines = '';
+  let currentLineNumber = 0;
   diff.forEach(part => {
     if (part.removed) {
-      return
+      return;
     }
     if (part.added) {
       if (highlightedLines !== '') {
-        highlightedLines = highlightedLines + ','
+        highlightedLines += ',';
       }
 
-      highlightedLines =
-        highlightedLines +
-        (currentLineNumber + 1) +
-        '-' +
-        (part.count + currentLineNumber)
+      highlightedLines = `${highlightedLines +
+        (currentLineNumber + 1)}-${part.count + currentLineNumber}`;
     }
-    currentLineNumber = currentLineNumber + part.count
-  })
+    currentLineNumber += part.count;
+  });
 
-  return highlightedLines
+  return highlightedLines;
 }

@@ -1,7 +1,7 @@
-import React from 'react'
-import styles from '../styles.module.css'
-import Layout from '../components/layout'
-import { GenericSignupForm } from '../components/SignupForms'
+import React from 'react';
+import styles from '../styles.module.css';
+import Layout from '../components/layout';
+import { GenericSignupForm } from '../components/SignupForms';
 
 export default () => {
   return (
@@ -17,5 +17,5 @@ export default () => {
         <GenericSignupForm />
       </div>
     </Layout>
-  )
-}
+  );
+};
