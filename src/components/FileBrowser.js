@@ -1,20 +1,20 @@
-import React from 'react'
-import _ from 'lodash'
+import React from 'react';
+import _ from 'lodash';
 
-import styles from '../styles.module.css'
-import '../vendor/prism-line-highlight.css'
-import Prism from 'prismjs'
-import memoizee from 'memoizee'
-import { getNpmDependencies } from '../configurator/configurator'
-import { getDiffAsLineNumber } from '../configurator/Diff'
-import npmVersionPromise from '../fetch-npm-version'
+import '../vendor/prism-line-highlight.css';
+import Prism from 'prismjs';
+import memoizee from 'memoizee';
+import styles from '../styles.module.css';
+import { getNpmDependencies } from '../configurator/configurator';
+import { getDiffAsLineNumber } from '../configurator/Diff';
+import npmVersionPromise from '../fetch-npm-version';
 
 // disable prettier for now.
 // import prettier from 'prettier/standalone'
 // const parserBabylon = require('prettier/parser-babylon')
 
-require('prismjs/themes/prism-tomorrow.css')
-require('../vendor/PrismLineHighlight')
+require('prismjs/themes/prism-tomorrow.css');
+require('../vendor/PrismLineHighlight');
 
 const FileList = ({ files, selectedFile, onSelectFile }) => {
   // sort with folders on top, and in alphabetic order
@@ -23,7 +23,7 @@ const FileList = ({ files, selectedFile, onSelectFile }) => {
     .groupBy(({ filename }) => _.includes(filename, '/'))
     .mapValues(group => _.sortBy(group, 'filename'))
     .reduce((all, value, key) => _.concat(value, all), [])
-    .value()
+    .value();
 
   // group adjacent files that are highlighted
   // so that we can highlight  more than one
@@ -32,19 +32,18 @@ const FileList = ({ files, selectedFile, onSelectFile }) => {
     sortedFiles,
     (result, { filename, highlightedFile }) => {
       // get last group in list.
-      const lastGroup = _.last(result)
+      const lastGroup = _.last(result);
       if (lastGroup && _.get(lastGroup, 'highlighted') === !!highlightedFile) {
-        lastGroup.files.push(filename)
-        return result
-      } else {
-        return _.concat(result, {
-          highlighted: !!highlightedFile,
-          files: [filename],
-        })
+        lastGroup.files.push(filename);
+        return result;
       }
+      return _.concat(result, {
+        highlighted: !!highlightedFile,
+        files: [filename],
+      });
     },
     []
-  )
+  );
 
   const filesElements = _.map(groupByHighlight, ({ highlighted, files }, i) => (
     <div className={highlighted ? styles.highlighted : null} key={i}>
@@ -58,29 +57,31 @@ const FileList = ({ files, selectedFile, onSelectFile }) => {
         </li>
       ))}
     </div>
-  ))
+  ));
 
   return (
     <div className={styles.files}>
       <ul>{filesElements}</ul>
     </div>
-  )
-}
+  );
+};
 
 class CodeBox extends React.Component {
   componentDidMount() {
-    Prism.highlightAll()
+    Prism.highlightAll();
   }
+
   componentDidUpdate(props) {
     if (
       props.code !== this.props.code ||
       props.highlightedLines !== this.props.highlightedLines
     ) {
-      Prism.highlightAll()
+      Prism.highlightAll();
     }
   }
+
   render() {
-    const { code, highlightedLines } = this.props
+    const { code, highlightedLines } = this.props;
 
     return (
       <div className={styles.codeBox}>
@@ -88,21 +89,22 @@ class CodeBox extends React.Component {
           <code className="language-javascript">{code}</code>
         </pre>
       </div>
-    )
+    );
   }
 }
 
-const filenameRegex = /.+\./i
-const extensionRegex = /\.[0-9a-z]+$/i
+const filenameRegex = /.+\./i;
+const extensionRegex = /\.[0-9a-z]+$/i;
 
 class FileBrowser extends React.Component {
   constructor(props) {
-    super(props)
+    super(props);
     this.state = {
       selectedFile: props.defaultSelection,
-    }
-    this.setSelectedFile = this.setSelectedFile.bind(this)
+    };
+    this.setSelectedFile = this.setSelectedFile.bind(this);
   }
+
   componentDidUpdate(prevProps) {
     if (this.props.fileContentMap !== prevProps.fileContentMap) {
       if (
@@ -114,29 +116,31 @@ class FileBrowser extends React.Component {
         // but different extension
         // for example if previous was index.js maybe new one is index.ts
 
-        const filename = this.state.selectedFile.match(filenameRegex)
+        const filename = this.state.selectedFile.match(filenameRegex);
         const newSelection = _.find(
           _.keys(this.props.fileContentMap),
           // we don't want to go from index.js to index.html
           file => _.startsWith(file, filename) && !_.endsWith(file, 'html')
-        )
+        );
         this.setState({
           selectedFile: newSelection || this.props.defaultSelection,
-        })
+        });
       }
     }
   }
+
   setSelectedFile(selectedFile) {
-    this.setState({ selectedFile })
+    this.setState({ selectedFile });
     if (selectedFile === 'package.json') {
-      this.props.onSelectPackageJson()
+      this.props.onSelectPackageJson();
     }
   }
-  render() {
-    const { fileContentMap } = this.props
-    const fileContent = _.get(fileContentMap, this.state.selectedFile, '')
 
-    const extension = this.state.selectedFile.match(extensionRegex)
+  render() {
+    const { fileContentMap } = this.props;
+    const fileContent = _.get(fileContentMap, this.state.selectedFile, '');
+
+    const extension = this.state.selectedFile.match(extensionRegex);
 
     return (
       <div className={styles.fileBrowser} id="file-browser">
@@ -151,7 +155,7 @@ class FileBrowser extends React.Component {
           highlightedLines={fileContent.highlightedLines}
         />
       </div>
-    )
+    );
   }
 }
 /*
@@ -164,54 +168,56 @@ class FileBrowser extends React.Component {
   the whole file should be highlighted
 */
 class FileBrowserTransformer extends React.Component {
-  getDiffAsLineNumberMemoized = memoizee(getDiffAsLineNumber)
+  getDiffAsLineNumberMemoized = memoizee(getDiffAsLineNumber);
+
   render() {
     const fileContentMap = _.mapValues(this.props.files, (content, name) => {
-      let highlightedLines
-      let highlightedFile = false
+      let highlightedLines;
+      let highlightedFile = false;
       // if the file didn't exist previously, highlight it all
       if (!content.previousContent) {
-        highlightedFile = true
-        const lines = content.currentContent.split(/\r\n|\r|\n/).length
-        highlightedLines = `1-${lines}`
+        highlightedFile = true;
+        const lines = content.currentContent.split(/\r\n|\r|\n/).length;
+        highlightedLines = `1-${lines}`;
       } else if (content.previousContent !== content.currentContent) {
-        //highlightedFile = true
+        // highlightedFile = true
         highlightedLines = this.getDiffAsLineNumberMemoized(
           content.previousContent,
           content.currentContent
-        )
+        );
       }
 
       return {
         content: content.currentContent,
         highlightedLines,
         highlightedFile,
-      }
-    })
+      };
+    });
     return (
       <FileBrowser
         onSelectPackageJson={this.props.onSelectPackageJson}
         fileContentMap={fileContentMap}
         defaultSelection={this.props.defaultSelection}
       />
-    )
+    );
   }
 }
 
 class FileBrowserContainer extends React.Component {
   constructor(props) {
-    super(props)
+    super(props);
 
     const projectFiles = this.props.projectGeneratorFunction(
       this.props.features,
       'empty-project'
-    )
+    );
 
     this.state = {
       projectFiles,
       projectFilesWithoutHighlightedFeature: projectFiles,
-    }
+    };
   }
+
   /**
      load all version of dependencies (and cache them) used on page load
      to get a quicker loading speed when we show them.
@@ -220,32 +226,35 @@ class FileBrowserContainer extends React.Component {
     const npmConfigAllFeatures = getNpmDependencies(
       this.props.featureConfig,
       _.keys(this.props.featureConfig.features)
-    )
+    );
     const allDependencies = _.concat(
       npmConfigAllFeatures.dependencies,
       npmConfigAllFeatures.devDependencies
-    )
-    _.forEach(allDependencies, dependency => npmVersionPromise(dependency))
+    );
+    _.forEach(allDependencies, dependency => npmVersionPromise(dependency));
   }
+
   componentDidUpdate(prevProps) {
     if (
       !_.isEqual(this.props.highlightFeature, prevProps.highlightFeature) ||
       !_.isEqual(this.props.features, prevProps.features) ||
       !_.isEqual(this.props.featureConfig, prevProps.featureConfig)
     ) {
-      this.setProjectFilesInState()
+      this.setProjectFilesInState();
     }
   }
+
   componentDidMount() {
     // fetch first without packagejson because package.json
     // is slow because we need to fetch versions.
-    this.setProjectFilesInState()
-    this.loadAllDependencyVersions()
+    this.setProjectFilesInState();
+    this.loadAllDependencyVersions();
   }
 
   getAllFeaturesExceptHighlighted = memoizee((features, highlightFeature) =>
     _.reject(features, f => f === highlightFeature)
-  )
+  );
+
   setProjectFilesInState = () => {
     this.props
       .projectGeneratorFunction(
@@ -254,18 +263,18 @@ class FileBrowserContainer extends React.Component {
         npmVersionPromise
       )
       .then(files => {
-        this.setState({ projectFiles: files })
+        this.setState({ projectFiles: files });
         if (!this.props.highlightFeature) {
           // beacuse if there is no highligthed, then the previous content is the same as current content
-          this.setState({ projectFilesWithoutHighlightedFeature: files })
+          this.setState({ projectFilesWithoutHighlightedFeature: files });
         }
-      })
+      });
 
     if (this.props.highlightFeature) {
       const featuresWithoutHighlighted = this.getAllFeaturesExceptHighlighted(
         this.props.features,
         this.props.highlightFeature
-      )
+      );
       this.props
         .projectGeneratorFunction(
           featuresWithoutHighlighted,
@@ -275,32 +284,35 @@ class FileBrowserContainer extends React.Component {
         .then(files => {
           this.setState({
             projectFilesWithoutHighlightedFeature: files,
-          })
-        })
+          });
+        });
     }
-  }
+  };
+
   render() {
-    const projectFiles = this.state.projectFiles
+    const { projectFiles } = this.state;
 
     const files = _.mapValues(projectFiles, (currentContent, file) => {
-      let previousContent
+      let previousContent;
       if (this.state.projectFilesWithoutHighlightedFeature[file]) {
-        previousContent = this.state.projectFilesWithoutHighlightedFeature[file]
+        previousContent = this.state.projectFilesWithoutHighlightedFeature[
+          file
+        ];
       }
 
       return {
         currentContent,
         previousContent,
-      }
-    })
+      };
+    });
     return (
       <FileBrowserTransformer
         onSelectPackageJson={() => this.setProjectFilesInState()}
         defaultSelection={this.props.defaultFile || 'webpack.config.js'}
         files={files}
       />
-    )
+    );
   }
 }
 
-export default FileBrowserContainer
+export default FileBrowserContainer;

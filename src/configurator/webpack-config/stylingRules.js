@@ -1,12 +1,18 @@
-import _ from 'lodash'
+import _ from 'lodash';
 
 import {
   addModuleRule,
   getStyleLoaderOrVueStyleLoader,
   getStyleLoaderDependencyIfNeeded,
-} from '../configurator-webpack-helpers'
+} from '../configurator-webpack-helpers';
 
-import { css, scss, less, stylus, postCssConfig } from '../../templates/styling'
+import {
+  css,
+  scss,
+  less,
+  stylus,
+  postCssConfig,
+} from '../../templates/styling';
 
 function cssRules() {
   return {
@@ -14,7 +20,7 @@ function cssRules() {
     devDependencies: configItems =>
       _.concat(['css-loader'], getStyleLoaderDependencyIfNeeded(configItems)),
     webpack: (webpackConfig, configItems) => {
-      const isPostCss = _.includes(configItems, 'PostCSS')
+      const isPostCss = _.includes(configItems, 'PostCSS');
       const cssLoader = isPostCss
         ? {
             loader: 'css-loader',
@@ -22,27 +28,27 @@ function cssRules() {
               importLoaders: 1,
             },
           }
-        : 'css-loader'
+        : 'css-loader';
       const rule = {
         test: /\.css$/,
         use: _.concat(
           [getStyleLoaderOrVueStyleLoader(configItems), cssLoader],
           isPostCss ? 'postcss-loader' : []
         ),
-      }
+      };
       if (_.includes(configItems, 'CSS Modules')) {
-        rule.exclude = /\.module\.css$/
+        rule.exclude = /\.module\.css$/;
       }
-      return addModuleRule(webpackConfig, rule)
+      return addModuleRule(webpackConfig, rule);
     },
     files: configItems => {
-      const isVue = _.includes(configItems, 'Vue')
+      const isVue = _.includes(configItems, 'Vue');
       if (isVue) {
-        return {}
+        return {};
       }
-      return { 'src/styles.css': css }
+      return { 'src/styles.css': css };
     },
-  }
+  };
 }
 
 function cssModulesRules() {
@@ -51,7 +57,7 @@ function cssModulesRules() {
     devDependencies: configItems =>
       _.concat(['css-loader'], getStyleLoaderDependencyIfNeeded(configItems)),
     webpack: (webpackConfig, configItems) => {
-      const isPostCss = _.includes(configItems, 'PostCSS')
+      const isPostCss = _.includes(configItems, 'PostCSS');
       const rule = {
         test: /\.css$/,
         use: _.concat(
@@ -67,13 +73,13 @@ function cssModulesRules() {
           ],
           isPostCss ? 'postcss-loader' : []
         ),
-      }
+      };
       if (_.includes(configItems, 'CSS')) {
-        rule.include = /\.module\.css$/
+        rule.include = /\.module\.css$/;
       }
-      return addModuleRule(webpackConfig, rule)
+      return addModuleRule(webpackConfig, rule);
     },
-  }
+  };
 }
 
 function sassRules() {
@@ -94,13 +100,13 @@ function sassRules() {
         ],
       }),
     files: configItems => {
-      const isVue = _.includes(configItems, 'Vue')
+      const isVue = _.includes(configItems, 'Vue');
       if (isVue) {
-        return {}
+        return {};
       }
-      return { 'src/styles.scss': scss }
+      return { 'src/styles.scss': scss };
     },
-  }
+  };
 }
 
 function lessRules() {
@@ -121,13 +127,13 @@ function lessRules() {
         ],
       }),
     files: configItems => {
-      const isVue = _.includes(configItems, 'Vue')
+      const isVue = _.includes(configItems, 'Vue');
       if (isVue) {
-        return {}
+        return {};
       }
-      return { 'src/styles.less': less }
+      return { 'src/styles.less': less };
     },
-  }
+  };
 }
 
 function stylusRules() {
@@ -148,13 +154,13 @@ function stylusRules() {
         ],
       }),
     files: configItems => {
-      const isVue = _.includes(configItems, 'Vue')
+      const isVue = _.includes(configItems, 'Vue');
       if (isVue) {
-        return {}
+        return {};
       }
-      return { 'src/styles.styl': stylus }
+      return { 'src/styles.styl': stylus };
     },
-  }
+  };
 }
 
 function postCssRules() {
@@ -162,9 +168,9 @@ function postCssRules() {
     group: 'Styling',
     devDependencies: configItems => ['postcss-loader', 'autoprefixer'],
     files: configItems => {
-      return { 'postcss.config.js': postCssConfig }
+      return { 'postcss.config.js': postCssConfig };
     },
-  }
+  };
 }
 
 export default {
@@ -174,4 +180,4 @@ export default {
   less: lessRules(),
   stylus: stylusRules(),
   postCss: postCssRules(),
-}
+};

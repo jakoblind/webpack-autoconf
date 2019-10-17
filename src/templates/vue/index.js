@@ -1,13 +1,13 @@
-import _ from 'lodash'
+import _ from 'lodash';
 
-const joinToString = list => _.reduce(list, (all, i) => all + i + '\n', '')
+const joinToString = list => _.reduce(list, (all, i) => `${all + i}\n`, '');
 export const vueIndexTs = (extraImports = []) => `import Vue from 'vue';
 import App from './App';
 ${joinToString(extraImports)}
 new Vue({
   el: '#app',
   render: h => h(App),
-});`
+});`;
 export const vueIndexAppVue = styling => `
 <template>
   <div>
@@ -28,7 +28,7 @@ export const vueIndexAppVue = styling => `
 </script>
 
 ${styling}
-`
+`;
 
 export const vueHelloWorldTS = `<template>
     <div>
@@ -62,7 +62,7 @@ export default Vue.extend({
     }
 });
 </script>
-`
+`;
 
 export const vueHelloWorldJs = `<template>
     <div>
@@ -96,11 +96,11 @@ export default Vue.extend({
     }
 });
 </script>
-`
+`;
 
 export const vueShimType = `
 declare module "*.vue" {
   import Vue from 'vue'
   export default Vue
 }
-`
+`;

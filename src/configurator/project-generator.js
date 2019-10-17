@@ -1,6 +1,6 @@
-import _ from 'lodash'
+import _ from 'lodash';
 
-import { readmeFile, readmeFileParcel } from '../templates/base'
+import { readmeFile, readmeFileParcel } from '../templates/base';
 
 import {
   createWebpackConfig,
@@ -8,9 +8,9 @@ import {
   getDefaultProjectName,
   getPackageJson,
   createAdditionalFilesMap,
-} from './configurator'
+} from './configurator';
 
-import { parcelConfig, webpackConfig } from './configurator-config'
+import { parcelConfig, webpackConfig } from './configurator-config';
 
 /*
   this function will call an external API to get version for node
@@ -20,18 +20,18 @@ import { parcelConfig, webpackConfig } from './configurator-config'
 
 */
 const generateProject = (features, name, getNodeVersionPromise) => {
-  const isBabel = _.includes(features, 'Babel')
-  const isReact = _.includes(features, 'React')
-  const isHotReact = _.includes(features, 'React hot loader')
-  const additionalFilesMap = createAdditionalFilesMap(webpackConfig, features)
-  const newWebpackConfig = createWebpackConfig(features)
-  const newBabelConfig = createBabelConfig(features)
-  const projectName = name || getDefaultProjectName('empty-project', features)
+  const isBabel = _.includes(features, 'Babel');
+  const isReact = _.includes(features, 'React');
+  const isHotReact = _.includes(features, 'React hot loader');
+  const additionalFilesMap = createAdditionalFilesMap(webpackConfig, features);
+  const newWebpackConfig = createWebpackConfig(features);
+  const newBabelConfig = createBabelConfig(features);
+  const projectName = name || getDefaultProjectName('empty-project', features);
 
   const maybeConfigBabel =
     newBabelConfig && (isReact || isBabel)
       ? { '.babelrc': newBabelConfig }
-      : null
+      : null;
 
   const fileMap = _.assign(
     {},
@@ -42,7 +42,7 @@ const generateProject = (features, name, getNodeVersionPromise) => {
     },
     additionalFilesMap,
     maybeConfigBabel
-  )
+  );
 
   if (getNodeVersionPromise) {
     return getPackageJson(
@@ -51,25 +51,24 @@ const generateProject = (features, name, getNodeVersionPromise) => {
       getNodeVersionPromise,
       features
     ).then(packageJson => {
-      fileMap['package.json'] = JSON.stringify(packageJson, null, 2)
-      return fileMap
-    })
-  } else {
-    return fileMap
+      fileMap['package.json'] = JSON.stringify(packageJson, null, 2);
+      return fileMap;
+    });
   }
-}
+  return fileMap;
+};
 
 export function generateParcelProject(features, name, getNodeVersionPromise) {
-  const isBabel = _.includes(features, 'Babel')
-  const isReact = _.includes(features, 'React')
-  const isTypescript = _.includes(features, 'Typescript')
-  const newBabelConfig = createBabelConfig(features)
-  const additionalFilesMap = createAdditionalFilesMap(parcelConfig, features)
-  const projectName = name || getDefaultProjectName('empty-project', features)
+  const isBabel = _.includes(features, 'Babel');
+  const isReact = _.includes(features, 'React');
+  const isTypescript = _.includes(features, 'Typescript');
+  const newBabelConfig = createBabelConfig(features);
+  const additionalFilesMap = createAdditionalFilesMap(parcelConfig, features);
+  const projectName = name || getDefaultProjectName('empty-project', features);
   const maybeConfigBabel =
     newBabelConfig && (isReact || isBabel)
       ? { '.babelrc': newBabelConfig }
-      : null
+      : null;
 
   const fileMap = _.assign(
     {},
@@ -78,7 +77,7 @@ export function generateParcelProject(features, name, getNodeVersionPromise) {
     },
     maybeConfigBabel,
     additionalFilesMap
-  )
+  );
 
   // TODO there is some duplicated code here. sorry
   if (getNodeVersionPromise) {
@@ -88,12 +87,11 @@ export function generateParcelProject(features, name, getNodeVersionPromise) {
       getNodeVersionPromise,
       features
     ).then(packageJson => {
-      fileMap['package.json'] = JSON.stringify(packageJson, null, 2)
-      return fileMap
-    })
-  } else {
-    return fileMap
+      fileMap['package.json'] = JSON.stringify(packageJson, null, 2);
+      return fileMap;
+    });
   }
+  return fileMap;
 }
 
-export default generateProject
+export default generateProject;

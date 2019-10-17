@@ -1,5 +1,5 @@
-import React from 'react'
-import { Link } from 'gatsby'
+import React from 'react';
+import { Link } from 'gatsby';
 
 const Header = ({ siteTitle }) => (
   <div>
@@ -17,6 +17,6 @@ const Header = ({ siteTitle }) => (
       </h1>
     </div>
   </div>
-)
+);
 
-export default Header
+export default Header;
