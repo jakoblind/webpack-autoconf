@@ -1,10 +1,6 @@
 import _ from 'lodash';
 
-<<<<<<< HEAD
-import { readmeFile, readmeFileParcel } from '../templates/base';
-=======
 import { readmeFile, readmeFileParcel, gitignore } from '../templates/base'
->>>>>>> fix(45): added gitignore to generated file;
 
 import {
   createWebpackConfig,
