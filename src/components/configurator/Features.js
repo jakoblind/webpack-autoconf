@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
 import _ from 'lodash';
-import Modal from 'react-modal';
+import Modal from '../Modal';
 import styles from '../../styles.module.css';
 import { docsMap } from '../DocsViewer';
 import { gaSendEvent } from '../../googleAnalytics';
