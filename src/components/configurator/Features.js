@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import PropTypes from 'prop-types';
 import _ from 'lodash';
 import Modal from 'react-modal';
 import styles from '../../styles.module.css';
@@ -56,6 +57,18 @@ function FeedbackForm({ feature, children }) {
   return <>{isSent ? thankYouMessage : form}</>;
 }
 
+FeedbackForm.propTypes = {
+  feature: PropTypes.string.isRequired,
+  children: PropTypes.oneOfType([
+    PropTypes.arrayOf(PropTypes.node),
+    PropTypes.node,
+  ]),
+};
+
+FeedbackForm.defaultProps = {
+  children: [],
+};
+
 function FeatureHelp({ featureName, selectedBuildTool }) {
   const [modalOpen, setModalOpen] = useState(false);
   const helpText = docsMap(selectedBuildTool)[featureName];
@@ -93,6 +106,12 @@ function FeatureHelp({ featureName, selectedBuildTool }) {
     </>
   );
 }
+
+FeatureHelp.propTypes = {
+  featureName: PropTypes.string.isRequired,
+  selectedBuildTool: PropTypes.string.isRequired,
+};
+
 const Feature = ({
   feature,
   selected,
@@ -121,6 +140,20 @@ const Feature = ({
     <FeatureHelp featureName={feature} selectedBuildTool={selectedBuildTool} />
   </>
 );
+
+Feature.propTypes = {
+  feature: PropTypes.string.isRequired,
+  selected: PropTypes.bool,
+  setSelected: PropTypes.func.isRequired,
+  onMouseEnter: PropTypes.func.isRequired,
+  onMouseLeave: PropTypes.func.isRequired,
+  selectedBuildTool: PropTypes.string.isRequired,
+};
+
+Feature.defaultProps = {
+  selected: false,
+};
+
 function usePrevious(value) {
   const ref = useRef();
   useEffect(() => {
@@ -183,6 +216,22 @@ function FeatureGroup({
   );
 }
 
+const packageJsonShape = PropTypes.shape({});
+
+FeatureGroup.propTypes = PropTypes.shape({
+  featureList: PropTypes.arrayOf(
+    PropTypes.shape({
+      feature: PropTypes.string.isRequired,
+      group: PropTypes.string.isRequired,
+      packageJson: packageJsonShape.isRequired,
+      webpackImports: PropTypes.arrayOf(PropTypes.any).isRequired,
+    }).isRequired
+  ).isRequired,
+  group: PropTypes.string.isRequired,
+  selected: packageJsonShape.isRequired,
+  selectedBuildTool: PropTypes.string.isRequired,
+}).isRequired;
+
 export default class Features extends React.Component {
   render() {
     const {
@@ -216,6 +265,18 @@ export default class Features extends React.Component {
     );
   }
 }
+
+const feautureShape = PropTypes.shape({
+  group: PropTypes.string.isRequired,
+  packageJson: packageJsonShape.isRequired,
+  webpackImports: PropTypes.arrayOf(PropTypes.any).isRequired,
+});
+
+Features.propTypes = PropTypes.shape({
+  features: PropTypes.objectOf(feautureShape).isRequired,
+  selected: packageJsonShape.isRequired,
+  selectedBuildTool: PropTypes.string.isRequired,
+}).isRequired;
 
 /*
   only possible to select one of Vue or React or Svelte. Needing both is an edge case
