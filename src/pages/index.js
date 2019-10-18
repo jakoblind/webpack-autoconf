@@ -1,4 +1,5 @@
 import React, { useState, useReducer } from 'react';
+import PropTypes from 'prop-types';
 import _ from 'lodash';
 import { Link } from 'gatsby';
 import Modal from 'react-modal';
@@ -109,6 +110,17 @@ const StepByStepArea = ({ features, newBabelConfig, isReact, isWebpack }) => {
   );
 };
 
+StepByStepArea.propTypes = {
+  features: PropTypes.arrayOf(PropTypes.string).isRequired,
+  newBabelConfig: PropTypes.string,
+  isReact: PropTypes.bool.isRequired,
+  isWebpack: PropTypes.bool.isRequired,
+};
+
+StepByStepArea.defaultProps = {
+  newBabelConfig: null, // createBabelConfig function returns null if babel is not selected
+};
+
 function Tabs({ selected, setSelected }) {
   return (
     <div className={styles.tabsContainer} id="tabs">
@@ -147,6 +159,11 @@ function Tabs({ selected, setSelected }) {
     </div>
   );
 }
+
+Tabs.propTypes = {
+  selected: PropTypes.string.isRequired,
+  setSelected: PropTypes.func.isRequired,
+};
 
 Modal.setAppElement('#___gatsby');
 
@@ -214,6 +231,16 @@ function DownloadButton({ url, onClick, filename }) {
     </div>
   );
 }
+
+DownloadButton.propTypes = {
+  url: PropTypes.string,
+  filename: PropTypes.string.isRequired,
+  onClick: PropTypes.func.isRequired,
+};
+
+DownloadButton.defaultProps = {
+  url: '',
+};
 
 const selectionRules = {
   stopSelectFunctions: [
@@ -345,7 +372,7 @@ function Configurator(props) {
     reducer,
     initialState(props.selectedTab)
   );
-  const [hoverFeature, setHoverFeature] = useState({});
+  const [hoverFeature, setHoverFeature] = useState('');
 
   const {
     featureConfig,
@@ -473,6 +500,14 @@ function Configurator(props) {
   );
 }
 
+Configurator.propTypes = {
+  selectedTab: PropTypes.string,
+};
+
+Configurator.defaultProps = {
+  selectedTab: 'webpack',
+};
+
 export class App extends React.Component {
   joyrideCallback({ lifecycle, step: { target } }) {
     if (lifecycle === 'tooltip') {
@@ -497,5 +532,17 @@ export class App extends React.Component {
     );
   }
 }
+
+App.propTypes = {
+  pageContext: PropTypes.shape({
+    selectedTab: PropTypes.string,
+  }),
+};
+
+App.defaultProps = {
+  pageContext: {
+    selectedTab: 'webpack',
+  },
+};
 
 export default App;
