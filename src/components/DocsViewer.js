@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import _ from 'lodash';
 import styles from '../styles.module.css';
 
@@ -308,3 +309,15 @@ export default function DocsViewer({
 
   return <div className={styles.docsContainer}>{theDoc}</div>;
 }
+
+DocsViewer.propTypes = {
+  hoverFeature: PropTypes.string,
+  selectedFeatures: PropTypes.arrayOf(PropTypes.string),
+  buildTool: PropTypes.string,
+};
+
+DocsViewer.defaultProps = {
+  hoverFeature: '',
+  selectedFeatures: [],
+  buildTool: '',
+};

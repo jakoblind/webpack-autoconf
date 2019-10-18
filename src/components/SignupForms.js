@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import PropTypes from 'prop-types';
 import styles from '../styles.module.css';
 
 /* DRIP form. currently not in use. */
@@ -33,7 +34,7 @@ const SignupForm = ({ buttonText, buttonStyle, signupText, dripId }) => (
         <input
           className={buttonStyle || styles.myButton}
           type="submit"
-          value={buttonText || 'Send Me Lesson 1'}
+          value={buttonText}
           data-drip-attribute="sign-up-button"
         />
         <br />
@@ -42,6 +43,19 @@ const SignupForm = ({ buttonText, buttonStyle, signupText, dripId }) => (
     </form>
   </div>
 );
+
+SignupForm.propTypes = {
+  buttonText: PropTypes.string,
+  buttonStyle: PropTypes.string,
+  signupText: PropTypes.string,
+  dripId: PropTypes.string.isRequired,
+};
+
+SignupForm.defaultProps = {
+  buttonText: 'Send Me Lesson 1',
+  buttonStyle: '',
+  signupText: '',
+};
 
 function ConvertKitSignupForm({
   children,
@@ -126,6 +140,25 @@ function ConvertKitSignupForm({
   );
 }
 
+ConvertKitSignupForm.propTypes = {
+  buttonText: PropTypes.string,
+  buttonStyle: PropTypes.string,
+  signupText: PropTypes.string,
+  formId: PropTypes.string.isRequired,
+  tags: PropTypes.number.isRequired,
+  children: PropTypes.oneOfType([
+    PropTypes.arrayOf(PropTypes.node),
+    PropTypes.node,
+  ]),
+};
+
+ConvertKitSignupForm.defaultProps = {
+  buttonText: 'Send Me Lesson 1',
+  buttonStyle: '',
+  signupText: '',
+  children: [],
+};
+
 export function withHidden(WrappedComponent, text) {
   return class extends React.Component {
     constructor(props) {
@@ -163,10 +196,35 @@ export const SampleChapterSignupForm = ({ buttonText }) => (
   />
 );
 
+SampleChapterSignupForm.propTypes = {
+  buttonText: PropTypes.string,
+};
+
+SampleChapterSignupForm.defaultProps = {
+  buttonText: 'Send me a sample chapter',
+};
+
 export const GenericSignupForm = ({ buttonText }) => (
-  <ConvertKitSignupForm buttonText="Sign up" formId="931959" />
+  <ConvertKitSignupForm buttonText={buttonText} formId="931959" />
 );
+
+GenericSignupForm.propTypes = {
+  buttonText: PropTypes.string,
+};
+
+GenericSignupForm.defaultProps = {
+  buttonText: 'Sign up',
+};
 
 export const CourseSignupForm = ({ buttonText, tags }) => (
   <ConvertKitSignupForm buttonText={buttonText} formId="917789" tags={tags} />
 );
+
+CourseSignupForm.propTypes = {
+  buttonText: PropTypes.string,
+  tags: PropTypes.number.isRequired,
+};
+
+CourseSignupForm.defaultProps = {
+  buttonText: 'Sign up',
+};
