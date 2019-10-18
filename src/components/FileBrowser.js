@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import _ from 'lodash';
 
 import '../vendor/prism-line-highlight.css';
@@ -66,6 +67,19 @@ const FileList = ({ files, selectedFile, onSelectFile }) => {
   );
 };
 
+FileList.propTypes = {
+  files: PropTypes.shape({
+    content: PropTypes.string,
+    highlightedFile: PropTypes.bool,
+  }).isRequired,
+  selectedFile: PropTypes.string,
+  onSelectFile: PropTypes.func.isRequired,
+};
+
+FileList.defaultProps = {
+  selectedFile: '',
+};
+
 class CodeBox extends React.Component {
   componentDidMount() {
     Prism.highlightAll();
@@ -82,7 +96,6 @@ class CodeBox extends React.Component {
 
   render() {
     const { code, highlightedLines } = this.props;
-
     return (
       <div className={styles.codeBox}>
         <pre className={styles.codeBoxPre} data-line={highlightedLines}>
@@ -93,9 +106,18 @@ class CodeBox extends React.Component {
   }
 }
 
+CodeBox.propTypes = {
+  code: PropTypes.string,
+  highlightedLines: PropTypes.string,
+};
+
+CodeBox.defaultProps = {
+  highlightedLines: '',
+  code: '',
+};
+
 const filenameRegex = /.+\./i;
 const extensionRegex = /\.[0-9a-z]+$/i;
-
 class FileBrowser extends React.Component {
   constructor(props) {
     super(props);
@@ -158,6 +180,15 @@ class FileBrowser extends React.Component {
     );
   }
 }
+
+FileBrowser.propTypes = {
+  fileContentMap: PropTypes.shape({
+    content: PropTypes.string,
+    highlightedFile: PropTypes.bool,
+  }).isRequired,
+  defaultSelection: PropTypes.string.isRequired,
+  onSelectPackageJson: PropTypes.func.isRequired,
+};
 /*
  This component takes files as props.
   files is an object with file names as keys, and a map as value.
@@ -202,6 +233,15 @@ class FileBrowserTransformer extends React.Component {
     );
   }
 }
+
+FileBrowserTransformer.propTypes = {
+  files: PropTypes.shape({
+    content: PropTypes.string,
+    highlightedFile: PropTypes.bool,
+  }).isRequired,
+  onSelectPackageJson: PropTypes.func.isRequired,
+  defaultSelection: PropTypes.string.isRequired,
+};
 
 class FileBrowserContainer extends React.Component {
   constructor(props) {
@@ -291,7 +331,6 @@ class FileBrowserContainer extends React.Component {
 
   render() {
     const { projectFiles } = this.state;
-
     const files = _.mapValues(projectFiles, (currentContent, file) => {
       let previousContent;
       if (this.state.projectFilesWithoutHighlightedFeature[file]) {
@@ -308,11 +347,31 @@ class FileBrowserContainer extends React.Component {
     return (
       <FileBrowserTransformer
         onSelectPackageJson={() => this.setProjectFilesInState()}
-        defaultSelection={this.props.defaultFile || 'webpack.config.js'}
+        defaultSelection={this.props.defaultFile}
         files={files}
       />
     );
   }
 }
+
+FileBrowserContainer.propTypes = {
+  files: PropTypes.shape({
+    content: PropTypes.string,
+    highlightedFile: PropTypes.bool,
+  }),
+  defaultFile: PropTypes.string,
+
+  featureConfig: PropTypes.shape({
+    features: PropTypes.shape({}).isRequired,
+  }).isRequired,
+  features: PropTypes.arrayOf(PropTypes.string).isRequired,
+  highlightFeature: PropTypes.string,
+  projectGeneratorFunction: PropTypes.func.isRequired,
+};
+FileBrowserContainer.defaultProps = {
+  defaultFile: 'webpack.config.js',
+  files: {},
+  highlightFeature: '',
+};
 
 export default FileBrowserContainer;

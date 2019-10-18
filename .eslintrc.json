@@ -21,7 +21,6 @@
     "import/prefer-default-export": ["off"],
     "react/no-unescaped-entities": ["off"],
     "global-require": ["off"],
-    "react/prop-types": ["off"],
     "max-classes-per-file": ["off"],
     "no-unused-vars": ["off"],
     "no-shadow": ["off"],
