@@ -1,6 +1,6 @@
 import _ from 'lodash';
 
-import { readmeFile, readmeFileParcel, gitignore } from '../templates/base'
+import { readmeFile, readmeFileParcel, gitignore } from '../templates/base';
 
 import {
   createWebpackConfig,

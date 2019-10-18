@@ -124,6 +124,7 @@ export const gitignore = () => `
 .cache/
 coverage/
 dist/
+!dist/index.html
 node_modules/
 *.log
 
