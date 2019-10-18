@@ -1,3 +1,4 @@
-import { joinToString } from '../helperFunctions'
+import { joinToString } from '../helperFunctions';
+
 export const emptyIndexJs = (extraImports = []) =>
-  `${joinToString(extraImports)}console.log("hello world!");`
+  `${joinToString(extraImports)}console.log("hello world!");`;

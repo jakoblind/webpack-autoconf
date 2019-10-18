@@ -4,12 +4,12 @@ export const baseWebpack = {
     path: "CODE:path.resolve(__dirname, 'dist')",
     filename: 'bundle.js',
   },
-}
+};
 
 export const baseWebpackImports = [
   "const webpack = require('webpack');",
   "const path = require('path');",
-]
+];
 
 export const packageJson = {
   // "name": "empty-project-react-less-png-production-mode",
@@ -22,10 +22,10 @@ export const packageJson = {
   scripts: {
     clean: 'rm dist/bundle.js',
   },
-  //"devDependencies": {
+  // "devDependencies": {
   //    "react": "^16.4.1",
-  //}
-}
+  // }
+};
 
 export const indexHtml = (bundleFilename = 'bundle.js') => `<!DOCTYPE html>
 <html>
@@ -37,7 +37,7 @@ export const indexHtml = (bundleFilename = 'bundle.js') => `<!DOCTYPE html>
         <div id="app"></div>
         <script src="${bundleFilename}"></script>
     </body>
-</html>`
+</html>`;
 
 export const readmeFile = (name, isReact, isHot) => `# ${name}
 
@@ -84,7 +84,7 @@ ${
 ## Credits
 
 Made with [createapp.dev](https://createapp.dev/)
-`
+`;
 
 export const readmeFileParcel = (name, isReact) => `# ${name}
 
@@ -122,4 +122,4 @@ ${
 
 Made with [createapp.dev](https://createapp.dev/)
 
-`
+`;

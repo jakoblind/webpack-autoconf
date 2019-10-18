@@ -1,7 +1,7 @@
-import React, { useState } from 'react'
-import styles from '../styles.module.css'
+import React, { useState } from 'react';
+import styles from '../styles.module.css';
 
-/*DRIP form. currently not in use.*/
+/* DRIP form. currently not in use. */
 // eslint-disable-next-line
 const SignupForm = ({ buttonText, buttonStyle, signupText, dripId }) => (
   <div className={styles.signupFormArea}>
@@ -12,7 +12,7 @@ const SignupForm = ({ buttonText, buttonStyle, signupText, dripId }) => (
     >
       <div>
         <input
-          autoFocus={true}
+          autoFocus
           className={styles.signupField}
           placeholder="Your Email"
           type="email"
@@ -41,7 +41,7 @@ const SignupForm = ({ buttonText, buttonStyle, signupText, dripId }) => (
       </div>
     </form>
   </div>
-)
+);
 
 function ConvertKitSignupForm({
   children,
@@ -51,22 +51,22 @@ function ConvertKitSignupForm({
   formId = '915821',
   tags,
 }) {
-  const [errorMessage, setErrorMessage] = useState('')
-  const [email, setEmail] = useState('')
-  const [name, setName] = useState('')
+  const [errorMessage, setErrorMessage] = useState('');
+  const [email, setEmail] = useState('');
+  const [name, setName] = useState('');
 
   const clearError = () => {
     if (email !== '' && name !== '') {
-      setErrorMessage('')
+      setErrorMessage('');
     }
-  }
+  };
 
   const onSubmit = e => {
     if (email === '' || name === '') {
-      setErrorMessage('Please no empty inputs')
-      e.preventDefault()
+      setErrorMessage('Please no empty inputs');
+      e.preventDefault();
     }
-  }
+  };
   return (
     <div className={styles.signupFormArea}>
       <form
@@ -80,13 +80,13 @@ function ConvertKitSignupForm({
           <input
             className={styles.signupField}
             onChange={e => {
-              clearError()
-              setEmail(e.target.value)
+              clearError();
+              setEmail(e.target.value);
             }}
             style={
               errorMessage && email === '' ? { border: '1px solid red' } : {}
             }
-            autoFocus={true}
+            autoFocus
             placeholder="Your Email"
             name="email_address"
             type="email"
@@ -96,8 +96,8 @@ function ConvertKitSignupForm({
           <input
             className={styles.signupField}
             onChange={e => {
-              clearError()
-              setName(e.target.value)
+              clearError();
+              setName(e.target.value);
             }}
             style={
               errorMessage && name === '' ? { border: '1px solid red' } : {}
@@ -123,19 +123,21 @@ function ConvertKitSignupForm({
         </div>
       </form>
     </div>
-  )
+  );
 }
 
 export function withHidden(WrappedComponent, text) {
   return class extends React.Component {
     constructor(props) {
-      super(props)
-      this.state = { hidden: true }
-      this.show = this.show.bind(this)
+      super(props);
+      this.state = { hidden: true };
+      this.show = this.show.bind(this);
     }
+
     show() {
-      this.setState({ hidden: false })
+      this.setState({ hidden: false });
     }
+
     render() {
       return (
         <div>
@@ -147,9 +149,9 @@ export function withHidden(WrappedComponent, text) {
             <WrappedComponent {...this.props} />
           )}
         </div>
-      )
+      );
     }
-  }
+  };
 }
 
 export const SampleChapterSignupForm = ({ buttonText }) => (
@@ -159,12 +161,12 @@ export const SampleChapterSignupForm = ({ buttonText }) => (
     signupText="You'll also get articles related to webpack and JavaScript once or twice per month"
     formId="918254"
   />
-)
+);
 
 export const GenericSignupForm = ({ buttonText }) => (
-  <ConvertKitSignupForm buttonText={'Sign up'} formId="931959" />
-)
+  <ConvertKitSignupForm buttonText="Sign up" formId="931959" />
+);
 
 export const CourseSignupForm = ({ buttonText, tags }) => (
   <ConvertKitSignupForm buttonText={buttonText} formId="917789" tags={tags} />
-)
+);

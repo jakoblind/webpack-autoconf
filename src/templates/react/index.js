@@ -1,4 +1,4 @@
-import { joinToString } from '../helperFunctions'
+import { joinToString } from '../helperFunctions';
 
 export const reactAppJs = isHot => `
 import React from "react";
@@ -11,7 +11,7 @@ class App extends React.Component {
 }
 
 export default ${isHot ? 'hot(App)' : 'App'};
-`
+`;
 
 export const reactIndexJs = (extraImports = []) => `import React from "react";
 import ReactDOM from "react-dom";
@@ -19,7 +19,7 @@ import App from "./app";
 ${joinToString(extraImports)}
 
 var mountNode = document.getElementById("app");
-ReactDOM.render(<App name="Jane" />, mountNode);`
+ReactDOM.render(<App name="Jane" />, mountNode);`;
 
 export const reactAppTsx = isHot => `
 import * as React from 'react';
@@ -36,7 +36,7 @@ class App extends React.Component<Props> {
 }
 
 export default ${isHot ? 'hot(App)' : 'App'};
-`
+`;
 
 export const reactIndexTsx = (
   extraImports = [],
@@ -48,4 +48,4 @@ import App from './app';
 ${joinToString(extraImports)}
 var mountNode = document.getElementById("app");
 ReactDOM.render(<App name="Jane" />, mountNode);
-`
+`;

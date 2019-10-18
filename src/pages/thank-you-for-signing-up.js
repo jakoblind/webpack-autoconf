@@ -1,6 +1,6 @@
-import React from 'react'
-import Layout from '../components/layout'
-import styles from '../styles.module.css'
+import React from 'react';
+import Layout from '../components/layout';
+import styles from '../styles.module.css';
 
 function App(props) {
   return (
@@ -10,7 +10,7 @@ function App(props) {
         <p>Good stuff will be delivered straight to your inbox.</p>
       </div>
     </Layout>
-  )
+  );
 }
 
-export default App
+export default App;

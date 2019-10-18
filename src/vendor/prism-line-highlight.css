@@ -1,21 +1,20 @@
 pre[data-line] {
-    position: relative;
-
+  position: relative;
 }
 
 .line-highlight {
-    position: absolute;
-    left: 0;
-    right: 0;
-    margin-left: 7px;
-    margin-right: 7px;
-    margin-top: 1em;
+  position: absolute;
+  left: 0;
+  right: 0;
+  margin-left: 7px;
+  margin-right: 7px;
+  margin-top: 1em;
 
-    box-shadow: 0 0 10pt 2pt #145B98;
-    border-radius: 10px;
+  box-shadow: 0 0 10pt 2pt #145b98;
+  border-radius: 10px;
 
-    pointer-events: none;
+  pointer-events: none;
 
-    line-height: inherit;
-    white-space: pre;
+  line-height: inherit;
+  white-space: pre;
 }

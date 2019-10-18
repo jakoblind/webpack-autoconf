@@ -1,0 +1,69 @@
+{
+  "extends": ["airbnb", "plugin:prettier/recommended", "prettier/react"],
+  "parser": "babel-eslint",
+  "parserOptions": {
+    "ecmaVersion": 6,
+    "sourceType": "module",
+    "ecmaFeatures": {
+      "jsx": true
+    }
+  },
+  "env": {
+    "browser": true,
+    "commonjs": true,
+    "es6": true,
+    "jest": true,
+    "node": true
+  },
+  "rules": {
+    "jsx-a11y/href-no-hash": ["off"],
+    "react/jsx-filename-extension": ["warn", { "extensions": [".js", ".jsx"] }],
+    "import/prefer-default-export": ["off"],
+    "react/no-unescaped-entities": ["off"],
+    "global-require": ["off"],
+    "react/prop-types": ["off"],
+    "max-classes-per-file": ["off"],
+    "no-unused-vars": ["off"],
+    "no-shadow": ["off"],
+    "jsx-a11y/click-events-have-key-events": ["off"],
+    "jsx-a11y/no-noninteractive-element-interactions": ["off"],
+    "react/destructuring-assignment": ["off"],
+    "react/no-did-update-set-state": ["off"],
+    "react/sort-comp": ["off"],
+    "jsx-a11y/no-autofocus": ["off"],
+    "react/button-has-type": ["off"],
+    "react/jsx-props-no-spreading": ["off"],
+    "jsx-a11y/label-has-associated-control": ["off"],
+    "jsx-a11y/no-static-element-interactions": ["off"],
+    "react/prefer-stateless-function": ["off"],
+    "import/no-extraneous-dependencies": ["off"],
+    "prefer-destructuring": ["off"],
+    "no-nested-ternary": ["off"],
+    "no-use-before-define": ["off"],
+    "no-param-reassign": ["off"],
+    "spaced-comment": ["off"],
+    "prettier/prettier": ["off"],
+    "no-else-return": ["off"],
+    "prefer-template": ["off"],
+    "func-names": ["off"],
+    "no-console": ["off"],
+    "import/no-dynamic-require": ["off"],
+    "no-case-declarations": ["off"],
+    "new-cap": ["off"],
+    "class-methods-use-this": ["off"],
+    "max-len": [
+      "off",
+      {
+        "code": 80,
+        "tabWidth": 2,
+        "comments": 80,
+        "ignoreComments": false,
+        "ignoreTrailingComments": true,
+        "ignoreUrls": true,
+        "ignoreStrings": true,
+        "ignoreTemplateLiterals": true,
+        "ignoreRegExpLiterals": true
+      }
+    ]
+  }
+}

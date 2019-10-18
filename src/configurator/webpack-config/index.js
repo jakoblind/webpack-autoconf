@@ -1,66 +1,66 @@
-import _ from 'lodash'
+import _ from 'lodash';
 import {
   reactIndexJs,
   reactIndexTsx,
   reactAppJs,
   reactAppTsx,
-} from '../../templates/react/index'
+} from '../../templates/react/index';
 
-import { svelteIndexJs, svelteAppSvelte } from '../../templates/svelte/index'
+import { svelteIndexJs, svelteAppSvelte } from '../../templates/svelte/index';
 
 import {
   addPlugin,
   assignModuleRuleAndResolver,
   addModuleRule,
-} from '../configurator-webpack-helpers'
-import { vueIndexAppVue, vueIndexTs, vueShimType } from '../../templates/vue'
-import { indexHtml } from '../../templates/base'
-import { emptyIndexJs } from '../../templates/empty/index'
+} from '../configurator-webpack-helpers';
+import { vueIndexAppVue, vueIndexTs, vueShimType } from '../../templates/vue';
+import { indexHtml } from '../../templates/base';
+import { emptyIndexJs } from '../../templates/empty/index';
 
-import { tsconfig, tsconfigReact } from '../../templates/ts'
+import { tsconfig, tsconfigReact } from '../../templates/ts';
 
-import { css, scss, less, stylus } from '../../templates/styling'
-import stylingRules from './stylingRules'
-import lintingRules from '../common-config/linting'
+import { css, scss, less, stylus } from '../../templates/styling';
+import stylingRules from './stylingRules';
+import lintingRules from '../common-config/linting';
 
 function getStyleImports(configItems) {
-  const isCss = _.includes(configItems, 'CSS')
-  const isSass = _.includes(configItems, 'Sass')
-  const isLess = _.includes(configItems, 'Less')
-  const isStylus = _.includes(configItems, 'stylus')
+  const isCss = _.includes(configItems, 'CSS');
+  const isSass = _.includes(configItems, 'Sass');
+  const isLess = _.includes(configItems, 'Less');
+  const isStylus = _.includes(configItems, 'stylus');
   return _.concat(
     [],
     isCss ? [`import "./styles.css";`] : [],
     isSass ? [`import "./styles.scss";`] : [],
     isLess ? [`import "./styles.less";`] : [],
     isStylus ? [`import "./styles.styl";`] : []
-  )
+  );
 }
 
 function getStyleTags(configItems) {
-  const isCss = _.includes(configItems, 'CSS')
-  const isLess = _.includes(configItems, 'Less')
-  const isSass = _.includes(configItems, 'Sass')
-  const isStylus = _.includes(configItems, 'stylus')
+  const isCss = _.includes(configItems, 'CSS');
+  const isLess = _.includes(configItems, 'Less');
+  const isSass = _.includes(configItems, 'Sass');
+  const isStylus = _.includes(configItems, 'stylus');
   const cssStyle = `<style>
 ${css}
-</style>`
+</style>`;
   const lessStyle = `<style lang="less">
 ${less}
-</style>`
+</style>`;
   const sassStyle = `<style lang="scss">
 ${scss}
-</style>`
+</style>`;
   const stylusStyle = `<style lang="styl">
 ${stylus}
-</style>`
+</style>`;
   return _.concat(
     [],
     isCss ? cssStyle : [],
     isSass ? sassStyle : [],
     isLess ? lessStyle : [],
     isStylus ? stylusStyle : []
-  )
+  );
 }
 
 export default (() => {
@@ -69,31 +69,31 @@ export default (() => {
       group: 'Main library',
       dependencies: configItems => ['react', 'react-dom'],
       devDependencies: configItems => {
-        const isTypescript = _.includes(configItems, 'Typescript')
-        const isBabel = _.includes(configItems, 'Babel')
+        const isTypescript = _.includes(configItems, 'Typescript');
+        const isBabel = _.includes(configItems, 'Babel');
         return _.concat(
           [],
           isTypescript ? ['@types/react', '@types/react-dom'] : [],
           isBabel ? ['@babel/preset-react'] : []
-        )
+        );
       },
       files: configItems => {
-        const isTypescript = _.includes(configItems, 'Typescript')
-        const isHotReact = _.includes(configItems, 'React hot loader')
-        const extraImports = getStyleImports(configItems)
+        const isTypescript = _.includes(configItems, 'Typescript');
+        const isHotReact = _.includes(configItems, 'React hot loader');
+        const extraImports = getStyleImports(configItems);
+
         if (isTypescript) {
           return {
             'src/app.tsx': reactAppTsx(isHotReact),
             'src/index.tsx': reactIndexTsx(extraImports, isHotReact),
             'dist/index.html': indexHtml(),
-          }
-        } else {
-          return {
-            'src/app.js': reactAppJs(isHotReact),
-            'src/index.js': reactIndexJs(extraImports),
-            'dist/index.html': indexHtml(),
-          }
+          };
         }
+        return {
+          'src/app.js': reactAppJs(isHotReact),
+          'src/index.js': reactIndexJs(extraImports),
+          'dist/index.html': indexHtml(),
+        };
       },
     },
     Svelte: {
@@ -116,16 +116,16 @@ export default (() => {
             },
           ],
           ['.mjs', '.js', '.svelte']
-        )
-        return webpackConfigWithRule
+        );
+        return webpackConfigWithRule;
       },
       files: configItems => {
-        const styling = getStyleTags(configItems)
+        const styling = getStyleTags(configItems);
         return {
           'src/index.js': svelteIndexJs(),
           'src/App.svelte': svelteAppSvelte(_.join(styling, '\n\n')),
           'dist/index.html': indexHtml(),
-        }
+        };
       },
     },
     Vue: {
@@ -143,8 +143,8 @@ export default (() => {
             },
           ],
           ['.js', '.vue']
-        )
-        return addPlugin(webpackConfigWithRule, 'CODE:new VueLoaderPlugin()')
+        );
+        return addPlugin(webpackConfigWithRule, 'CODE:new VueLoaderPlugin()');
       },
       devDependencies: configItems => [
         'vue-loader',
@@ -155,10 +155,9 @@ export default (() => {
       ],
       dependencies: configItems => ['vue'],
       files: configItems => {
-        const isTypescript = _.includes(configItems, 'Typescript')
-        const indexFilename = isTypescript ? 'src/index.ts' : 'src/index.js'
-
-        const styling = getStyleTags(configItems)
+        const isTypescript = _.includes(configItems, 'Typescript');
+        const indexFilename = isTypescript ? 'src/index.ts' : 'src/index.js';
+        const styling = getStyleTags(configItems);
 
         return _.assign(
           {
@@ -167,23 +166,23 @@ export default (() => {
             [indexFilename]: vueIndexTs(),
           },
           isTypescript ? { 'vue-shim.d.ts': vueShimType } : {}
-        )
+        );
       },
     },
     Babel: {
       group: 'Transpiler',
-      babel: (babelConfig, configItems) =>
-        Object.assign({}, babelConfig, {
-          presets: _.concat(
-            [['@babel/preset-env', { modules: false }]],
-            _.includes(configItems, 'React') ? '@babel/preset-react' : []
-          ),
-        }),
+      babel: (babelConfig, configItems) => ({
+        ...babelConfig,
+        presets: _.concat(
+          [['@babel/preset-env', { modules: false }]],
+          _.includes(configItems, 'React') ? '@babel/preset-react' : []
+        ),
+      }),
       devDependencies: configItems => {
-        const devDepList = ['babel-loader', '@babel/core', '@babel/preset-env']
+        const devDepList = ['babel-loader', '@babel/core', '@babel/preset-env'];
         if (_.includes(configItems, 'React hot loader'))
-          devDepList.push('@hot-loader/react-dom')
-        return devDepList
+          devDepList.push('@hot-loader/react-dom');
+        return devDepList;
       },
       webpack: (webpackConfig, configItems) =>
         assignModuleRuleAndResolver(
@@ -204,50 +203,50 @@ export default (() => {
     Typescript: {
       group: 'Transpiler',
       devDependencies: configItems => {
-        const devDepList = ['typescript', 'awesome-typescript-loader']
+        const devDepList = ['typescript', 'awesome-typescript-loader'];
         if (_.includes(configItems, 'React hot loader'))
-          devDepList.push('@hot-loader/react-dom')
-        return devDepList
+          devDepList.push('@hot-loader/react-dom');
+        return devDepList;
       },
       webpack: (webpackConfig, configItems) => {
-        const isVue = _.includes(configItems, 'Vue')
+        const isVue = _.includes(configItems, 'Vue');
         const typescriptModule = {
           test: /\.ts(x)?$/,
           use: ['awesome-typescript-loader'],
           exclude: /node_modules/,
-        }
+        };
         if (isVue) {
           typescriptModule.options = {
             appendTsSuffixTo: [/\.vue$/],
-          }
+          };
         }
-        const aliases = {}
-        const isHot = _.includes(configItems, 'React hot loader')
+        const aliases = {};
+        const isHot = _.includes(configItems, 'React hot loader');
         if (isHot) {
-          aliases['react-dom'] = '@hot-loader/react-dom'
+          aliases['react-dom'] = '@hot-loader/react-dom';
         }
         return assignModuleRuleAndResolver(
           webpackConfig,
           typescriptModule,
           ['.tsx', '.ts', '.js'],
           aliases
-        )
+        );
       },
       files: configItems => {
-        const isReact = _.includes(configItems, 'React')
-        const isVue = _.includes(configItems, 'Vue')
+        const isReact = _.includes(configItems, 'React');
+        const isVue = _.includes(configItems, 'Vue');
 
         const configFiles = isReact
           ? { 'tsconfig.json': tsconfigReact }
-          : { 'tsconfig.json': tsconfig }
+          : { 'tsconfig.json': tsconfig };
         const sourceFiles =
           !isReact && !isVue
             ? {
                 'dist/index.html': indexHtml(),
                 'src/index.ts': emptyIndexJs(),
               }
-            : {}
-        return _.assign(configFiles, sourceFiles)
+            : {};
+        return _.assign(configFiles, sourceFiles);
       },
     },
     CSS: stylingRules.css,
@@ -320,14 +319,14 @@ export default (() => {
     inject: false,
     appMountId: 'app',
   })`
-        )
+        );
 
         const withFilename = _.setWith(
           _.clone(withPlugin),
           'output.filename',
           '[name].[contenthash].js',
           _.clone
-        )
+        );
         return _.setWith(
           _.clone(withFilename),
           'optimization',
@@ -344,57 +343,55 @@ export default (() => {
             },
           },
           _.clone
-        )
+        );
       },
     },
     'React hot loader': {
       group: 'React',
       babel: (babelConfig, configItems) => {
-        if (!_.includes(configItems, 'Babel')) return {} // We don't need babelrc for typescript
-        return Object.assign({}, babelConfig, {
-          plugins: ['react-hot-loader/babel'],
-        })
+        if (!_.includes(configItems, 'Babel')) return {}; // We don't need babelrc for typescript
+        return { ...babelConfig, plugins: ['react-hot-loader/babel'] };
       },
       dependencies: configItems => ['react-hot-loader'],
       devDependencies: configItems => ['webpack-dev-server'],
-      webpack: webpackConfig =>
-        Object.assign({}, webpackConfig, {
-          devServer: {
-            contentBase: './dist',
-          },
-        }),
+      webpack: webpackConfig => ({
+        ...webpackConfig,
+        devServer: {
+          contentBase: './dist',
+        },
+      }),
       packageJson: {
         scripts: {
           start: 'webpack-dev-server --hot --mode development',
         },
       },
     },
-  }
+  };
   const featuresNoNulls = _.mapValues(features, item => {
     if (!item.babel) {
-      item.babel = _.identity
+      item.babel = _.identity;
     }
     if (!item.webpack) {
-      item.webpack = _.identity
+      item.webpack = _.identity;
     }
     if (!item.webpackImports) {
-      item.webpackImports = []
+      item.webpackImports = [];
     }
     if (!item.dependencies) {
-      item.dependencies = () => []
+      item.dependencies = () => [];
     }
     if (!item.devDependencies) {
-      item.devDependencies = () => []
+      item.devDependencies = () => [];
     }
     if (!item.packageJson) {
-      item.packageJson = {}
+      item.packageJson = {};
     }
     if (!item.files) {
-      item.files = () => {}
+      item.files = () => {};
     }
 
-    return item
-  })
+    return item;
+  });
   return {
     features: featuresNoNulls,
     base: {
@@ -406,17 +403,16 @@ export default (() => {
       },
       devDependencies: ['webpack', 'webpack-cli'],
       files: configItems => {
-        const isTypescript = _.includes(configItems, 'Typescript')
-        const extraImports = getStyleImports(configItems)
+        const isTypescript = _.includes(configItems, 'Typescript');
+        const extraImports = getStyleImports(configItems);
         if (!isTypescript) {
           return {
             'src/index.js': emptyIndexJs(extraImports),
             'dist/index.html': indexHtml(),
-          }
-        } else {
-          return []
+          };
         }
+        return [];
       },
     },
-  }
-})()
+  };
+})();

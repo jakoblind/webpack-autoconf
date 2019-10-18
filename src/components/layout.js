@@ -1,10 +1,10 @@
-import React from 'react'
-import PropTypes from 'prop-types'
-import Helmet from 'react-helmet'
-import { StaticQuery, graphql } from 'gatsby'
-import { Link } from 'gatsby'
-import styles from '../styles.module.css'
-import './layout.css'
+import React from 'react';
+import PropTypes from 'prop-types';
+import Helmet from 'react-helmet';
+import { StaticQuery, graphql, Link } from 'gatsby';
+
+import styles from '../styles.module.css';
+import './layout.css';
 
 const Header = () => {
   return (
@@ -17,8 +17,8 @@ const Header = () => {
       <a href="http://blog.jakoblind.no/">Articles</a>
       <Link to="/about">About</Link>
     </div>
-  )
-}
+  );
+};
 
 const Layout = ({ children, title, metaDescription }) => (
   <StaticQuery
@@ -96,10 +96,10 @@ const Layout = ({ children, title, metaDescription }) => (
       </>
     )}
   />
-)
+);
 
 Layout.propTypes = {
   children: PropTypes.node.isRequired,
-}
+};
 
-export default Layout
+export default Layout;

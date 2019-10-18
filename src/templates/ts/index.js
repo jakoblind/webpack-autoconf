@@ -13,7 +13,7 @@ export const tsconfig = `{
     "include": [
         "./src/**/*"
     ]
-}`
+}`;
 
 export const tsconfigReact = `{
     "compilerOptions": {
@@ -31,7 +31,7 @@ export const tsconfigReact = `{
     "include": [
         "./src/**/*"
     ]
-}`
+}`;
 
 export const indexTypescript = `
 async function helloWorld() {
@@ -41,4 +41,4 @@ async function helloWorld() {
 helloWorld()
   .then((msg) => console.log(msg))
   .catch((e) => console.error(e));
-`
+`;

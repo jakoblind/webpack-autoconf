@@ -1,50 +1,47 @@
 html {
-  font-family:"Helvetica Neue", Arial, sans-serif;
+  font-family: 'Helvetica Neue', Arial, sans-serif;
   -ms-text-size-adjust: 100%;
   -webkit-text-size-adjust: 100%;
 }
 body {
-    margin: 0;
-    margin-bottom: 100px;
-    font-size: large;
+  margin: 0;
+  margin-bottom: 100px;
+  font-size: large;
 }
 h1 {
-    font-size: small;
+  font-size: small;
 }
 
 h2 {
-    margin-top: 0px;
+  margin-top: 0px;
 }
 
 h3 {
-
-    clear:both;
+  clear: both;
 }
 
 ol {
-    counter-reset:li;
+  counter-reset: li;
 }
 ol li {
-    position: relative;
-    list-style:none;
-    margin-bottom: 20px;
-
+  position: relative;
+  list-style: none;
+  margin-bottom: 20px;
 }
 ol li:before {
-    content:counter(li);
-    counter-increment:li;
-    position:absolute;
-    top:-11px;
-    left:-2em;
-    width:2em;
-    margin-right:8px;
-    padding:4px;
-    font-size: 27px;
-    font-weight:bold;
-    font-family:"Helvetica Neue", Arial, sans-serif;
-    text-align:center;
+  content: counter(li);
+  counter-increment: li;
+  position: absolute;
+  top: -11px;
+  left: -2em;
+  width: 2em;
+  margin-right: 8px;
+  padding: 4px;
+  font-size: 27px;
+  font-weight: bold;
+  font-family: 'Helvetica Neue', Arial, sans-serif;
+  text-align: center;
 }
-
 
 html {
   box-sizing: border-box;
@@ -65,34 +62,33 @@ body {
   font-weight: normal;
   word-wrap: break-word;
   font-kerning: normal;
-  -moz-font-feature-settings: "kern", "liga", "clig", "calt";
-  -ms-font-feature-settings: "kern", "liga", "clig", "calt";
-  -webkit-font-feature-settings: "kern", "liga", "clig", "calt";
-  font-feature-settings: "kern", "liga", "clig", "calt";
+  -moz-font-feature-settings: 'kern', 'liga', 'clig', 'calt';
+  -ms-font-feature-settings: 'kern', 'liga', 'clig', 'calt';
+  -webkit-font-feature-settings: 'kern', 'liga', 'clig', 'calt';
+  font-feature-settings: 'kern', 'liga', 'clig', 'calt';
 }
 .modal {
-    position: absolute;
-    width: 600px;
-    top: 50%;
-    left: 50%;
-    right: auto;
-    bottom: auto;
-    marginRight: -50%;
-    transform: translate(-50%, -50%);
+  position: absolute;
+  width: 600px;
+  top: 50%;
+  left: 50%;
+  right: auto;
+  bottom: auto;
+  marginright: -50%;
+  transform: translate(-50%, -50%);
 
-    border: 1px solid rgb(204, 204, 204);
-    background: rgb(255, 255, 255);
-    overflow: auto;
-    border-radius: 4px;
-    outline: none;
-    padding: 20px;
-    max-height: 100vh;
-    overflow-y: auto;
-
+  border: 1px solid rgb(204, 204, 204);
+  background: rgb(255, 255, 255);
+  overflow: auto;
+  border-radius: 4px;
+  outline: none;
+  padding: 20px;
+  max-height: 100vh;
+  overflow-y: auto;
 }
 
 @media only screen and (max-width: 666px) {
-    .modal {
-        width: 100%;
-    }
+  .modal {
+    width: 100%;
+  }
 }
