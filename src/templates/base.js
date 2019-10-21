@@ -4,6 +4,9 @@ export const baseWebpack = {
     path: "CODE:path.resolve(__dirname, 'dist')",
     filename: 'bundle.js',
   },
+  devServer: {
+    contentBase: './dist',
+  },
 };
 
 export const baseWebpackImports = [
