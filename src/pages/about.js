@@ -1,6 +1,7 @@
 import React from 'react';
 import styles from '../styles.module.css';
 import Layout from '../components/layout';
+import { GenericSignupForm } from '../components/SignupForms';
 
 export default () => {
   return (
@@ -17,14 +18,9 @@ export default () => {
         <h2>Want more?</h2>
         <p>
           Want to be notified when I build more cool stuff like this? And also
-          get early access to articles?
+          get early access to articles? Subscribe to my list:
         </p>
-        <a
-          className={styles.myButton}
-          href="https://www.getdrip.com/forms/81916834/submissions/new"
-        >
-          Sign up to my newsletter
-        </a>
+        <GenericSignupForm />
       </div>
     </Layout>
   );
