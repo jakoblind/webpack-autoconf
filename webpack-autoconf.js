@@ -30,8 +30,6 @@ import {
   tsconfigReact,
 } from './src/templates/ts'
 import {
-  vueHelloWorldJs,
-  vueHelloWorldTS,
   vueIndexAppVue,
   vueIndexHtml,
   vueIndexTs,

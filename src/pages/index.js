@@ -2,10 +2,10 @@ import React, { useState, useReducer } from 'react';
 import PropTypes from 'prop-types';
 import _ from 'lodash';
 import { Link } from 'gatsby';
-import Modal from 'react-modal';
 import jszip from 'jszip';
 import Joyride from 'react-joyride';
 import { saveAs } from 'file-saver';
+import Modal from '../components/Modal';
 import styles from '../styles.module.css';
 import npmVersionPromise from '../fetch-npm-version';
 
@@ -247,7 +247,7 @@ const selectionRules = {
     allSelectionRules.stopSelectFunctions.stopIfNotBabelOrTypescriptForReact,
   ],
   additionalSelectFunctions: [
-    allSelectionRules.additionalSelectFunctions.enforceEitherReactOrVue,
+    allSelectionRules.additionalSelectFunctions.enforceEitherReactOrVueOrSvelte,
     allSelectionRules.additionalSelectFunctions.addBabelIfReact,
     allSelectionRules.additionalSelectFunctions.addOrRemoveReactHotLoader,
     allSelectionRules.additionalSelectFunctions.addCssIfPostCSS,
@@ -260,7 +260,7 @@ const parcelSelectionRules = {
     allSelectionRules.stopSelectFunctions.stopIfNotBabelOrTypescriptForReact,
   ],
   additionalSelectFunctions: [
-    allSelectionRules.additionalSelectFunctions.enforceEitherReactOrVue,
+    allSelectionRules.additionalSelectFunctions.enforceEitherReactOrVueOrSvelte,
     allSelectionRules.additionalSelectFunctions.addBabelIfReact,
   ],
 };

@@ -43,7 +43,8 @@ function cssRules() {
     },
     files: configItems => {
       const isVue = _.includes(configItems, 'Vue');
-      if (isVue) {
+      const isSvelte = _.includes(configItems, 'Svelte');
+      if (isVue || isSvelte) {
         return {};
       }
       return { 'src/styles.css': css };
@@ -101,7 +102,8 @@ function sassRules() {
       }),
     files: configItems => {
       const isVue = _.includes(configItems, 'Vue');
-      if (isVue) {
+      const isSvelte = _.includes(configItems, 'Svelte');
+      if (isVue || isSvelte) {
         return {};
       }
       return { 'src/styles.scss': scss };
@@ -128,7 +130,8 @@ function lessRules() {
       }),
     files: configItems => {
       const isVue = _.includes(configItems, 'Vue');
-      if (isVue) {
+      const isSvelte = _.includes(configItems, 'Svelte');
+      if (isVue || isSvelte) {
         return {};
       }
       return { 'src/styles.less': less };
@@ -155,7 +158,8 @@ function stylusRules() {
       }),
     files: configItems => {
       const isVue = _.includes(configItems, 'Vue');
-      if (isVue) {
+      const isSvelte = _.includes(configItems, 'Svelte');
+      if (isVue || isSvelte) {
         return {};
       }
       return { 'src/styles.styl': stylus };

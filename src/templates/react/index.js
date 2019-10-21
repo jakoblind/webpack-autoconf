@@ -6,7 +6,7 @@ ${isHot ? `import { hot } from 'react-hot-loader/root';\n` : ''}
 class App extends React.Component {
   render() {
     const { name } = this.props;
-    return <div>Hello {name}</div>;
+    return <h1>Hello {name}</h1>;
   }
 }
 
