@@ -6,6 +6,8 @@ import {
   reactAppTsx,
 } from '../../templates/react/index';
 
+import { svelteIndexJs, svelteAppSvelte } from '../../templates/svelte/index';
+
 import {
   addPlugin,
   assignModuleRuleAndResolver,
@@ -34,6 +36,33 @@ function getStyleImports(configItems) {
     isStylus ? [`import "./styles.styl";`] : []
   );
 }
+
+function getStyleTags(configItems) {
+  const isCss = _.includes(configItems, 'CSS');
+  const isLess = _.includes(configItems, 'Less');
+  const isSass = _.includes(configItems, 'Sass');
+  const isStylus = _.includes(configItems, 'stylus');
+  const cssStyle = `<style>
+${css}
+</style>`;
+  const lessStyle = `<style lang="less">
+${less}
+</style>`;
+  const sassStyle = `<style lang="scss">
+${scss}
+</style>`;
+  const stylusStyle = `<style lang="styl">
+${stylus}
+</style>`;
+  return _.concat(
+    [],
+    isCss ? cssStyle : [],
+    isSass ? sassStyle : [],
+    isLess ? lessStyle : [],
+    isStylus ? stylusStyle : []
+  );
+}
+
 export default (() => {
   const features = {
     React: {
@@ -50,8 +79,9 @@ export default (() => {
       },
       files: configItems => {
         const isTypescript = _.includes(configItems, 'Typescript');
-        const isHotReact = _.includes(configItems, 'React hot loader'); // Bug fix: Should check on configItems
+        const isHotReact = _.includes(configItems, 'React hot loader');
         const extraImports = getStyleImports(configItems);
+
         if (isTypescript) {
           return {
             'src/app.tsx': reactAppTsx(isHotReact),
@@ -62,6 +92,38 @@ export default (() => {
         return {
           'src/app.js': reactAppJs(isHotReact),
           'src/index.js': reactIndexJs(extraImports),
+          'dist/index.html': indexHtml(),
+        };
+      },
+    },
+    Svelte: {
+      group: 'Main library',
+      devDependencies: configItems => [
+        'svelte',
+        'svelte-loader',
+        'svelte-preprocess',
+      ],
+      webpack: webpackConfig => {
+        const webpackConfigWithRule = assignModuleRuleAndResolver(
+          webpackConfig,
+          [
+            {
+              test: /\.svelte$/,
+              loader: 'svelte-loader',
+              options: {
+                preprocess: `CODE: require('svelte-preprocess')({})`,
+              },
+            },
+          ],
+          ['.mjs', '.js', '.svelte']
+        );
+        return webpackConfigWithRule;
+      },
+      files: configItems => {
+        const styling = getStyleTags(configItems);
+        return {
+          'src/index.js': svelteIndexJs(),
+          'src/App.svelte': svelteAppSvelte(_.join(styling, '\n\n')),
           'dist/index.html': indexHtml(),
         };
       },
@@ -95,29 +157,7 @@ export default (() => {
       files: configItems => {
         const isTypescript = _.includes(configItems, 'Typescript');
         const indexFilename = isTypescript ? 'src/index.ts' : 'src/index.js';
-        const isCss = _.includes(configItems, 'CSS');
-        const isLess = _.includes(configItems, 'Less');
-        const isSass = _.includes(configItems, 'Sass');
-        const isStylus = _.includes(configItems, 'stylus');
-        const cssStyle = `<style>
-${css}
-</style>`;
-        const lessStyle = `<style lang="less">
-${less}
-</style>`;
-        const sassStyle = `<style lang="scss">
-${scss}
-</style>`;
-        const stylusStyle = `<style lang="styl">
-${stylus}
-</style>`;
-        const styling = _.concat(
-          [],
-          isCss ? cssStyle : [],
-          isSass ? sassStyle : [],
-          isLess ? lessStyle : [],
-          isStylus ? stylusStyle : []
-        );
+        const styling = getStyleTags(configItems);
 
         return _.assign(
           {
@@ -363,11 +403,9 @@ ${stylus}
       },
       devDependencies: ['webpack', 'webpack-cli'],
       files: configItems => {
-        const isReact = _.includes(configItems, 'React');
-        const isVue = _.includes(configItems, 'Vue');
         const isTypescript = _.includes(configItems, 'Typescript');
         const extraImports = getStyleImports(configItems);
-        if (!isTypescript && !isReact && !isVue) {
+        if (!isTypescript) {
           return {
             'src/index.js': emptyIndexJs(extraImports),
             'dist/index.html': indexHtml(),

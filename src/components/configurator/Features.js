@@ -279,10 +279,10 @@ Features.propTypes = PropTypes.shape({
 }).isRequired;
 
 /*
-  only possible to select one of Vue or React. Needing both is an edge case
+  only possible to select one of Vue or React or Svelte. Needing both is an edge case
   that is probably very rare. It adds much complexity to support both.
 */
-function enforceEitherReactOrVue(
+function enforceEitherReactOrVueOrSvelte(
   allFeatureStates,
   affectedFeature,
   setToSelected
@@ -292,6 +292,7 @@ function enforceEitherReactOrVue(
     return {
       ...allFeatureStates,
       React: !setToSelected,
+      Svelte: !setToSelected,
     };
     // deselect vue if user selects react
   }
@@ -300,6 +301,15 @@ function enforceEitherReactOrVue(
       return {
         ...allFeatureStates,
         Vue: !setToSelected,
+        Svelte: !setToSelected,
+      };
+    }
+  } else if (affectedFeature === 'Svelte') {
+    if (setToSelected) {
+      return {
+        ...allFeatureStates,
+        Vue: !setToSelected,
+        React: !setToSelected,
       };
     }
   }
@@ -402,7 +412,7 @@ function addBabelIfReact(allFeatureStates, affectedFeature, setToSelected) {
 export const selectionRules = {
   stopSelectFunctions: { stopIfNotBabelOrTypescriptForReact },
   additionalSelectFunctions: {
-    enforceEitherReactOrVue,
+    enforceEitherReactOrVueOrSvelte,
     addBabelIfReact,
     addOrRemoveReactHotLoader,
     addCssIfPostCSS,

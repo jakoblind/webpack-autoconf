@@ -159,7 +159,7 @@ export function createAdditionalFilesMap(featureConfig, configItems) {
       _.assign(acc, featureConfig.features[currentValue].files(configItems)),
     {}
   );
-  return _.assign(filesFromFeatures, featureConfig.base.files(configItems));
+  return _.assign(featureConfig.base.files(configItems), filesFromFeatures);
 }
 
 export function getPackageJson(

@@ -247,7 +247,7 @@ const selectionRules = {
     allSelectionRules.stopSelectFunctions.stopIfNotBabelOrTypescriptForReact,
   ],
   additionalSelectFunctions: [
-    allSelectionRules.additionalSelectFunctions.enforceEitherReactOrVue,
+    allSelectionRules.additionalSelectFunctions.enforceEitherReactOrVueOrSvelte,
     allSelectionRules.additionalSelectFunctions.addBabelIfReact,
     allSelectionRules.additionalSelectFunctions.addOrRemoveReactHotLoader,
     allSelectionRules.additionalSelectFunctions.addCssIfPostCSS,
@@ -260,7 +260,7 @@ const parcelSelectionRules = {
     allSelectionRules.stopSelectFunctions.stopIfNotBabelOrTypescriptForReact,
   ],
   additionalSelectFunctions: [
-    allSelectionRules.additionalSelectFunctions.enforceEitherReactOrVue,
+    allSelectionRules.additionalSelectFunctions.enforceEitherReactOrVueOrSvelte,
     allSelectionRules.additionalSelectFunctions.addBabelIfReact,
   ],
 };
