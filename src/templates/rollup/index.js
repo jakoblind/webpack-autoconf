@@ -89,6 +89,7 @@ export const getTSJsonConfig = configItems => {
 export const getRollupConfig = features => {
   const isBabel = _.includes(features, 'Babel');
   const isTypescript = _.includes(features, 'Typescript');
+  const isReact = _.includes(features, 'React');
 
   const extension = isTypescript ? 'ts' : 'js';
 
@@ -97,14 +98,28 @@ export const getRollupConfig = features => {
     `import commonjs from 'rollup-plugin-commonjs';`,
   ];
   const output = [];
-  const plugins = ['resolve()', 'commonjs()'];
-
+  const plugins = ['resolve()'];
+  if (isReact) {
+    imports.push(
+      `import globals from 'rollup-plugin-node-globals';`,
+      `import builtins from 'rollup-plugin-node-builtins';`
+    );
+    plugins.push(
+      `commonjs({
+      exclude: 'src/**',
+    })`,
+      `globals()`
+    );
+  } else {
+    plugins.push('commonjs()');
+  }
   if (isBabel) {
     imports.push(`import babel from "rollup-plugin-babel";`);
     plugins.push(`babel({
       exclude: "node_modules/**"
     })`);
   }
+
   if (isTypescript) {
     imports.push(`import typescript from 'rollup-plugin-typescript2';`);
     plugins.push(`typescript()`);
@@ -120,9 +135,72 @@ export default {
     sourcemap: true
   },
   plugins: [
-    ${plugins.join(', ')}
+    ${plugins.join(',\n\t')}
   ]
 };
   
+  `;
+};
+
+export const getButtonComponentJSX = () => {
+  return `
+
+import React from 'react'
+import PropTypes from 'prop-types'
+
+
+class Button extends React.Component {
+  render() {
+    const { text } = this.props;
+    return (
+      <button>{text}</button>
+    )
+  }
+}
+
+Button.propTypes = {
+  text: PropTypes.string.isRequired
+}
+
+export default Button;
+  
+  `;
+};
+export const getReactIndexJSX = configItems => {
+  return `
+import React from 'react';
+import ReactDOM from 'react-dom';
+
+import Button from './button.jsx';
+  
+class App extends React.Component {
+  render() {
+    return (
+      <div>
+        <Button text='Click Me' />
+      </div>
+    )
+  }
+}
+  
+const root = document.querySelector('main');
+ReactDOM.render(<App />, root);
+`;
+};
+
+export const getIndexHTML = configItems => {
+  return `
+<!doctype html>
+<html>
+<head lang='en'>
+	<meta charset='utf-8'>
+	<meta name='viewport' content='width=device-width'>
+	<title>rollup-starter-app</title>
+</head>
+<body>
+  <main>React App Loads here</main>
+	<script src='bundle.js'></script>
+</body>
+</html>
   `;
 };

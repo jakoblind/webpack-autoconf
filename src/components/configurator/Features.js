@@ -336,6 +336,24 @@ function enforceEitherBabelOrTypescriptForRollup(
   return allFeatureStates;
 }
 
+function enforceBabelReactByDefaultForRollup(
+  allFeatureStates,
+  affectedFeature,
+  setToSelected
+) {
+  console.log(allFeatureStates, affectedFeature, setToSelected);
+  if (
+    affectedFeature === 'React' &&
+    setToSelected &&
+    !allFeatureStates.Babel &&
+    !allFeatureStates.Typescript
+  ) {
+    return { ...allFeatureStates, Babel: true };
+  }
+
+  return allFeatureStates;
+}
+
 function addOrRemoveReactHotLoader(
   allFeatureStates,
   affectedFeature,
@@ -437,6 +455,7 @@ export const selectionRules = {
     addCssIfPostCSS,
     removeEslintIfTypscript,
     enforceEitherBabelOrTypescriptForRollup,
+    enforceBabelReactByDefaultForRollup,
   },
 };
 // eslint-disable-next-line

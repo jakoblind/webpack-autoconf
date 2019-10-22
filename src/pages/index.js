@@ -278,10 +278,14 @@ const parcelSelectionRules = {
 };
 
 const rollupSelectionRules = {
-  stopSelectFunctions: [],
+  stopSelectFunctions: [
+    allSelectionRules.stopSelectFunctions.stopIfNotBabelOrTypescriptForReact,
+  ],
   additionalSelectFunctions: [
     allSelectionRules.additionalSelectFunctions
       .enforceEitherBabelOrTypescriptForRollup,
+    allSelectionRules.additionalSelectFunctions
+      .enforceBabelReactByDefaultForRollup,
   ],
 };
 
