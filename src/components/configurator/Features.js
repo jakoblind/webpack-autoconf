@@ -170,8 +170,12 @@ function FeatureGroup({
   onMouseEnter,
   onMouseLeave,
   selectedBuildTool,
+  expandByDefault,
 }) {
-  const [expanded, setExpanded] = useState(group === 'Main library');
+  const [expanded, setExpanded] = useState(
+    group === 'Main library' || expandByDefault
+  );
+
   const prevSelected = usePrevious(selected);
   useEffect(() => {
     const anyChanged = _.reduce(
@@ -182,7 +186,7 @@ function FeatureGroup({
           selected[feature] !== (prevSelected && prevSelected[feature])
         );
       },
-      false
+      expandByDefault
     );
     if (anyChanged) {
       setExpanded(true);
@@ -259,6 +263,7 @@ export default class Features extends React.Component {
             onMouseLeave={onMouseLeave}
             selectedBuildTool={selectedBuildTool}
             key={group}
+            expandByDefault={_.size(groupedFeatures) === 1}
           />
         ))}
       </div>
@@ -314,6 +319,20 @@ function enforceEitherReactOrVueOrSvelte(
     }
   }
 
+  return allFeatureStates;
+}
+
+function enforceEitherBabelOrTypescriptForRollup(
+  allFeatureStates,
+  affectedFeature,
+  setToSelected
+) {
+  if (affectedFeature === 'Babel' && setToSelected) {
+    return { ...allFeatureStates, Typescript: false };
+  }
+  if (affectedFeature === 'Typescript' && setToSelected) {
+    return { ...allFeatureStates, Babel: false };
+  }
   return allFeatureStates;
 }
 
@@ -417,6 +436,7 @@ export const selectionRules = {
     addOrRemoveReactHotLoader,
     addCssIfPostCSS,
     removeEslintIfTypscript,
+    enforceEitherBabelOrTypescriptForRollup,
   },
 };
 // eslint-disable-next-line

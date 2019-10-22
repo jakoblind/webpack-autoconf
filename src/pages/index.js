@@ -14,8 +14,8 @@ import { CourseSignupForm } from '../components/SignupForms';
 import {
   webpackConfig,
   parcelConfig,
+  rollupConfig,
 } from '../configurator/configurator-config';
-
 import {
   createBabelConfig,
   getNpmDependencies,
@@ -30,6 +30,7 @@ import Features, {
 } from '../components/configurator/Features';
 import generateProject, {
   generateParcelProject,
+  generateRollupProject,
 } from '../configurator/project-generator';
 
 import onboardingHelp from '../onboardingHelp';
@@ -155,6 +156,15 @@ function Tabs({ selected, setSelected }) {
           />
           <div>Parcel</div>
         </button>
+        <button
+          onClick={() => setSelected('rollup')}
+          className={[selected === 'rollup' ? styles.selectedTab : null].join(
+            ' '
+          )}
+        >
+          <img alt="rollup logo" src={require(`../../images/rollup.svg`)} />
+          <div>Rollup</div>
+        </button>
       </nav>
     </div>
   );
@@ -252,6 +262,8 @@ const selectionRules = {
     allSelectionRules.additionalSelectFunctions.addOrRemoveReactHotLoader,
     allSelectionRules.additionalSelectFunctions.addCssIfPostCSS,
     allSelectionRules.additionalSelectFunctions.removeEslintIfTypscript,
+    allSelectionRules.additionalSelectFunctions
+      .enforceEitherBabelOrTypescriptForRollup,
   ],
 };
 
@@ -262,6 +274,14 @@ const parcelSelectionRules = {
   additionalSelectFunctions: [
     allSelectionRules.additionalSelectFunctions.enforceEitherReactOrVueOrSvelte,
     allSelectionRules.additionalSelectFunctions.addBabelIfReact,
+  ],
+};
+
+const rollupSelectionRules = {
+  stopSelectFunctions: [],
+  additionalSelectFunctions: [
+    allSelectionRules.additionalSelectFunctions
+      .enforceEitherBabelOrTypescriptForRollup,
   ],
 };
 
@@ -291,6 +311,12 @@ const buildConfigConfig = {
       </Link>,
       <br key={3} />,
     ],
+  },
+  rollup: {
+    featureConfig: rollupConfig,
+    projectGeneratorFunction: generateRollupProject,
+    defaultFile: 'package.json',
+    selectionRules: rollupSelectionRules,
   },
 };
 
@@ -379,7 +405,6 @@ function Configurator(props) {
     projectGeneratorFunction,
     defaultFile,
   } = buildConfigConfig[state.selectedTab];
-
   const selectedArray = _.chain(state.selectedFeatures)
     .map((v, k) => (v ? k : null))
     .reject(_.isNull)

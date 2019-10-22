@@ -5,3 +5,4 @@ public
 /.idea
 generated
 bin
+.DS_Store
