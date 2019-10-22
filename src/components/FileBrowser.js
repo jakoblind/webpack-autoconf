@@ -177,9 +177,8 @@ class FileBrowser extends React.Component {
   render() {
     const { fileContentMap } = this.props;
     const fileContent = _.get(fileContentMap, this.state.selectedFile, '');
-
     const extensionMatch = this.state.selectedFile.match(extensionRegex);
-    const extension = Array.isArray(extensionMatch) ? extensionMatch[0] : null;
+    const extension = _.isArray(extensionMatch) ? extensionMatch[0] : null;
 
     return (
       <div className={styles.fileBrowser} id="file-browser">
