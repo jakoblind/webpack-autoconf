@@ -89,11 +89,11 @@ export function getNpmDependencies(featureConfig, configItems) {
 }
 
 export function getWebpackImports(configItems) {
-  return _.reduce(
+  return _.uniq(_.reduce(
     configItems,
     (acc, currentValue) => _.concat(acc, features[currentValue].webpackImports),
     []
-  );
+  ));
 }
 
 export function createBabelConfig(configItems) {

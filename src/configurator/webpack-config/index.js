@@ -14,7 +14,6 @@ import {
   addModuleRule,
 } from '../configurator-webpack-helpers';
 import { vueIndexAppVue, vueIndexTs, vueShimType } from '../../templates/vue';
-import { indexHtml } from '../../templates/base';
 import { emptyIndexJs } from '../../templates/empty/index';
 
 import { tsconfig, tsconfigReact } from '../../templates/ts';
@@ -86,13 +85,11 @@ export default (() => {
           return {
             'src/app.tsx': reactAppTsx(isHotReact),
             'src/index.tsx': reactIndexTsx(extraImports, isHotReact),
-            'dist/index.html': indexHtml(),
           };
         }
         return {
           'src/app.js': reactAppJs(isHotReact),
           'src/index.js': reactIndexJs(extraImports),
-          'dist/index.html': indexHtml(),
         };
       },
     },
@@ -123,8 +120,7 @@ export default (() => {
         const styling = getStyleTags(configItems);
         return {
           'src/index.js': svelteIndexJs(),
-          'src/App.svelte': svelteAppSvelte(_.join(styling, '\n\n')),
-          'dist/index.html': indexHtml(),
+          'src/App.svelte': svelteAppSvelte(_.join(styling, '\n\n'))
         };
       },
     },
@@ -162,8 +158,7 @@ export default (() => {
         return _.assign(
           {
             'src/App.vue': vueIndexAppVue(_.join(styling, '\n')),
-            'dist/index.html': indexHtml(),
-            [indexFilename]: vueIndexTs(),
+            [indexFilename]: vueIndexTs()
           },
           isTypescript ? { 'vue-shim.d.ts': vueShimType } : {}
         );
@@ -242,7 +237,6 @@ export default (() => {
         const sourceFiles =
           !isReact && !isVue
             ? {
-                'dist/index.html': indexHtml(),
                 'src/index.ts': emptyIndexJs(),
               }
             : {};
@@ -318,6 +312,7 @@ export default (() => {
     template: require('html-webpack-template'),
     inject: false,
     appMountId: 'app',
+    filename: 'index.html'
   })`
         );
 
@@ -342,6 +337,33 @@ export default (() => {
               },
             },
           },
+          _.clone
+        );
+      },
+    },
+    'HTML webpack plugin': {
+      group: 'Webpack plugins',
+      devDependencies: configItems => [
+        'html-webpack-plugin',
+        'html-webpack-template',
+      ],
+      webpackImports: [
+        "const HtmlWebpackPlugin = require('html-webpack-plugin');",
+      ],
+      webpack: webpackConfig => {
+        const withPlugin = addPlugin(
+          webpackConfig,
+          `CODE:new HtmlWebpackPlugin({
+    template: require('html-webpack-template'),
+    inject: false,
+    appMountId: 'app',
+    filename: 'index.html'
+  })`
+        );
+        return _.setWith(
+          _.clone(withPlugin),
+          'output.filename',
+          '[name].[contenthash].js',
           _.clone
         );
       },
@@ -407,8 +429,7 @@ export default (() => {
         const extraImports = getStyleImports(configItems);
         if (!isTypescript) {
           return {
-            'src/index.js': emptyIndexJs(extraImports),
-            'dist/index.html': indexHtml(),
+            'src/index.js': emptyIndexJs(extraImports)
           };
         }
         return [];
