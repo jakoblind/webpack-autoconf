@@ -81,6 +81,7 @@ export const getTSJsonConfig = configItems => {
     exclude: ['node_modules', 'dist', 'rollup.config.js'],
   };
   if (_.includes(configItems, 'React')) {
+    options.compilerOptions.jsx = 'react';
     options.compilerOptions.lib.push('dom');
   }
   return JSON.stringify(options, null, 2);
@@ -91,7 +92,7 @@ export const getRollupConfig = features => {
   const isTypescript = _.includes(features, 'Typescript');
   const isReact = _.includes(features, 'React');
 
-  const extension = isTypescript ? 'ts' : 'js';
+  const extension = isTypescript ? (isReact ? 'tsx' : 'ts') : 'js';
 
   const imports = [
     `import resolve from 'rollup-plugin-node-resolve';`,
@@ -104,12 +105,29 @@ export const getRollupConfig = features => {
       `import globals from 'rollup-plugin-node-globals';`,
       `import builtins from 'rollup-plugin-node-builtins';`
     );
-    plugins.push(
-      `commonjs({
-      exclude: 'src/**',
-    })`,
-      `globals()`
-    );
+    if (isTypescript) {
+      plugins.push(`commonjs({
+      include: "node_modules/**",
+      namedExports: {
+        "node_modules/react/index.js": [
+          "Component",
+          "PureComponent",
+          "Fragment",
+          "Children",
+          "createElement"
+        ],
+        "node_modules/react-dom/index.js": ["render"]
+      }
+    })`);
+    } else {
+      plugins.push(
+        `commonjs({
+        exclude: 'src/**',
+      })`
+      );
+    }
+
+    plugins.push(`globals()`);
   } else {
     plugins.push('commonjs()');
   }
@@ -186,6 +204,50 @@ class App extends React.Component {
 const root = document.querySelector('main');
 ReactDOM.render(<App />, root);
 `;
+};
+
+export const getReactIndexTSX = configItems => {
+  return `
+import * as React from 'react';
+import * as ReactDOM from 'react-dom';
+
+import Button from './button';
+
+class App extends React.Component<{}, {}> {
+  render() {
+    return (
+      <div>
+        <Button text='Click Me' />
+      </div>
+    )
+  }
+}
+
+const root = document.querySelector('main');
+ReactDOM.render(<App />, root);
+
+  `;
+};
+
+export const getButtonComponentTSX = configItems => {
+  return `
+import * as React from 'react'
+
+export type Props = { text: string }
+
+class Button extends React.Component<Props> {
+  render() {
+    const { text } = this.props
+
+    return (
+      <button>{text}</button>
+    )
+  }
+}
+
+export default Button;
+    
+  `;
 };
 
 export const getIndexHTML = configItems => {

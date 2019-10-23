@@ -6,6 +6,8 @@ import {
   getReactIndexJSX,
   getIndexHTML,
   getButtonComponentJSX,
+  getReactIndexTSX,
+  getButtonComponentTSX,
 } from '../../templates/rollup';
 
 export default (() => {
@@ -51,8 +53,9 @@ export default (() => {
 
         if (isTypescript) {
           return {
-            'src/index.tsx': 'ts app jsx',
-            'src/index.html': 'html file ts',
+            'src/button.tsx': getButtonComponentTSX(configItems),
+            'src/index.tsx': getReactIndexTSX(configItems),
+            'dist/index.html': getIndexHTML(configItems),
           };
         }
         return {
