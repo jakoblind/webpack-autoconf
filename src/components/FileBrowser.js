@@ -223,7 +223,7 @@ class FileBrowserTransformer extends React.Component {
       // if the file didn't exist previously, highlight it all
       if (!content.previousContent) {
         highlightedFile = true;
-        const lines = content.currentContent.split(/\r\n|\r|\n/).length;
+        const lines = _.split(content.currentContent, /\r\n|\r|\n/).length;
         highlightedLines = `1-${lines}`;
       } else if (content.previousContent !== content.currentContent) {
         // highlightedFile = true
