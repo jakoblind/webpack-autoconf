@@ -1,4 +1,5 @@
 {
+  "plugins": ["lodash"],
   "extends": ["airbnb", "plugin:prettier/recommended", "prettier/react"],
   "parser": "babel-eslint",
   "parserOptions": {
@@ -16,6 +17,7 @@
     "node": true
   },
   "rules": {
+    "lodash/prefer-lodash-method": 2,
     "jsx-a11y/href-no-hash": ["off"],
     "react/jsx-filename-extension": ["warn", { "extensions": [".js", ".jsx"] }],
     "import/prefer-default-export": ["off"],

@@ -1,4 +1,5 @@
 const JsDiff = require('diff');
+const _ = require('lodash');
 
 export function getDiffAsLineNumber(json1, json2, diffLines) {
   if (!json1 || !json2) {
@@ -14,7 +15,8 @@ export function getDiffAsLineNumber(json1, json2, diffLines) {
 
   let highlightedLines = '';
   let currentLineNumber = 0;
-  diff.forEach(part => {
+
+  _.forEach(diff, part => {
     if (part.removed) {
       return;
     }
