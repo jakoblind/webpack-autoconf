@@ -80,6 +80,17 @@ FileList.defaultProps = {
   selectedFile: '',
 };
 
+const extensionToPrismLanguage = {
+  css: 'language-css',
+  gitignore: 'language-markup',
+  html: 'language-html',
+  js: 'language-javascript',
+  svelte: 'language-markup',
+  ts: 'language-javascript',
+  tsx: 'language-javascript',
+  vue: 'language-markup',
+};
+
 class CodeBox extends React.Component {
   componentDidMount() {
     Prism.highlightAll();
@@ -95,11 +106,14 @@ class CodeBox extends React.Component {
   }
 
   render() {
-    const { code, highlightedLines } = this.props;
+    const { code, highlightedLines, extension } = this.props;
+    const extKey = extension ? extension.substring(1) : null;
+    const codeClassName = extensionToPrismLanguage[extKey] || '';
+
     return (
       <div className={styles.codeBox}>
         <pre className={styles.codeBoxPre} data-line={highlightedLines}>
-          <code className="language-javascript">{code}</code>
+          <code className={codeClassName}>{code}</code>
         </pre>
       </div>
     );
@@ -108,12 +122,14 @@ class CodeBox extends React.Component {
 
 CodeBox.propTypes = {
   code: PropTypes.string,
+  extension: PropTypes.string,
   highlightedLines: PropTypes.string,
 };
 
 CodeBox.defaultProps = {
-  highlightedLines: '',
   code: '',
+  extension: '',
+  highlightedLines: '',
 };
 
 const filenameRegex = /.+\./i;
@@ -161,8 +177,7 @@ class FileBrowser extends React.Component {
   render() {
     const { fileContentMap } = this.props;
     const fileContent = _.get(fileContentMap, this.state.selectedFile, '');
-
-    const extension = this.state.selectedFile.match(extensionRegex);
+    const extension = _.head(this.state.selectedFile.match(extensionRegex));
 
     return (
       <div className={styles.fileBrowser} id="file-browser">

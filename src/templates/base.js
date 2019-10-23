@@ -12,7 +12,6 @@ export const baseWebpackImports = [
 ];
 
 export const packageJson = {
-  // "name": "empty-project-react-less-png-production-mode",
   version: '1.0.0',
   description: '',
   main: 'index.js',
@@ -22,9 +21,6 @@ export const packageJson = {
   scripts: {
     clean: 'rm dist/bundle.js',
   },
-  // "devDependencies": {
-  //    "react": "^16.4.1",
-  // }
 };
 
 export const indexHtml = (bundleFilename = 'bundle.js') => `<!DOCTYPE html>
@@ -122,4 +118,22 @@ ${
 
 Made with [createapp.dev](https://createapp.dev/)
 
+`;
+
+export const gitignore = () => `
+.cache/
+coverage/
+dist/
+!dist/index.html
+node_modules/
+*.log
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
 `;
