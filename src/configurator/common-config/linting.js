@@ -22,6 +22,7 @@ function createEsLintRc(answers = { moduleType: 'esm' }) {
     config.env.commonjs = true;
   }
   // add in browser and node environments if necessary
+  // eslint-disable-next-line lodash/prefer-lodash-method
   answers.env.forEach(env => {
     config.env[env] = true;
   });

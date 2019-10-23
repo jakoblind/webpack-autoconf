@@ -1,6 +1,6 @@
 import _ from 'lodash';
 
-import { readmeFile, readmeFileParcel } from '../templates/base';
+import { readmeFile, readmeFileParcel, gitignore } from '../templates/base';
 
 import {
   createWebpackConfig,
@@ -39,6 +39,7 @@ const generateProject = (features, name, getNodeVersionPromise) => {
     {
       'webpack.config.js': newWebpackConfig,
       'README.md': readmeFile(projectName, isReact, isHotReact),
+      '.gitignore': gitignore(),
       'package.json': 'empty package.json',
     },
     additionalFilesMap,
@@ -75,6 +76,7 @@ export function generateParcelProject(features, name, getNodeVersionPromise) {
     {},
     {
       'README.md': readmeFileParcel(projectName, isReact, false),
+      '.gitignore': gitignore(),
     },
     maybeConfigBabel,
     additionalFilesMap
