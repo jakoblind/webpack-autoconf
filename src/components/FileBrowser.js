@@ -1,21 +1,20 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import _ from 'lodash';
-
-import '../vendor/prism-line-highlight.css';
 import Prism from 'prismjs';
 import memoizee from 'memoizee';
-import styles from '../styles.module.css';
-import { getNpmDependencies } from '../configurator/configurator';
+
 import { getDiffAsLineNumber } from '../configurator/Diff';
+import { getNpmDependencies } from '../configurator/configurator';
 import npmVersionPromise from '../fetch-npm-version';
+import styles from '../styles.module.css';
+
+require('./prism-customization/styles.css');
+require('./prism-customization/LineHighlight');
 
 // disable prettier for now.
 // import prettier from 'prettier/standalone'
 // const parserBabylon = require('prettier/parser-babylon')
-
-require('prismjs/themes/prism-tomorrow.css');
-require('../vendor/PrismLineHighlight');
 
 const FileList = ({ files, selectedFile, onSelectFile }) => {
   // sort with folders on top, and in alphabetic order
@@ -81,13 +80,19 @@ FileList.defaultProps = {
 };
 
 const extensionToPrismLanguage = {
+  babelrc: 'language-javascript',
   css: 'language-css',
-  gitignore: 'language-markup',
+  gitignore: 'language-bash',
   html: 'language-html',
   js: 'language-javascript',
+  json: 'language-json',
+  less: 'language-less',
+  md: 'language-markdown',
+  scss: 'language-scss',
+  styl: 'language-stylus',
   svelte: 'language-markup',
-  ts: 'language-javascript',
-  tsx: 'language-javascript',
+  ts: 'language-typescript',
+  tsx: 'language-typescript',
   vue: 'language-markup',
 };
 
