@@ -4,10 +4,13 @@ import _ from 'lodash';
 import Prism from 'prismjs';
 import memoizee from 'memoizee';
 
-import styles from '../styles.module.css';
-import { getNpmDependencies } from '../configurator/configurator';
 import { getDiffAsLineNumber } from '../configurator/Diff';
+import { getNpmDependencies } from '../configurator/configurator';
 import npmVersionPromise from '../fetch-npm-version';
+import styles from '../styles.module.css';
+
+require('./prism-customization/styles.css');
+require('./prism-customization/LineHighlight');
 
 // disable prettier for now.
 // import prettier from 'prettier/standalone'
