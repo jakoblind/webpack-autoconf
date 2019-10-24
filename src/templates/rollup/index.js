@@ -36,26 +36,26 @@ export const getIndex = configItems => {
   const isBabel = _.includes(configItems, 'Babel');
 
   return `// ES5 
-    var sayHi = function(name) {
-      return "Hi, " + name;
-    };
-    
-    ${
-      isBabel
-        ? `// ES6
+var sayHi = function(name) {
+  return "Hi, " + name;
+};
+
+${
+  isBabel
+    ? `// ES6
 const sayHello = name => \`Hello, \${name}\`;`
-        : ''
-    }
-    
-    // Export
-    ${
-      isBabel
-        ? `export default {
-      sayHi, 
-      sayHello
-    };`
-        : `export default sayHi;`
-    }`;
+    : ''
+}
+
+// Export
+${
+  isBabel
+    ? `export default {
+  sayHi, 
+  sayHello
+};`
+    : `export default sayHi;`
+}`;
 };
 
 export const getBasicTS = configItems => {
@@ -195,7 +195,7 @@ class App extends React.Component {
   render() {
     return (
       <div>
-        <Button text='Click Me' />
+        <Button text='Hello' />
       </div>
     )
   }
@@ -217,7 +217,7 @@ class App extends React.Component<{}, {}> {
   render() {
     return (
       <div>
-        <Button text='Click Me' />
+        <Button text='Hello' />
       </div>
     )
   }

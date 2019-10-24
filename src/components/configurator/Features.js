@@ -170,11 +170,8 @@ function FeatureGroup({
   onMouseEnter,
   onMouseLeave,
   selectedBuildTool,
-  expandByDefault,
 }) {
-  const [expanded, setExpanded] = useState(
-    group === 'Main library' || expandByDefault
-  );
+  const [expanded, setExpanded] = useState(group === 'Main library');
 
   const prevSelected = usePrevious(selected);
   useEffect(() => {
@@ -186,7 +183,7 @@ function FeatureGroup({
           selected[feature] !== (prevSelected && prevSelected[feature])
         );
       },
-      expandByDefault
+      false
     );
     if (anyChanged) {
       setExpanded(true);
@@ -263,7 +260,6 @@ export default class Features extends React.Component {
             onMouseLeave={onMouseLeave}
             selectedBuildTool={selectedBuildTool}
             key={group}
-            expandByDefault={_.size(groupedFeatures) === 1}
           />
         ))}
       </div>
@@ -341,7 +337,6 @@ function enforceBabelReactByDefaultForRollup(
   affectedFeature,
   setToSelected
 ) {
-  console.log(allFeatureStates, affectedFeature, setToSelected);
   if (
     affectedFeature === 'React' &&
     setToSelected &&
