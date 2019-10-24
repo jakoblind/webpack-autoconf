@@ -10,12 +10,13 @@ module.exports = {
     {
       resolve: `gatsby-plugin-manifest`,
       options: {
-        name: 'gatsby-starter-default',
-        short_name: 'starter',
+        name: 'createapp.dev',
+        short_name: 'createapp',
         start_url: '/',
         background_color: '#663399',
         theme_color: '#663399',
         display: 'minimal-ui',
+        icon: `${__dirname}/images/favicon.png`,
       },
     },
     'gatsby-plugin-offline',
@@ -28,11 +29,5 @@ module.exports = {
         exclude: ['/preview/**', '/do-not-track/me/too/'],
       },
     },
-    {
-      resolve: `gatsby-plugin-favicon`,
-      options: {
-        logo: `${__dirname}/images/favicon.png`,
-      },
-    },
   ],
-}
+};
