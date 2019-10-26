@@ -99,7 +99,26 @@ export const getRollupConfig = features => {
     `import commonjs from 'rollup-plugin-commonjs';`,
   ];
   const output = [];
-  const plugins = ['resolve()'];
+  const plugins = [];
+  if (isBabel) {
+    imports.push(`import babel from "rollup-plugin-babel";`);
+    plugins.push(`babel({
+      exclude: "node_modules/**"
+    })`);
+  }
+  const resolveExtensions = ['.json'];
+  if (isReact) {
+    if (isTypescript) resolveExtensions.push('.ts', '.tsx');
+    else resolveExtensions.push('.js', '.jsx');
+  } else if (isTypescript) {
+    resolveExtensions.push('.ts');
+  } else {
+    resolveExtensions.push('.js');
+  }
+  plugins.push(`resolve({
+      extensions:${JSON.stringify(resolveExtensions)}
+    }`);
+
   if (isReact) {
     imports.push(
       `import globals from 'rollup-plugin-node-globals';`,
@@ -130,12 +149,6 @@ export const getRollupConfig = features => {
     plugins.push(`globals()`);
   } else {
     plugins.push('commonjs()');
-  }
-  if (isBabel) {
-    imports.push(`import babel from "rollup-plugin-babel";`);
-    plugins.push(`babel({
-      exclude: "node_modules/**"
-    })`);
   }
 
   if (isTypescript) {
