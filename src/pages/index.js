@@ -319,7 +319,7 @@ const buildConfigConfig = {
   rollup: {
     featureConfig: rollupConfig,
     projectGeneratorFunction: generateRollupProject,
-    defaultFile: 'package.json',
+    defaultFile: 'rollup.config.js',
     selectionRules: rollupSelectionRules,
   },
 };

@@ -117,7 +117,7 @@ export const getRollupConfig = features => {
   }
   plugins.push(`resolve({
       extensions:${JSON.stringify(resolveExtensions)}
-    }`);
+    })`);
 
   if (isReact) {
     imports.push(
