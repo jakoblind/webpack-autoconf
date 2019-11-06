@@ -80,7 +80,7 @@ const Layout = ({ children, title, metaDescription }) => (
               <a href="https://twitter.com/karljakoblind">Twitter</a>
             </li>
             <li>
-              <a href="https://github.com/jakoblind">Github</a>
+              <a href="https://github.com/jakoblind">GitHub</a>
             </li>
             <li>
               <a
