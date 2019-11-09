@@ -125,7 +125,15 @@ export function generateRollupProject(features, name, getNodeVersionPromise) {
       getNodeVersionPromise,
       features
     ).then(packageJson => {
-      // console.log(packageJson);
+      const isReact = _.includes(features, 'React');
+      const isTypescript = _.includes(features, 'Typescript');
+      if (isReact && isTypescript) {
+        packageJson.module = 'dist/index.es.js';
+        packageJson.main = 'dist/index.js';
+        packageJson.peerDependencies = packageJson.dependencies;
+        delete packageJson.dependencies;
+      }
+
       fileMap['package.json'] = JSON.stringify(packageJson, null, 2);
       return fileMap;
     });

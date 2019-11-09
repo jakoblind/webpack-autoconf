@@ -1,6 +1,8 @@
 import _ from 'lodash';
 
 export const getReadMeFile = (name, features) => {
+  const isTypescript = _.includes(features, 'Typescript');
+  const isReact = _.includes(features, 'React');
   return `
 ## ${name}
 
@@ -18,6 +20,20 @@ To create a development in watch mode:
 npm run watch
 \`\`\`
 
+${
+  isReact && isTypescript
+    ? `
+To make library installable into other local folders, run 
+
+\`\`\`npm link\`\`\`
+
+Now go to you package consumer folder and run
+\`\`\`npm link empty-project \`\`\`  # you can change this name in package.json and update here as well.
+
+Please refer to \`\`\`npm link \`\`\` documentation for more information.
+`
+    : ``
+}
 
 To create a production build:
 
@@ -83,6 +99,17 @@ export const getTSJsonConfig = configItems => {
   if (_.includes(configItems, 'React')) {
     options.compilerOptions.jsx = 'react';
     options.compilerOptions.lib.push('dom');
+    options.compilerOptions.esModuleInterop = true;
+    options.compilerOptions.allowSyntheticDefaultImports = true;
+    options.compilerOptions.allowJs = false;
+    options.compilerOptions.forceConsistentCasingInFileNames = true;
+    options.compilerOptions.noImplicitReturns = true;
+    options.compilerOptions.noImplicitThis = true;
+    options.compilerOptions.noImplicitAny = true;
+    options.compilerOptions.strictNullChecks = true;
+    options.compilerOptions.suppressImplicitAnyIndexErrors = true;
+    options.compilerOptions.noUnusedLocals = true;
+    options.compilerOptions.noUnusedParameters = true;
   }
   return JSON.stringify(options, null, 2);
 };
@@ -98,8 +125,8 @@ export const getRollupConfig = features => {
     `import resolve from 'rollup-plugin-node-resolve';`,
     `import commonjs from 'rollup-plugin-commonjs';`,
   ];
-  const output = [];
   const plugins = [];
+  const outputs = [];
   if (isBabel) {
     imports.push(`import babel from "rollup-plugin-babel";`);
     plugins.push(`babel({
@@ -115,56 +142,98 @@ export const getRollupConfig = features => {
   } else {
     resolveExtensions.push('.js');
   }
-  plugins.push(`resolve({
-      extensions:${JSON.stringify(resolveExtensions)}
-    })`);
 
   if (isReact) {
-    imports.push(
-      `import globals from 'rollup-plugin-node-globals';`,
-      `import builtins from 'rollup-plugin-node-builtins';`
-    );
     if (isTypescript) {
-      plugins.push(`commonjs({
-      include: "node_modules/**",
-      namedExports: {
-        "node_modules/react/index.js": [
-          "Component",
-          "PureComponent",
-          "Fragment",
-          "Children",
-          "createElement"
-        ],
-        "node_modules/react-dom/index.js": ["render"]
-      }
-    })`);
-    } else {
+      imports.push(
+        `import external from "rollup-plugin-peer-deps-external";`,
+        `import typescript from "rollup-plugin-typescript2";`,
+        `import pkg from "./package.json";`
+      );
       plugins.push(
+        `external()`,
+        `resolve({
+          extensions:${JSON.stringify(resolveExtensions)}
+        })`,
+        `typescript({
+        rollupCommonJSResolveHack: true,
+        clean: true
+      })`,
+        `commonjs()`
+      );
+      outputs.push(
+        `\t{
+          file: pkg.main,
+          format: "cjs",
+          exports: "named",
+          sourcemap: true
+        }`,
+        `\t\t{
+          file: pkg.module,
+          format: "es",
+          exports: "named",
+          sourcemap: true
+        }`
+      );
+    } else {
+      imports.push(`import globals from 'rollup-plugin-node-globals';`);
+
+      plugins.push(
+        `resolve({
+          extensions:${JSON.stringify(resolveExtensions)}
+        })`,
         `commonjs({
         exclude: 'src/**',
-      })`
+      })`,
+        `globals()`
       );
+      outputs.push(`{
+        name:'index',
+        file: 'dist/bundle.js',
+        format: 'iife', 
+        sourcemap: true
+      }`);
     }
-
-    plugins.push(`globals()`);
   } else {
     plugins.push('commonjs()');
+    outputs.push(`{
+      name:'index',
+      file: 'dist/bundle.js',
+      format: 'iife', 
+      sourcemap: true
+    }`);
   }
 
-  if (isTypescript) {
-    imports.push(`import typescript from 'rollup-plugin-typescript2';`);
-    plugins.push(`typescript()`);
+  if (!isReact && isTypescript) {
+    plugins.push(
+      `external()`,
+
+      `resolve({
+        extensions:${JSON.stringify(resolveExtensions)}
+      })`,
+      `  typescript({
+      rollupCommonJSResolveHack: true,
+      clean: true
+    })`,
+      `commonjs()`,
+      `typescript()`
+    );
   }
+  if (!isReact && isBabel) {
+    plugins.push(`resolve({
+      extensions:${JSON.stringify(resolveExtensions)}
+    })`);
+  }
+
   return `${imports.join('\n')}
+
   
 export default {
   input: 'src/index.${extension}',
-  output: {
-    name:'index',
-    file: 'dist/bundle.js',
-    format: 'iife', 
-    sourcemap: true
-  },
+
+  output: [
+    ${outputs.join(',\n')}
+  ],
   plugins: [
     ${plugins.join(',\n\t')}
   ]
@@ -221,24 +290,7 @@ ReactDOM.render(<App />, root);
 
 export const getReactIndexTSX = configItems => {
   return `
-import * as React from 'react';
-import * as ReactDOM from 'react-dom';
-
-import Button from './button';
-
-class App extends React.Component<{}, {}> {
-  render() {
-    return (
-      <div>
-        <Button text='Hello' />
-      </div>
-    )
-  }
-}
-
-const root = document.querySelector('main');
-ReactDOM.render(<App />, root);
-
+  export { default as Button } from "./button";
   `;
 };
 

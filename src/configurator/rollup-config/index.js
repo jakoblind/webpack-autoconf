@@ -15,36 +15,34 @@ export default (() => {
     React: {
       group: 'Main library',
       dependencies: configItems => {
-        const depList = ['react', 'react-dom'];
-        const isTypescript = _.includes(configItems, 'Typescript');
-        if (isTypescript) {
-          console.log();
-        } else {
-          depList.push('prop-types', 'react', 'react-dom');
-        }
-
+        const depList = ['react', 'react-dom', 'prop-types'];
         return depList;
       },
       devDependencies: configItems => {
+        const isBabel = _.includes(configItems, 'Babel');
+
         const isTypescript = _.includes(configItems, 'Typescript');
+
         return _.concat(
-          [
-            'npm-run-all',
-            'browser-sync',
-            'rollup-plugin-node-builtins',
-            'rollup-plugin-node-globals',
-          ],
+          isBabel
+            ? ['npm-run-all', 'browser-sync', 'rollup-plugin-node-globals']
+            : [],
           isTypescript
             ? ['@types/react', '@types/react-dom']
             : ['@babel/preset-react']
         );
       },
-      packageJson: {
-        scripts: {
-          browse:
-            'browser-sync start --s --ss dist --index dist/index.html --files dist/**/*.js --no-notify',
-          start: 'npm-run-all --parallel watch browse',
-        },
+      packageJson: (featureConfig, configItems) => {
+        const isBabel = _.includes(configItems, 'Babel');
+        if (isBabel)
+          return {
+            scripts: {
+              browse:
+                'browser-sync start --s --ss dist --index dist/index.html --files dist/**/*.js --no-notify',
+              start: 'npm-run-all --parallel watch browse',
+            },
+          };
+        return {};
       },
 
       files: configItems => {
@@ -55,7 +53,6 @@ export default (() => {
           return {
             'src/button.tsx': getButtonComponentTSX(configItems),
             'src/index.tsx': getReactIndexTSX(configItems),
-            'dist/index.html': getIndexHTML(configItems),
           };
         }
         return {
@@ -67,7 +64,6 @@ export default (() => {
     },
     Babel: {
       group: 'Transpiler',
-      // selected: true,
       dependencies: configItems => [],
       devDependencies: configItems => {
         const isReact = _.includes(configItems, 'React');
@@ -92,16 +88,15 @@ export default (() => {
     Typescript: {
       group: 'Transpiler',
       devDependencies: configItems => {
+        const isReact = _.includes(configItems, 'React');
         const devDepList = ['typescript', 'rollup-plugin-typescript2'];
-
+        if (isReact)
+          devDepList.push(`rollup-plugin-peer-deps-external`, `chalk`);
         return devDepList;
       },
       dependencies: () => [],
 
       files: configItems => {
-        const isReact = _.includes(configItems, 'React');
-        const isVue = _.includes(configItems, 'Vue');
-
         const configFiles = {};
         const sourceFiles = {
           'tsconfig.json': getTSJsonConfig(configItems),
