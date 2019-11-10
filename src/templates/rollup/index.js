@@ -127,29 +127,53 @@ export const getRollupConfig = features => {
   ];
   const plugins = [];
   const outputs = [];
+  const resolveExtensions = ['.json'];
   if (isBabel) {
+    resolveExtensions.push('.js');
     imports.push(`import babel from "rollup-plugin-babel";`);
     plugins.push(`babel({
       exclude: "node_modules/**"
     })`);
   }
-  const resolveExtensions = ['.json'];
-  if (isReact) {
-    if (isTypescript) resolveExtensions.push('.ts', '.tsx');
-    else resolveExtensions.push('.js', '.jsx');
-  } else if (isTypescript) {
-    resolveExtensions.push('.ts');
-  } else {
-    resolveExtensions.push('.js');
-  }
 
+  if (isTypescript) {
+    resolveExtensions.push('.ts');
+    imports.push(
+      `import external from "rollup-plugin-peer-deps-external";`,
+      `import typescript from "rollup-plugin-typescript2";`
+    );
+  }
+  if (!isReact) {
+    plugins.push('commonjs()');
+    outputs.push(`{
+      name:'index',
+      file: 'dist/bundle.js',
+      format: 'iife', 
+      sourcemap: true
+    }`);
+    if (isTypescript) {
+      plugins.push(
+        `external()`,
+
+        `resolve({
+          extensions:${JSON.stringify(resolveExtensions)}
+        })`,
+        `  typescript({
+        rollupCommonJSResolveHack: true,
+        clean: true
+      })`
+      );
+    }
+    if (isBabel) {
+      plugins.push(`resolve({
+        extensions:${JSON.stringify(resolveExtensions)}
+      })`);
+    }
+  }
   if (isReact) {
     if (isTypescript) {
-      imports.push(
-        `import external from "rollup-plugin-peer-deps-external";`,
-        `import typescript from "rollup-plugin-typescript2";`,
-        `import pkg from "./package.json";`
-      );
+      imports.push(`import pkg from "./package.json";`);
+      resolveExtensions.push('.tsx');
       plugins.push(
         `external()`,
         `resolve({
@@ -176,6 +200,7 @@ export const getRollupConfig = features => {
         }`
       );
     } else {
+      resolveExtensions.push('.jsx');
       imports.push(`import globals from 'rollup-plugin-node-globals';`);
 
       plugins.push(
@@ -194,35 +219,6 @@ export const getRollupConfig = features => {
         sourcemap: true
       }`);
     }
-  } else {
-    plugins.push('commonjs()');
-    outputs.push(`{
-      name:'index',
-      file: 'dist/bundle.js',
-      format: 'iife', 
-      sourcemap: true
-    }`);
-  }
-
-  if (!isReact && isTypescript) {
-    plugins.push(
-      `external()`,
-
-      `resolve({
-        extensions:${JSON.stringify(resolveExtensions)}
-      })`,
-      `  typescript({
-      rollupCommonJSResolveHack: true,
-      clean: true
-    })`,
-      `commonjs()`,
-      `typescript()`
-    );
-  }
-  if (!isReact && isBabel) {
-    plugins.push(`resolve({
-      extensions:${JSON.stringify(resolveExtensions)}
-    })`);
   }
 
   return `${imports.join('\n')}

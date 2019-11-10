@@ -89,9 +89,12 @@ export default (() => {
       group: 'Transpiler',
       devDependencies: configItems => {
         const isReact = _.includes(configItems, 'React');
-        const devDepList = ['typescript', 'rollup-plugin-typescript2'];
-        if (isReact)
-          devDepList.push(`rollup-plugin-peer-deps-external`, `chalk`);
+        const devDepList = [
+          'typescript',
+          'rollup-plugin-typescript2',
+          'rollup-plugin-peer-deps-external',
+        ];
+
         return devDepList;
       },
       dependencies: () => [],
