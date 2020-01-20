@@ -123,7 +123,7 @@ Made with [createapp.dev](https://createapp.dev/)
 export const gitignore = () => `
 .cache/
 coverage/
-dist/
+dist/*
 !dist/index.html
 node_modules/
 *.log
