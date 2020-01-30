@@ -434,9 +434,10 @@ export default (() => {
 
         if (!isTypescript) {
           files['src/index.js'] = emptyIndexJs(getStyleImports(configItems));
-          if (!isHTMLWebpackPlugin) {
-            files['dist/index.html'] = indexHtml();
-          }
+        }
+
+        if (!isHTMLWebpackPlugin) {
+          files['dist/index.html'] = indexHtml();
         }
 
         return files;
