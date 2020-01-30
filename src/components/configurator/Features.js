@@ -393,6 +393,20 @@ function addCssIfPostCSS(allFeatureStates, affectedFeature, setToSelected) {
   };
 }
 
+function addHTMLWebpackPluginIfCodeSplitVendors(
+  allFeatureStates,
+  affectedFeature,
+  setToSelected
+) {
+  return {
+    ...allFeatureStates,
+    'HTML webpack plugin':
+      affectedFeature === 'Code split vendors' && setToSelected
+        ? true
+        : allFeatureStates['HTML webpack plugin'],
+  };
+}
+
 function addBabelIfReact(allFeatureStates, affectedFeature, setToSelected) {
   const forceBabel = allFeatureStates.React && !allFeatureStates.Typescript;
 
@@ -417,6 +431,7 @@ export const selectionRules = {
     addOrRemoveReactHotLoader,
     addCssIfPostCSS,
     removeEslintIfTypscript,
+    addHTMLWebpackPluginIfCodeSplitVendors,
   },
 };
 // eslint-disable-next-line

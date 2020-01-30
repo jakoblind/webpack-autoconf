@@ -252,6 +252,8 @@ const selectionRules = {
     allSelectionRules.additionalSelectFunctions.addOrRemoveReactHotLoader,
     allSelectionRules.additionalSelectFunctions.addCssIfPostCSS,
     allSelectionRules.additionalSelectFunctions.removeEslintIfTypscript,
+    allSelectionRules.additionalSelectFunctions
+      .addHTMLWebpackPluginIfCodeSplitVendors,
   ],
 };
 
