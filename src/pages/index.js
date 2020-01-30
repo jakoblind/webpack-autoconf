@@ -263,8 +263,9 @@ const selectionRules = {
     allSelectionRules.additionalSelectFunctions.addCssIfPostCSS,
     allSelectionRules.additionalSelectFunctions.removeEslintIfTypscript,
     allSelectionRules.additionalSelectFunctions
-    enforceEitherBabelOrTypescriptForRollup,
-    addHTMLWebpackPluginIfCodeSplitVendors,
+      .enforceEitherBabelOrTypescriptForRollup,
+    allSelectionRules.additionalSelectFunctions
+      .addHTMLWebpackPluginIfCodeSplitVendors,
   ],
 };
 
