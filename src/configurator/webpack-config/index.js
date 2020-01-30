@@ -5,7 +5,7 @@ import {
   reactAppJs,
   reactAppTsx,
 } from '../../templates/react/index';
-
+import { indexHtml } from '../../templates/base';
 import { svelteIndexJs, svelteAppSvelte } from '../../templates/svelte/index';
 
 import {
@@ -14,7 +14,6 @@ import {
   addModuleRule,
 } from '../configurator-webpack-helpers';
 import { vueIndexAppVue, vueIndexTs, vueShimType } from '../../templates/vue';
-import { indexHtml } from '../../templates/base';
 import { emptyIndexJs } from '../../templates/empty/index';
 
 import { tsconfig, tsconfigReact } from '../../templates/ts';
@@ -86,13 +85,11 @@ export default (() => {
           return {
             'src/app.tsx': reactAppTsx(isHotReact),
             'src/index.tsx': reactIndexTsx(extraImports, isHotReact),
-            'dist/index.html': indexHtml(),
           };
         }
         return {
           'src/app.js': reactAppJs(isHotReact),
           'src/index.js': reactIndexJs(extraImports),
-          'dist/index.html': indexHtml(),
         };
       },
     },
@@ -124,7 +121,6 @@ export default (() => {
         return {
           'src/index.js': svelteIndexJs(),
           'src/App.svelte': svelteAppSvelte(_.join(styling, '\n\n')),
-          'dist/index.html': indexHtml(),
         };
       },
     },
@@ -162,7 +158,6 @@ export default (() => {
         return _.assign(
           {
             'src/App.vue': vueIndexAppVue(_.join(styling, '\n')),
-            'dist/index.html': indexHtml(),
             [indexFilename]: vueIndexTs(),
           },
           isTypescript ? { 'vue-shim.d.ts': vueShimType } : {}
@@ -242,7 +237,6 @@ export default (() => {
         const sourceFiles =
           !isReact && !isVue
             ? {
-                'dist/index.html': indexHtml(),
                 'src/index.ts': emptyIndexJs(),
               }
             : {};
@@ -304,25 +298,9 @@ export default (() => {
     Prettier: lintingRules.prettier,
     'Code split vendors': {
       group: 'Optimization',
-      devDependencies: configItems => [
-        'html-webpack-plugin',
-        'html-webpack-template',
-      ],
-      webpackImports: [
-        "const HtmlWebpackPlugin = require('html-webpack-plugin');",
-      ],
       webpack: webpackConfig => {
-        const withPlugin = addPlugin(
-          webpackConfig,
-          `CODE:new HtmlWebpackPlugin({
-    template: require('html-webpack-template'),
-    inject: false,
-    appMountId: 'app',
-  })`
-        );
-
         const withFilename = _.setWith(
-          _.clone(withPlugin),
+          webpackConfig,
           'output.filename',
           '[name].[contenthash].js',
           _.clone
@@ -343,6 +321,27 @@ export default (() => {
             },
           },
           _.clone
+        );
+      },
+    },
+    'HTML webpack plugin': {
+      group: 'Webpack plugins',
+      devDependencies: configItems => [
+        'html-webpack-plugin',
+        'html-webpack-template',
+      ],
+      webpackImports: [
+        "const HtmlWebpackPlugin = require('html-webpack-plugin');",
+      ],
+      webpack: webpackConfig => {
+        return addPlugin(
+          webpackConfig,
+          `CODE:new HtmlWebpackPlugin({
+    template: require('html-webpack-template'),
+    inject: false,
+    appMountId: 'app',
+    filename: 'index.html'
+  })`
         );
       },
     },
@@ -406,14 +405,21 @@ export default (() => {
       devDependencies: ['webpack', 'webpack-cli', 'webpack-dev-server'],
       files: configItems => {
         const isTypescript = _.includes(configItems, 'Typescript');
-        const extraImports = getStyleImports(configItems);
+        const isHTMLWebpackPlugin = _.includes(
+          configItems,
+          'HTML webpack plugin'
+        );
+        const files = {};
+
         if (!isTypescript) {
-          return {
-            'src/index.js': emptyIndexJs(extraImports),
-            'dist/index.html': indexHtml(),
-          };
+          files['src/index.js'] = emptyIndexJs(getStyleImports(configItems));
         }
-        return [];
+
+        if (!isHTMLWebpackPlugin) {
+          files['dist/index.html'] = indexHtml();
+        }
+
+        return files;
       },
     },
   };

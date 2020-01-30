@@ -200,6 +200,14 @@ const webpackDocsMap = {
       <p>
         Prettier is an opinionated code formatter. It automatically formats the
         code for you.
+        <h3>Learn more</h3>
+        <ul>
+          <li>
+            <a href="https://blog.jakoblind.no/prettier/" target="new">
+              What is Prettier and how to configure it
+            </a>
+          </li>
+        </ul>
       </p>
     </div>
   ),
@@ -282,6 +290,13 @@ const commonDocsMap = {
       <p>
         Prettier is an opinionated code formatter. It automatically formats the
         code for you.
+        <ul>
+          <li>
+            <a href="https://blog.jakoblind.no/prettier/" target="new">
+              What is Prettier and how to configure it
+            </a>
+          </li>
+        </ul>
       </p>
     </div>
   ),

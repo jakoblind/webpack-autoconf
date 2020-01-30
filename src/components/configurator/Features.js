@@ -425,6 +425,20 @@ function addCssIfPostCSS(allFeatureStates, affectedFeature, setToSelected) {
   };
 }
 
+function addHTMLWebpackPluginIfCodeSplitVendors(
+  allFeatureStates,
+  affectedFeature,
+  setToSelected
+) {
+  return {
+    ...allFeatureStates,
+    'HTML webpack plugin':
+      affectedFeature === 'Code split vendors' && setToSelected
+        ? true
+        : allFeatureStates['HTML webpack plugin'],
+  };
+}
+
 function addBabelIfReact(allFeatureStates, affectedFeature, setToSelected) {
   const forceBabel = allFeatureStates.React && !allFeatureStates.Typescript;
 
@@ -451,6 +465,7 @@ export const selectionRules = {
     removeEslintIfTypscript,
     enforceEitherBabelOrTypescriptForRollup,
     enforceBabelReactByDefaultForRollup,
+    addHTMLWebpackPluginIfCodeSplitVendors,
   },
 };
 // eslint-disable-next-line
