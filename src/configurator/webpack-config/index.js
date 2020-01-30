@@ -298,26 +298,9 @@ export default (() => {
     Prettier: lintingRules.prettier,
     'Code split vendors': {
       group: 'Optimization',
-      devDependencies: configItems => [
-        'html-webpack-plugin',
-        'html-webpack-template',
-      ],
-      webpackImports: [
-        "const HtmlWebpackPlugin = require('html-webpack-plugin');",
-      ],
       webpack: webpackConfig => {
-        const withPlugin = addPlugin(
-          webpackConfig,
-          `CODE:new HtmlWebpackPlugin({
-    template: require('html-webpack-template'),
-    inject: false,
-    appMountId: 'app',
-    filename: 'index.html'
-  })`
-        );
-
         const withFilename = _.setWith(
-          _.clone(withPlugin),
+          webpackConfig,
           'output.filename',
           '[name].[contenthash].js',
           _.clone
@@ -351,7 +334,7 @@ export default (() => {
         "const HtmlWebpackPlugin = require('html-webpack-plugin');",
       ],
       webpack: webpackConfig => {
-        const withPlugin = addPlugin(
+        return addPlugin(
           webpackConfig,
           `CODE:new HtmlWebpackPlugin({
     template: require('html-webpack-template'),
@@ -359,12 +342,6 @@ export default (() => {
     appMountId: 'app',
     filename: 'index.html'
   })`
-        );
-        return _.setWith(
-          _.clone(withPlugin),
-          'output.filename',
-          '[name].[contenthash].js',
-          _.clone
         );
       },
     },
