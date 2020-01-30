@@ -5,7 +5,7 @@ import {
   reactAppJs,
   reactAppTsx,
 } from '../../templates/react/index';
-
+import { indexHtml } from '../../templates/base';
 import { svelteIndexJs, svelteAppSvelte } from '../../templates/svelte/index';
 
 import {
@@ -120,7 +120,7 @@ export default (() => {
         const styling = getStyleTags(configItems);
         return {
           'src/index.js': svelteIndexJs(),
-          'src/App.svelte': svelteAppSvelte(_.join(styling, '\n\n'))
+          'src/App.svelte': svelteAppSvelte(_.join(styling, '\n\n')),
         };
       },
     },
@@ -158,7 +158,7 @@ export default (() => {
         return _.assign(
           {
             'src/App.vue': vueIndexAppVue(_.join(styling, '\n')),
-            [indexFilename]: vueIndexTs()
+            [indexFilename]: vueIndexTs(),
           },
           isTypescript ? { 'vue-shim.d.ts': vueShimType } : {}
         );
@@ -426,13 +426,20 @@ export default (() => {
       devDependencies: ['webpack', 'webpack-cli'],
       files: configItems => {
         const isTypescript = _.includes(configItems, 'Typescript');
-        const extraImports = getStyleImports(configItems);
+        const isHTMLWebpackPlugin = _.includes(
+          configItems,
+          'HTML webpack plugin'
+        );
+        const files = {};
+
         if (!isTypescript) {
-          return {
-            'src/index.js': emptyIndexJs(extraImports)
-          };
+          files['src/index.js'] = emptyIndexJs(getStyleImports(configItems));
+          if (!isHTMLWebpackPlugin) {
+            files['dist/index.html'] = indexHtml();
+          }
         }
-        return [];
+
+        return files;
       },
     },
   };
