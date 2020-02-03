@@ -138,7 +138,7 @@ function Tabs({ selected, setSelected }) {
               selected === 'webpack' ? '-color' : ''
             }.png`)}
           />
-          <div>Webpack</div>
+          <div>webpack</div>
         </button>
         <button
           onClick={() => setSelected('parcel')}
