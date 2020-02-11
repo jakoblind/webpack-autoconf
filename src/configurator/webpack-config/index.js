@@ -198,7 +198,7 @@ export default (() => {
     Typescript: {
       group: 'Transpiler',
       devDependencies: configItems => {
-        const devDepList = ['typescript', 'awesome-typescript-loader'];
+        const devDepList = ['typescript', 'ts-loader'];
         if (_.includes(configItems, 'React hot loader'))
           devDepList.push('@hot-loader/react-dom');
         return devDepList;
@@ -207,7 +207,7 @@ export default (() => {
         const isVue = _.includes(configItems, 'Vue');
         const typescriptModule = {
           test: /\.ts(x)?$/,
-          use: ['awesome-typescript-loader'],
+          use: ['ts-loader'],
           exclude: /node_modules/,
         };
         if (isVue) {
