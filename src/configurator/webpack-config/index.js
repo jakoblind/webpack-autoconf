@@ -83,12 +83,12 @@ export default (() => {
 
         if (isTypescript) {
           return {
-            'src/app.tsx': reactAppTsx(isHotReact),
+            'src/App.tsx': reactAppTsx(isHotReact),
             'src/index.tsx': reactIndexTsx(extraImports, isHotReact),
           };
         }
         return {
-          'src/app.js': reactAppJs(isHotReact),
+          'src/App.js': reactAppJs(isHotReact),
           'src/index.js': reactIndexJs(extraImports),
         };
       },
