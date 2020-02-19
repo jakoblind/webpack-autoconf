@@ -15,7 +15,7 @@ export default ${isHot ? 'hot(App)' : 'App'};
 
 export const reactIndexJs = (extraImports = []) => `import React from "react";
 import ReactDOM from "react-dom";
-import App from "./app";
+import App from "./App";
 ${joinToString(extraImports)}
 
 var mountNode = document.getElementById("app");
@@ -44,7 +44,7 @@ export const reactIndexTsx = (
 ) => `import * as React from 'react';
 import * as ReactDOM from "react-dom";
 
-import App from './app';
+import App from './App';
 ${joinToString(extraImports)}
 var mountNode = document.getElementById("app");
 ReactDOM.render(<App name="Jane" />, mountNode);

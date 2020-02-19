@@ -1,7 +1,7 @@
 import _ from 'lodash';
 
 import { css, scss, less, stylus } from '../../templates/styling';
-import { reactIndexJs, reactIndexTsx } from '../../templates/react/index';
+import { reactIndexJs, reactAppJs, reactIndexTsx, reactAppTsx } from '../../templates/react/index';
 import { indexHtml } from '../../templates/base';
 import { emptyIndexJs } from '../../templates/empty/index';
 import { tsconfig, tsconfigReact } from '../../templates/ts';
@@ -41,11 +41,13 @@ export default (() => {
         if (isTypescript) {
           return {
             'src/index.tsx': reactIndexTsx(extraImports),
+            'src/App.tsx': reactAppTsx(false),
             'src/index.html': indexHtml('index.tsx'),
           };
         }
         return {
           'src/index.js': reactIndexJs(extraImports),
+          'src/App.js': reactAppJs(false),
           'src/index.html': indexHtml('index.js'),
         };
       },
