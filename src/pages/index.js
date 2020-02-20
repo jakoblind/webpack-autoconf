@@ -298,7 +298,7 @@ const buildConfigConfig = {
 
 const initialState = (selectedTab = 'webpack') => ({
   selectedTab,
-  selectedFeatures: {},
+  selectedFeatures: { 'No library': true },
 });
 
 function reducer(state, action) {
