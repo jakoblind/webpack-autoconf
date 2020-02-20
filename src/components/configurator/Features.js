@@ -114,6 +114,7 @@ FeatureHelp.propTypes = {
 
 const Feature = ({
   feature,
+  isRadio,
   selected,
   setSelected,
   onMouseEnter,
@@ -133,9 +134,10 @@ const Feature = ({
       <input
         checked={selected || false}
         onChange={() => setSelected(feature)}
-        type="checkbox"
+        type={isRadio ? "radio" : "checkbox"}
+        name="main-library"
       />
-      <span className={styles.checkmark} />{' '}
+      <span className={isRadio ? styles.radio : styles.checkmark} />{' '}
     </label>
     <FeatureHelp featureName={feature} selectedBuildTool={selectedBuildTool} />
   </>
@@ -143,6 +145,7 @@ const Feature = ({
 
 Feature.propTypes = {
   feature: PropTypes.string.isRequired,
+  isRadio: PropTypes.bool,
   selected: PropTypes.bool,
   setSelected: PropTypes.func.isRequired,
   onMouseEnter: PropTypes.func.isRequired,
@@ -151,6 +154,7 @@ Feature.propTypes = {
 };
 
 Feature.defaultProps = {
+  isRadio: false,
   selected: false,
 };
 
@@ -172,6 +176,7 @@ function FeatureGroup({
   selectedBuildTool,
 }) {
   const [expanded, setExpanded] = useState(group === 'Main library');
+  const [isRadio, setIsRadio] = useState(group === 'Main library');
   const prevSelected = usePrevious(selected);
   useEffect(() => {
     const anyChanged = _.reduce(
@@ -202,6 +207,7 @@ function FeatureGroup({
           {_.map(featureList, ({ feature }) => (
             <Feature
               feature={feature}
+              isRadio={isRadio} // main library options should be type radio
               selected={selected[feature]}
               setSelected={setSelected}
               onMouseEnter={onMouseEnter}
