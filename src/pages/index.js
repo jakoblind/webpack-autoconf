@@ -308,16 +308,34 @@ function reducer(state, action) {
         buildConfigConfig[action.selectedTab].featureConfig.features
       );
 
+      let shouldSetNoLibrary = state.selectedFeatures['No library'];
+
       const filteredFeatures = _.mapValues(
         state.selectedFeatures,
-        (selected, feature) =>
-          _.includes(newAllPossibleFeatures, feature) && selected
-      );
+        (selected, feature) => {
+          if(
+            action.selectedTab === 'parcel' &&
+            feature === 'Svelte' &&
+            selected
+          ) {
+            // Svelte was selected when switching to the parcel tab
+            // which isn't supported so we set the flag shouldSetNoLibrary to
+            // true so main library switches to "No library"
+            shouldSetNoLibrary = true;
+            // return false to set Svelte to false
+            return false;
+          }
+          return _.includes(newAllPossibleFeatures, feature) && selected
+        });
+
 
       return {
         ...state,
         selectedTab: action.selectedTab,
-        selectedFeatures: filteredFeatures,
+        selectedFeatures: {
+          ...filteredFeatures,
+          'No library': shouldSetNoLibrary,
+        },
       };
     case 'setSelectedFeatures':
       const setToSelected = !state.selectedFeatures[action.feature];
