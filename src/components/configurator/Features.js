@@ -299,25 +299,30 @@ function enforceEitherReactOrVueOrSvelte(
       ...allFeatureStates,
       React: !setToSelected,
       Svelte: !setToSelected,
+      'No library': !setToSelected,
     };
     // deselect vue if user selects react
-  }
-  if (affectedFeature === 'React') {
-    if (setToSelected) {
-      return {
-        ...allFeatureStates,
-        Vue: !setToSelected,
-        Svelte: !setToSelected,
-      };
-    }
-  } else if (affectedFeature === 'Svelte') {
-    if (setToSelected) {
-      return {
-        ...allFeatureStates,
-        Vue: !setToSelected,
-        React: !setToSelected,
-      };
-    }
+  } else if (affectedFeature === 'React' && setToSelected) {
+    return {
+      ...allFeatureStates,
+      Vue: !setToSelected,
+      Svelte: !setToSelected,
+      'No library': !setToSelected,
+    };
+  } else if (affectedFeature === 'Svelte' && setToSelected) {
+    return {
+      ...allFeatureStates,
+      Vue: !setToSelected,
+      React: !setToSelected,
+      'No library': !setToSelected,
+    };
+  } else if (affectedFeature === 'No library' && setToSelected) {
+    return {
+      ...allFeatureStates,
+      Vue: !setToSelected,
+      React: !setToSelected,
+      Svelte: !setToSelected,
+    };
   }
 
   return allFeatureStates;
