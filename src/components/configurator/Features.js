@@ -176,7 +176,7 @@ function FeatureGroup({
   selectedBuildTool,
 }) {
   const [expanded, setExpanded] = useState(group === 'Main library');
-  const [isRadio, setIsRadio] = useState(group === 'Main library');
+  const isRadio = group === 'Main library';
   const prevSelected = usePrevious(selected);
   useEffect(() => {
     const anyChanged = _.reduce(
