@@ -309,25 +309,18 @@ function reducer(state, action) {
       );
 
       let shouldSetNoLibrary = state.selectedFeatures['No library'];
+      if(action.selectedTab === 'parcel' && state.selectedFeatures.Svelte) {
+        // Svelte was selected when switching to the parcel tab
+        // which isn't supported so we set the flag shouldSetNoLibrary to
+        // true so main library switches to "No library"
+        shouldSetNoLibrary = true;
+      }
 
       const filteredFeatures = _.mapValues(
         state.selectedFeatures,
-        (selected, feature) => {
-          if(
-            action.selectedTab === 'parcel' &&
-            feature === 'Svelte' &&
-            selected
-          ) {
-            // Svelte was selected when switching to the parcel tab
-            // which isn't supported so we set the flag shouldSetNoLibrary to
-            // true so main library switches to "No library"
-            shouldSetNoLibrary = true;
-            // return false to set Svelte to false
-            return false;
-          }
-          return _.includes(newAllPossibleFeatures, feature) && selected
-        });
-
+        (selected, feature) =>
+          _.includes(newAllPossibleFeatures, feature) && selected
+      );
 
       return {
         ...state,
