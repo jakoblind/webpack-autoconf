@@ -288,7 +288,7 @@ Features.propTypes = PropTypes.shape({
   only possible to select one of Vue or React or Svelte. Needing both is an edge case
   that is probably very rare. It adds much complexity to support both.
 */
-function enforceEitherReactOrVueOrSvelte(
+function enforceMainLibrary(
   allFeatureStates,
   affectedFeature,
   setToSelected
@@ -437,7 +437,7 @@ function addBabelIfReact(allFeatureStates, affectedFeature, setToSelected) {
 export const selectionRules = {
   stopSelectFunctions: { stopIfNotBabelOrTypescriptForReact },
   additionalSelectFunctions: {
-    enforceEitherReactOrVueOrSvelte,
+    enforceMainLibrary,
     addBabelIfReact,
     addOrRemoveReactHotLoader,
     addCssIfPostCSS,
