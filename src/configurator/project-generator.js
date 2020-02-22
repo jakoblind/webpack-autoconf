@@ -11,6 +11,8 @@ import {
 } from './configurator';
 
 import { parcelConfig, webpackConfig } from './configurator-config';
+import rollupConfig from './rollup-config';
+import { getReadMeFile, getRollupConfig } from '../templates/rollup';
 
 /*
   this function will call an external API to get version for node
@@ -27,7 +29,6 @@ const generateProject = (features, name, getNodeVersionPromise) => {
   const newWebpackConfig = createWebpackConfig(features);
   const newBabelConfig = createBabelConfig(features);
   const projectName = name || getDefaultProjectName('empty-project', features);
-
   const maybeConfigBabel =
     newBabelConfig && (isReact || isBabel)
       ? { '.babelrc': newBabelConfig }
@@ -89,6 +90,50 @@ export function generateParcelProject(features, name, getNodeVersionPromise) {
       getNodeVersionPromise,
       features
     ).then(packageJson => {
+      fileMap['package.json'] = JSON.stringify(packageJson, null, 2);
+      return fileMap;
+    });
+  }
+  return fileMap;
+}
+
+export function generateRollupProject(features, name, getNodeVersionPromise) {
+  // console.log('heree');
+  const additionalFilesMap = createAdditionalFilesMap(rollupConfig, features);
+  const newBabelConfig = createBabelConfig(features);
+  const projectName = name || getDefaultProjectName('empty-project', features);
+
+  const maybeConfigBabel = newBabelConfig
+    ? { '.babelrc': newBabelConfig }
+    : null;
+
+  const fileMap = _.assign(
+    {},
+    {
+      'rollup.config.js': getRollupConfig(features),
+      'README.md': getReadMeFile(name, features),
+      'package.json': 'empty package.json',
+    },
+    additionalFilesMap,
+    maybeConfigBabel
+  );
+
+  if (getNodeVersionPromise) {
+    return getPackageJson(
+      rollupConfig,
+      name,
+      getNodeVersionPromise,
+      features
+    ).then(packageJson => {
+      const isReact = _.includes(features, 'React');
+      const isTypescript = _.includes(features, 'Typescript');
+      if (isReact && isTypescript) {
+        packageJson.module = 'dist/index.es.js';
+        packageJson.main = 'dist/index.js';
+        packageJson.peerDependencies = packageJson.dependencies;
+        delete packageJson.dependencies;
+      }
+
       fileMap['package.json'] = JSON.stringify(packageJson, null, 2);
       return fileMap;
     });

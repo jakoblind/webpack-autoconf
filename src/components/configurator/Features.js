@@ -172,6 +172,7 @@ function FeatureGroup({
   selectedBuildTool,
 }) {
   const [expanded, setExpanded] = useState(group === 'Main library');
+
   const prevSelected = usePrevious(selected);
   useEffect(() => {
     const anyChanged = _.reduce(
@@ -317,6 +318,37 @@ function enforceEitherReactOrVueOrSvelte(
   return allFeatureStates;
 }
 
+function enforceEitherBabelOrTypescriptForRollup(
+  allFeatureStates,
+  affectedFeature,
+  setToSelected
+) {
+  if (affectedFeature === 'Babel' && setToSelected) {
+    return { ...allFeatureStates, Typescript: false };
+  }
+  if (affectedFeature === 'Typescript' && setToSelected) {
+    return { ...allFeatureStates, Babel: false };
+  }
+  return allFeatureStates;
+}
+
+function enforceBabelReactByDefaultForRollup(
+  allFeatureStates,
+  affectedFeature,
+  setToSelected
+) {
+  if (
+    affectedFeature === 'React' &&
+    setToSelected &&
+    !allFeatureStates.Babel &&
+    !allFeatureStates.Typescript
+  ) {
+    return { ...allFeatureStates, Babel: true };
+  }
+
+  return allFeatureStates;
+}
+
 function addOrRemoveReactHotLoader(
   allFeatureStates,
   affectedFeature,
@@ -431,6 +463,8 @@ export const selectionRules = {
     addOrRemoveReactHotLoader,
     addCssIfPostCSS,
     removeEslintIfTypscript,
+    enforceEitherBabelOrTypescriptForRollup,
+    enforceBabelReactByDefaultForRollup,
     addHTMLWebpackPluginIfCodeSplitVendors,
   },
 };

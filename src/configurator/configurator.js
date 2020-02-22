@@ -146,8 +146,19 @@ module.exports = ${exportStatement};`;
 function createPackageJsonConfig(featureConfig, configItems) {
   return _.reduce(
     configItems,
-    (acc, currentValue) =>
-      _.merge(acc, featureConfig.features[currentValue].packageJson),
+    (acc, currentValue) => {
+      if (
+        typeof featureConfig.features[currentValue].packageJson === 'function'
+      )
+        return _.merge(
+          acc,
+          featureConfig.features[currentValue].packageJson(
+            featureConfig,
+            configItems
+          )
+        );
+      return _.merge(acc, featureConfig.features[currentValue].packageJson);
+    },
     {}
   );
 }

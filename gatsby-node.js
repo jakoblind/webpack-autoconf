@@ -5,18 +5,18 @@
  */
 
 // You can delete this file if you're not using it
-const path = require(`path`)
+const path = require(`path`);
 
 exports.createPages = ({ graphql, actions }) => {
-  const { createPage } = actions
-  const page = path.resolve(`src/pages/index.js`)
+  const { createPage } = actions;
+  const page = path.resolve(`src/pages/index.js`);
   createPage({
     path: `/webpack`,
     component: page,
     context: {
       selectedTab: 'webpack',
     },
-  })
+  });
 
   createPage({
     path: `/parcel`,
@@ -24,5 +24,13 @@ exports.createPages = ({ graphql, actions }) => {
     context: {
       selectedTab: 'parcel',
     },
-  })
-}
+  });
+
+  createPage({
+    path: `/rollup`,
+    component: page,
+    context: {
+      selectedTab: 'rollup',
+    },
+  });
+};

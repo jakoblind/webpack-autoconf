@@ -398,9 +398,11 @@ export default (() => {
         scripts: {
           'build-dev': 'webpack -d --mode development',
           'build-prod': 'webpack -p --mode production',
+          start:
+            'webpack-dev-server --hot --mode development --content-base ./dist',
         },
       },
-      devDependencies: ['webpack', 'webpack-cli'],
+      devDependencies: ['webpack', 'webpack-cli', 'webpack-dev-server'],
       files: configItems => {
         const isTypescript = _.includes(configItems, 'Typescript');
         const isHTMLWebpackPlugin = _.includes(
