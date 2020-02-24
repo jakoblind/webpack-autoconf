@@ -334,7 +334,7 @@ function reducer(state, action) {
       const setToSelected = !state.selectedFeatures[action.feature];
       // logFeatureClickToGa(feature, setToSelected)
 
-      const selectedFature = {
+      const selectedFeature = {
         ...state.selectedFeatures,
         [action.feature]: setToSelected,
       };
@@ -344,7 +344,7 @@ function reducer(state, action) {
           _.map(
             buildConfigConfig[state.selectedTab].selectionRules
               .stopSelectFunctions,
-            fn => fn(selectedFature, action.feature, setToSelected)
+            fn => fn(selectedFeature, action.feature, setToSelected)
           )
         )
       ) {
@@ -356,7 +356,7 @@ function reducer(state, action) {
           .additionalSelectFunctions,
         (currentSelectionMap, fn) =>
           fn(currentSelectionMap, action.feature, setToSelected),
-        selectedFature
+        selectedFeature
       );
       return { ...state, selectedFeatures: newSelected };
 
