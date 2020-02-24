@@ -570,14 +570,15 @@ textarea {
 }
 
 /* On mouse-over, add a grey background color */
-.feature-container:hover input ~ .checkmark {
+.feature-container:hover input ~ .checkmark,
+.feature-container:hover input ~ .radio {
     background-color: #969696;
 }
 
 /* When the checkbox is checked, add a blue background */
-.feature-container input:checked ~ .checkmark {
+.feature-container input:checked ~ .checkmark,
+.feature-container input:checked ~ .radio {
     background-color: #0c0c0c;
-
 }
 
 /* Create the checkmark/indicator (hidden when not checked) */
@@ -588,7 +589,8 @@ textarea {
 }
 
 /* Show the checkmark when checked */
-.feature-container input:checked ~ .checkmark:after {
+.feature-container input:checked ~ .checkmark:after,
+.feature-container input:checked ~ .radio::after {
     display: block;
 }
 
@@ -603,6 +605,31 @@ textarea {
     -webkit-transform: rotate(45deg);
     -ms-transform: rotate(45deg);
     transform: rotate(45deg);
+}
+
+/* Create a custom radio button */
+.radio {
+    display: block;
+    position: absolute;
+    top: 0;
+    left: 20px;
+    height: 15px;
+    width: 15px;
+    border-radius: 50%;
+    background-color: #e8e8e8;
+}
+
+/* Style the checkmark/indicator */
+.feature-container .radio::after {
+    content: "";
+    position: absolute;
+    display: none;
+    left: 4px;
+    top: 4px;
+    width: 7px;
+    height: 7px;
+    background-color: #e8e8e8;
+    border-radius: 50%;
 }
 
 .red {

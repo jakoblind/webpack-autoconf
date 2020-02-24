@@ -24,6 +24,9 @@ function getStyleImports(configItems) {
 }
 export default (() => {
   const features = {
+    'No library': {
+      group: 'Main library',
+    },
     React: {
       group: 'Main library',
       dependencies: configItems => ['react', 'react-dom'],

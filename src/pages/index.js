@@ -247,7 +247,7 @@ const selectionRules = {
     allSelectionRules.stopSelectFunctions.stopIfNotBabelOrTypescriptForReact,
   ],
   additionalSelectFunctions: [
-    allSelectionRules.additionalSelectFunctions.enforceEitherReactOrVueOrSvelte,
+    allSelectionRules.additionalSelectFunctions.enforceMainLibrary,
     allSelectionRules.additionalSelectFunctions.addBabelIfReact,
     allSelectionRules.additionalSelectFunctions.addOrRemoveReactHotLoader,
     allSelectionRules.additionalSelectFunctions.addCssIfPostCSS,
@@ -262,7 +262,7 @@ const parcelSelectionRules = {
     allSelectionRules.stopSelectFunctions.stopIfNotBabelOrTypescriptForReact,
   ],
   additionalSelectFunctions: [
-    allSelectionRules.additionalSelectFunctions.enforceEitherReactOrVueOrSvelte,
+    allSelectionRules.additionalSelectFunctions.enforceMainLibrary,
     allSelectionRules.additionalSelectFunctions.addBabelIfReact,
   ],
 };
@@ -298,7 +298,7 @@ const buildConfigConfig = {
 
 const initialState = (selectedTab = 'webpack') => ({
   selectedTab,
-  selectedFeatures: {},
+  selectedFeatures: { 'No library': true },
 });
 
 function reducer(state, action) {
@@ -307,6 +307,14 @@ function reducer(state, action) {
       const newAllPossibleFeatures = _.keys(
         buildConfigConfig[action.selectedTab].featureConfig.features
       );
+
+      let shouldSetNoLibrary = state.selectedFeatures['No library'];
+      if(action.selectedTab === 'parcel' && state.selectedFeatures.Svelte) {
+        // Svelte was selected when switching to the parcel tab
+        // which isn't supported so we set the flag shouldSetNoLibrary to
+        // true so main library switches to "No library"
+        shouldSetNoLibrary = true;
+      }
 
       const filteredFeatures = _.mapValues(
         state.selectedFeatures,
@@ -317,7 +325,10 @@ function reducer(state, action) {
       return {
         ...state,
         selectedTab: action.selectedTab,
-        selectedFeatures: filteredFeatures,
+        selectedFeatures: {
+          ...filteredFeatures,
+          'No library': shouldSetNoLibrary,
+        },
       };
     case 'setSelectedFeatures':
       const setToSelected = !state.selectedFeatures[action.feature];
