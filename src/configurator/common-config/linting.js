@@ -51,7 +51,13 @@ function createEsLintRc(answers = { moduleType: 'esm' }) {
 
 const eslint = {
   group: 'Linting',
-  devDependencies: configItems => ['eslint'],
+  devDependencies: configItems => {
+    const isReact = _.includes(configItems, 'React');
+    return _.concat(
+      ['eslint'],
+      isReact ? ['eslint-plugin-react'] : []
+    );
+  },
   files: configItems => {
     const isReact = _.includes(configItems, 'React');
     const isVue = _.includes(configItems, 'Vue');
