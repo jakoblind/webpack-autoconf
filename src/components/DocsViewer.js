@@ -193,6 +193,9 @@ const webpackDocsMap = {
         generated in <code>.eslintrc.json</code> is very basic is a good
         starting point to extend with your own rules.
       </p>
+      <p>
+          The most common way to run ESlint is to configure your editor to run it and give you syntax highlighting on errors and warning. You can also run it from the CLI. To run ESlint on all your source code, run this command: <code>npx eslint src/*</code>
+          </p>
     </div>
   ),
   Prettier: (
