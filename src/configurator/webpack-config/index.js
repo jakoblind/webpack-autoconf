@@ -348,6 +348,21 @@ export default (() => {
         );
       },
     },
+    'Webpack Bundle Analyzer': {
+      group: 'Webpack plugins',
+      devDependencies: configItems => ['webpack-bundle-analyzer'],
+      webpackImports: [
+        "const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;",
+      ],
+      webpack: webpackConfig => {
+        return addPlugin(
+          webpackConfig,
+          `CODE:new BundleAnalyzerPlugin({
+  analyzerMode: 'static',
+})`
+        );
+      },
+    },
     'React hot loader': {
       group: 'React',
       babel: (babelConfig, configItems) => {
