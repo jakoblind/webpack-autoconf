@@ -340,11 +340,11 @@ export default (() => {
         return addPlugin(
           webpackConfig,
           `CODE:new HtmlWebpackPlugin({
-    template: require('html-webpack-template'),
-    inject: false,
-    appMountId: 'app',
-    filename: 'index.html'
-  })`
+  template: require('html-webpack-template'),
+  inject: false,
+  appMountId: 'app',
+  filename: 'index.html'
+})`
         );
       },
     },
