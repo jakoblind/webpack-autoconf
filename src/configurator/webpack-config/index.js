@@ -359,6 +359,7 @@ export default (() => {
           webpackConfig,
           `CODE:new BundleAnalyzerPlugin({
   analyzerMode: 'static',
+  openAnalyzer: false,
 })`
         );
       },
