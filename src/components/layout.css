@@ -9,7 +9,17 @@ body {
   font-size: large;
 }
 h1 {
-  font-size: small;
+    font-weight: 300;
+}
+
+.header-link {
+    text-decoration: none;
+    color: black;
+}
+
+.main-subheader {
+    font-size: 1em;
+    font-weight: 400;
 }
 
 h2 {
