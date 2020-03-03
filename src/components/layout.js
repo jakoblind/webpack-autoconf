@@ -72,13 +72,17 @@ const Layout = ({ children, title, metaDescription }) => (
               justifyContent: `space-around`,
               listStyle: `none`,
               color: 'black',
-              width: '220px',
+              width: '390px',
               margin: 'auto',
             }}
           >
             <li>
               <a href="https://twitter.com/karljakoblind">Twitter</a>
             </li>
+            <li>
+              <a href="https://spectrum.chat/createapp-dev">Community</a>
+            </li>
+
             <li>
               <a href="https://github.com/jakoblind">GitHub</a>
             </li>
