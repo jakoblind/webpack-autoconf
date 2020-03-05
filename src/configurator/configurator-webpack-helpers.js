@@ -60,8 +60,21 @@ export function addResolverExtensions(webpackConfig, extOrExts, alias) {
   return newWebpackConfig;
 }
 
-export const getStyleLoaderOrVueStyleLoader = configItems =>
-  _.includes(configItems, 'Vue') ? 'vue-style-loader' : 'style-loader';
+export const getStyleLoader = configItems => {
+  const isMiniCssExtractPlugin = _.includes(
+    configItems,
+    'MiniCssExtractPlugin'
+  );
+  const isVue = _.includes(configItems, 'Vue');
+  if (isVue) {
+    return 'vue-style-loader';
+  } else {
+    if (isMiniCssExtractPlugin) {
+      return 'CODE:MiniCssExtractPlugin.loader';
+    }
+    return 'style-loader';
+  }
+};
 
 export const getStyleLoaderDependencyIfNeeded = configItems =>
   _.includes(configItems, 'Vue') ? [] : ['style-loader'];

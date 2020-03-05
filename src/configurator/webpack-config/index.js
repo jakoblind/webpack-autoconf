@@ -364,6 +364,16 @@ export default (() => {
         );
       },
     },
+    MiniCssExtractPlugin: {
+      group: 'Webpack plugins',
+      devDependencies: configItems => ['mini-css-extract-plugin'],
+      webpackImports: [
+        "const MiniCssExtractPlugin = require('mini-css-extract-plugin');",
+      ],
+      webpack: webpackConfig => {
+        return addPlugin(webpackConfig, `CODE:new MiniCssExtractPlugin()`);
+      },
+    },
     'React hot loader': {
       group: 'React',
       babel: (babelConfig, configItems) => {
@@ -426,6 +436,11 @@ export default (() => {
           configItems,
           'HTML webpack plugin'
         );
+        const isMiniCssExtractPlugin = _.includes(
+          configItems,
+          'MiniCssExtractPlugin'
+        );
+
         const files = {};
 
         if (!isTypescript) {
@@ -433,7 +448,10 @@ export default (() => {
         }
 
         if (!isHTMLWebpackPlugin) {
-          files['dist/index.html'] = indexHtml();
+          files['dist/index.html'] = indexHtml({
+            bundleFilename: 'bundle.js',
+            cssFilename: isMiniCssExtractPlugin ? 'main.css' : null,
+          });
         }
 
         return files;
