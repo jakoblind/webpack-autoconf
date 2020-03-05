@@ -67,8 +67,26 @@ const Layout = ({ children, title, metaDescription }) => (
               justifyContent: `space-around`,
               listStyle: `none`,
               color: 'black',
-              width: '390px',
+              maxWidth: '517px',
               margin: 'auto',
+            }}
+          >
+            <li>
+              <Link to="/webpack-course">Free webpack course</Link>
+            </li>
+            <Link to="/webpack-book">Webpack book</Link>
+            <a href="http://blog.jakoblind.no/webpack/">Articles</a>
+            <Link to="/about">About</Link>
+          </ul>
+          <ul
+            style={{
+              display: `flex`,
+              flexWrap: `wrap`,
+              justifyContent: `space-around`,
+              listStyle: `none`,
+              color: 'black',
+              width: '390px',
+              margin: '30px auto',
             }}
           >
             <li>
@@ -90,24 +108,6 @@ const Layout = ({ children, title, metaDescription }) => (
                 Issue
               </a>
             </li>
-          </ul>
-          <ul
-            style={{
-              display: `flex`,
-              flexWrap: `wrap`,
-              justifyContent: `space-around`,
-              listStyle: `none`,
-              color: 'black',
-              maxWidth: '517px',
-              margin: '20px auto',
-            }}
-          >
-            <li>
-              <Link to="/webpack-course">Free webpack course</Link>
-            </li>
-            <Link to="/webpack-book">Webpack book</Link>
-            <a href="http://blog.jakoblind.no/webpack/">Articles</a>
-            <Link to="/about">About</Link>
           </ul>
         </footer>
       </>
