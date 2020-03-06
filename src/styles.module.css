@@ -446,11 +446,27 @@ h2 {
 
 .desktopOnly {
     display: block;
+    margin-top: 50px;
 }
 .smallScreensOnly {
     display: none;
 }
 
+/* styling for project name input */
+label.projectName {
+  display: block;
+  margin-bottom: 20px;
+}
+label.projectName span {
+  display: block;
+  margin-bottom: 2px;
+}
+label.projectName input {
+  display: block;
+  padding: 5px;
+  font-size: 0.85em;
+  border-radius: 5px;
+}
 
 @media only screen and (max-width: 666px) {
     .desktopOnly {
