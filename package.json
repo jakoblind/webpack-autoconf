@@ -49,6 +49,7 @@
     "react-joyride": "^2.1.1",
     "react-modal": "^3.10.1",
     "react-share": "^2.4.0",
+    "validate-npm-package-name": "^3.0.0",
     "webpack-optimize-helper": "^1.0.0"
   },
   "devDependencies": {
