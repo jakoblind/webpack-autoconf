@@ -5,6 +5,7 @@ import { Link } from 'gatsby';
 import jszip from 'jszip';
 import Joyride from 'react-joyride';
 import { saveAs } from 'file-saver';
+import validate from 'validate-npm-package-name';
 import Modal from '../components/Modal';
 import styles from '../styles.module.css';
 import npmVersionPromise from '../fetch-npm-version';
@@ -386,6 +387,7 @@ function Configurator(props) {
     initialState(props.selectedTab)
   );
   const [hoverFeature, setHoverFeature] = useState('');
+  const [projectName, setProjectName] = useState('empty-project');
 
   const {
     featureConfig,
@@ -405,10 +407,45 @@ function Configurator(props) {
     setHoverFeature(null);
   }
 
+  function validateProjectName(name) {
+    // TODO
+    // Consider splitting project name and directory name
+    // into separate fields to not restrict npm package
+    // names from using / and possibly other characters.
+
+    // Whitelist allowed characters and only accept those
+    // to prevent use of characters that isn't allowed in
+    // directory names.
+    // Valid characters:
+    //  * a-z
+    //  * 0-9
+    //  * underscore _
+    //  * dash -
+    //  * dot .
+    //
+    // Uppercase letters not whitelisted because it's not valid
+    // in npm package names
+    const whitelistRegex = /^[a-z0-9_.-]+$/;
+    const isValidCharacters = whitelistRegex.test(name);
+    if(!isValidCharacters && name) return;
+
+    // Use validation function from third party library
+    // to check if the name is a valid npm package name.
+    // The whitelist above only makes sure that no invalid
+    // characters for directory names is present in the name
+    // so this is needed too because the project name is used
+    // as both the directory name and in package.json
+    const isValidNpmPackage = validate(name);
+    if(isValidNpmPackage) {
+      // All validation succeeded so we set the new project name
+      setProjectName(name);
+    }
+  }
+
   function downloadZip() {
     projectGeneratorFunction(
       selectedArray,
-      'empty-project',
+      projectName,
       npmVersionPromise
     ).then(res => {
       const zip = new jszip();
@@ -417,7 +454,8 @@ function Configurator(props) {
       });
 
       zip.generateAsync({ type: 'blob' }).then(function(blob) {
-        saveAs(blob, 'empty-project.zip');
+        saveAs(blob, `${projectName ||
+          getDefaultProjectName("empty-project", selectedArray)}.zip`);
       });
     });
   }
@@ -426,8 +464,6 @@ function Configurator(props) {
 
   const isReact = _.includes(selectedArray, 'React');
   const isTypescript = _.includes(selectedArray, 'Typescript');
-
-  const projectname = getDefaultProjectName('empty-project', selectedArray);
 
   const showFeatures = _.clone(featureConfig.features);
 
@@ -465,8 +501,17 @@ function Configurator(props) {
             selectedBuildTool={state.selectedTab}
           />
           <div className={styles.desktopOnly}>
+            <label className={styles.projectName}>
+              <span>Project name</span>
+              <input
+                type="text"
+                name="project-name"
+                value={projectName}
+                onChange={e => validateProjectName(e.target.value)}
+              />
+            </label>
             <DownloadButton
-              filename={`${projectname}.zip`}
+              filename={`${projectName}.zip`}
               onClick={e => {
                 downloadZip();
                 trackDownload(state.selectedTab, selectedArray);
@@ -483,11 +528,21 @@ function Configurator(props) {
             features={selectedArray}
             highlightFeature={hoverFeature}
             defaultFile={defaultFile}
+            projectName={projectName}
           />
           <br />
           <div className={styles.smallScreensOnly}>
+            <label className={styles.projectName}>
+              <span>Project name</span>
+              <input
+                type="text"
+                name="project-name"
+                value={projectName}
+                onChange={e => validateProjectName(e.target.value)}
+              />
+            </label>
             <DownloadButton
-              filename={`${projectname}.zip`}
+              filename={`${projectName}.zip`}
               onClick={e => {
                 downloadZip();
                 trackDownload(state.selectedTab, selectedArray);
