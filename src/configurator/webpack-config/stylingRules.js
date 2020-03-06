@@ -2,7 +2,7 @@ import _ from 'lodash';
 
 import {
   addModuleRule,
-  getStyleLoaderOrVueStyleLoader,
+  getStyleLoader,
   getStyleLoaderDependencyIfNeeded,
 } from '../configurator-webpack-helpers';
 
@@ -32,7 +32,7 @@ function cssRules() {
       const rule = {
         test: /\.css$/,
         use: _.concat(
-          [getStyleLoaderOrVueStyleLoader(configItems), cssLoader],
+          [getStyleLoader(configItems), cssLoader],
           isPostCss ? 'postcss-loader' : []
         ),
       };
@@ -63,7 +63,7 @@ function cssModulesRules() {
         test: /\.css$/,
         use: _.concat(
           [
-            getStyleLoaderOrVueStyleLoader(configItems),
+            getStyleLoader(configItems),
             {
               loader: 'css-loader',
               options: {
@@ -94,11 +94,7 @@ function sassRules() {
     webpack: (webpackConfig, configItems) =>
       addModuleRule(webpackConfig, {
         test: /\.scss$/,
-        use: [
-          getStyleLoaderOrVueStyleLoader(configItems),
-          'css-loader',
-          'sass-loader',
-        ],
+        use: [getStyleLoader(configItems), 'css-loader', 'sass-loader'],
       }),
     files: configItems => {
       const isVue = _.includes(configItems, 'Vue');
@@ -122,11 +118,7 @@ function lessRules() {
     webpack: (webpackConfig, configItems) =>
       addModuleRule(webpackConfig, {
         test: /\.less$/,
-        use: [
-          getStyleLoaderOrVueStyleLoader(configItems),
-          'css-loader',
-          'less-loader',
-        ],
+        use: [getStyleLoader(configItems), 'css-loader', 'less-loader'],
       }),
     files: configItems => {
       const isVue = _.includes(configItems, 'Vue');
@@ -150,11 +142,7 @@ function stylusRules() {
     webpack: (webpackConfig, configItems) =>
       addModuleRule(webpackConfig, {
         test: /\.styl$/,
-        use: [
-          getStyleLoaderOrVueStyleLoader(configItems),
-          'css-loader',
-          'stylus-loader',
-        ],
+        use: [getStyleLoader(configItems), 'css-loader', 'stylus-loader'],
       }),
     files: configItems => {
       const isVue = _.includes(configItems, 'Vue');

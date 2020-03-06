@@ -9,13 +9,10 @@ import './layout.css';
 const Header = () => {
   return (
     <div className={styles.header}>
-      <Link className={styles.logo} to="/">
-        Create App
+      <Link to="/" className="header-link">
+        <h1>Create App</h1>
       </Link>
-      <Link to="/webpack-course">Free webpack course</Link>
-      <Link to="/webpack-book">Webpack book</Link>
-      <a href="http://blog.jakoblind.no/webpack/">Articles</a>
-      <Link to="/about">About</Link>
+      <h2 className="main-subheader">Frontend build config generator</h2>
     </div>
   );
 };
@@ -57,10 +54,8 @@ const Layout = ({ children, title, metaDescription }) => (
           <html lang="en" />
         </Helmet>
 
-        <div>
-          <Header />
-          {children}
-        </div>
+        <Header />
+        <div>{children}</div>
         <footer>
           <br />
           <br />
@@ -72,13 +67,35 @@ const Layout = ({ children, title, metaDescription }) => (
               justifyContent: `space-around`,
               listStyle: `none`,
               color: 'black',
-              width: '220px',
+              maxWidth: '517px',
               margin: 'auto',
+            }}
+          >
+            <li>
+              <Link to="/webpack-course">Free webpack course</Link>
+            </li>
+            <Link to="/webpack-book">Webpack book</Link>
+            <a href="http://blog.jakoblind.no/webpack/">Articles</a>
+            <Link to="/about">About</Link>
+          </ul>
+          <ul
+            style={{
+              display: `flex`,
+              flexWrap: `wrap`,
+              justifyContent: `space-around`,
+              listStyle: `none`,
+              color: 'black',
+              width: '390px',
+              margin: '30px auto',
             }}
           >
             <li>
               <a href="https://twitter.com/karljakoblind">Twitter</a>
             </li>
+            <li>
+              <a href="https://spectrum.chat/createapp-dev">Community</a>
+            </li>
+
             <li>
               <a href="https://github.com/jakoblind">GitHub</a>
             </li>

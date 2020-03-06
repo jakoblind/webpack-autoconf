@@ -23,11 +23,18 @@ export const packageJson = {
   },
 };
 
-export const indexHtml = (bundleFilename = 'bundle.js') => `<!DOCTYPE html>
+export const indexHtml = ({
+  bundleFilename = 'bundle.js',
+  cssFilename,
+}) => `<!DOCTYPE html>
 <html>
     <head>
         <title>Empty project</title>
-        <meta charset="utf-8">
+        <meta charset="utf-8">${
+          cssFilename
+            ? `\n        <link href="main.css" rel="stylesheet" />`
+            : ``
+        }
     </head>
     <body>
         <div id="app"></div>

@@ -196,7 +196,7 @@ function DownloadButton({ url, onClick, filename }) {
           className={styles.icon}
           src={require('../../images/zip.svg')}
         />
-        <span>Download</span>
+        <span>Download project</span>
       </button>
       <Modal
         isOpen={modalOpen}
@@ -310,7 +310,7 @@ function reducer(state, action) {
       );
 
       let shouldSetNoLibrary = state.selectedFeatures['No library'];
-      if(action.selectedTab === 'parcel' && state.selectedFeatures.Svelte) {
+      if (action.selectedTab === 'parcel' && state.selectedFeatures.Svelte) {
         // Svelte was selected when switching to the parcel tab
         // which isn't supported so we set the flag shouldSetNoLibrary to
         // true so main library switches to "No library"
