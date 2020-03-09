@@ -28,6 +28,7 @@ import FileBrowser from '../components/FileBrowser';
 import Layout from '../components/layout';
 import Features, {
   selectionRules as allSelectionRules,
+  FeatureHelp,
 } from '../components/configurator/Features';
 import generateProject, {
   generateParcelProject,
@@ -501,15 +502,26 @@ function Configurator(props) {
             selectedBuildTool={state.selectedTab}
           />
           <div className={styles.desktopOnly}>
-            <label className={styles.projectName}>
-              <span>Project name</span>
-              <input
-                type="text"
-                name="project-name"
-                value={projectName}
-                onChange={e => validateProjectName(e.target.value)}
+            <div className={styles.projectNameHelp}>
+              <label
+                className={styles.projectName}
+                htmlFor="project-name"
+              >
+                Project name
+              </label>
+              <FeatureHelp
+                featureName="project name"
+                selectedBuildTool={state.selectedTab}
               />
-            </label>
+            </div>
+            <input
+              type="text"
+              id="project-name"
+              name="project-name"
+              value={projectName}
+              onChange={e => validateProjectName(e.target.value)}
+              className={styles.projectNameInput}
+            />
             <DownloadButton
               filename={`${projectName}.zip`}
               onClick={e => {
@@ -532,15 +544,26 @@ function Configurator(props) {
           />
           <br />
           <div className={styles.smallScreensOnly}>
-            <label className={styles.projectName}>
-              <span>Project name</span>
-              <input
-                type="text"
-                name="project-name"
-                value={projectName}
-                onChange={e => validateProjectName(e.target.value)}
+            <div className={styles.projectNameHelp}>
+              <label
+                className={styles.projectName}
+                htmlFor="project-name-small"
+              >
+                Project name
+              </label>
+              <FeatureHelp
+                featureName="project name"
+                selectedBuildTool={state.selectedTab}
               />
-            </label>
+            </div>
+            <input
+              type="text"
+              id="project-name-small"
+              name="project-name"
+              value={projectName}
+              onChange={e => validateProjectName(e.target.value)}
+              className={styles.projectNameInput}
+            />
             <DownloadButton
               filename={`${projectName}.zip`}
               onClick={e => {
