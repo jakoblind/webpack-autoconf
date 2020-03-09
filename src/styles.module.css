@@ -162,6 +162,7 @@
     background-color: #F3F3F3;
     display: block;
     padding: 10px;
+    margin-top: 10px;
     border: 1px solid #E3E3E3;
     text-decoration: none;
     border-radius: 5px;
@@ -386,7 +387,7 @@ border-color: black;
 
 .desktopOnly {
     display: block;
-    margin-top: 50px;
+    margin-top: 20px;
 }
 .smallScreensOnly {
     display: none;
@@ -394,18 +395,21 @@ border-color: black;
 
 /* styling for project name input */
 label.projectName {
-  display: block;
-  margin-bottom: 20px;
-}
-label.projectName span {
-  display: block;
+  display: inline-block;
   margin-bottom: 2px;
+  margin-right: 55px;
 }
-label.projectName input {
+input.projectNameInput {
   display: block;
   padding: 5px;
   font-size: 0.85em;
   border-radius: 5px;
+}
+.desktopOnly .projectNameHelp, .smallScreensOnly .projectNameHelp {
+  display: flex;
+}
+.desktopOnly .helpCircle, .smallScreensOnly .helpCircle {
+  float: none;
 }
 
 @media only screen and (max-width: 666px) {
