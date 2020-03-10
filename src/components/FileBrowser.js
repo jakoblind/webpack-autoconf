@@ -269,7 +269,7 @@ class FileBrowserContainer extends React.Component {
 
     const projectFiles = this.props.projectGeneratorFunction(
       this.props.features,
-      'empty-project'
+      this.props.projectName
     );
 
     this.state = {
@@ -298,7 +298,8 @@ class FileBrowserContainer extends React.Component {
     if (
       !_.isEqual(this.props.highlightFeature, prevProps.highlightFeature) ||
       !_.isEqual(this.props.features, prevProps.features) ||
-      !_.isEqual(this.props.featureConfig, prevProps.featureConfig)
+      !_.isEqual(this.props.featureConfig, prevProps.featureConfig) ||
+      !_.isEqual(this.props.projectName, prevProps.projectName)
     ) {
       this.setProjectFilesInState();
     }
@@ -319,7 +320,7 @@ class FileBrowserContainer extends React.Component {
     this.props
       .projectGeneratorFunction(
         this.props.features,
-        'empty-project',
+        this.props.projectName,
         npmVersionPromise
       )
       .then(files => {
@@ -338,7 +339,7 @@ class FileBrowserContainer extends React.Component {
       this.props
         .projectGeneratorFunction(
           featuresWithoutHighlighted,
-          'empty-project',
+          this.props.projectName,
           npmVersionPromise
         )
         .then(files => {
@@ -387,6 +388,7 @@ FileBrowserContainer.propTypes = {
   features: PropTypes.arrayOf(PropTypes.string).isRequired,
   highlightFeature: PropTypes.string,
   projectGeneratorFunction: PropTypes.func.isRequired,
+  projectName: PropTypes.string.isRequired,
 };
 FileBrowserContainer.defaultProps = {
   defaultFile: 'webpack.config.js',

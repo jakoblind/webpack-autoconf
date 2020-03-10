@@ -69,14 +69,14 @@ FeedbackForm.defaultProps = {
   children: [],
 };
 
-function FeatureHelp({ featureName, selectedBuildTool }) {
+export function FeatureHelp({ featureName, selectedBuildTool }) {
   const [modalOpen, setModalOpen] = useState(false);
   const helpText = docsMap(selectedBuildTool)[featureName];
   if (!helpText) {
     return null;
   }
   return (
-    <>
+    <div>
       <button
         onClick={() => {
           trackHelpIconClick(featureName);
@@ -103,7 +103,7 @@ function FeatureHelp({ featureName, selectedBuildTool }) {
         <br />
         {helpText}
       </Modal>
-    </>
+    </div>
   );
 }
 

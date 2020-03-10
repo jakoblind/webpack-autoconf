@@ -303,6 +303,28 @@ const commonDocsMap = {
       </p>
     </div>
   ),
+  "project name": (
+    <div>
+      <p>
+        The project name will be used both as the directory name and as the
+        package name in <code> package.json</code>. Because of this the project
+        name needs to follow the&nbsp;
+        <a href="https://docs.npmjs.com/files/package.json#name" target="new">
+          naming rules
+        </a>
+        &nbsp;for npm packages.
+        In addition to those rules you will also have to follow the whitelist
+        below to prevent use of invalid characters in directory names.
+      </p>
+      <ul>
+        <li>a-z</li>
+        <li>0-9</li>
+        <li>underscore <code>(_)</code></li>
+        <li>dash <code>(-)</code></li>
+        <li>dot <code>(.)</code></li>
+      </ul>
+    </div>
+  ),
 };
 export const docsMap = buildTool =>
   buildTool === 'webpack'
