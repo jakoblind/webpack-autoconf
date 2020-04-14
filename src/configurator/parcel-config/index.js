@@ -45,13 +45,13 @@ export default (() => {
           return {
             'src/index.tsx': reactIndexTsx(extraImports),
             'src/App.tsx': reactAppTsx(false),
-            'src/index.html': indexHtml('index.tsx'),
+            'src/index.html': indexHtml({bundleFilename: 'index.tsx'}),
           };
         }
         return {
           'src/index.js': reactIndexJs(extraImports),
           'src/App.js': reactAppJs(false),
-          'src/index.html': indexHtml('index.js'),
+          'src/index.html': indexHtml({bundleFilename: 'index.js'}),
         };
       },
     },
@@ -88,7 +88,7 @@ ${stylus}
         return _.assign(
           {
             'src/App.vue': vueIndexAppVue(_.join(styling, '\n')),
-            'src/index.html': indexHtml(`index.${indexExtension}`),
+            'src/index.html': indexHtml({bundleFilename: `index.${indexExtension}`}),
             [`src/index.${indexExtension}`]: vueIndexTs(),
           },
           isTypescript ? { 'vue-shim.d.ts': vueShimType } : {}
@@ -123,7 +123,7 @@ ${stylus}
         const sourceFiles =
           !isReact && !isVue
             ? {
-                'src/index.html': indexHtml('index.ts'),
+              'src/index.html': indexHtml({bundleFilename: 'index.ts' }),
                 'src/index.ts': emptyIndexJs(),
               }
             : {};
@@ -193,7 +193,7 @@ ${stylus}
         if (!isReact && !isTypescript && !isVue) {
           return {
             'src/index.js': emptyIndexJs(getStyleImports(configItems)),
-            'src/index.html': indexHtml('index.js'),
+            'src/index.html': indexHtml({bundleFilename: 'index.js'}),
           };
         }
         return [];
