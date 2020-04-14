@@ -1,6 +1,6 @@
 import _ from 'lodash';
 
-import { css, scss, less, stylus } from '../../templates/styling';
+import { css, scss, less, stylus, postCssConfig } from '../../templates/styling';
 import { reactIndexJs, reactAppJs, reactIndexTsx, reactAppTsx } from '../../templates/react/index';
 import { indexHtml } from '../../templates/base';
 import { emptyIndexJs } from '../../templates/empty/index';
@@ -133,6 +133,13 @@ ${stylus}
     CSS: {
       group: 'Styling',
       files: configItems => ({ 'src/styles.css': css }),
+    },
+    PostCSS: {
+      group: 'Styling',
+      devDependencies: configItems => ['postcss-modules', 'autoprefixer'],
+      files: configItems => {
+        return { 'postcss.config.js': postCssConfig };
+      },
     },
     Sass: {
       group: 'Styling',
