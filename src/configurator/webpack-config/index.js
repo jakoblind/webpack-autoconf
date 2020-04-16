@@ -331,7 +331,6 @@ export default (() => {
       group: 'Webpack plugins',
       devDependencies: configItems => [
         'html-webpack-plugin',
-        'html-webpack-template',
       ],
       webpackImports: [
         "const HtmlWebpackPlugin = require('html-webpack-plugin');",
@@ -340,8 +339,6 @@ export default (() => {
         return addPlugin(
           webpackConfig,
           `CODE:new HtmlWebpackPlugin({
-  template: require('html-webpack-template'),
-  inject: false,
   appMountId: 'app',
   filename: 'index.html'
 })`
