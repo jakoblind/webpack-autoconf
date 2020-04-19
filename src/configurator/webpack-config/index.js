@@ -379,8 +379,18 @@ export default (() => {
       ],
       webpack: webpackConfig => {
         return addPlugin(webpackConfig, `CODE:new CopyPlugin([
-  { from: 'src/index.html', to: 'dest' }
-]),`);
+  { from: 'src/index.html' }
+])`);
+      },
+    },
+    "CleanWebpackPlugin": {
+      group: 'Webpack plugins',
+      devDependencies: configItems => ['clean-webpack-plugin'],
+      webpackImports: [
+        `const { CleanWebpackPlugin } = require('clean-webpack-plugin');`,
+      ],
+      webpack: webpackConfig => {
+        return addPlugin(webpackConfig, `CODE:new CleanWebpackPlugin()`);
       },
     },
     'React hot loader': {
