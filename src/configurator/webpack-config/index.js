@@ -371,6 +371,18 @@ export default (() => {
         return addPlugin(webpackConfig, `CODE:new MiniCssExtractPlugin()`);
       },
     },
+    "CopyWebpackPlugin": {
+      group: 'Webpack plugins',
+      devDependencies: configItems => ['copy-webpack-plugin'],
+      webpackImports: [
+        "const CopyPlugin = require('copy-webpack-plugin');",
+      ],
+      webpack: webpackConfig => {
+        return addPlugin(webpackConfig, `CODE:new CopyPlugin([
+  { from: 'src/index.html', to: 'dest' }
+]),`);
+      },
+    },
     'React hot loader': {
       group: 'React',
       babel: (babelConfig, configItems) => {
@@ -429,6 +441,8 @@ export default (() => {
       devDependencies: ['webpack', 'webpack-cli'],
       files: configItems => {
         const isTypescript = _.includes(configItems, 'Typescript');
+        const isCopyPlugin = _.includes(configItems, 'CopyWebpackPlugin');
+
         const isHTMLWebpackPlugin = _.includes(
           configItems,
           'HTML webpack plugin'
@@ -445,7 +459,8 @@ export default (() => {
         }
 
         if (!isHTMLWebpackPlugin) {
-          files['dist/index.html'] = indexHtml({
+          const distPath = isCopyPlugin ? 'src/index.html' : 'dist/index.html';
+          files[distPath] = indexHtml({
             bundleFilename: 'bundle.js',
             cssFilename: isMiniCssExtractPlugin ? 'main.css' : null,
           });
