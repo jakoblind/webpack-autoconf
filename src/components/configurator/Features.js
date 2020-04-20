@@ -404,6 +404,16 @@ function addCssIfPostCSS(allFeatureStates, affectedFeature, setToSelected) {
   };
 }
 
+function addCopyPluginIfCleanPlugin(allFeatureStates, affectedFeature, setToSelected) {
+  return {
+    ...allFeatureStates,
+    "CopyWebpackPlugin":
+      affectedFeature === 'CleanWebpackPlugin' && setToSelected
+        ? true
+      : allFeatureStates.CopyWebpackPlugin,
+  };
+}
+
 function addHTMLWebpackPluginIfCodeSplitVendors(
   allFeatureStates,
   affectedFeature,
@@ -441,6 +451,7 @@ export const selectionRules = {
     addBabelIfReact,
     addOrRemoveReactHotLoader,
     addCssIfPostCSS,
+    addCopyPluginIfCleanPlugin,
     removeEslintIfTypscript,
     addHTMLWebpackPluginIfCodeSplitVendors,
   },

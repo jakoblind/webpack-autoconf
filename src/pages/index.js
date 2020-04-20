@@ -253,6 +253,7 @@ const selectionRules = {
     allSelectionRules.additionalSelectFunctions.addBabelIfReact,
     allSelectionRules.additionalSelectFunctions.addOrRemoveReactHotLoader,
     allSelectionRules.additionalSelectFunctions.addCssIfPostCSS,
+    allSelectionRules.additionalSelectFunctions.addCopyPluginIfCleanPlugin,
     allSelectionRules.additionalSelectFunctions.removeEslintIfTypscript,
     allSelectionRules.additionalSelectFunctions
       .addHTMLWebpackPluginIfCodeSplitVendors,
