@@ -194,8 +194,11 @@ const webpackDocsMap = {
         starting point to extend with your own rules.
       </p>
       <p>
-          The most common way to run ESlint is to configure your editor to run it and give you syntax highlighting on errors and warning. You can also run it from the CLI. To run ESlint on all your source code, run this command: <code>npx eslint src/*</code>
-          </p>
+        The most common way to run ESlint is to configure your editor to run it
+        and give you syntax highlighting on errors and warning. You can also run
+        it from the CLI. To run ESlint on all your source code, run this
+        command: <code>npx eslint src/*</code>
+      </p>
     </div>
   ),
   Prettier: (
@@ -224,6 +227,46 @@ const webpackDocsMap = {
         possible to cache the dependencies longer than if everything were in one
         bundle.
       </p>
+    </div>
+  ),
+  CleanWebpackPlugin: (
+    <div>
+      <p>
+        This plugin removes the contents of the output directory before
+        building. It uses the path defined in <code>output</code> in the webpack
+        config as output directory
+      </p>
+      <h3>References</h3>
+      <ul>
+        <li>
+          <a
+            href="https://github.com/johnagan/clean-webpack-plugin"
+            target="new"
+          >
+            CleanWebpackPlugin on Github
+          </a>
+        </li>
+      </ul>
+    </div>
+  ),
+  CopyWebpackPlugin: (
+    <div>
+      <p>
+        This plugin lets you copy any static files after the project has built.
+        In this example, the <code>index.html</code> file is copied from the{' '}
+        <code>src</code> folder to the <code>dist</code> folder
+      </p>
+      <h3>References</h3>
+      <ul>
+        <li>
+          <a
+            href="https://github.com/webpack-contrib/copy-webpack-plugin"
+            target="new"
+          >
+            CopyWebpackPlugin on Github
+          </a>
+        </li>
+      </ul>
     </div>
   ),
 };
@@ -303,7 +346,7 @@ const commonDocsMap = {
       </p>
     </div>
   ),
-  "project name": (
+  'project name': (
     <div>
       <p>
         The project name will be used both as the directory name and as the
@@ -312,16 +355,22 @@ const commonDocsMap = {
         <a href="https://docs.npmjs.com/files/package.json#name" target="new">
           naming rules
         </a>
-        &nbsp;for npm packages.
-        In addition to those rules you will also have to follow the whitelist
-        below to prevent use of invalid characters in directory names.
+        &nbsp;for npm packages. In addition to those rules you will also have to
+        follow the whitelist below to prevent use of invalid characters in
+        directory names.
       </p>
       <ul>
         <li>a-z</li>
         <li>0-9</li>
-        <li>underscore <code>(_)</code></li>
-        <li>dash <code>(-)</code></li>
-        <li>dot <code>(.)</code></li>
+        <li>
+          underscore <code>(_)</code>
+        </li>
+        <li>
+          dash <code>(-)</code>
+        </li>
+        <li>
+          dot <code>(.)</code>
+        </li>
       </ul>
     </div>
   ),
