@@ -79,6 +79,7 @@ export default (() => {
         const isLess = _.includes(configItems, 'Less');
         const isSass = _.includes(configItems, 'Sass');
         const isStylus = _.includes(configItems, 'stylus');
+        const isTailwindCSS = _.includes(configItems, 'Tailwind CSS');
         const cssStyle = `<style>
 ${css}
 </style>`;
@@ -91,17 +92,23 @@ ${scss}
         const stylusStyle = `<style lang="styl">
 ${stylus}
 </style>`;
+        const tailwindcssStyle = `<style global>
+  @tailwind base;
+  @tailwind components;
+  @tailwind utilities;
+</style>`;
         const styling = _.concat(
           [],
-          isCss ? cssStyle : [],
+          isCss && !isTailwindCSS ? cssStyle : [],
           isSass ? sassStyle : [],
           isLess ? lessStyle : [],
-          isStylus ? stylusStyle : []
+          isStylus ? stylusStyle : [],
+          isTailwindCSS ? tailwindcssStyle : []
         );
 
         return _.assign(
           {
-            'src/App.vue': vueIndexAppVue(_.join(styling, '\n')),
+            'src/App.vue': vueIndexAppVue(_.join(styling, '\n'), isTailwindCSS),
             'src/index.html': indexHtml({
               bundleFilename: `index.${indexExtension}`,
             }),

@@ -1,6 +1,7 @@
 import _ from 'lodash';
 
 const joinToString = list => _.reduce(list, (all, i) => `${all + i}\n`, '');
+
 export const vueIndexTs = (extraImports = []) => `import Vue from 'vue';
 import App from './App';
 ${joinToString(extraImports)}
@@ -8,9 +9,10 @@ new Vue({
   el: '#app',
   render: h => h(App),
 });`;
-export const vueIndexAppVue = styling => `
+
+export const vueIndexAppVue = (styling, isTailwindcss) => `
 <template>
-  <h1>
+  <h1${isTailwindcss ? ' class="text-4xl text-white bg-black"' : ''}>
     {{name}}
   </h1>
 </template>

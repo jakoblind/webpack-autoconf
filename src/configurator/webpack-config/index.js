@@ -169,12 +169,13 @@ export default (() => {
       dependencies: configItems => ['vue'],
       files: configItems => {
         const isTypescript = _.includes(configItems, 'Typescript');
+        const isTailwindcss = _.includes(configItems, 'Tailwind CSS');
         const indexFilename = isTypescript ? 'src/index.ts' : 'src/index.js';
         const styling = getStyleTags(configItems);
 
         return _.assign(
           {
-            'src/App.vue': vueIndexAppVue(_.join(styling, '\n')),
+            'src/App.vue': vueIndexAppVue(_.join(styling, '\n'), isTailwindcss),
             [indexFilename]: vueIndexTs(),
           },
           isTypescript ? { 'vue-shim.d.ts': vueShimType } : {}
@@ -228,7 +229,7 @@ export default (() => {
         const isVue = _.includes(configItems, 'Vue');
         const typescriptModule = {
           test: /\.ts(x)?$/,
-          use: ['ts-loader'],
+          loader: 'ts-loader',
           exclude: /node_modules/,
         };
         if (isVue) {
