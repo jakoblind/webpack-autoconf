@@ -41,6 +41,7 @@ function getStyleTags(configItems) {
   const isLess = _.includes(configItems, 'Less');
   const isSass = _.includes(configItems, 'Sass');
   const isStylus = _.includes(configItems, 'stylus');
+  const isTailwindCSS = _.includes(configItems, 'Tailwind CSS');
   const cssStyle = `<style>
 ${css}
 </style>`;
@@ -53,12 +54,19 @@ ${scss}
   const stylusStyle = `<style lang="styl">
 ${stylus}
 </style>`;
+  const tailwindcssStyle = `<style global>
+  @tailwind base;
+  @tailwind components;
+  @tailwind utilities;
+</style>`;
+
   return _.concat(
     [],
-    isCss ? cssStyle : [],
+    isCss && !isTailwindCSS ? cssStyle : [],
     isSass ? sassStyle : [],
     isLess ? lessStyle : [],
-    isStylus ? stylusStyle : []
+    isStylus ? stylusStyle : [],
+    isTailwindCSS ? tailwindcssStyle : []
   );
 }
 
@@ -105,7 +113,8 @@ export default (() => {
         'svelte-loader',
         'svelte-preprocess',
       ],
-      webpack: webpackConfig => {
+      webpack: (webpackConfig, configItems) => {
+        const isPostCSS = _.includes(configItems, 'PostCSS');
         const webpackConfigWithRule = assignModuleRuleAndResolver(
           webpackConfig,
           [
@@ -113,7 +122,9 @@ export default (() => {
               test: /\.svelte$/,
               loader: 'svelte-loader',
               options: {
-                preprocess: `CODE: require('svelte-preprocess')({})`,
+                preprocess: `CODE: require('svelte-preprocess')({${
+                  isPostCSS ? ` postcss: true ` : ''
+                }})`,
               },
             },
           ],
@@ -122,10 +133,11 @@ export default (() => {
         return webpackConfigWithRule;
       },
       files: configItems => {
+        const isPostCSS = _.includes(configItems, 'PostCSS');
         const styling = getStyleTags(configItems);
         return {
           'src/index.js': svelteIndexJs(),
-          'src/App.svelte': svelteAppSvelte(_.join(styling, '\n\n')),
+          'src/App.svelte': svelteAppSvelte(_.join(styling, '\n\n'), isPostCSS),
         };
       },
     },

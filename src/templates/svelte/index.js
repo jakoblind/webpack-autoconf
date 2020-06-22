@@ -9,10 +9,12 @@ const app = new App({
 
 window.app = app;
 
-export default app;`
+export default app;`;
 
-export const svelteAppSvelte = styling => `<script>
+export const svelteAppSvelte = (styling, isTailwindcss) => `<script>
   export let name;
 </script>
 ${styling}
-<h1>Hello {name}!</h1>`
+<h1${
+  isTailwindcss ? ' class="text-4xl text-white bg-black"' : ''
+}>Hello {name}!</h1>`;
