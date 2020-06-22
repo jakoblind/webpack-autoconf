@@ -1,7 +1,18 @@
 import _ from 'lodash';
 
-import { css, scss, less, stylus, postCssConfig } from '../../templates/styling';
-import { reactIndexJs, reactAppJs, reactIndexTsx, reactAppTsx } from '../../templates/react/index';
+import {
+  css,
+  scss,
+  less,
+  stylus,
+  postCssConfig,
+} from '../../templates/styling';
+import {
+  reactIndexJs,
+  reactAppJs,
+  reactIndexTsx,
+  reactAppTsx,
+} from '../../templates/react/index';
 import { indexHtml } from '../../templates/base';
 import { emptyIndexJs } from '../../templates/empty/index';
 import { tsconfig, tsconfigReact } from '../../templates/ts';
@@ -45,13 +56,13 @@ export default (() => {
           return {
             'src/index.tsx': reactIndexTsx(extraImports),
             'src/App.tsx': reactAppTsx(false),
-            'src/index.html': indexHtml({bundleFilename: 'index.tsx'}),
+            'src/index.html': indexHtml({ bundleFilename: 'index.tsx' }),
           };
         }
         return {
           'src/index.js': reactIndexJs(extraImports),
           'src/App.js': reactAppJs(false),
-          'src/index.html': indexHtml({bundleFilename: 'index.js'}),
+          'src/index.html': indexHtml({ bundleFilename: 'index.js' }),
         };
       },
     },
@@ -88,14 +99,19 @@ ${stylus}
         return _.assign(
           {
             'src/App.vue': vueIndexAppVue(_.join(styling, '\n')),
-            'src/index.html': indexHtml({bundleFilename: `index.${indexExtension}`}),
+            'src/index.html': indexHtml({
+              bundleFilename: `index.${indexExtension}`,
+            }),
             [`src/index.${indexExtension}`]: vueIndexTs(),
           },
           isTypescript ? { 'vue-shim.d.ts': vueShimType } : {}
         );
       },
     },
-
+    'Tailwind CSS': {
+      group: 'UI library',
+      dependencies: configItems => ['tailwindcss'],
+    },
     Babel: {
       group: 'Transpiler',
       babel: (babelConfig, configItems) => ({
@@ -123,7 +139,7 @@ ${stylus}
         const sourceFiles =
           !isReact && !isVue
             ? {
-              'src/index.html': indexHtml({bundleFilename: 'index.ts' }),
+                'src/index.html': indexHtml({ bundleFilename: 'index.ts' }),
                 'src/index.ts': emptyIndexJs(),
               }
             : {};
@@ -138,7 +154,8 @@ ${stylus}
       group: 'Styling',
       devDependencies: configItems => ['postcss-modules', 'autoprefixer'],
       files: configItems => {
-        return { 'postcss.config.js': postCssConfig };
+        const isTailwindcss = _.includes(configItems, 'Tailwind CSS');
+        return { 'postcss.config.js': postCssConfig(isTailwindcss) };
       },
     },
     Sass: {
@@ -193,7 +210,7 @@ ${stylus}
         if (!isReact && !isTypescript && !isVue) {
           return {
             'src/index.js': emptyIndexJs(getStyleImports(configItems)),
-            'src/index.html': indexHtml({bundleFilename: 'index.js'}),
+            'src/index.html': indexHtml({ bundleFilename: 'index.js' }),
           };
         }
         return [];

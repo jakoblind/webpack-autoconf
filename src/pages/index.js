@@ -268,7 +268,7 @@ const parcelSelectionRules = {
   additionalSelectFunctions: [
     allSelectionRules.additionalSelectFunctions.enforceMainLibrary,
     allSelectionRules.additionalSelectFunctions.addBabelIfReact,
-    //allSelectionRules.additionalSelectFunctions.addPostCSSIfTailwindCSS,
+    allSelectionRules.additionalSelectFunctions.addPostCSSandCSSIfTailwindCSS,
   ],
 };
 
