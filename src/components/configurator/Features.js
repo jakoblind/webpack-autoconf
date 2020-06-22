@@ -134,7 +134,7 @@ const Feature = ({
       <input
         checked={selected || false}
         onChange={() => setSelected(feature)}
-        type={isRadio ? "radio" : "checkbox"}
+        type={isRadio ? 'radio' : 'checkbox'}
         name="main-library"
       />
       <span className={isRadio ? styles.radio : styles.checkmark} />{' '}
@@ -288,11 +288,7 @@ Features.propTypes = PropTypes.shape({
   only possible to select one of Vue or React or Svelte. Needing both is an edge case
   that is probably very rare. It adds much complexity to support both.
 */
-function enforceMainLibrary(
-  allFeatureStates,
-  affectedFeature,
-  setToSelected
-) {
+function enforceMainLibrary(allFeatureStates, affectedFeature, setToSelected) {
   // Deselect React if user picks Vue
   if (affectedFeature === 'Vue' && setToSelected) {
     return {
@@ -394,37 +390,12 @@ function removeEslintIfTypscript(
   };
 }
 
-function addCssIfPostCSS(allFeatureStates, affectedFeature, setToSelected) {
-  return {
-    ...allFeatureStates,
-    CSS:
-      affectedFeature === 'PostCSS' && setToSelected
-        ? true
-        : allFeatureStates.CSS,
-  };
-}
-
-function addCopyPluginIfCleanPlugin(allFeatureStates, affectedFeature, setToSelected) {
-  return {
-    ...allFeatureStates,
-    "CopyWebpackPlugin":
-      affectedFeature === 'CleanWebpackPlugin' && setToSelected
-        ? true
-      : allFeatureStates.CopyWebpackPlugin,
-  };
-}
-
-function addHTMLWebpackPluginIfCodeSplitVendors(
-  allFeatureStates,
-  affectedFeature,
-  setToSelected
-) {
-  return {
-    ...allFeatureStates,
-    'HTML webpack plugin':
-      affectedFeature === 'Code split vendors' && setToSelected
-        ? true
-        : allFeatureStates['HTML webpack plugin'],
+function addXIfY(x, y) {
+  return function(allFeatureStates, affectedFeature, setToSelected) {
+    return {
+      ...allFeatureStates,
+      [x]: affectedFeature === y && setToSelected ? true : allFeatureStates[x],
+    };
   };
 }
 
@@ -450,10 +421,16 @@ export const selectionRules = {
     enforceMainLibrary,
     addBabelIfReact,
     addOrRemoveReactHotLoader,
-    addCssIfPostCSS,
-    addCopyPluginIfCleanPlugin,
+    addCssIfPostCSS: addXIfY(`CSS`, `PostCSS`),
+    addCopyPluginIfCleanPlugin: addXIfY(
+      'CopyWebpackPlugin',
+      'CleanWebpackPlugin'
+    ),
     removeEslintIfTypscript,
-    addHTMLWebpackPluginIfCodeSplitVendors,
+    addHTMLWebpackPluginIfCodeSplitVendors: addXIfY(
+      'HTML webpack plugin',
+      'Code split vendors'
+    ),
   },
 };
 // eslint-disable-next-line
