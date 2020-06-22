@@ -82,16 +82,18 @@ export default (() => {
       files: configItems => {
         const isTypescript = _.includes(configItems, 'Typescript');
         const isHotReact = _.includes(configItems, 'React hot loader');
+        const isTailwindcss = _.includes(configItems, 'Tailwind CSS');
         const extraImports = getStyleImports(configItems);
 
         if (isTypescript) {
           return {
-            'src/App.tsx': reactAppTsx(isHotReact),
+            'src/App.tsx': reactAppTsx({ isHot: isHotReact, isTailwindcss }),
             'src/index.tsx': reactIndexTsx(extraImports, isHotReact),
           };
         }
+
         return {
-          'src/App.js': reactAppJs(isHotReact),
+          'src/App.js': reactAppJs({ isHot: isHotReact, isTailwindcss }),
           'src/index.js': reactIndexJs(extraImports),
         };
       },

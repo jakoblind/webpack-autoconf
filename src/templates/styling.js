@@ -24,6 +24,12 @@ h1
   background-color: bg;
 `;
 
+export const tailwindcss = `@tailwind base;
+
+@tailwind components;
+
+@tailwind utilities;`;
+
 export const postCssConfig = isTailwindcss => `module.exports = {
   plugins: [${
     isTailwindcss

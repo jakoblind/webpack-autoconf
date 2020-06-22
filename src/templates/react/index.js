@@ -1,12 +1,14 @@
 import { joinToString } from '../helperFunctions';
 
-export const reactAppJs = isHot => `
+const tailwindcssClass = ' className="text-4xl text-white bg-black"';
+
+export const reactAppJs = ({ isHot, isTailwindcss }) => `
 import React from "react";
 ${isHot ? `import { hot } from 'react-hot-loader/root';\n` : ''}
 class App extends React.Component {
   render() {
     const { name } = this.props;
-    return <h1>Hello {name}</h1>;
+    return <h1${isTailwindcss ? tailwindcssClass : ''}>Hello {name}</h1>;
   }
 }
 
@@ -21,7 +23,7 @@ ${joinToString(extraImports)}
 var mountNode = document.getElementById("app");
 ReactDOM.render(<App name="Jane" />, mountNode);`;
 
-export const reactAppTsx = isHot => `
+export const reactAppTsx = ({ isHot, isTailwindcss }) => `
 import * as React from 'react';
 ${isHot ? 'import { hot } from "react-hot-loader/root";' : ''}
 interface Props {
@@ -31,7 +33,7 @@ interface Props {
 class App extends React.Component<Props> {
   render() {
     const { name } = this.props;
-    return <div>Hello {name}</div>;
+    return <div${isTailwindcss ? tailwindcssClass : ''}>Hello {name}</div>;
   }
 }
 

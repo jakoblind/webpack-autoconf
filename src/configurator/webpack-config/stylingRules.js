@@ -12,6 +12,7 @@ import {
   less,
   stylus,
   postCssConfig,
+  tailwindcss,
 } from '../../templates/styling';
 
 function cssRules() {
@@ -47,7 +48,8 @@ function cssRules() {
       if (isVue || isSvelte) {
         return {};
       }
-      return { 'src/styles.css': css };
+      const isTailwindcss = _.includes(configItems, 'Tailwind CSS');
+      return { 'src/styles.css': isTailwindcss ? tailwindcss : css };
     },
   };
 }

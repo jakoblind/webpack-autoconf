@@ -6,6 +6,7 @@ import {
   less,
   stylus,
   postCssConfig,
+  tailwindcss,
 } from '../../templates/styling';
 import {
   reactIndexJs,
@@ -50,18 +51,20 @@ export default (() => {
       },
       files: configItems => {
         const isTypescript = _.includes(configItems, 'Typescript');
+        const isTailwindcss = _.includes(configItems, 'Tailwind CSS');
         const extraImports = getStyleImports(configItems);
 
         if (isTypescript) {
           return {
             'src/index.tsx': reactIndexTsx(extraImports),
-            'src/App.tsx': reactAppTsx(false),
+            'src/App.tsx': reactAppTsx({ isHot: false, isTailwindcss }),
             'src/index.html': indexHtml({ bundleFilename: 'index.tsx' }),
           };
         }
+
         return {
           'src/index.js': reactIndexJs(extraImports),
-          'src/App.js': reactAppJs(false),
+          'src/App.js': reactAppJs({ isHot: false, isTailwindcss }),
           'src/index.html': indexHtml({ bundleFilename: 'index.js' }),
         };
       },
@@ -148,7 +151,10 @@ ${stylus}
     },
     CSS: {
       group: 'Styling',
-      files: configItems => ({ 'src/styles.css': css }),
+      files: configItems => {
+        const isTailwindcss = _.includes(configItems, 'Tailwind CSS');
+        return { 'src/styles.css': isTailwindcss ? tailwindcss : css };
+      },
     },
     PostCSS: {
       group: 'Styling',
