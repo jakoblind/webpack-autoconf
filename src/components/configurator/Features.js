@@ -331,7 +331,10 @@ function addOrRemoveReactHotLoader(
 ) {
   let setReactHotLoader;
 
-  if (affectedFeature === 'Vue' && setToSelected) {
+  if (
+    (affectedFeature === 'Vue' || affectedFeature === 'Svelte') &&
+    setToSelected
+  ) {
     setReactHotLoader = false;
   }
 
