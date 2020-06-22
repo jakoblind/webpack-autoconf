@@ -24,8 +24,13 @@ h1
   background-color: bg;
 `;
 
-export const postCssConfig = `module.exports = {
-  plugins: [
+export const postCssConfig = isTailwindcss => `module.exports = {
+  plugins: [${
+    isTailwindcss
+      ? `
+    require('tailwindcss'),`
+      : ''
+  }
     require('autoprefixer')
   ]
 };`;

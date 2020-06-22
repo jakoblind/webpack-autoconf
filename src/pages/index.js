@@ -257,6 +257,7 @@ const selectionRules = {
     allSelectionRules.additionalSelectFunctions.removeEslintIfTypscript,
     allSelectionRules.additionalSelectFunctions
       .addHTMLWebpackPluginIfCodeSplitVendors,
+    allSelectionRules.additionalSelectFunctions.addPostCSSandCSSIfTailwindCSS,
   ],
 };
 
@@ -267,6 +268,7 @@ const parcelSelectionRules = {
   additionalSelectFunctions: [
     allSelectionRules.additionalSelectFunctions.enforceMainLibrary,
     allSelectionRules.additionalSelectFunctions.addBabelIfReact,
+    //allSelectionRules.additionalSelectFunctions.addPostCSSIfTailwindCSS,
   ],
 };
 
@@ -429,7 +431,7 @@ function Configurator(props) {
     // in npm package names
     const whitelistRegex = /^[a-z0-9_.-]+$/;
     const isValidCharacters = whitelistRegex.test(name);
-    if(!isValidCharacters && name) return;
+    if (!isValidCharacters && name) return;
 
     // Use validation function from third party library
     // to check if the name is a valid npm package name.
@@ -438,7 +440,7 @@ function Configurator(props) {
     // so this is needed too because the project name is used
     // as both the directory name and in package.json
     const isValidNpmPackage = validate(name);
-    if(isValidNpmPackage) {
+    if (isValidNpmPackage) {
       // All validation succeeded so we set the new project name
       setProjectName(name);
     }
@@ -456,8 +458,11 @@ function Configurator(props) {
       });
 
       zip.generateAsync({ type: 'blob' }).then(function(blob) {
-        saveAs(blob, `${projectName ||
-          getDefaultProjectName("empty-project", selectedArray)}.zip`);
+        saveAs(
+          blob,
+          `${projectName ||
+            getDefaultProjectName('empty-project', selectedArray)}.zip`
+        );
       });
     });
   }
@@ -504,10 +509,7 @@ function Configurator(props) {
           />
           <div className={styles.desktopOnly}>
             <div className={styles.projectNameHelp}>
-              <label
-                className={styles.projectName}
-                htmlFor="project-name"
-              >
+              <label className={styles.projectName} htmlFor="project-name">
                 Project name
               </label>
               <FeatureHelp

@@ -390,6 +390,24 @@ function removeEslintIfTypscript(
   };
 }
 
+function addPostCSSandCSSIfTailwindCSS(
+  allFeatureStates,
+  affectedFeature,
+  setToSelected
+) {
+  return {
+    ...allFeatureStates,
+    CSS:
+      affectedFeature === 'Tailwind CSS' && setToSelected
+        ? true
+        : allFeatureStates.CSS,
+    PostCSS:
+      affectedFeature === 'Tailwind CSS' && setToSelected
+        ? true
+        : allFeatureStates.PostCSS,
+  };
+}
+
 function addXIfY(x, y) {
   return function(allFeatureStates, affectedFeature, setToSelected) {
     return {
@@ -431,6 +449,7 @@ export const selectionRules = {
       'HTML webpack plugin',
       'Code split vendors'
     ),
+    addPostCSSandCSSIfTailwindCSS,
   },
 };
 // eslint-disable-next-line

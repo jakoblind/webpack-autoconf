@@ -160,7 +160,8 @@ function postCssRules() {
     group: 'Styling',
     devDependencies: configItems => ['postcss-loader', 'autoprefixer'],
     files: configItems => {
-      return { 'postcss.config.js': postCssConfig };
+      const isTailwindcss = _.includes(configItems, 'Tailwind CSS');
+      return { 'postcss.config.js': postCssConfig(isTailwindcss) };
     },
   };
 }

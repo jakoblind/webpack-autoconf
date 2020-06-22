@@ -167,6 +167,10 @@ export default (() => {
         );
       },
     },
+    'Tailwind CSS': {
+      group: 'UI library',
+      dependencies: configItems => ['tailwindcss'],
+    },
     Babel: {
       group: 'Transpiler',
       babel: (babelConfig, configItems) => ({
@@ -329,9 +333,7 @@ export default (() => {
     },
     'HTML webpack plugin': {
       group: 'Webpack plugins',
-      devDependencies: configItems => [
-        'html-webpack-plugin',
-      ],
+      devDependencies: configItems => ['html-webpack-plugin'],
       webpackImports: [
         "const HtmlWebpackPlugin = require('html-webpack-plugin');",
       ],
@@ -371,19 +373,20 @@ export default (() => {
         return addPlugin(webpackConfig, `CODE:new MiniCssExtractPlugin()`);
       },
     },
-    "CopyWebpackPlugin": {
+    CopyWebpackPlugin: {
       group: 'Webpack plugins',
       devDependencies: configItems => ['copy-webpack-plugin'],
-      webpackImports: [
-        "const CopyPlugin = require('copy-webpack-plugin');",
-      ],
+      webpackImports: ["const CopyPlugin = require('copy-webpack-plugin');"],
       webpack: webpackConfig => {
-        return addPlugin(webpackConfig, `CODE:new CopyPlugin([
+        return addPlugin(
+          webpackConfig,
+          `CODE:new CopyPlugin([
   { from: 'src/index.html' }
-])`);
+])`
+        );
       },
     },
-    "CleanWebpackPlugin": {
+    CleanWebpackPlugin: {
       group: 'Webpack plugins',
       devDependencies: configItems => ['clean-webpack-plugin'],
       webpackImports: [
