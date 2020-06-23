@@ -185,6 +185,10 @@ export default (() => {
       group: 'UI library',
       dependencies: configItems => ['tailwindcss'],
     },
+    'Material-UI': {
+      group: 'UI library',
+      dependencies: configItems => ['@material-ui/core', 'fontsource-roboto', '@material-ui/icons'],
+    },
     Babel: {
       group: 'Transpiler',
       babel: (babelConfig, configItems) => ({

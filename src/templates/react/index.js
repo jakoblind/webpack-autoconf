@@ -6,13 +6,15 @@ const tailwindcssClass = ' className="text-4xl text-white bg-black"';
 export const reactAppJs = configItems => {
   const isHot = _.includes(configItems, "React hot loader");
   const isTailwindcss = _.includes(configItems, "Tailwind CSS");
+  const isMaterialUI = _.includes(configItems, "Material-UI");
   return `
 import React from "react";
 ${isHot ? `import { hot } from 'react-hot-loader/root';\n` : ""}
+${isMaterialUI ? `import Button from '@material-ui/core/Button';\n` : ""}
 class App extends React.Component {
   render() {
     const { name } = this.props;
-    return <h1${isTailwindcss ? tailwindcssClass : ""}>Hello {name}</h1>;
+    return <h1${isTailwindcss ? tailwindcssClass : ""}>Hello {name} ${isMaterialUI ? `<Button variant="contained">this is a material UI button</Button>` : ""}</h1>;
   }
 }
 
@@ -35,7 +37,8 @@ export const reactAppTsx = (configItems) => {
 import * as React from 'react';
 ${isHot ? 'import { hot } from "react-hot-loader/root";' : ""}
 interface Props {
-   name: string
+   name:
+    string
 }
 
 class App extends React.Component<Props> {
