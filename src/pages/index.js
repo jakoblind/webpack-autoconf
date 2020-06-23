@@ -258,6 +258,7 @@ const selectionRules = {
     allSelectionRules.additionalSelectFunctions
       .addHTMLWebpackPluginIfCodeSplitVendors,
     allSelectionRules.additionalSelectFunctions.addPostCSSandCSSIfTailwindCSS,
+    allSelectionRules.additionalSelectFunctions.removeMaterialIfNotReact
   ],
 };
 
@@ -476,6 +477,7 @@ function Configurator(props) {
 
   if (!isReact) {
     delete showFeatures['React hot loader'];
+    delete showFeatures['Material-UI'];
   }
 
   if (isTypescript) {
