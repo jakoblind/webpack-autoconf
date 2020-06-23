@@ -107,7 +107,7 @@ ${stylus}
 
         return _.assign(
           {
-            'src/App.vue': vueIndexAppVue(_.join(styling, '\n'), isTailwindCSS),
+            'src/App.vue': vueIndexAppVue(_.join(styling, '\n'), configItems),
             'src/index.html': indexHtml({
               bundleFilename: `index.${indexExtension}`,
             }),
@@ -116,6 +116,10 @@ ${stylus}
           isTypescript ? { 'vue-shim.d.ts': vueShimType } : {}
         );
       },
+    },
+    'Bootstrap': {
+      group: 'UI library',
+      dependencies: configItems => ['bootstrap', 'jquery', 'popper.js'],
     },
     'Tailwind CSS': {
       group: 'UI library',

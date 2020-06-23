@@ -132,11 +132,11 @@ export default (() => {
         return webpackConfigWithRule;
       },
       files: configItems => {
-        const isPostCSS = _.includes(configItems, 'PostCSS');
+
         const styling = getStyleTags(configItems);
         return {
           'src/index.js': svelteIndexJs(),
-          'src/App.svelte': svelteAppSvelte(_.join(styling, '\n\n'), isPostCSS),
+          'src/App.svelte': svelteAppSvelte(_.join(styling, '\n\n'), configItems),
         };
       },
     },
@@ -168,18 +168,21 @@ export default (() => {
       dependencies: configItems => ['vue'],
       files: configItems => {
         const isTypescript = _.includes(configItems, 'Typescript');
-        const isTailwindcss = _.includes(configItems, 'Tailwind CSS');
         const indexFilename = isTypescript ? 'src/index.ts' : 'src/index.js';
         const styling = getStyleTags(configItems);
 
         return _.assign(
           {
-            'src/App.vue': vueIndexAppVue(_.join(styling, '\n'), isTailwindcss),
+            'src/App.vue': vueIndexAppVue(_.join(styling, '\n'), configItems),
             [indexFilename]: vueIndexTs(),
           },
           isTypescript ? { 'vue-shim.d.ts': vueShimType } : {}
         );
       },
+    },
+    'Bootstrap': {
+      group: 'UI library',
+      dependencies: configItems => ['bootstrap', 'jquery', 'popper.js'],
     },
     'Tailwind CSS': {
       group: 'UI library',

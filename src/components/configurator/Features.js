@@ -470,7 +470,11 @@ export const selectionRules = {
       "Code split vendors"
     ),
     addPostCSSandCSSIfTailwindCSS,
-    removeMaterialIfNotReact
+    removeMaterialIfNotReact,
+    addCSSifBootstrap: addXIfY(
+      "CSS",
+      "Bootstrap"
+    )
   }
 };
 // eslint-disable-next-line

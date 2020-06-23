@@ -258,7 +258,8 @@ const selectionRules = {
     allSelectionRules.additionalSelectFunctions
       .addHTMLWebpackPluginIfCodeSplitVendors,
     allSelectionRules.additionalSelectFunctions.addPostCSSandCSSIfTailwindCSS,
-    allSelectionRules.additionalSelectFunctions.removeMaterialIfNotReact
+    allSelectionRules.additionalSelectFunctions.removeMaterialIfNotReact,
+    allSelectionRules.additionalSelectFunctions.addCSSifBootstrap
   ],
 };
 
@@ -270,7 +271,7 @@ const parcelSelectionRules = {
     allSelectionRules.additionalSelectFunctions.enforceMainLibrary,
     allSelectionRules.additionalSelectFunctions.addBabelIfReact,
     allSelectionRules.additionalSelectFunctions.addPostCSSandCSSIfTailwindCSS,
-    allSelectionRules.additionalSelectFunctions.removeMaterialIfNotReact
+    allSelectionRules.additionalSelectFunctions.removeMaterialIfNotReact,
   ],
 };
 
