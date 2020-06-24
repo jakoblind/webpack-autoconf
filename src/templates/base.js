@@ -46,6 +46,9 @@ export const indexHtml = ({
 
 export const readmeFile = (name, features) => {
   const isReact = _.includes(features, 'React');
+  const isTestFrameworkRunWithTest = !_.isEmpty(_.intersection(features, ['AVA', 'Mocha', 'Jest', 'Jasmine', 'TestCafe']));
+  const isCypress = _.includes(features, 'Cypress');
+
   const isHot = _.includes(features, 'React hot loader');
   return `# ${name}
 
@@ -87,8 +90,22 @@ ${
   isReact
     ? 'Open the file `dist/index.html` in your browser'
     : '```sh\nnode dist/bundle.js\n```'
-}
+}${isTestFrameworkRunWithTest || isCypress ? `
 
+## Testing` : ""}${isTestFrameworkRunWithTest ?`
+
+To run unit tests:
+
+\`\`\`sh
+npm test
+\`\`\``: ""}
+${isCypress ?`
+To run cypress:
+
+\`\`\`sh
+npm cypress:open
+\`\`\`
+`: ""}
 ## Credits
 
 Made with [createapp.dev](https://createapp.dev/)
@@ -96,6 +113,8 @@ Made with [createapp.dev](https://createapp.dev/)
 
 export const readmeFileParcel = (name, features) => {
   const isReact = _.includes(features, 'React');
+  const isTestFrameworkRunWithTest = !_.isEmpty(_.intersection(features, ['AVA', 'Mocha', 'Jest', 'Jasmine', 'TestCafe']));
+  const isCypress = _.includes(features, 'Cypress');
   return `# ${name}
 
 Empty project.
@@ -126,8 +145,22 @@ ${
   isReact
     ? 'Open the file `dist/index.html` in your browser'
     : '```sh\nnode dist/bundle.js\n```'
-}
+}${isTestFrameworkRunWithTest || isCypress ? `
 
+## Testing` : ""}${isTestFrameworkRunWithTest ?`
+
+To run unit tests:
+
+\`\`\`sh
+npm test
+\`\`\``: ""}
+${isCypress ?`
+To run cypress:
+
+\`\`\`sh
+npm cypress:open
+\`\`\`
+`: ""}
 ## Credits
 
 Made with [createapp.dev](https://createapp.dev/)
