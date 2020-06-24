@@ -137,8 +137,9 @@ ${stylus}
     Jest: unitTestsRules.Jest,
     Mocha: unitTestsRules.Mocha,
     Jasmine: unitTestsRules.Jasmine,
-    TestCafe: unitTestsRules.TestCafe,
     AVA: unitTestsRules.AVA,
+    Cypress: unitTestsRules.Cypress,
+    TestCafe: unitTestsRules.TestCafe,
     Babel: {
       group: "Transpiler",
       babel: (babelConfig, configItems) => ({

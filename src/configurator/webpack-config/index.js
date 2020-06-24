@@ -203,6 +203,7 @@ export default (() => {
     Mocha: unitTestsRules.Mocha,
     Jasmine: unitTestsRules.Jasmine,
     AVA: unitTestsRules.AVA,
+    Cypress: unitTestsRules.Cypress,
     TestCafe: unitTestsRules.TestCafe,
     Babel: {
       group: "Transpiler",

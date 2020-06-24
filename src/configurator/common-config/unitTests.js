@@ -2,7 +2,7 @@ import _ from 'lodash';
 
 export default {
     Jest: {
-        group: "Unit test framework",
+        group: "Test framework",
         devDependencies: configItems => {
           const isBabel = _.includes(configItems, "Babel");
           return _.concat(["jest"], isBabel ? "babel-jest": []);
@@ -19,7 +19,7 @@ export default {
         }
       },
       Mocha: {
-        group: "Unit test framework",
+        group: "Test framework",
         devDependencies: configItems => {
           return ["mocha"];
         },
@@ -40,7 +40,7 @@ export default {
         }
       },
       Jasmine: {
-        group: "Unit test framework",
+        group: "Test framework",
         devDependencies: configItems => {
           return ["jasmine"];
         },
@@ -72,7 +72,7 @@ export default {
         }
       },
       TestCafe: {
-        group: "Unit test framework",
+        group: "Test framework",
         devDependencies: configItems => {
           return ["testcafe"];
         },
@@ -95,7 +95,7 @@ test('My first test', async t => {
         }
       },
       AVA: {
-        group: "Unit test framework",
+        group: "Test framework",
         devDependencies: configItems => {
           return ["ava"];
         },
@@ -114,6 +114,24 @@ test('bar', async t => {
         packageJson: {
           scripts: {
             test: "ava"
+          }
+        }
+      },
+      Cypress: {
+        group: "Test framework",
+        devDependencies: configItems => {
+          return ["cypress"];
+        },
+        files: configItems => ({
+          "cypress/integration/sample_spec.js": `describe('My First Test', () => {
+  it('Does not do much!', () => {
+    expect(true).to.equal(true)
+  })
+})`
+  }),
+        packageJson: {
+          scripts: {
+            "cypress:open": "cypress open"
           }
         }
       },
