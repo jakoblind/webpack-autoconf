@@ -13,28 +13,9 @@ import {
 import {
   createWebpackConfig,
   createBabelConfig,
-  getNpmDependencies,
   getDefaultProjectName,
 } from './src/configurator/configurator'
-import { readmeFile } from './src/templates/base'
-import {
-  reactIndexJs,
-  reactIndexTsx,
-  reactHotIndexJs,
-  reactIndexHtml,
-} from './src/templates/react/index'
-import { emptyIndexJs } from './src/templates/empty/index'
-import {
-  indexTypescriptHTML,
-  tsconfig,
-  tsconfigReact,
-} from './src/templates/ts'
-import {
-  vueIndexAppVue,
-  vueIndexHtml,
-  vueIndexTs,
-  vueShimType,
-} from './src/templates/vue'
+
 
 import generateWebpackProject, {
   generateParcelProject,

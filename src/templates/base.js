@@ -1,3 +1,5 @@
+import _ from "lodash";
+
 export const baseWebpack = {
   entry: './src/index.js',
   output: {
@@ -42,7 +44,10 @@ export const indexHtml = ({
     </body>
 </html>`;
 
-export const readmeFile = (name, isReact, isHot) => `# ${name}
+export const readmeFile = (name, features) => {
+  const isReact = _.includes(features, 'React');
+  const isHot = _.includes(features, 'React hot loader');
+  return `# ${name}
 
 Empty project.
 
@@ -87,9 +92,11 @@ ${
 ## Credits
 
 Made with [createapp.dev](https://createapp.dev/)
-`;
+`};
 
-export const readmeFileParcel = (name, isReact) => `# ${name}
+export const readmeFileParcel = (name, features) => {
+  const isReact = _.includes(features, 'React');
+  return `# ${name}
 
 Empty project.
 
@@ -125,7 +132,7 @@ ${
 
 Made with [createapp.dev](https://createapp.dev/)
 
-`;
+`};
 
 export const gitignore = () => `
 .cache/

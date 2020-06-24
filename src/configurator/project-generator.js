@@ -37,7 +37,7 @@ const generateProject = (features, name, getNodeVersionPromise) => {
     {},
     {
       'webpack.config.js': newWebpackConfig,
-      'README.md': readmeFile(projectName, isReact, isHotReact),
+      'README.md': readmeFile(projectName, features),
       '.gitignore': gitignore(),
       'package.json': 'empty package.json',
     },
@@ -62,7 +62,6 @@ const generateProject = (features, name, getNodeVersionPromise) => {
 export function generateParcelProject(features, name, getNodeVersionPromise) {
   const isBabel = _.includes(features, 'Babel');
   const isReact = _.includes(features, 'React');
-  const isTypescript = _.includes(features, 'Typescript');
   const newBabelConfig = createBabelConfig(features);
   const additionalFilesMap = createAdditionalFilesMap(parcelConfig, features);
   const projectName = name || getDefaultProjectName('empty-project', features);
@@ -74,7 +73,7 @@ export function generateParcelProject(features, name, getNodeVersionPromise) {
   const fileMap = _.assign(
     {},
     {
-      'README.md': readmeFileParcel(projectName, isReact, false),
+      'README.md': readmeFileParcel(projectName, features),
       '.gitignore': gitignore(),
     },
     maybeConfigBabel,
