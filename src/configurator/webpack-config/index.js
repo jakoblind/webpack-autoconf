@@ -199,7 +199,7 @@ export default (() => {
       ]
     },
     Jest: {
-      group: "Unit tests",
+      group: "Unit test framework",
       devDependencies: configItems => {
         const isBabel = _.includes(configItems, "Babel");
         return _.concat(["jest"], isBabel ? "babel-jest": []);
@@ -216,7 +216,7 @@ export default (() => {
       }
     },
     Mocha: {
-      group: "Unit tests",
+      group: "Unit test framework",
       devDependencies: configItems => {
         return ["mocha"];
       },
@@ -233,6 +233,38 @@ export default (() => {
       packageJson: {
         scripts: {
           test: "mocha"
+        }
+      }
+    },
+    Jasmine: {
+      group: "Unit test framework",
+      devDependencies: configItems => {
+        return ["jasmine"];
+      },
+      files: configItems => ({
+        "spec/myJasmineSpec.js": `describe("A suite is just a function", function() {
+  var a;
+
+  it("and so is a spec", function() {
+    a = true;
+
+    expect(a).toBe(true);
+  });
+});`, "spec/support/jasmine.json": `{
+  "spec_dir": "spec",
+  "spec_files": [
+    "**/*[sS]pec.js"
+  ],
+  "helpers": [
+    "helpers/**/*.js"
+  ],
+  "stopSpecOnExpectationFailure": false,
+  "random": true
+}`
+      }),
+      packageJson: {
+        scripts: {
+          test: "jasmine"
         }
       }
     },
