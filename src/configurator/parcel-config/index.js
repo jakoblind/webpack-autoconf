@@ -20,6 +20,7 @@ import { tsconfig, tsconfigReact } from "../../templates/ts";
 import { vueIndexAppVue, vueIndexTs, vueShimType } from "../../templates/vue";
 
 import lintingRules from "../common-config/linting";
+import unitTestsRules from "../common-config/unitTests";
 
 function getStyleImports(configItems) {
   const isCss = _.includes(configItems, "CSS");
@@ -133,44 +134,10 @@ ${stylus}
         "@material-ui/icons"
       ]
     },
-    Jest: {
-      group: "Unit test framework",
-      devDependencies: configItems => {
-        const isBabel = _.includes(configItems, "Babel");
-        return _.concat(["jest"], isBabel ? "babel-jest": []);
-      },
-      files: configItems => ({
-        "my.test.js": `test('adds 1 + 2 to equal 3', () => {
-  expect(1+2).toBe(3);
-});`
-      }),
-      packageJson: {
-        scripts: {
-          test: "jest"
-        }
-      }
-    },
-    Mocha: {
-      group: "Unit test framework",
-      devDependencies: configItems => {
-        return ["mocha"];
-      },
-      files: configItems => ({
-        "test/test.js": `var assert = require('assert');
-  describe('Array', function () {
-    describe('#indexOf()', function () {
-      it('should return -1 when the value is not present', function () {
-        assert.equal([1, 2, 3].indexOf(4), -1);
-      });
-    });
-  });`
-}),
-      packageJson: {
-        scripts: {
-          test: "mocha"
-        }
-      }
-    },
+    Jest: unitTestsRules.Jest,
+    Mocha: unitTestsRules.Mocha,
+    Jasmine: unitTestsRules.Jasmine,
+    TestCafe: unitTestsRules.TestCafe,
     Babel: {
       group: "Transpiler",
       babel: (babelConfig, configItems) => ({
