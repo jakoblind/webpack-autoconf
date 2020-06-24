@@ -138,6 +138,7 @@ ${stylus}
     Mocha: unitTestsRules.Mocha,
     Jasmine: unitTestsRules.Jasmine,
     TestCafe: unitTestsRules.TestCafe,
+    AVA: unitTestsRules.AVA,
     Babel: {
       group: "Transpiler",
       babel: (babelConfig, configItems) => ({

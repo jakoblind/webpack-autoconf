@@ -94,4 +94,27 @@ test('My first test', async t => {
           }
         }
       },
+      AVA: {
+        group: "Unit test framework",
+        devDependencies: configItems => {
+          return ["ava"];
+        },
+        files: configItems => ({
+          "test.js": `const test = require('ava');
+
+test('foo', t => {
+    t.pass();
+});
+
+test('bar', async t => {
+    const bar = Promise.resolve('bar');
+    t.is(await bar, 'bar');
+});`
+  }),
+        packageJson: {
+          scripts: {
+            test: "ava"
+          }
+        }
+      },
 }

@@ -202,6 +202,7 @@ export default (() => {
     Jest: unitTestsRules.Jest,
     Mocha: unitTestsRules.Mocha,
     Jasmine: unitTestsRules.Jasmine,
+    AVA: unitTestsRules.AVA,
     TestCafe: unitTestsRules.TestCafe,
     Babel: {
       group: "Transpiler",
