@@ -136,6 +136,7 @@ ${stylus}
     },
     Jest: unitTestsRules.Jest,
     Mocha: unitTestsRules.Mocha,
+    Chai: unitTestsRules.Chai,
     Jasmine: unitTestsRules.Jasmine,
     AVA: unitTestsRules.AVA,
     Cypress: unitTestsRules.Cypress,
