@@ -367,6 +367,14 @@ textarea {
 .webpackTab img {
   margin-left: -2px;
 }
+@media screen and (max-width: 40em) {
+  .webpackTab img {
+    margin-left: -8px;
+  }
+  .parcelTab img {
+    margin-left: -5px;
+  }
+}
 .shadow {
   box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.1);
 }
