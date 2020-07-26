@@ -100,7 +100,7 @@ export default () => {
           To create a simple hello world app with webpack, you have to install
           LOTs of dependencies. First, there's <code>webpack</code>, which is
           fine. You already expected to install that. But then you
-          <i>also</i> have to install all of the following:
+           <i>also</i> have to install all of the following:
         </p>
         <ul>
           <li>
