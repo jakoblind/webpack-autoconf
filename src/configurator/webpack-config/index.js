@@ -415,9 +415,9 @@ export default (() => {
       webpack: webpackConfig => {
         return addPlugin(
           webpackConfig,
-          `CODE:new CopyPlugin([
-  { from: 'src/index.html' }
-])`
+          `CODE:new CopyPlugin({
+  patterns: [{ from: 'src/index.html' }],
+})`
         );
       }
     },
