@@ -447,7 +447,7 @@ export default (() => {
       }),
       packageJson: {
         scripts: {
-          start: "webpack-dev-server --hot --mode development"
+          start: "webpack serve --hot --mode development"
         }
       }
     }
@@ -482,8 +482,8 @@ export default (() => {
     base: {
       packageJson: {
         scripts: {
-          "build-dev": "webpack -d --mode development",
-          "build-prod": "webpack -p --mode production"
+          "build-dev": "webpack --mode development",
+          "build-prod": "webpack --mode production"
         }
       },
       devDependencies: ["webpack", "webpack-cli"],
