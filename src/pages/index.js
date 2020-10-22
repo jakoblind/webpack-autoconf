@@ -15,6 +15,7 @@ import { CourseSignupForm } from '../components/SignupForms';
 import {
   webpackConfig,
   parcelConfig,
+  snowpackConfig,
 } from '../configurator/configurator-config';
 
 import {
@@ -32,6 +33,7 @@ import Features, {
 } from '../components/configurator/Features';
 import generateProject, {
   generateParcelProject,
+  generateSnowpackProject,
 } from '../configurator/project-generator';
 
 import onboardingHelp from '../onboardingHelp';
@@ -159,16 +161,16 @@ function Tabs({ selected, setSelected }) {
         </button>
 
         <button
-          onClick={() => setSelected("snowpack")}
+          onClick={() => setSelected('snowpack')}
           className={[
-            selected === "snowpack" ? styles.selectedTab : null,
-            styles.snowpackTab
-          ].join(" ")}
+            selected === 'snowpack' ? styles.selectedTab : null,
+            styles.snowpackTab,
+          ].join(' ')}
         >
           <img
             alt="snowpack logo"
             src={require(`../../images/snowpack-logo${
-              selected === "snowpack" ? "-color" : ""
+              selected === 'snowpack' ? '-color' : ''
             }.png`)}
           />
           <div>Snowpack</div>
@@ -275,7 +277,7 @@ const selectionRules = {
       .addHTMLWebpackPluginIfCodeSplitVendors,
     allSelectionRules.additionalSelectFunctions.addPostCSSandCSSIfTailwindCSS,
     allSelectionRules.additionalSelectFunctions.removeMaterialIfNotReact,
-    allSelectionRules.additionalSelectFunctions.addCSSifBootstrap
+    allSelectionRules.additionalSelectFunctions.addCSSifBootstrap,
   ],
 };
 
@@ -288,6 +290,13 @@ const parcelSelectionRules = {
     allSelectionRules.additionalSelectFunctions.addBabelIfReact,
     allSelectionRules.additionalSelectFunctions.addPostCSSandCSSIfTailwindCSS,
     allSelectionRules.additionalSelectFunctions.removeMaterialIfNotReact,
+  ],
+};
+
+const snowpackSelectionRules = {
+  stopSelectFunctions: [],
+  additionalSelectFunctions: [
+    allSelectionRules.additionalSelectFunctions.enforceMainLibrary,
   ],
 };
 
@@ -318,6 +327,13 @@ const buildConfigConfig = {
       <br key={3} />,
     ],
   },
+  snowpack: {
+    featureConfig: snowpackConfig,
+    projectGeneratorFunction: generateSnowpackProject,
+    defaultFile: 'package.json',
+    selectionRules: snowpackSelectionRules,
+    extraElements: [],
+  },
 };
 
 const initialState = (selectedTab = 'webpack') => ({
@@ -333,6 +349,7 @@ function reducer(state, action) {
       );
 
       let shouldSetNoLibrary = state.selectedFeatures['No library'];
+
       if (action.selectedTab === 'parcel' && state.selectedFeatures.Svelte) {
         // Svelte was selected when switching to the parcel tab
         // which isn't supported so we set the flag shouldSetNoLibrary to
@@ -346,11 +363,31 @@ function reducer(state, action) {
           _.includes(newAllPossibleFeatures, feature) && selected
       );
 
+      let shouldSetBabel = filteredFeatures.Babel;
+      if (
+        (action.selectedTab === 'webpack' || action.selectedTab === 'parcel') &&
+        state.selectedFeatures.React
+      ) {
+        // React was selected when switching to the webpack tab
+        // if we come from snowpack, then babel is not set.
+        // it must be set if React should work properly
+        shouldSetBabel = true;
+      }
+
+      if (
+        action.selectedTab === 'snowpack' &&
+        (state.selectedFeatures.Vue || state.selectedFeatures.Svelte)
+      ) {
+        // if we select snowpack, and vue was selected, then we must select no lib
+        shouldSetNoLibrary = true;
+      }
+
       return {
         ...state,
         selectedTab: action.selectedTab,
         selectedFeatures: {
           ...filteredFeatures,
+          Babel: shouldSetBabel,
           'No library': shouldSetNoLibrary,
         },
       };
