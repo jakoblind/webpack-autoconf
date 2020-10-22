@@ -317,9 +317,10 @@ textarea {
 }
 
 .tabs {
-  max-width: 250px;
+  max-width: 375px;
   margin: 0 auto;
 }
+
 .tabs button {
   cursor: pointer;
   font-size: 16px;
@@ -367,6 +368,33 @@ textarea {
 .webpackTab img {
   margin-left: -2px;
 }
+.snowpackTab {
+  width: 125px;
+}
+.snowpackTab div {
+  margin-top: 4px;
+}
+.snowpackTab img {
+  margin-top: 2px;
+  height: 22px;
+  width: 22px;
+}
+@media only screen and (max-width: 666px) {
+  .tabsContainer {
+    width: auto;
+    height: auto;
+    margin-bottom: 0px;
+  }
+  .tabs {
+    margin: auto;
+  }
+  .tabs button {
+    float: none;
+    margin: auto;
+    margin-bottom: 10px;
+  }
+}
+
 @media screen and (max-width: 40em) {
   .webpackTab img {
     margin-left: -8px;
@@ -539,7 +567,7 @@ textarea {
 
 /* Create the checkmark/indicator (hidden when not checked) */
 .checkmark:after {
-  content: '';
+  content: "";
   position: absolute;
   display: none;
 }
@@ -577,7 +605,7 @@ textarea {
 
 /* Style the checkmark/indicator */
 .feature-container .radio::after {
-  content: '';
+  content: "";
   position: absolute;
   display: none;
   left: 4px;
@@ -633,7 +661,7 @@ ol li:before {
   padding: 4px;
   font-size: 27px;
   font-weight: bold;
-  font-family: 'Helvetica Neue', Arial, sans-serif;
+  font-family: "Helvetica Neue", Arial, sans-serif;
   text-align: center;
 }
 

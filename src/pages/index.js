@@ -157,6 +157,22 @@ function Tabs({ selected, setSelected }) {
           />
           <div>Parcel</div>
         </button>
+
+        <button
+          onClick={() => setSelected("snowpack")}
+          className={[
+            selected === "snowpack" ? styles.selectedTab : null,
+            styles.snowpackTab
+          ].join(" ")}
+        >
+          <img
+            alt="snowpack logo"
+            src={require(`../../images/snowpack-logo${
+              selected === "snowpack" ? "-color" : ""
+            }.png`)}
+          />
+          <div>Snowpack</div>
+        </button>
       </nav>
     </div>
   );
