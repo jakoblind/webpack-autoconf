@@ -74,6 +74,18 @@ export default (() => {
         };
       },
     },
+    Bootstrap: {
+      group: 'UI library',
+      dependencies: configItems => ['bootstrap', 'jquery', 'popper.js'],
+    },
+
+    Jest: unitTestsRules.Jest,
+    Mocha: unitTestsRules.Mocha,
+    Chai: unitTestsRules.Chai,
+    Jasmine: unitTestsRules.Jasmine,
+    AVA: unitTestsRules.AVA,
+    Cypress: unitTestsRules.Cypress,
+    TestCafe: unitTestsRules.TestCafe,
     ESLint: lintingRules.eslint,
     Prettier: lintingRules.prettier,
   };
