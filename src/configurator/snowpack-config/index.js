@@ -78,7 +78,6 @@ export default (() => {
       group: 'UI library',
       dependencies: configItems => ['bootstrap', 'jquery', 'popper.js'],
     },
-
     Jest: unitTestsRules.Jest,
     Mocha: unitTestsRules.Mocha,
     Chai: unitTestsRules.Chai,
@@ -86,6 +85,13 @@ export default (() => {
     AVA: unitTestsRules.AVA,
     Cypress: unitTestsRules.Cypress,
     TestCafe: unitTestsRules.TestCafe,
+    CSS: {
+      group: 'Styling',
+      files: configItems => {
+        const isTailwindcss = _.includes(configItems, 'Tailwind CSS');
+        return { 'src/styles.css': isTailwindcss ? tailwindcss : css };
+      },
+    },
     ESLint: lintingRules.eslint,
     Prettier: lintingRules.prettier,
   };
