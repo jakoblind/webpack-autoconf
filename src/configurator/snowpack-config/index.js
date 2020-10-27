@@ -79,8 +79,19 @@ export default (() => {
         },
       }),
       files: configItems => {
+        const isTypescript = _.includes(configItems, 'Typescript');
         const extraImports = getStyleImports(configItems);
 
+        if (isTypescript) {
+          return {
+            'src/index.tsx': reactIndexTsx(extraImports),
+            'src/App.tsx': reactAppTsx(configItems),
+            'src/index.html': indexHtml({
+              bundleFilename: 'index.js',
+              isModule: true,
+            }),
+          };
+        }
         return {
           'src/index.jsx': reactIndexJs(extraImports),
           'src/App.jsx': reactAppJs(configItems),
@@ -106,6 +117,29 @@ export default (() => {
     AVA: unitTestsRules.AVA,
     Cypress: unitTestsRules.Cypress,
     TestCafe: unitTestsRules.TestCafe,
+
+    Typescript: {
+      group: 'Transpiler',
+      files: configItems => {
+        const isReact = _.includes(configItems, 'React');
+        const isVue = _.includes(configItems, 'Vue');
+
+        const configFiles = isReact
+          ? { 'tsconfig.json': tsconfigReact }
+          : { 'tsconfig.json': tsconfig };
+        const sourceFiles =
+          !isReact && !isVue
+            ? {
+                'src/index.html': indexHtml({
+                  bundleFilename: 'index.js',
+                  isModule: true,
+                }),
+                'src/index.ts': emptyIndexJs(),
+              }
+            : {};
+        return _.assign(configFiles, sourceFiles);
+      },
+    },
     CSS: {
       group: 'Styling',
       files: configItems => {
@@ -178,7 +212,9 @@ export default (() => {
       devDependencies: ['snowpack'],
       files: configItems => {
         const isReact = _.includes(configItems, 'React');
-        if (!isReact) {
+        const isTypescript = _.includes(configItems, 'Typescript');
+        const isVue = _.includes(configItems, 'Vue');
+        if (!isReact && !isTypescript && !isVue) {
           return {
             'src/index.js': emptyIndexJs(getStyleImports(configItems)),
             'src/index.html': indexHtml({
