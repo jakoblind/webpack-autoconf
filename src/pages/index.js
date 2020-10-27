@@ -187,7 +187,7 @@ Tabs.propTypes = {
 
 Modal.setAppElement('#___gatsby');
 
-function DownloadButton({ url, onClick, filename }) {
+function DownloadButton({ url, onClick, filename, buildTool }) {
   const [modalOpen, setModalOpen] = useState(false);
   const customStyles = {
     content: {
@@ -206,7 +206,9 @@ function DownloadButton({ url, onClick, filename }) {
         className={styles.btn}
         onClick={() => {
           onClick();
-          setModalOpen(true);
+          if (buildTool === 'webpack') {
+            setModalOpen(true);
+          }
         }}
         id="download"
       >
@@ -232,7 +234,7 @@ function DownloadButton({ url, onClick, filename }) {
         </button>
         <br />
         <br />
-        <p>Enjoy your newly created webpack project!</p>
+        <p>Enjoy your newly created {buildTool} project!</p>
 
         <h3>Learn webpack with my free email course</h3>
         <div>
@@ -256,6 +258,7 @@ DownloadButton.propTypes = {
   url: PropTypes.string,
   filename: PropTypes.string.isRequired,
   onClick: PropTypes.func.isRequired,
+  buildTool: PropTypes.string.isRequired,
 };
 
 DownloadButton.defaultProps = {
@@ -585,6 +588,7 @@ function Configurator(props) {
               className={styles.projectNameInput}
             />
             <DownloadButton
+              buildTool={state.selectedTab}
               filename={`${projectName}.zip`}
               onClick={e => {
                 downloadZip();
