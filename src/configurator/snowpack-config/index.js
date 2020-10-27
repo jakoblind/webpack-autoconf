@@ -52,7 +52,8 @@ export default (() => {
     React: {
       group: 'Main library',
       dependencies: configItems => ['react', 'react-dom'],
-      snowpack: () => ({
+      snowpack: (config = {}) => ({
+        ...config,
         mount: {
           dist: '/',
           src: '/',
@@ -91,6 +92,27 @@ export default (() => {
         const isTailwindcss = _.includes(configItems, 'Tailwind CSS');
         return { 'src/styles.css': isTailwindcss ? tailwindcss : css };
       },
+    },
+    PostCSS: {
+      group: 'Styling',
+      devDependencies: configItems => [
+        'postcss-cli',
+        'postcss',
+        'autoprefixer',
+      ],
+      files: configItems => {
+        const isTailwindcss = _.includes(configItems, 'Tailwind CSS');
+        return { 'postcss.config.js': postCssConfig(isTailwindcss) };
+      },
+      snowpack: (config = {}) => ({
+        ...config,
+        plugins: [
+          [
+            '@snowpack/plugin-build-script',
+            { cmd: 'postcss', input: ['.css'], output: ['.css'] },
+          ],
+        ],
+      }),
     },
     ESLint: lintingRules.eslint,
     Prettier: lintingRules.prettier,
