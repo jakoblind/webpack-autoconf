@@ -49,7 +49,7 @@ function cssRules() {
         return {};
       }
       const isTailwindcss = _.includes(configItems, 'Tailwind CSS');
-      return { 'src/styles.css': isTailwindcss ? tailwindcss : css };
+      return { 'src/styles.css': isTailwindcss ? tailwindcss() : css };
     },
   };
 }

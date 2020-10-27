@@ -298,6 +298,7 @@ const snowpackSelectionRules = {
   additionalSelectFunctions: [
     allSelectionRules.additionalSelectFunctions.enforceMainLibrary,
     allSelectionRules.additionalSelectFunctions.addCssIfPostCSS,
+    allSelectionRules.additionalSelectFunctions.addPostCSSandCSSIfTailwindCSS,
   ],
 };
 

@@ -24,11 +24,20 @@ h1
   background-color: bg;
 `;
 
-export const tailwindcss = `@tailwind base;
+export const tailwindcss = ({ withPostCSS = true }) => {
+  const importKeyword = withPostCSS ? '@tailwind' : '@import';
+  return `${importKeyword} ${
+    withPostCSS ? `base` : `'tailwindcss/dist/base.css'`
+  };
 
-@tailwind components;
+${importKeyword} ${
+    withPostCSS ? `components` : `'tailwindcss/dist/components.css'`
+  };
 
-@tailwind utilities;`;
+${importKeyword} ${
+    withPostCSS ? `utilities` : `'tailwindcss/dist/utilities.css'`
+  };`;
+};
 
 export const postCssConfig = isTailwindcss => `module.exports = {
   plugins: [${

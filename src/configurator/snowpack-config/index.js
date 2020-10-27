@@ -79,6 +79,10 @@ export default (() => {
       group: 'UI library',
       dependencies: configItems => ['bootstrap', 'jquery', 'popper.js'],
     },
+    'Tailwind CSS': {
+      group: 'UI library',
+      dependencies: configItems => ['tailwindcss'],
+    },
     Jest: unitTestsRules.Jest,
     Mocha: unitTestsRules.Mocha,
     Chai: unitTestsRules.Chai,
@@ -90,7 +94,12 @@ export default (() => {
       group: 'Styling',
       files: configItems => {
         const isTailwindcss = _.includes(configItems, 'Tailwind CSS');
-        return { 'src/styles.css': isTailwindcss ? tailwindcss : css };
+        const isPostCSS = _.includes(configItems, 'PostCSS');
+        return {
+          'src/styles.css': isTailwindcss
+            ? tailwindcss({ withPostCSS: isPostCSS })
+            : css,
+        };
       },
     },
     PostCSS: {
