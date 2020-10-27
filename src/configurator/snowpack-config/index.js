@@ -1,5 +1,6 @@
 import _ from 'lodash';
 
+import { config } from 'bluebird';
 import {
   css,
   scss,
@@ -35,6 +36,21 @@ function getStyleImports(configItems) {
     isStylus ? [`import "./styles.styl";`] : []
   );
 }
+
+function addSnowpackPlugin(snowpackConfig, plugin) {
+  if (!snowpackConfig || !snowpackConfig.plugins) {
+    return {
+      ...snowpackConfig,
+      plugins: [plugin],
+    };
+  }
+
+  return {
+    ...snowpackConfig,
+    plugins: _.union(snowpackConfig.plugins, [plugin]),
+  };
+}
+
 export default (() => {
   const features = {
     'No library': {
@@ -113,15 +129,20 @@ export default (() => {
         const isTailwindcss = _.includes(configItems, 'Tailwind CSS');
         return { 'postcss.config.js': postCssConfig(isTailwindcss) };
       },
-      snowpack: (config = {}) => ({
-        ...config,
-        plugins: [
-          [
-            '@snowpack/plugin-build-script',
-            { cmd: 'postcss', input: ['.css'], output: ['.css'] },
-          ],
-        ],
-      }),
+      snowpack: (config = {}) =>
+        addSnowpackPlugin(config, [
+          '@snowpack/plugin-build-script',
+          { cmd: 'postcss', input: ['.css'], output: ['.css'] },
+        ]),
+    },
+    Sass: {
+      group: 'Styling',
+      devDependencies: configItems => ['@snowpack/plugin-sass'],
+      files: configItems => {
+        return { 'src/styles.scss': scss };
+      },
+      snowpack: (config = {}) =>
+        addSnowpackPlugin(config, '@snowpack/plugin-sass'),
     },
     ESLint: lintingRules.eslint,
     Prettier: lintingRules.prettier,
