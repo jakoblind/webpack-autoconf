@@ -200,6 +200,71 @@ Made with [createapp.dev](https://createapp.dev/)
 `;
 };
 
+export const readmeFileSnowpack = (name, features) => {
+  const isReact = _.includes(features, 'React');
+  const isTestFrameworkRunWithTest = !_.isEmpty(
+    _.intersection(features, ['AVA', 'Mocha', 'Jest', 'Jasmine', 'TestCafe'])
+  );
+  const isCypress = _.includes(features, 'Cypress');
+  return `# ${name}
+
+Empty project.
+
+## How to run on localhost
+
+First install dependencies:
+
+\`\`\`sh
+npm install
+\`\`\`
+
+To run in dev mode mode:
+
+\`\`\`sh
+npm start
+\`\`\`
+
+Then go to http://localhost:8080
+
+To create a production build:
+
+\`\`\`sh
+npm run build
+\`\`\`${
+    isTestFrameworkRunWithTest || isCypress
+      ? `
+
+## Testing`
+      : ''
+  }${
+    isTestFrameworkRunWithTest
+      ? `
+
+To run unit tests:
+
+\`\`\`sh
+npm test
+\`\`\``
+      : ''
+  }
+${
+  isCypress
+    ? `
+To run cypress:
+
+\`\`\`sh
+npm cypress:open
+\`\`\`
+`
+    : ''
+}
+## Credits
+
+Made with [createapp.dev](https://createapp.dev/)
+
+`;
+};
+
 export const gitignore = () => `
 .cache/
 coverage/

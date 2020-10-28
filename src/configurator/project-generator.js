@@ -1,6 +1,11 @@
 import _ from 'lodash';
 
-import { readmeFile, readmeFileParcel, gitignore } from '../templates/base';
+import {
+  readmeFile,
+  readmeFileParcel,
+  readmeFileSnowpack,
+  gitignore,
+} from '../templates/base';
 
 import {
   createWebpackConfig,
@@ -112,7 +117,7 @@ export function generateSnowpackProject(features, name, getNodeVersionPromise) {
     {},
     {
       'snowpack.config.json': newSnowpackConfig,
-      'README.md': readmeFileParcel(projectName, features),
+      'README.md': readmeFileSnowpack(projectName, features),
       '.gitignore': gitignore(),
     },
     additionalFilesMap
