@@ -51,32 +51,25 @@ function addSnowpackPlugin(snowpackConfig, plugin) {
   };
 }
 
+const baseSnowpackConfig = {
+  mount: {
+    dist: '/',
+    src: '/',
+  },
+};
+
 export default (() => {
   const features = {
     'No library': {
       group: 'Main library',
-      snowpack: () => ({
-        mount: {
-          dist: '/',
-          src: '/',
-        },
-        devOptions: {
-          open: 'none',
-        },
-      }),
+      snowpack: () => baseSnowpackConfig,
     },
     React: {
       group: 'Main library',
       dependencies: configItems => ['react', 'react-dom'],
       snowpack: (config = {}) => ({
         ...config,
-        mount: {
-          dist: '/',
-          src: '/',
-        },
-        devOptions: {
-          open: 'none',
-        },
+        ...baseSnowpackConfig,
       }),
       files: configItems => {
         const isTypescript = _.includes(configItems, 'Typescript');
