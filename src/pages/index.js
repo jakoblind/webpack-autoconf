@@ -631,6 +631,7 @@ function Configurator(props) {
               className={styles.projectNameInput}
             />
             <DownloadButton
+              buildTool={state.selectedTab}
               filename={`${projectName}.zip`}
               onClick={e => {
                 downloadZip();
