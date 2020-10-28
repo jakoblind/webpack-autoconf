@@ -13,7 +13,7 @@
     [
       "prismjs",
       {
-        "languages": ["bash", "css","html","javascript","json","less","markdown","markup","scss","stylus","typescript"],
+        "languages": ["bash", "css","html","javascript", "json","less","markdown","markup","scss","stylus","typescript", "tsx", "jsx"],
         "theme": "tomorrow",
         "css": true
       }

@@ -1,5 +1,6 @@
 import _ from 'lodash';
 
+import { config } from 'bluebird';
 import {
   css,
   scss,
@@ -35,21 +36,41 @@ function getStyleImports(configItems) {
     isStylus ? [`import "./styles.styl";`] : []
   );
 }
+
+function addSnowpackPlugin(snowpackConfig, plugin) {
+  if (!snowpackConfig || !snowpackConfig.plugins) {
+    return {
+      ...snowpackConfig,
+      plugins: [plugin],
+    };
+  }
+
+  return {
+    ...snowpackConfig,
+    plugins: _.union(snowpackConfig.plugins, [plugin]),
+  };
+}
+
+const baseSnowpackConfig = {
+  mount: {
+    dist: '/',
+    src: '/',
+  },
+};
+
 export default (() => {
   const features = {
     'No library': {
       group: 'Main library',
+      snowpack: () => baseSnowpackConfig,
     },
     React: {
       group: 'Main library',
       dependencies: configItems => ['react', 'react-dom'],
-      devDependencies: configItems => {
-        const isTypescript = _.includes(configItems, 'Typescript');
-        return _.concat(
-          [],
-          isTypescript ? ['@types/react', '@types/react-dom'] : []
-        );
-      },
+      snowpack: (config = {}) => ({
+        ...config,
+        ...baseSnowpackConfig,
+      }),
       files: configItems => {
         const isTypescript = _.includes(configItems, 'Typescript');
         const extraImports = getStyleImports(configItems);
@@ -58,64 +79,20 @@ export default (() => {
           return {
             'src/index.tsx': reactIndexTsx(extraImports),
             'src/App.tsx': reactAppTsx(configItems),
-            'src/index.html': indexHtml({ bundleFilename: 'index.tsx' }),
+            'src/index.html': indexHtml({
+              bundleFilename: 'index.js',
+              isModule: true,
+            }),
           };
         }
-
         return {
-          'src/index.js': reactIndexJs(extraImports),
-          'src/App.js': reactAppJs(configItems),
-          'src/index.html': indexHtml({ bundleFilename: 'index.js' }),
+          'src/index.jsx': reactIndexJs(extraImports),
+          'src/App.jsx': reactAppJs(configItems),
+          'src/index.html': indexHtml({
+            bundleFilename: 'index.js',
+            isModule: true,
+          }),
         };
-      },
-    },
-    Vue: {
-      group: 'Main library',
-      dependencies: configItems => ['vue'],
-      files: configItems => {
-        const isTypescript = _.includes(configItems, 'Typescript');
-        const indexExtension = isTypescript ? 'ts' : 'js';
-        const isCss = _.includes(configItems, 'CSS');
-        const isLess = _.includes(configItems, 'Less');
-        const isSass = _.includes(configItems, 'Sass');
-        const isStylus = _.includes(configItems, 'stylus');
-        const isTailwindCSS = _.includes(configItems, 'Tailwind CSS');
-        const cssStyle = `<style>
-${css}
-</style>`;
-        const lessStyle = `<style lang="less">
-${less}
-</style>`;
-        const sassStyle = `<style lang="scss">
-${scss}
-</style>`;
-        const stylusStyle = `<style lang="styl">
-${stylus}
-</style>`;
-        const tailwindcssStyle = `<style global>
-  @tailwind base;
-  @tailwind components;
-  @tailwind utilities;
-</style>`;
-        const styling = _.concat(
-          [],
-          isCss && !isTailwindCSS ? cssStyle : [],
-          isSass ? sassStyle : [],
-          isLess ? lessStyle : [],
-          isStylus ? stylusStyle : [],
-          isTailwindCSS ? tailwindcssStyle : []
-        );
-
-        return _.assign(
-          {
-            'src/App.vue': vueIndexAppVue(_.join(styling, '\n'), configItems),
-            'src/index.html': indexHtml({
-              bundleFilename: `index.${indexExtension}`,
-            }),
-            [`src/index.${indexExtension}`]: vueIndexTs(),
-          },
-          isTypescript ? { 'vue-shim.d.ts': vueShimType } : {}
-        );
       },
     },
     Bootstrap: {
@@ -126,14 +103,6 @@ ${stylus}
       group: 'UI library',
       dependencies: configItems => ['tailwindcss'],
     },
-    'Material-UI': {
-      group: 'UI library',
-      dependencies: configItems => [
-        '@material-ui/core',
-        'fontsource-roboto',
-        '@material-ui/icons',
-      ],
-    },
     Jest: unitTestsRules.Jest,
     Mocha: unitTestsRules.Mocha,
     Chai: unitTestsRules.Chai,
@@ -141,21 +110,7 @@ ${stylus}
     AVA: unitTestsRules.AVA,
     Cypress: unitTestsRules.Cypress,
     TestCafe: unitTestsRules.TestCafe,
-    Babel: {
-      group: 'Transpiler',
-      babel: (babelConfig, configItems) => ({
-        ...babelConfig,
-        presets: _.concat(
-          [['@babel/preset-env', { modules: false }]],
-          _.includes(configItems, 'React') ? '@babel/preset-react' : []
-        ),
-      }),
-      devDependencies: configItems =>
-        _.concat(
-          ['@babel/core', '@babel/preset-env'],
-          _.includes(configItems, 'React') ? '@babel/preset-react' : []
-        ),
-    },
+
     Typescript: {
       group: 'Transpiler',
       files: configItems => {
@@ -168,7 +123,10 @@ ${stylus}
         const sourceFiles =
           !isReact && !isVue
             ? {
-                'src/index.html': indexHtml({ bundleFilename: 'index.ts' }),
+                'src/index.html': indexHtml({
+                  bundleFilename: 'index.js',
+                  isModule: true,
+                }),
                 'src/index.ts': emptyIndexJs(),
               }
             : {};
@@ -179,36 +137,46 @@ ${stylus}
       group: 'Styling',
       files: configItems => {
         const isTailwindcss = _.includes(configItems, 'Tailwind CSS');
-        return { 'src/styles.css': isTailwindcss ? tailwindcss() : css };
+        const isPostCSS = _.includes(configItems, 'PostCSS');
+        return {
+          'src/styles.css': isTailwindcss
+            ? tailwindcss({ withPostCSS: isPostCSS })
+            : css,
+        };
       },
     },
     PostCSS: {
       group: 'Styling',
-      devDependencies: configItems => ['postcss-modules', 'autoprefixer'],
+      devDependencies: configItems => [
+        'postcss-cli',
+        'postcss',
+        'autoprefixer',
+      ],
       files: configItems => {
         const isTailwindcss = _.includes(configItems, 'Tailwind CSS');
         return { 'postcss.config.js': postCssConfig(isTailwindcss) };
       },
+      snowpack: (config = {}) =>
+        addSnowpackPlugin(config, [
+          '@snowpack/plugin-build-script',
+          { cmd: 'postcss', input: ['.css'], output: ['.css'] },
+        ]),
     },
     Sass: {
       group: 'Styling',
-      // devDependencies: configItems => ['sass'],//ToDO is thiss needed?
-      files: configItems => ({ 'src/styles.scss': scss }),
-    },
-    Less: {
-      group: 'Styling',
-      files: configItems => ({ 'src/styles.less': less }),
-    },
-    stylus: {
-      group: 'Styling',
-      files: configItems => ({ 'src/styles.styl': stylus }),
+      devDependencies: configItems => ['@snowpack/plugin-sass'],
+      files: configItems => {
+        return { 'src/styles.scss': scss };
+      },
+      snowpack: (config = {}) =>
+        addSnowpackPlugin(config, '@snowpack/plugin-sass'),
     },
     ESLint: lintingRules.eslint,
     Prettier: lintingRules.prettier,
   };
   const featuresNoNulls = _.mapValues(features, item => {
-    if (!item.babel) {
-      item.babel = _.identity;
+    if (!item.snowpack) {
+      item.snowpack = _.identity;
     }
     if (!item.dependencies) {
       item.dependencies = () => [];
@@ -230,11 +198,11 @@ ${stylus}
     base: {
       packageJson: {
         scripts: {
-          start: 'parcel src/index.html',
-          'build-prod': 'parcel build src/index.html',
+          start: 'snowpack dev',
+          build: 'snowpack build',
         },
       },
-      devDependencies: ['parcel-bundler'],
+      devDependencies: ['snowpack'],
       files: configItems => {
         const isReact = _.includes(configItems, 'React');
         const isTypescript = _.includes(configItems, 'Typescript');
@@ -242,7 +210,10 @@ ${stylus}
         if (!isReact && !isTypescript && !isVue) {
           return {
             'src/index.js': emptyIndexJs(getStyleImports(configItems)),
-            'src/index.html': indexHtml({ bundleFilename: 'index.js' }),
+            'src/index.html': indexHtml({
+              bundleFilename: 'index.js',
+              isModule: true,
+            }),
           };
         }
         return [];

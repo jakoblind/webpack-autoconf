@@ -85,6 +85,7 @@ const extensionToPrismLanguage = {
   gitignore: 'language-bash',
   html: 'language-html',
   js: 'language-javascript',
+  jsx: 'language-jsx',
   json: 'language-json',
   less: 'language-less',
   md: 'language-markdown',
@@ -92,7 +93,7 @@ const extensionToPrismLanguage = {
   styl: 'language-stylus',
   svelte: 'language-markup',
   ts: 'language-typescript',
-  tsx: 'language-typescript',
+  tsx: 'language-tsx',
   vue: 'language-markup',
 };
 

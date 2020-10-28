@@ -15,6 +15,7 @@ import { CourseSignupForm } from '../components/SignupForms';
 import {
   webpackConfig,
   parcelConfig,
+  snowpackConfig,
 } from '../configurator/configurator-config';
 
 import {
@@ -32,6 +33,7 @@ import Features, {
 } from '../components/configurator/Features';
 import generateProject, {
   generateParcelProject,
+  generateSnowpackProject,
 } from '../configurator/project-generator';
 
 import onboardingHelp from '../onboardingHelp';
@@ -157,6 +159,22 @@ function Tabs({ selected, setSelected }) {
           />
           <div>Parcel</div>
         </button>
+
+        <button
+          onClick={() => setSelected('snowpack')}
+          className={[
+            selected === 'snowpack' ? styles.selectedTab : null,
+            styles.snowpackTab,
+          ].join(' ')}
+        >
+          <img
+            alt="snowpack logo"
+            src={require(`../../images/snowpack-logo${
+              selected === 'snowpack' ? '-color' : ''
+            }.png`)}
+          />
+          <div>Snowpack</div>
+        </button>
       </nav>
     </div>
   );
@@ -169,7 +187,7 @@ Tabs.propTypes = {
 
 Modal.setAppElement('#___gatsby');
 
-function DownloadButton({ url, onClick, filename }) {
+function DownloadButton({ url, onClick, filename, buildTool }) {
   const [modalOpen, setModalOpen] = useState(false);
   const customStyles = {
     content: {
@@ -188,7 +206,9 @@ function DownloadButton({ url, onClick, filename }) {
         className={styles.btn}
         onClick={() => {
           onClick();
-          setModalOpen(true);
+          if (buildTool === 'webpack') {
+            setModalOpen(true);
+          }
         }}
         id="download"
       >
@@ -214,7 +234,7 @@ function DownloadButton({ url, onClick, filename }) {
         </button>
         <br />
         <br />
-        <p>Enjoy your newly created webpack project!</p>
+        <p>Enjoy your newly created {buildTool} project!</p>
 
         <h3>Learn webpack with my free email course</h3>
         <div>
@@ -238,6 +258,7 @@ DownloadButton.propTypes = {
   url: PropTypes.string,
   filename: PropTypes.string.isRequired,
   onClick: PropTypes.func.isRequired,
+  buildTool: PropTypes.string.isRequired,
 };
 
 DownloadButton.defaultProps = {
@@ -259,7 +280,7 @@ const selectionRules = {
       .addHTMLWebpackPluginIfCodeSplitVendors,
     allSelectionRules.additionalSelectFunctions.addPostCSSandCSSIfTailwindCSS,
     allSelectionRules.additionalSelectFunctions.removeMaterialIfNotReact,
-    allSelectionRules.additionalSelectFunctions.addCSSifBootstrap
+    allSelectionRules.additionalSelectFunctions.addCSSifBootstrap,
   ],
 };
 
@@ -272,6 +293,15 @@ const parcelSelectionRules = {
     allSelectionRules.additionalSelectFunctions.addBabelIfReact,
     allSelectionRules.additionalSelectFunctions.addPostCSSandCSSIfTailwindCSS,
     allSelectionRules.additionalSelectFunctions.removeMaterialIfNotReact,
+  ],
+};
+
+const snowpackSelectionRules = {
+  stopSelectFunctions: [],
+  additionalSelectFunctions: [
+    allSelectionRules.additionalSelectFunctions.enforceMainLibrary,
+    allSelectionRules.additionalSelectFunctions.addCssIfPostCSS,
+    allSelectionRules.additionalSelectFunctions.addPostCSSandCSSIfTailwindCSS,
   ],
 };
 
@@ -302,6 +332,13 @@ const buildConfigConfig = {
       <br key={3} />,
     ],
   },
+  snowpack: {
+    featureConfig: snowpackConfig,
+    projectGeneratorFunction: generateSnowpackProject,
+    defaultFile: 'package.json',
+    selectionRules: snowpackSelectionRules,
+    extraElements: [],
+  },
 };
 
 const initialState = (selectedTab = 'webpack') => ({
@@ -317,6 +354,7 @@ function reducer(state, action) {
       );
 
       let shouldSetNoLibrary = state.selectedFeatures['No library'];
+
       if (action.selectedTab === 'parcel' && state.selectedFeatures.Svelte) {
         // Svelte was selected when switching to the parcel tab
         // which isn't supported so we set the flag shouldSetNoLibrary to
@@ -330,11 +368,31 @@ function reducer(state, action) {
           _.includes(newAllPossibleFeatures, feature) && selected
       );
 
+      let shouldSetBabel = filteredFeatures.Babel;
+      if (
+        (action.selectedTab === 'webpack' || action.selectedTab === 'parcel') &&
+        state.selectedFeatures.React
+      ) {
+        // React was selected when switching to the webpack tab
+        // if we come from snowpack, then babel is not set.
+        // it must be set if React should work properly
+        shouldSetBabel = true;
+      }
+
+      if (
+        action.selectedTab === 'snowpack' &&
+        (state.selectedFeatures.Vue || state.selectedFeatures.Svelte)
+      ) {
+        // if we select snowpack, and vue was selected, then we must select no lib
+        shouldSetNoLibrary = true;
+      }
+
       return {
         ...state,
         selectedTab: action.selectedTab,
         selectedFeatures: {
           ...filteredFeatures,
+          Babel: shouldSetBabel,
           'No library': shouldSetNoLibrary,
         },
       };
@@ -530,6 +588,7 @@ function Configurator(props) {
               className={styles.projectNameInput}
             />
             <DownloadButton
+              buildTool={state.selectedTab}
               filename={`${projectName}.zip`}
               onClick={e => {
                 downloadZip();
@@ -572,6 +631,7 @@ function Configurator(props) {
               className={styles.projectNameInput}
             />
             <DownloadButton
+              buildTool={state.selectedTab}
               filename={`${projectName}.zip`}
               onClick={e => {
                 downloadZip();
