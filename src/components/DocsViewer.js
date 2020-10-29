@@ -4,6 +4,23 @@ import _ from 'lodash';
 import styles from '../styles.module.css';
 
 const webpackDocsMap = {
+  React: (
+    <div>
+      <p>
+        React uses JSX and you need a tool for transpiling the JSX to regular
+        Javascript. Webpack doesn't do this out-of-the box. You can use either
+        Babel or Typescript for that. That's why Babel is preselected when
+        selecting React in this tool.
+      </p>
+      <p>
+        The required dependencies for React is <code>react</code> and{' '}
+        <code>react-dom</code>. They are added in <code>package.json</code>
+      </p>
+      <p>
+        A sample React app is created in <code>src/index.js</code>
+      </p>
+    </div>
+  ),
   Vue: (
     <div>
       <p>
@@ -272,6 +289,23 @@ const webpackDocsMap = {
 };
 
 const parcelDocsMap = {
+  React: (
+    <div>
+      <p>
+        React uses JSX and you need a tool for transpiling the JSX to regular
+        Javascript. Parcel doesn't do this out-of-the box. You can use either
+        Babel or Typescript for that. That's why Babel is preselected when
+        selecting React in this tool.
+      </p>
+      <p>
+        The required dependencies for React is <code>react</code> and{' '}
+        <code>react-dom</code>. They are added in <code>package.json</code>
+      </p>
+      <p>
+        A sample React app is created in <code>src/index.js</code>
+      </p>
+    </div>
+  ),
   Babel: (
     <div>
       <p>Babel is a tool for transpiling JavaScript code.</p>
@@ -313,24 +347,56 @@ const parcelDocsMap = {
   ),
 };
 
-const commonDocsMap = {
+const snowpackDocsMap = {
   React: (
     <div>
       <p>
-        React uses JSX and you need a tool for transplining the JSX to regular
-        Javascript. Webpack doesn't do this out-of-the box. You can use either
-        Babel or Typescript for that. That's why Babel is preselected when
-        selecting React in this tool.
+        React uses JSX and you need a tool for transpiling the JSX to regular
+        Javascript. Snowpack does this out-of-the-box. All files ending with
+        <code>.jsx</code> is automatically transpiled.
       </p>
       <p>
         The required dependencies for React is <code>react</code> and{' '}
         <code>react-dom</code>. They are added in <code>package.json</code>
       </p>
       <p>
-        A sample React app is created in <code>src/index.js</code>
+        A sample React app is created in <code>src/index.jsx</code>
       </p>
     </div>
   ),
+  Typescript: (
+    <div>
+      <p>
+        With Snowpack, Typescript works out-of-the box. No extra config
+        required. Just use the <code>.ts</code> or <code>.tsx</code> extension
+        and it works.
+      </p>
+      <p>
+        You can find the config for Typescript in <code>tsconfig.json</code>. It
+        uses some sensible default such as using sourcemaps, ES6 modules, and
+        allowing JS code.
+      </p>
+    </div>
+  ),
+  PostCSS: (
+    <div>
+      <p>
+        We enable PostCSS by using the plugin{' '}
+        <code>@snowpack/plugin-build-script</code> in{' '}
+        <code>snowpack.config.json</code>. With that plugin you can call any CLI
+        application, but we configure it to run <code>postcss</code> on all
+        files with the <code>.css</code> extension
+      </p>
+      <p>
+        The configuration for PostCSS is inside the{' '}
+        <code>postcss.config.js</code> file. We use <code>autoprefixer</code>{' '}
+        plugin which add vendor prefixes to CSS rules.
+      </p>
+    </div>
+  ),
+};
+
+const commonDocsMap = {
   Prettier: (
     <div>
       <p>
@@ -375,10 +441,15 @@ const commonDocsMap = {
     </div>
   ),
 };
-export const docsMap = buildTool =>
-  buildTool === 'webpack'
-    ? _.assign({}, webpackDocsMap, commonDocsMap)
-    : _.assign({}, parcelDocsMap, commonDocsMap);
+export const docsMap = buildTool => {
+  if (buildTool === 'webpack') {
+    return _.assign({}, webpackDocsMap, commonDocsMap);
+  } else if (buildTool === 'parcel') {
+    return _.assign({}, parcelDocsMap, commonDocsMap);
+  } else {
+    return _.assign({}, commonDocsMap, snowpackDocsMap);
+  }
+};
 
 export default function DocsViewer({
   hoverFeature,
