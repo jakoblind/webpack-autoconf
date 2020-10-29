@@ -163,6 +163,11 @@ export default (() => {
       files: configItems => {
         const isTailwindcss = _.includes(configItems, 'Tailwind CSS');
         const isPostCSS = _.includes(configItems, 'PostCSS');
+        const isVue = _.includes(configItems, 'Vue');
+        const isSvelte = _.includes(configItems, 'Svelte');
+        if (isVue || isSvelte) {
+          return {};
+        }
         return {
           'src/styles.css': isTailwindcss
             ? tailwindcss({ withPostCSS: isPostCSS })
