@@ -191,6 +191,11 @@ export default (() => {
       group: 'Styling',
       devDependencies: configItems => ['@snowpack/plugin-sass'],
       files: configItems => {
+        const isVue = _.includes(configItems, 'Vue');
+        const isSvelte = _.includes(configItems, 'Svelte');
+        if (isVue || isSvelte) {
+          return {};
+        }
         return { 'src/styles.scss': scss };
       },
       snowpack: (config = {}) =>
