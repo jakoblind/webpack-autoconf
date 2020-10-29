@@ -40,11 +40,15 @@ import onboardingHelp from '../onboardingHelp';
 import DocsViewer from '../components/DocsViewer';
 import { trackPageView, gaSendEvent } from '../googleAnalytics';
 
-const StepByStepArea = ({ features, newBabelConfig, isReact, isWebpack }) => {
-  const newNpmConfig = getNpmDependencies(
-    isWebpack ? webpackConfig : parcelConfig,
-    features
-  );
+const StepByStepArea = ({ features, newBabelConfig, isReact, bundler }) => {
+  const isWebpack = bundler === 'webpack';
+  let config = webpackConfig;
+  if (bundler === 'parcel') {
+    config = parcelConfig;
+  } else if (bundler === 'snowpack') {
+    config = snowpackConfig;
+  }
+  const newNpmConfig = getNpmDependencies(config, features);
 
   const npmInstallCommand = _.isEmpty(newNpmConfig.dependencies)
     ? ''
@@ -108,7 +112,9 @@ const StepByStepArea = ({ features, newBabelConfig, isReact, isWebpack }) => {
           {babelStep}
           {srcFoldersStep}
         </ol>
-        <Link to="/webpack-course">Need more detailed instructions?</Link>
+        {isWebpack ? (
+          <Link to="/webpack-course">Need more detailed instructions?</Link>
+        ) : null}
       </div>
     </div>
   );
@@ -118,7 +124,7 @@ StepByStepArea.propTypes = {
   features: PropTypes.arrayOf(PropTypes.string).isRequired,
   newBabelConfig: PropTypes.string,
   isReact: PropTypes.bool.isRequired,
-  isWebpack: PropTypes.bool.isRequired,
+  bundler: PropTypes.string.isRequired,
 };
 
 StepByStepArea.defaultProps = {
@@ -651,7 +657,7 @@ function Configurator(props) {
           features={selectedArray}
           newBabelConfig={newBabelConfig}
           isReact={isReact}
-          isWebpack={state.selectedTab === 'webpack'}
+          bundler={state.selectedTab}
         />
       </div>
     </div>
