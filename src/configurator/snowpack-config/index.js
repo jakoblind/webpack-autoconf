@@ -8,6 +8,7 @@ import {
   stylus,
   postCssConfig,
   tailwindcss,
+  getStyleTags,
 } from '../../templates/styling';
 import {
   reactIndexJs,
@@ -19,6 +20,7 @@ import { indexHtml } from '../../templates/base';
 import { emptyIndexJs } from '../../templates/empty/index';
 import { tsconfig, tsconfigReact } from '../../templates/ts';
 import { vueIndexAppVue, vueIndexTs, vueShimType } from '../../templates/vue';
+import { svelteIndexJs, svelteAppSvelte } from '../../templates/svelte/index';
 
 import lintingRules from '../common-config/linting';
 import unitTestsRules from '../common-config/unitTests';
@@ -92,6 +94,29 @@ export default (() => {
             bundleFilename: 'index.js',
             isModule: true,
           }),
+        };
+      },
+    },
+    Svelte: {
+      group: 'Main library',
+      dependencies: configItems => [
+        'svelte',
+        'svelte-loader',
+        'svelte-preprocess',
+      ],
+      devDependencies: configItems => ['@snowpack/plugin-svelte'],
+      snowpack: (config = {}) => ({
+        ...baseSnowpackConfig,
+        ...addSnowpackPlugin(config, '@snowpack/plugin-svelte'),
+      }),
+      files: configItems => {
+        const styling = getStyleTags(configItems);
+        return {
+          'src/index.js': svelteIndexJs(),
+          'src/App.svelte': svelteAppSvelte(
+            _.join(styling, '\n\n'),
+            configItems
+          ),
         };
       },
     },

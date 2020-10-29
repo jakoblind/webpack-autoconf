@@ -1,33 +1,33 @@
-import _ from "lodash";
+import _ from 'lodash';
 import {
   reactIndexJs,
   reactIndexTsx,
   reactAppJs,
-  reactAppTsx
-} from "../../templates/react/index";
-import { indexHtml } from "../../templates/base";
-import { svelteIndexJs, svelteAppSvelte } from "../../templates/svelte/index";
+  reactAppTsx,
+} from '../../templates/react/index';
+import { indexHtml } from '../../templates/base';
+import { svelteIndexJs, svelteAppSvelte } from '../../templates/svelte/index';
 
 import {
   addPlugin,
   assignModuleRuleAndResolver,
-  addModuleRule
-} from "../configurator-webpack-helpers";
-import { vueIndexAppVue, vueIndexTs, vueShimType } from "../../templates/vue";
-import { emptyIndexJs } from "../../templates/empty/index";
+  addModuleRule,
+} from '../configurator-webpack-helpers';
+import { vueIndexAppVue, vueIndexTs, vueShimType } from '../../templates/vue';
+import { emptyIndexJs } from '../../templates/empty/index';
 
-import { tsconfig, tsconfigReact } from "../../templates/ts";
+import { tsconfig, tsconfigReact } from '../../templates/ts';
 
-import { css, scss, less, stylus } from "../../templates/styling";
-import stylingRules from "./stylingRules";
-import lintingRules from "../common-config/linting";
-import unitTestsRules from "../common-config/unitTests";
+import { getStyleTags } from '../../templates/styling';
+import stylingRules from './stylingRules';
+import lintingRules from '../common-config/linting';
+import unitTestsRules from '../common-config/unitTests';
 
 function getStyleImports(configItems) {
-  const isCss = _.includes(configItems, "CSS");
-  const isSass = _.includes(configItems, "Sass");
-  const isLess = _.includes(configItems, "Less");
-  const isStylus = _.includes(configItems, "stylus");
+  const isCss = _.includes(configItems, 'CSS');
+  const isSass = _.includes(configItems, 'Sass');
+  const isLess = _.includes(configItems, 'Less');
+  const isStylus = _.includes(configItems, 'stylus');
   return _.concat(
     [],
     isCss ? [`import "./styles.css";`] : [],
@@ -37,116 +37,82 @@ function getStyleImports(configItems) {
   );
 }
 
-function getStyleTags(configItems) {
-  const isCss = _.includes(configItems, "CSS");
-  const isLess = _.includes(configItems, "Less");
-  const isSass = _.includes(configItems, "Sass");
-  const isStylus = _.includes(configItems, "stylus");
-  const isTailwindCSS = _.includes(configItems, "Tailwind CSS");
-  const cssStyle = `<style>
-${css}
-</style>`;
-  const lessStyle = `<style lang="less">
-${less}
-</style>`;
-  const sassStyle = `<style lang="scss">
-${scss}
-</style>`;
-  const stylusStyle = `<style lang="styl">
-${stylus}
-</style>`;
-  const tailwindcssStyle = `<style global>
-  @tailwind base;
-  @tailwind components;
-  @tailwind utilities;
-</style>`;
-
-  return _.concat(
-    [],
-    isCss && !isTailwindCSS ? cssStyle : [],
-    isSass ? sassStyle : [],
-    isLess ? lessStyle : [],
-    isStylus ? stylusStyle : [],
-    isTailwindCSS ? tailwindcssStyle : []
-  );
-}
-
 export default (() => {
   const features = {
-    "No library": {
-      group: "Main library"
+    'No library': {
+      group: 'Main library',
     },
     React: {
-      group: "Main library",
-      dependencies: configItems => ["react", "react-dom"],
+      group: 'Main library',
+      dependencies: configItems => ['react', 'react-dom'],
       devDependencies: configItems => {
-        const isTypescript = _.includes(configItems, "Typescript");
-        const isBabel = _.includes(configItems, "Babel");
+        const isTypescript = _.includes(configItems, 'Typescript');
+        const isBabel = _.includes(configItems, 'Babel');
         return _.concat(
           [],
-          isTypescript ? ["@types/react", "@types/react-dom"] : [],
-          isBabel ? ["@babel/preset-react"] : []
+          isTypescript ? ['@types/react', '@types/react-dom'] : [],
+          isBabel ? ['@babel/preset-react'] : []
         );
       },
       files: configItems => {
-        const isTypescript = _.includes(configItems, "Typescript");
-        const isHotReact = _.includes(configItems, "React hot loader");
+        const isTypescript = _.includes(configItems, 'Typescript');
+        const isHotReact = _.includes(configItems, 'React hot loader');
         const extraImports = getStyleImports(configItems);
 
         if (isTypescript) {
           return {
-            "src/App.tsx": reactAppTsx(configItems),
-            "src/index.tsx": reactIndexTsx(extraImports, isHotReact)
+            'src/App.tsx': reactAppTsx(configItems),
+            'src/index.tsx': reactIndexTsx(extraImports, isHotReact),
           };
         }
 
         return {
-          "src/App.js": reactAppJs(configItems),
-          "src/index.js": reactIndexJs(extraImports)
+          'src/App.js': reactAppJs(configItems),
+          'src/index.js': reactIndexJs(extraImports),
         };
-      }
+      },
     },
     Svelte: {
-      group: "Main library",
+      group: 'Main library',
       devDependencies: configItems => [
-        "svelte",
-        "svelte-loader",
-        "svelte-preprocess"
+        'svelte',
+        'svelte-loader',
+        'svelte-preprocess',
       ],
       webpack: (webpackConfig, configItems) => {
-        const isPostCSS = _.includes(configItems, "PostCSS");
+        const isPostCSS = _.includes(configItems, 'PostCSS');
         const webpackConfigWithRule = assignModuleRuleAndResolver(
           webpackConfig,
           [
             {
               test: /\.svelte$/,
-              loader: "svelte-loader",
+              loader: 'svelte-loader',
               options: {
                 preprocess: `CODE: require('svelte-preprocess')({${
-                  isPostCSS ? ` postcss: true ` : ""
-                }})`
-              }
-            }
+                  isPostCSS ? ` postcss: true ` : ''
+                }})`,
+              },
+            },
           ],
-          [".mjs", ".js", ".svelte"]
+          ['.mjs', '.js', '.svelte']
         );
         return webpackConfigWithRule;
       },
       files: configItems => {
         const styling = getStyleTags(configItems);
         return {
-          "src/index.js": svelteIndexJs(),
-          "src/App.svelte": svelteAppSvelte(
-            _.join(styling, "\n\n"),
+          'src/index.js': svelteIndexJs(),
+          'src/App.svelte': svelteAppSvelte(
+            _.join(styling, '\n\n'),
             configItems
-          )
+          ),
         };
-      }
+      },
     },
     Vue: {
-      group: "Main library",
+      group: 'Main library',
       webpackImports: [
-        "const VueLoaderPlugin = require('vue-loader/lib/plugin');"
+        "const VueLoaderPlugin = require('vue-loader/lib/plugin');",
       ],
       webpack: webpackConfig => {
         const webpackConfigWithRule = assignModuleRuleAndResolver(
@@ -154,50 +120,50 @@ export default (() => {
           [
             {
               test: /\.vue$/,
-              loader: "vue-loader"
-            }
+              loader: 'vue-loader',
+            },
           ],
-          [".js", ".vue"]
+          ['.js', '.vue']
         );
-        return addPlugin(webpackConfigWithRule, "CODE:new VueLoaderPlugin()");
+        return addPlugin(webpackConfigWithRule, 'CODE:new VueLoaderPlugin()');
       },
       devDependencies: configItems => [
-        "vue-loader",
-        "vue-template-compiler",
-        "babel-loader",
-        "@babel/core",
-        "@babel/preset-env"
+        'vue-loader',
+        'vue-template-compiler',
+        'babel-loader',
+        '@babel/core',
+        '@babel/preset-env',
       ],
-      dependencies: configItems => ["vue"],
+      dependencies: configItems => ['vue'],
       files: configItems => {
-        const isTypescript = _.includes(configItems, "Typescript");
-        const indexFilename = isTypescript ? "src/index.ts" : "src/index.js";
+        const isTypescript = _.includes(configItems, 'Typescript');
+        const indexFilename = isTypescript ? 'src/index.ts' : 'src/index.js';
         const styling = getStyleTags(configItems);
 
         return _.assign(
           {
-            "src/App.vue": vueIndexAppVue(_.join(styling, "\n"), configItems),
-            [indexFilename]: vueIndexTs()
+            'src/App.vue': vueIndexAppVue(_.join(styling, '\n'), configItems),
+            [indexFilename]: vueIndexTs(),
           },
-          isTypescript ? { "vue-shim.d.ts": vueShimType } : {}
+          isTypescript ? { 'vue-shim.d.ts': vueShimType } : {}
         );
-      }
+      },
     },
     Bootstrap: {
-      group: "UI library",
-      dependencies: configItems => ["bootstrap", "jquery", "popper.js"]
+      group: 'UI library',
+      dependencies: configItems => ['bootstrap', 'jquery', 'popper.js'],
     },
-    "Tailwind CSS": {
-      group: "UI library",
-      dependencies: configItems => ["tailwindcss"]
+    'Tailwind CSS': {
+      group: 'UI library',
+      dependencies: configItems => ['tailwindcss'],
     },
-    "Material-UI": {
-      group: "UI library",
+    'Material-UI': {
+      group: 'UI library',
       dependencies: configItems => [
-        "@material-ui/core",
-        "fontsource-roboto",
-        "@material-ui/icons"
-      ]
+        '@material-ui/core',
+        'fontsource-roboto',
+        '@material-ui/icons',
+      ],
     },
     Jest: unitTestsRules.Jest,
     Mocha: unitTestsRules.Mocha,
@@ -207,18 +173,18 @@ export default (() => {
     Cypress: unitTestsRules.Cypress,
     TestCafe: unitTestsRules.TestCafe,
     Babel: {
-      group: "Transpiler",
+      group: 'Transpiler',
       babel: (babelConfig, configItems) => ({
         ...babelConfig,
         presets: _.concat(
-          [["@babel/preset-env", { modules: false }]],
-          _.includes(configItems, "React") ? "@babel/preset-react" : []
-        )
+          [['@babel/preset-env', { modules: false }]],
+          _.includes(configItems, 'React') ? '@babel/preset-react' : []
+        ),
       }),
       devDependencies: configItems => {
-        const devDepList = ["babel-loader", "@babel/core", "@babel/preset-env"];
-        if (_.includes(configItems, "React hot loader"))
-          devDepList.push("@hot-loader/react-dom");
+        const devDepList = ['babel-loader', '@babel/core', '@babel/preset-env'];
+        if (_.includes(configItems, 'React hot loader'))
+          devDepList.push('@hot-loader/react-dom');
         return devDepList;
       },
       webpack: (webpackConfig, configItems) =>
@@ -226,151 +192,151 @@ export default (() => {
           webpackConfig,
           [
             {
-              test: _.includes(configItems, "React") ? /\.(js|jsx)$/ : /\.js$/,
-              use: "babel-loader",
-              exclude: /node_modules/
-            }
+              test: _.includes(configItems, 'React') ? /\.(js|jsx)$/ : /\.js$/,
+              use: 'babel-loader',
+              exclude: /node_modules/,
+            },
           ],
-          _.includes(configItems, "React") ? [".js", ".jsx"] : null,
-          _.includes(configItems, "React hot loader")
-            ? { "react-dom": "@hot-loader/react-dom" }
+          _.includes(configItems, 'React') ? ['.js', '.jsx'] : null,
+          _.includes(configItems, 'React hot loader')
+            ? { 'react-dom': '@hot-loader/react-dom' }
             : {}
-        )
+        ),
     },
     Typescript: {
-      group: "Transpiler",
+      group: 'Transpiler',
       devDependencies: configItems => {
-        const devDepList = ["typescript", "ts-loader"];
-        if (_.includes(configItems, "React hot loader"))
-          devDepList.push("@hot-loader/react-dom");
+        const devDepList = ['typescript', 'ts-loader'];
+        if (_.includes(configItems, 'React hot loader'))
+          devDepList.push('@hot-loader/react-dom');
         return devDepList;
       },
       webpack: (webpackConfig, configItems) => {
-        const isVue = _.includes(configItems, "Vue");
+        const isVue = _.includes(configItems, 'Vue');
         const typescriptModule = {
           test: /\.ts(x)?$/,
-          loader: "ts-loader",
-          exclude: /node_modules/
+          loader: 'ts-loader',
+          exclude: /node_modules/,
         };
         if (isVue) {
           typescriptModule.options = {
-            appendTsSuffixTo: [/\.vue$/]
+            appendTsSuffixTo: [/\.vue$/],
           };
         }
         const aliases = {};
-        const isHot = _.includes(configItems, "React hot loader");
+        const isHot = _.includes(configItems, 'React hot loader');
         if (isHot) {
-          aliases["react-dom"] = "@hot-loader/react-dom";
+          aliases['react-dom'] = '@hot-loader/react-dom';
         }
         return assignModuleRuleAndResolver(
           webpackConfig,
           typescriptModule,
-          [".tsx", ".ts", ".js"],
+          ['.tsx', '.ts', '.js'],
           aliases
         );
       },
       files: configItems => {
-        const isReact = _.includes(configItems, "React");
-        const isVue = _.includes(configItems, "Vue");
+        const isReact = _.includes(configItems, 'React');
+        const isVue = _.includes(configItems, 'Vue');
 
         const configFiles = isReact
-          ? { "tsconfig.json": tsconfigReact }
-          : { "tsconfig.json": tsconfig };
+          ? { 'tsconfig.json': tsconfigReact }
+          : { 'tsconfig.json': tsconfig };
         const sourceFiles =
           !isReact && !isVue
             ? {
-                "src/index.ts": emptyIndexJs()
+                'src/index.ts': emptyIndexJs(),
               }
             : {};
         return _.assign(configFiles, sourceFiles);
-      }
+      },
     },
     CSS: stylingRules.css,
-    "CSS Modules": stylingRules.cssModules,
+    'CSS Modules': stylingRules.cssModules,
     PostCSS: stylingRules.postCss,
     Sass: stylingRules.sass,
     Less: stylingRules.less,
     stylus: stylingRules.stylus,
     SVG: {
-      group: "Image",
-      devDependencies: configItems => ["file-loader"],
+      group: 'Image',
+      devDependencies: configItems => ['file-loader'],
       webpack: webpackConfig =>
         addModuleRule(webpackConfig, {
           test: /\.svg$/,
-          use: "file-loader"
-        })
+          use: 'file-loader',
+        }),
     },
     PNG: {
-      group: "Image",
-      devDependencies: configItems => ["url-loader"],
+      group: 'Image',
+      devDependencies: configItems => ['url-loader'],
       webpack: webpackConfig =>
         addModuleRule(webpackConfig, {
           test: /\.png$/,
           use: [
             {
-              loader: "url-loader",
+              loader: 'url-loader',
               options: {
-                mimetype: "image/png"
-              }
-            }
-          ]
-        })
+                mimetype: 'image/png',
+              },
+            },
+          ],
+        }),
     },
     moment: {
-      group: "Utilities",
-      dependencies: configItems => ["moment"],
+      group: 'Utilities',
+      dependencies: configItems => ['moment'],
       webpack: webpackConfig =>
         addPlugin(
           webpackConfig,
-          "CODE:new webpack.ContextReplacementPlugin(/moment[\\/\\\\]locale$/, /en/)"
-        ) // eslint-disable-line
+          'CODE:new webpack.ContextReplacementPlugin(/moment[\\/\\\\]locale$/, /en/)'
+        ), // eslint-disable-line
     },
     lodash: {
-      group: "Utilities",
+      group: 'Utilities',
       babel: _.identity,
-      dependencies: configItems => ["lodash"],
-      devDependencies: configItems => ["lodash-webpack-plugin"],
+      dependencies: configItems => ['lodash'],
+      devDependencies: configItems => ['lodash-webpack-plugin'],
       webpackImports: [
-        "const LodashModuleReplacementPlugin = require('lodash-webpack-plugin');"
+        "const LodashModuleReplacementPlugin = require('lodash-webpack-plugin');",
       ],
       webpack: webpackConfig =>
-        addPlugin(webpackConfig, "CODE:new LodashModuleReplacementPlugin")
+        addPlugin(webpackConfig, 'CODE:new LodashModuleReplacementPlugin'),
     },
     ESLint: lintingRules.eslint,
     Prettier: lintingRules.prettier,
-    "Code split vendors": {
-      group: "Optimization",
+    'Code split vendors': {
+      group: 'Optimization',
       webpack: webpackConfig => {
         const withFilename = _.setWith(
           webpackConfig,
-          "output.filename",
-          "[name].[contenthash].js",
+          'output.filename',
+          '[name].[contenthash].js',
           _.clone
         );
         return _.setWith(
           _.clone(withFilename),
-          "optimization",
+          'optimization',
           {
-            runtimeChunk: "single",
+            runtimeChunk: 'single',
             splitChunks: {
               cacheGroups: {
                 vendor: {
                   test: /[\\/]node_modules[\\/]/,
-                  name: "vendors",
-                  chunks: "all"
-                }
-              }
-            }
+                  name: 'vendors',
+                  chunks: 'all',
+                },
+              },
+            },
           },
           _.clone
         );
-      }
+      },
     },
-    "HTML webpack plugin": {
-      group: "Webpack plugins",
-      devDependencies: configItems => ["html-webpack-plugin"],
+    'HTML webpack plugin': {
+      group: 'Webpack plugins',
+      devDependencies: configItems => ['html-webpack-plugin'],
       webpackImports: [
-        "const HtmlWebpackPlugin = require('html-webpack-plugin');"
+        "const HtmlWebpackPlugin = require('html-webpack-plugin');",
       ],
       webpack: webpackConfig => {
         return addPlugin(
@@ -380,13 +346,13 @@ export default (() => {
   filename: 'index.html'
 })`
         );
-      }
+      },
     },
-    "Webpack Bundle Analyzer": {
-      group: "Webpack plugins",
-      devDependencies: configItems => ["webpack-bundle-analyzer"],
+    'Webpack Bundle Analyzer': {
+      group: 'Webpack plugins',
+      devDependencies: configItems => ['webpack-bundle-analyzer'],
       webpackImports: [
-        "const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;"
+        "const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;",
       ],
       webpack: webpackConfig => {
         return addPlugin(
@@ -396,21 +362,21 @@ export default (() => {
   openAnalyzer: false,
 })`
         );
-      }
+      },
     },
     MiniCssExtractPlugin: {
-      group: "Webpack plugins",
-      devDependencies: configItems => ["mini-css-extract-plugin"],
+      group: 'Webpack plugins',
+      devDependencies: configItems => ['mini-css-extract-plugin'],
       webpackImports: [
-        "const MiniCssExtractPlugin = require('mini-css-extract-plugin');"
+        "const MiniCssExtractPlugin = require('mini-css-extract-plugin');",
       ],
       webpack: webpackConfig => {
         return addPlugin(webpackConfig, `CODE:new MiniCssExtractPlugin()`);
-      }
+      },
     },
     CopyWebpackPlugin: {
-      group: "Webpack plugins",
-      devDependencies: configItems => ["copy-webpack-plugin"],
+      group: 'Webpack plugins',
+      devDependencies: configItems => ['copy-webpack-plugin'],
       webpackImports: ["const CopyPlugin = require('copy-webpack-plugin');"],
       webpack: webpackConfig => {
         return addPlugin(
@@ -419,38 +385,38 @@ export default (() => {
   patterns: [{ from: 'src/index.html' }],
 })`
         );
-      }
+      },
     },
     CleanWebpackPlugin: {
-      group: "Webpack plugins",
-      devDependencies: configItems => ["clean-webpack-plugin"],
+      group: 'Webpack plugins',
+      devDependencies: configItems => ['clean-webpack-plugin'],
       webpackImports: [
-        `const { CleanWebpackPlugin } = require('clean-webpack-plugin');`
+        `const { CleanWebpackPlugin } = require('clean-webpack-plugin');`,
       ],
       webpack: webpackConfig => {
         return addPlugin(webpackConfig, `CODE:new CleanWebpackPlugin()`);
-      }
-    },
-    "React hot loader": {
-      group: "React",
-      babel: (babelConfig, configItems) => {
-        if (!_.includes(configItems, "Babel")) return {}; // We don't need babelrc for typescript
-        return { ...babelConfig, plugins: ["react-hot-loader/babel"] };
       },
-      dependencies: configItems => ["react-hot-loader"],
-      devDependencies: configItems => ["webpack-dev-server"],
+    },
+    'React hot loader': {
+      group: 'React',
+      babel: (babelConfig, configItems) => {
+        if (!_.includes(configItems, 'Babel')) return {}; // We don't need babelrc for typescript
+        return { ...babelConfig, plugins: ['react-hot-loader/babel'] };
+      },
+      dependencies: configItems => ['react-hot-loader'],
+      devDependencies: configItems => ['webpack-dev-server'],
       webpack: webpackConfig => ({
         ...webpackConfig,
         devServer: {
-          contentBase: "./dist"
-        }
+          contentBase: './dist',
+        },
       }),
       packageJson: {
         scripts: {
-          start: "webpack serve --hot --mode development"
-        }
-      }
-    }
+          start: 'webpack serve --hot --mode development',
+        },
+      },
+    },
   };
   const featuresNoNulls = _.mapValues(features, item => {
     if (!item.babel) {
@@ -482,40 +448,40 @@ export default (() => {
     base: {
       packageJson: {
         scripts: {
-          "build-dev": "webpack --mode development",
-          "build-prod": "webpack --mode production"
-        }
+          'build-dev': 'webpack --mode development',
+          'build-prod': 'webpack --mode production',
+        },
       },
-      devDependencies: ["webpack", "webpack-cli"],
+      devDependencies: ['webpack', 'webpack-cli'],
       files: configItems => {
-        const isTypescript = _.includes(configItems, "Typescript");
-        const isCopyPlugin = _.includes(configItems, "CopyWebpackPlugin");
+        const isTypescript = _.includes(configItems, 'Typescript');
+        const isCopyPlugin = _.includes(configItems, 'CopyWebpackPlugin');
 
         const isHTMLWebpackPlugin = _.includes(
           configItems,
-          "HTML webpack plugin"
+          'HTML webpack plugin'
         );
         const isMiniCssExtractPlugin = _.includes(
           configItems,
-          "MiniCssExtractPlugin"
+          'MiniCssExtractPlugin'
         );
 
         const files = {};
 
         if (!isTypescript) {
-          files["src/index.js"] = emptyIndexJs(getStyleImports(configItems));
+          files['src/index.js'] = emptyIndexJs(getStyleImports(configItems));
         }
 
         if (!isHTMLWebpackPlugin) {
-          const distPath = isCopyPlugin ? "src/index.html" : "dist/index.html";
+          const distPath = isCopyPlugin ? 'src/index.html' : 'dist/index.html';
           files[distPath] = indexHtml({
-            bundleFilename: "bundle.js",
-            cssFilename: isMiniCssExtractPlugin ? "main.css" : null
+            bundleFilename: 'bundle.js',
+            cssFilename: isMiniCssExtractPlugin ? 'main.css' : null,
           });
         }
 
         return files;
-      }
-    }
+      },
+    },
   };
 })();
