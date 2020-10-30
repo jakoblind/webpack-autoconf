@@ -104,20 +104,38 @@ export default (() => {
         'svelte-loader',
         'svelte-preprocess',
       ],
-      devDependencies: configItems => ['@snowpack/plugin-svelte'],
+      devDependencies: configItems => {
+        const isSass = _.includes(configItems, 'Sass');
+        return _.concat(
+          ['@snowpack/plugin-svelte'],
+          isSass ? ['svelte-preprocess'] : null
+        );
+      },
       snowpack: (config = {}) => ({
         ...baseSnowpackConfig,
         ...addSnowpackPlugin(config, '@snowpack/plugin-svelte'),
       }),
       files: configItems => {
         const styling = getStyleTags(configItems);
-        return {
-          'src/index.js': svelteIndexJs(),
-          'src/App.svelte': svelteAppSvelte(
-            _.join(styling, '\n\n'),
-            configItems
-          ),
-        };
+        const isSass = _.includes(configItems, 'Sass');
+        let svelteConf = null;
+        if (isSass) {
+          svelteConf = {
+            'svelte.config.js': `module.exports = {
+  preprocess: require('svelte-preprocess')()
+}`,
+          };
+        }
+        return _.assign(
+          {
+            'src/index.js': svelteIndexJs(),
+            'src/App.svelte': svelteAppSvelte(
+              _.join(styling, '\n\n'),
+              configItems
+            ),
+          },
+          svelteConf
+        );
       },
     },
     Bootstrap: {
