@@ -53,26 +53,14 @@ function addSnowpackPlugin(snowpackConfig, plugin) {
   };
 }
 
-const baseSnowpackConfig = {
-  mount: {
-    dist: '/',
-    src: '/',
-  },
-};
-
 export default (() => {
   const features = {
     'No library': {
       group: 'Main library',
-      snowpack: () => baseSnowpackConfig,
     },
     React: {
       group: 'Main library',
       dependencies: configItems => ['react', 'react-dom'],
-      snowpack: (config = {}) => ({
-        ...config,
-        ...baseSnowpackConfig,
-      }),
       files: configItems => {
         const isTypescript = _.includes(configItems, 'Typescript');
         const extraImports = getStyleImports(configItems);
@@ -111,10 +99,8 @@ export default (() => {
           isSass ? ['svelte-preprocess'] : null
         );
       },
-      snowpack: (config = {}) => ({
-        ...baseSnowpackConfig,
-        ...addSnowpackPlugin(config, '@snowpack/plugin-svelte'),
-      }),
+      snowpack: (config = {}) =>
+        addSnowpackPlugin(config, '@snowpack/plugin-svelte'),
       files: configItems => {
         const styling = getStyleTags(configItems);
         const isSass = _.includes(configItems, 'Sass');

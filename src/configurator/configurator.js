@@ -5,6 +5,7 @@ import {
   baseWebpack,
   baseWebpackImports,
   packageJson,
+  baseSnowpackConfig,
 } from '../templates/base';
 import { webpackConfig } from './configurator-config';
 
@@ -44,7 +45,12 @@ function createConfig(configItems, configType, features) {
     ];
   }
   const baseWebpackTsSupport = _.assignIn(baseWebpack, { entry });
-  const base = configType === 'webpack' ? baseWebpackTsSupport : {};
+  let base = {};
+  if (configType === 'webpack') {
+    base = baseWebpackTsSupport;
+  } else if (configType === 'snowpack') {
+    base = baseSnowpackConfig;
+  }
   const configJson = _.reduce(
     configItems,
     (acc, currentValue) => features[currentValue][configType](acc, configItems),

@@ -8,6 +8,13 @@ export const baseWebpack = {
   },
 };
 
+export const baseSnowpackConfig = {
+  mount: {
+    dist: '/',
+    src: '/',
+  },
+};
+
 export const baseWebpackImports = [
   "const webpack = require('webpack');",
   "const path = require('path');",
