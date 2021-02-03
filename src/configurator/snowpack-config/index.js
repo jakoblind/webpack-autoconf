@@ -185,6 +185,7 @@ export default (() => {
         'postcss-cli',
         'postcss',
         'autoprefixer',
+        '@snowpack/plugin-build-script',
       ],
       files: configItems => {
         const isTailwindcss = _.includes(configItems, 'Tailwind CSS');
