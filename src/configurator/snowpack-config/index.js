@@ -185,17 +185,14 @@ export default (() => {
         'postcss-cli',
         'postcss',
         'autoprefixer',
-        '@snowpack/plugin-build-script',
+        '@snowpack/plugin-postcss',
       ],
       files: configItems => {
         const isTailwindcss = _.includes(configItems, 'Tailwind CSS');
         return { 'postcss.config.js': postCssConfig(isTailwindcss) };
       },
       snowpack: (config = {}) =>
-        addSnowpackPlugin(config, [
-          '@snowpack/plugin-build-script',
-          { cmd: 'postcss', input: ['.css'], output: ['.css'] },
-        ]),
+        addSnowpackPlugin(config, ['@snowpack/plugin-postcss']),
     },
     Sass: {
       group: 'Styling',
