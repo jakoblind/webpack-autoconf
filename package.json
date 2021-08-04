@@ -46,7 +46,7 @@
     "react-dom": "^16.6.0",
     "react-dropzone": "^7.0.1",
     "react-helmet": "^5.2.0",
-    "webpack-optimize-helper": "^1.0.0"
+    "webpack-optimize-helper": "^1.1.0"
   },
   "devDependencies": {
     "@babel/core": "^7.1.2",
