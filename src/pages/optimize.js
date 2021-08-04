@@ -17,8 +17,8 @@ const EntryPointView = ({ entrypointAssetSizes, entrypointAssetSizeTotal }) => {
     entrypointAssetSizeTotal <= 250000
       ? styles.green
       : entrypointAssetSizeTotal <= 500000
-        ? styles.orange
-        : styles.red
+      ? styles.orange
+      : styles.red
   return (
     <div>
       <h3>Your entrypoints</h3>
@@ -165,9 +165,10 @@ class WebpackStatsAnalyzer extends React.Component {
   }
 
   getReport(stats) {
+    const errorMessage =
+      _.get(stats, 'errors[0].message') || _.get(stats, 'errors[0]') || ''
     if (
-      !_.isEmpty(stats.errors) &&
-      stats.errors[0].startsWith(
+      errorMessage.startsWith(
         "Entry module not found: Error: Can't resolve './src'"
       )
     ) {
