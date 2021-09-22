@@ -1,4 +1,4 @@
-import React, { useState, useReducer } from 'react';
+import React, { useState, useReducer, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import _ from 'lodash';
 import { Link } from 'gatsby';
@@ -452,11 +452,27 @@ function trackHelpClick(eventAction) {
   });
 }
 
+function getSelectedArray(o) {
+  return _.chain(o)
+    .map((v, k) => (v ? k : null))
+    .reject(_.isNull)
+    .value();
+}
+
 function Configurator(props) {
   const [state, dispatch] = useReducer(
     reducer,
     initialState(props.selectedTab)
   );
+  useEffect((something) => {
+    const selectedArray = getSelectedArray(state.selectedFeatures);
+    const mainLibs = _.remove(selectedArray, (i)=>_.includes(["React", "Vue", "Svelte", "No library"], i));
+    const path = _.kebabCase(_.sortBy(selectedArray));
+    const newUrl = `/${state.selectedTab}/${_.kebabCase(mainLibs)}-${path}`
+    //trackPageView(newUrl);
+    window.history.replaceState(null, null, newUrl);
+    
+  }, [state.selectedFeatures])
   const [hoverFeature, setHoverFeature] = useState('');
   const [projectName, setProjectName] = useState('empty-project');
 
@@ -466,10 +482,7 @@ function Configurator(props) {
     defaultFile,
   } = buildConfigConfig[state.selectedTab];
 
-  const selectedArray = _.chain(state.selectedFeatures)
-    .map((v, k) => (v ? k : null))
-    .reject(_.isNull)
-    .value();
+  const selectedArray = getSelectedArray(state.selectedFeatures);
 
   function onMouseEnterFeature(feature) {
     setHoverFeature(feature);
@@ -568,8 +581,11 @@ function Configurator(props) {
           <Features
             features={showFeatures}
             selected={state.selectedFeatures}
-            setSelected={feature =>
+            setSelected={feature =>{
+            console.log("new thing selected", feature);
               dispatch({ type: 'setSelectedFeatures', feature })
+              }
+              
             }
             onMouseEnter={onMouseEnterFeature}
             onMouseLeave={onMouseLeaveFeature}
