@@ -6,6 +6,7 @@ import jszip from 'jszip';
 import Joyride from 'react-joyride';
 import { saveAs } from 'file-saver';
 import validate from 'validate-npm-package-name';
+import { Router } from '@reach/router';
 import Modal from '../components/Modal';
 import styles from '../styles.module.css';
 import npmVersionPromise from '../fetch-npm-version';
@@ -347,10 +348,14 @@ const buildConfigConfig = {
   },
 };
 
-const initialState = (selectedTab = 'webpack') => ({
-  selectedTab,
-  selectedFeatures: { 'No library': true },
-});
+const initialState = (selectedTab = 'webpack', initFeatures) => {
+  // convert here
+  console.log('webpackConfig', webpackConfig.features);
+  return {
+    selectedTab,
+    selectedFeatures: { 'No library': true },
+  };
+};
 
 function reducer(state, action) {
   switch (action.type) {
@@ -460,19 +465,26 @@ function getSelectedArray(o) {
 }
 
 function Configurator(props) {
+  console.log('props,', props);
   const [state, dispatch] = useReducer(
     reducer,
-    initialState(props.selectedTab)
+    initialState(props.selectedTab, props.urlId)
   );
-  useEffect((something) => {
-    const selectedArray = getSelectedArray(state.selectedFeatures);
-    const mainLibs = _.remove(selectedArray, (i)=>_.includes(["React", "Vue", "Svelte", "No library"], i));
-    const path = _.kebabCase(_.sortBy(selectedArray));
-    const newUrl = `/${state.selectedTab}/${_.kebabCase(mainLibs)}-${path}`
-    //trackPageView(newUrl);
-    window.history.replaceState(null, null, newUrl);
-    
-  }, [state.selectedFeatures])
+  useEffect(
+    something => {
+      const selectedArray = getSelectedArray(state.selectedFeatures);
+      const mainLibs = _.remove(selectedArray, i =>
+        _.includes(['React', 'Vue', 'Svelte', 'No library'], i)
+      );
+      const path = _.kebabCase(_.sortBy(selectedArray));
+      const newUrl = `/${state.selectedTab}/${_.kebabCase(mainLibs)}${
+        path ? '-' + path : ''
+      }`;
+      //trackPageView(newUrl);
+      window.history.replaceState(null, null, newUrl);
+    },
+    [state.selectedFeatures]
+  );
   const [hoverFeature, setHoverFeature] = useState('');
   const [projectName, setProjectName] = useState('empty-project');
 
@@ -581,12 +593,10 @@ function Configurator(props) {
           <Features
             features={showFeatures}
             selected={state.selectedFeatures}
-            setSelected={feature =>{
-            console.log("new thing selected", feature);
-              dispatch({ type: 'setSelectedFeatures', feature })
-              }
-              
-            }
+            setSelected={feature => {
+              console.log('new thing selected', feature);
+              dispatch({ type: 'setSelectedFeatures', feature });
+            }}
             onMouseEnter={onMouseEnterFeature}
             onMouseLeave={onMouseLeaveFeature}
             selectedBuildTool={state.selectedTab}
@@ -682,10 +692,12 @@ function Configurator(props) {
 
 Configurator.propTypes = {
   selectedTab: PropTypes.string,
+  urlId: PropTypes.string,
 };
 
 Configurator.defaultProps = {
   selectedTab: 'webpack',
+  urlId: '',
 };
 
 export class App extends React.Component {
@@ -707,7 +719,13 @@ export class App extends React.Component {
           continuous
           callback={this.joyrideCallback}
         />
-        <Configurator selectedTab={selectedTab} />
+        <Router>
+          <Configurator
+            path={`${selectedTab}/:urlId`}
+            selectedTab={selectedTab}
+          />
+          <Configurator path={`${selectedTab}`} selectedTab={selectedTab} />
+        </Router>
       </Layout>
     );
   }

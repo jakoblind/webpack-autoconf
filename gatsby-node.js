@@ -12,6 +12,7 @@ exports.createPages = ({ graphql, actions }) => {
   const page = path.resolve(`src/pages/index.js`);
   createPage({
     path: `/webpack`,
+    matchPath: "/webpack/*",
     component: page,
     context: {
       selectedTab: 'webpack',
@@ -20,6 +21,7 @@ exports.createPages = ({ graphql, actions }) => {
 
   createPage({
     path: `/parcel`,
+    matchPath: "/parcel/*",
     component: page,
     context: {
       selectedTab: 'parcel',
@@ -28,9 +30,20 @@ exports.createPages = ({ graphql, actions }) => {
 
   createPage({
     path: `/snowpack`,
+    matchPath: "/snowpack/*",
     component: page,
     context: {
       selectedTab: 'snowpack',
     },
   });
 };
+/*
+exports.onCreatePage = async ({ page, actions }) => {
+  const { createPage } = actions
+
+  if (page.path.match(/^\/webpack/)) {
+    page.matchPath = "/webpack/*"
+
+    createPage(page)
+  }
+}*/
