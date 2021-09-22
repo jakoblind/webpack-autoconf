@@ -30,9 +30,9 @@ import {
 
 */
 const generateProject = (features, name, getNodeVersionPromise) => {
-  const isBabel = _.includes(features, 'Babel');
-  const isReact = _.includes(features, 'React');
-  const isHotReact = _.includes(features, 'React hot loader');
+  const isBabel = _.includes(features, 'babel');
+  const isReact = _.includes(features, 'react');
+  const isHotReact = _.includes(features, 'react-hot-loader');
   const additionalFilesMap = createAdditionalFilesMap(webpackConfig, features);
   const newWebpackConfig = createWebpackConfig(features);
   const newBabelConfig = createBabelConfig(features);
@@ -70,8 +70,8 @@ const generateProject = (features, name, getNodeVersionPromise) => {
 };
 
 export function generateParcelProject(features, name, getNodeVersionPromise) {
-  const isBabel = _.includes(features, 'Babel');
-  const isReact = _.includes(features, 'React');
+  const isBabel = _.includes(features, 'babel');
+  const isReact = _.includes(features, 'react');
   const newBabelConfig = createBabelConfig(features);
   const additionalFilesMap = createAdditionalFilesMap(parcelConfig, features);
   const projectName = name || getDefaultProjectName('empty-project', features);

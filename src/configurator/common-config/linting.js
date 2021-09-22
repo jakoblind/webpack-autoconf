@@ -50,18 +50,16 @@ function createEsLintRc(answers = { moduleType: 'esm' }) {
 }
 
 const eslint = {
+  name: 'ESLint',
   group: 'Linting',
   devDependencies: configItems => {
-    const isReact = _.includes(configItems, 'React');
-    return _.concat(
-      ['eslint'],
-      isReact ? ['eslint-plugin-react'] : []
-    );
+    const isReact = _.includes(configItems, 'react');
+    return _.concat(['eslint'], isReact ? ['eslint-plugin-react'] : []);
   },
   files: configItems => {
-    const isReact = _.includes(configItems, 'React');
-    const isVue = _.includes(configItems, 'Vue');
-    const isPrettier = _.includes(configItems, 'Prettier');
+    const isReact = _.includes(configItems, 'react');
+    const isVue = _.includes(configItems, 'vue');
+    const isPrettier = _.includes(configItems, 'prettier');
     const esLintAnswers = {
       moduleType: 'esm',
       framework: isReact ? 'react' : isVue ? 'vue' : null,
@@ -73,6 +71,7 @@ const eslint = {
 };
 
 const prettier = {
+  name: 'Prettier',
   group: 'Linting',
   devDependencies: configItems => {
     const isESLint = _.includes(configItems, 'ESLint');

@@ -17,11 +17,12 @@ import {
 
 function cssRules() {
   return {
+    name: 'CSS',
     group: 'Styling',
     devDependencies: configItems =>
       _.concat(['css-loader'], getStyleLoaderDependencyIfNeeded(configItems)),
     webpack: (webpackConfig, configItems) => {
-      const isPostCss = _.includes(configItems, 'PostCSS');
+      const isPostCss = _.includes(configItems, 'postcss');
       const cssLoader = isPostCss
         ? {
             loader: 'css-loader',
@@ -37,18 +38,18 @@ function cssRules() {
           isPostCss ? 'postcss-loader' : []
         ),
       };
-      if (_.includes(configItems, 'CSS Modules')) {
+      if (_.includes(configItems, 'css-modules')) {
         rule.exclude = /\.module\.css$/;
       }
       return addModuleRule(webpackConfig, rule);
     },
     files: configItems => {
-      const isVue = _.includes(configItems, 'Vue');
-      const isSvelte = _.includes(configItems, 'Svelte');
+      const isVue = _.includes(configItems, 'vue');
+      const isSvelte = _.includes(configItems, 'svelte');
       if (isVue || isSvelte) {
         return {};
       }
-      const isTailwindcss = _.includes(configItems, 'Tailwind CSS');
+      const isTailwindcss = _.includes(configItems, 'tailwind-css');
       return {
         'src/styles.css': isTailwindcss
           ? tailwindcss({ withPostCSS: true })
@@ -60,11 +61,12 @@ function cssRules() {
 
 function cssModulesRules() {
   return {
+    name: 'CSS Modules',
     group: 'Styling',
     devDependencies: configItems =>
       _.concat(['css-loader'], getStyleLoaderDependencyIfNeeded(configItems)),
     webpack: (webpackConfig, configItems) => {
-      const isPostCss = _.includes(configItems, 'PostCSS');
+      const isPostCss = _.includes(configItems, 'postcss');
       const rule = {
         test: /\.css$/,
         use: _.concat(
@@ -81,7 +83,7 @@ function cssModulesRules() {
           isPostCss ? 'postcss-loader' : []
         ),
       };
-      if (_.includes(configItems, 'CSS')) {
+      if (_.includes(configItems, 'css')) {
         rule.include = /\.module\.css$/;
       }
       return addModuleRule(webpackConfig, rule);
@@ -91,6 +93,7 @@ function cssModulesRules() {
 
 function sassRules() {
   return {
+    name: 'Sass',
     group: 'Styling',
     devDependencies: configItems =>
       _.concat(
@@ -103,8 +106,8 @@ function sassRules() {
         use: [getStyleLoader(configItems), 'css-loader', 'sass-loader'],
       }),
     files: configItems => {
-      const isVue = _.includes(configItems, 'Vue');
-      const isSvelte = _.includes(configItems, 'Svelte');
+      const isVue = _.includes(configItems, 'vue');
+      const isSvelte = _.includes(configItems, 'svelte');
       if (isVue || isSvelte) {
         return {};
       }
@@ -115,6 +118,7 @@ function sassRules() {
 
 function lessRules() {
   return {
+    name: 'Less',
     group: 'Styling',
     devDependencies: configItems =>
       _.concat(
@@ -127,8 +131,8 @@ function lessRules() {
         use: [getStyleLoader(configItems), 'css-loader', 'less-loader'],
       }),
     files: configItems => {
-      const isVue = _.includes(configItems, 'Vue');
-      const isSvelte = _.includes(configItems, 'Svelte');
+      const isVue = _.includes(configItems, 'vue');
+      const isSvelte = _.includes(configItems, 'svelte');
       if (isVue || isSvelte) {
         return {};
       }
@@ -139,6 +143,7 @@ function lessRules() {
 
 function stylusRules() {
   return {
+    name: 'stylus',
     group: 'Styling',
     devDependencies: configItems =>
       _.concat(
@@ -151,8 +156,8 @@ function stylusRules() {
         use: [getStyleLoader(configItems), 'css-loader', 'stylus-loader'],
       }),
     files: configItems => {
-      const isVue = _.includes(configItems, 'Vue');
-      const isSvelte = _.includes(configItems, 'Svelte');
+      const isVue = _.includes(configItems, 'vue');
+      const isSvelte = _.includes(configItems, 'svelte');
       if (isVue || isSvelte) {
         return {};
       }
@@ -163,10 +168,11 @@ function stylusRules() {
 
 function postCssRules() {
   return {
+    name: 'PostCSS',
     group: 'Styling',
     devDependencies: configItems => ['postcss-loader', 'autoprefixer'],
     files: configItems => {
-      const isTailwindcss = _.includes(configItems, 'Tailwind CSS');
+      const isTailwindcss = _.includes(configItems, 'tailwind-css');
       return { 'postcss.config.js': postCssConfig(isTailwindcss) };
     },
   };

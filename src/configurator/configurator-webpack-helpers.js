@@ -63,9 +63,9 @@ export function addResolverExtensions(webpackConfig, extOrExts, alias) {
 export const getStyleLoader = configItems => {
   const isMiniCssExtractPlugin = _.includes(
     configItems,
-    'MiniCssExtractPlugin'
+    'minicssextractplugin'
   );
-  const isVue = _.includes(configItems, 'Vue');
+  const isVue = _.includes(configItems, 'vue');
   if (isVue) {
     return 'vue-style-loader';
   } else {
@@ -77,4 +77,4 @@ export const getStyleLoader = configItems => {
 };
 
 export const getStyleLoaderDependencyIfNeeded = configItems =>
-  _.includes(configItems, 'Vue') ? [] : ['style-loader'];
+  _.includes(configItems, 'vue') ? [] : ['style-loader'];

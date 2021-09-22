@@ -23,9 +23,9 @@ import lintingRules from '../common-config/linting';
 import unitTestsRules from '../common-config/unitTests';
 
 function getStyleImports(configItems) {
-  const isCss = _.includes(configItems, 'CSS');
-  const isSass = _.includes(configItems, 'Sass');
-  const isLess = _.includes(configItems, 'Less');
+  const isCss = _.includes(configItems, 'css');
+  const isSass = _.includes(configItems, 'sass');
+  const isLess = _.includes(configItems, 'less');
   const isStylus = _.includes(configItems, 'stylus');
   return _.concat(
     [],
@@ -37,21 +37,23 @@ function getStyleImports(configItems) {
 }
 export default (() => {
   const features = {
-    'No library': {
+    'no-library': {
+      name: 'No library',
       group: 'Main library',
     },
-    React: {
+    react: {
+      name: 'React',
       group: 'Main library',
       dependencies: configItems => ['react', 'react-dom'],
       devDependencies: configItems => {
-        const isTypescript = _.includes(configItems, 'Typescript');
+        const isTypescript = _.includes(configItems, 'typescript');
         return _.concat(
           [],
           isTypescript ? ['@types/react', '@types/react-dom'] : []
         );
       },
       files: configItems => {
-        const isTypescript = _.includes(configItems, 'Typescript');
+        const isTypescript = _.includes(configItems, 'typescript');
         const extraImports = getStyleImports(configItems);
 
         if (isTypescript) {
@@ -69,17 +71,18 @@ export default (() => {
         };
       },
     },
-    Vue: {
+    vue: {
+      name: 'Vue',
       group: 'Main library',
       dependencies: configItems => ['vue'],
       files: configItems => {
-        const isTypescript = _.includes(configItems, 'Typescript');
+        const isTypescript = _.includes(configItems, 'typescript');
         const indexExtension = isTypescript ? 'ts' : 'js';
-        const isCss = _.includes(configItems, 'CSS');
-        const isLess = _.includes(configItems, 'Less');
-        const isSass = _.includes(configItems, 'Sass');
+        const isCss = _.includes(configItems, 'css');
+        const isLess = _.includes(configItems, 'less');
+        const isSass = _.includes(configItems, 'sass');
         const isStylus = _.includes(configItems, 'stylus');
-        const isTailwindCSS = _.includes(configItems, 'Tailwind CSS');
+        const isTailwindCSS = _.includes(configItems, 'tailwind-css');
         const cssStyle = `<style>
 ${css}
 </style>`;
@@ -118,15 +121,18 @@ ${stylus}
         );
       },
     },
-    Bootstrap: {
+    bootstrap: {
+      name: 'Bootstrap',
       group: 'UI library',
       dependencies: configItems => ['bootstrap', 'jquery', 'popper.js'],
     },
-    'Tailwind CSS': {
+    'tailwind-css': {
+      name: 'Tailwind CSS',
       group: 'UI library',
       dependencies: configItems => ['tailwindcss'],
     },
-    'Material-UI': {
+    'material-ui': {
+      name: 'Material UI',
       group: 'UI library',
       dependencies: configItems => [
         '@material-ui/core',
@@ -134,33 +140,35 @@ ${stylus}
         '@material-ui/icons',
       ],
     },
-    Jest: unitTestsRules.Jest,
-    Mocha: unitTestsRules.Mocha,
-    Chai: unitTestsRules.Chai,
-    Jasmine: unitTestsRules.Jasmine,
-    AVA: unitTestsRules.AVA,
-    Cypress: unitTestsRules.Cypress,
-    TestCafe: unitTestsRules.TestCafe,
-    Babel: {
+    jest: unitTestsRules.jest,
+    mocha: unitTestsRules.mocha,
+    chai: unitTestsRules.chai,
+    jasmine: unitTestsRules.jasmine,
+    ava: unitTestsRules.ava,
+    cypress: unitTestsRules.cypress,
+    testcafe: unitTestsRules.testcafe,
+    babel: {
+      name: 'Babel',
       group: 'Transpiler',
       babel: (babelConfig, configItems) => ({
         ...babelConfig,
         presets: _.concat(
           [['@babel/preset-env', { modules: false }]],
-          _.includes(configItems, 'React') ? '@babel/preset-react' : []
+          _.includes(configItems, 'react') ? '@babel/preset-react' : []
         ),
       }),
       devDependencies: configItems =>
         _.concat(
           ['@babel/core', '@babel/preset-env'],
-          _.includes(configItems, 'React') ? '@babel/preset-react' : []
+          _.includes(configItems, 'react') ? '@babel/preset-react' : []
         ),
     },
-    Typescript: {
+    typescript: {
+      name: 'Typescript',
       group: 'Transpiler',
       files: configItems => {
-        const isReact = _.includes(configItems, 'React');
-        const isVue = _.includes(configItems, 'Vue');
+        const isReact = _.includes(configItems, 'react');
+        const isVue = _.includes(configItems, 'vue');
 
         const configFiles = isReact
           ? { 'tsconfig.json': tsconfigReact }
@@ -175,10 +183,11 @@ ${stylus}
         return _.assign(configFiles, sourceFiles);
       },
     },
-    CSS: {
+    css: {
+      name: 'CSS',
       group: 'Styling',
       files: configItems => {
-        const isTailwindcss = _.includes(configItems, 'Tailwind CSS');
+        const isTailwindcss = _.includes(configItems, 'tailwind-css');
         return {
           'src/styles.css': isTailwindcss
             ? tailwindcss({ withPostCSS: true })
@@ -186,29 +195,33 @@ ${stylus}
         };
       },
     },
-    PostCSS: {
+    postcss: {
+      name: 'PostCSS',
       group: 'Styling',
       devDependencies: configItems => ['postcss-modules', 'autoprefixer'],
       files: configItems => {
-        const isTailwindcss = _.includes(configItems, 'Tailwind CSS');
+        const isTailwindcss = _.includes(configItems, 'tailwind-css');
         return { 'postcss.config.js': postCssConfig(isTailwindcss) };
       },
     },
-    Sass: {
+    sass: {
+      name: 'Sass',
       group: 'Styling',
       // devDependencies: configItems => ['sass'],//ToDO is thiss needed?
       files: configItems => ({ 'src/styles.scss': scss }),
     },
-    Less: {
+    less: {
+      name: 'Less',
       group: 'Styling',
       files: configItems => ({ 'src/styles.less': less }),
     },
     stylus: {
+      name: 'stylus',
       group: 'Styling',
       files: configItems => ({ 'src/styles.styl': stylus }),
     },
-    ESLint: lintingRules.eslint,
-    Prettier: lintingRules.prettier,
+    eslint: lintingRules.eslint,
+    prettier: lintingRules.prettier,
   };
   const featuresNoNulls = _.mapValues(features, item => {
     if (!item.babel) {
@@ -240,9 +253,9 @@ ${stylus}
       },
       devDependencies: ['parcel-bundler'],
       files: configItems => {
-        const isReact = _.includes(configItems, 'React');
-        const isTypescript = _.includes(configItems, 'Typescript');
-        const isVue = _.includes(configItems, 'Vue');
+        const isReact = _.includes(configItems, 'react');
+        const isTypescript = _.includes(configItems, 'typescript');
+        const isVue = _.includes(configItems, 'vue');
         if (!isReact && !isTypescript && !isVue) {
           return {
             'src/index.js': emptyIndexJs(getStyleImports(configItems)),

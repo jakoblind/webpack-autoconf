@@ -9,12 +9,12 @@ test('React project', () => {
 });
 
 test('Vue project', () => {
-  const project = projectGenerator(['Vue']);
+  const project = projectGenerator(['vue']);
 
   expect(project['src/App.vue']).toBeDefined();
   expect(_.size(project)).toBe(7);
 
-  const projectWithTypescript = projectGenerator(['Vue', 'Typescript']);
+  const projectWithTypescript = projectGenerator(['vue', 'typescript']);
 
   expect(projectWithTypescript['vue-shim.d.ts']).toBeDefined();
   expect(_.size(projectWithTypescript)).toBe(9);

@@ -57,7 +57,7 @@ const StepByStepArea = ({ features, newBabelConfig, isReact, bundler }) => {
   const npmCommand = `mkdir myapp\ncd myapp\nnpm init -y\nnpm install --save-dev ${newNpmConfig.devDependencies.join(
     ' '
   )}${npmInstallCommand}`;
-  const isTypescript = _.includes(features, 'Typescript');
+  const isTypescript = _.includes(features, 'typescript');
 
   let babelStep = null;
   if (newBabelConfig) {
@@ -350,10 +350,9 @@ const buildConfigConfig = {
 
 const initialState = (selectedTab = 'webpack', initFeatures) => {
   // convert here
-  console.log('webpackConfig', webpackConfig.features);
   return {
     selectedTab,
-    selectedFeatures: { 'No library': true },
+    selectedFeatures: { 'no-library': true },
   };
 };
 
@@ -364,12 +363,12 @@ function reducer(state, action) {
         buildConfigConfig[action.selectedTab].featureConfig.features
       );
 
-      let shouldSetNoLibrary = state.selectedFeatures['No library'];
+      let shouldSetNoLibrary = state.selectedFeatures['no-library'];
 
-      if (action.selectedTab === 'parcel' && state.selectedFeatures.Svelte) {
+      if (action.selectedTab === 'parcel' && state.selectedFeatures.svelte) {
         // Svelte was selected when switching to the parcel tab
         // which isn't supported so we set the flag shouldSetNoLibrary to
-        // true so main library switches to "No library"
+        // true so main library switches to "no-library"
         shouldSetNoLibrary = true;
       }
 
@@ -379,10 +378,10 @@ function reducer(state, action) {
           _.includes(newAllPossibleFeatures, feature) && selected
       );
 
-      let shouldSetBabel = filteredFeatures.Babel;
+      let shouldSetBabel = filteredFeatures.babel;
       if (
         (action.selectedTab === 'webpack' || action.selectedTab === 'parcel') &&
-        state.selectedFeatures.React
+        state.selectedFeatures.react
       ) {
         // React was selected when switching to the webpack tab
         // if we come from snowpack, then babel is not set.
@@ -392,7 +391,7 @@ function reducer(state, action) {
 
       if (
         action.selectedTab === 'snowpack' &&
-        (state.selectedFeatures.Vue || state.selectedFeatures.Svelte)
+        (state.selectedFeatures.vue || state.selectedFeatures.svelte)
       ) {
         // if we select snowpack, and vue was selected, then we must select no lib
         shouldSetNoLibrary = true;
@@ -403,8 +402,8 @@ function reducer(state, action) {
         selectedTab: action.selectedTab,
         selectedFeatures: {
           ...filteredFeatures,
-          Babel: shouldSetBabel,
-          'No library': shouldSetNoLibrary,
+          babel: shouldSetBabel,
+          'no-library': shouldSetNoLibrary,
         },
       };
     case 'setSelectedFeatures':
@@ -465,7 +464,6 @@ function getSelectedArray(o) {
 }
 
 function Configurator(props) {
-  console.log('props,', props);
   const [state, dispatch] = useReducer(
     reducer,
     initialState(props.selectedTab, props.urlId)
@@ -474,7 +472,7 @@ function Configurator(props) {
     something => {
       const selectedArray = getSelectedArray(state.selectedFeatures);
       const mainLibs = _.remove(selectedArray, i =>
-        _.includes(['React', 'Vue', 'Svelte', 'No library'], i)
+        _.includes(['react', 'Vue', 'svelte', 'no-library'], i)
       );
       const path = _.kebabCase(_.sortBy(selectedArray));
       const newUrl = `/${state.selectedTab}/${_.kebabCase(mainLibs)}${
@@ -561,18 +559,18 @@ function Configurator(props) {
 
   const newBabelConfig = createBabelConfig(selectedArray);
 
-  const isReact = _.includes(selectedArray, 'React');
-  const isTypescript = _.includes(selectedArray, 'Typescript');
+  const isReact = _.includes(selectedArray, 'react');
+  const isTypescript = _.includes(selectedArray, 'typescript');
 
   const showFeatures = _.clone(featureConfig.features);
 
   if (!isReact) {
-    delete showFeatures['React hot loader'];
-    delete showFeatures['Material-UI'];
+    delete showFeatures['react-hot-loader'];
+    delete showFeatures['material-ui'];
   }
 
   if (isTypescript) {
-    delete showFeatures.ESLint;
+    delete showFeatures.eslint;
   }
 
   return (
@@ -594,7 +592,6 @@ function Configurator(props) {
             features={showFeatures}
             selected={state.selectedFeatures}
             setSelected={feature => {
-              console.log('new thing selected', feature);
               dispatch({ type: 'setSelectedFeatures', feature });
             }}
             onMouseEnter={onMouseEnterFeature}

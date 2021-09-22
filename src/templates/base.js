@@ -55,13 +55,13 @@ export const indexHtml = ({
 </html>`;
 
 export const readmeFile = (name, features) => {
-  const isReact = _.includes(features, 'React');
+  const isReact = _.includes(features, 'react');
   const isTestFrameworkRunWithTest = !_.isEmpty(
-    _.intersection(features, ['AVA', 'Mocha', 'Jest', 'Jasmine', 'TestCafe'])
+    _.intersection(features, ['ava', 'mocha', 'jest', 'jasmine', 'testcafe'])
   );
-  const isCypress = _.includes(features, 'Cypress');
+  const isCypress = _.includes(features, 'cypress');
 
-  const isHot = _.includes(features, 'React hot loader');
+  const isHot = _.includes(features, 'react-hot-loader');
   return `# ${name}
 
 Empty project.
@@ -137,11 +137,11 @@ Made with [createapp.dev](https://createapp.dev/)
 };
 
 export const readmeFileParcel = (name, features) => {
-  const isReact = _.includes(features, 'React');
+  const isReact = _.includes(features, 'react');
   const isTestFrameworkRunWithTest = !_.isEmpty(
-    _.intersection(features, ['AVA', 'Mocha', 'Jest', 'Jasmine', 'TestCafe'])
+    _.intersection(features, ['ava', 'mocha', 'jest', 'jasmine', 'testcafe'])
   );
-  const isCypress = _.includes(features, 'Cypress');
+  const isCypress = _.includes(features, 'cypress');
   return `# ${name}
 
 Empty project.
@@ -208,11 +208,11 @@ Made with [createapp.dev](https://createapp.dev/)
 };
 
 export const readmeFileSnowpack = (name, features) => {
-  const isReact = _.includes(features, 'React');
+  const isReact = _.includes(features, 'react');
   const isTestFrameworkRunWithTest = !_.isEmpty(
-    _.intersection(features, ['AVA', 'Mocha', 'Jest', 'Jasmine', 'TestCafe'])
+    _.intersection(features, ['ava', 'mocha', 'jest', 'jasmine', 'testcafe'])
   );
-  const isCypress = _.includes(features, 'Cypress');
+  const isCypress = _.includes(features, 'cypress');
   return `# ${name}
 
 Empty project.

@@ -53,11 +53,11 @@ export const postCssConfig = isTailwindcss => `module.exports = {
 };`;
 
 export function getStyleTags(configItems) {
-  const isCss = _.includes(configItems, 'CSS');
-  const isLess = _.includes(configItems, 'Less');
-  const isSass = _.includes(configItems, 'Sass');
+  const isCss = _.includes(configItems, 'css');
+  const isLess = _.includes(configItems, 'less');
+  const isSass = _.includes(configItems, 'sass');
   const isStylus = _.includes(configItems, 'stylus');
-  const isTailwindCSS = _.includes(configItems, 'Tailwind CSS');
+  const isTailwindCSS = _.includes(configItems, 'tailwind-css');
   const cssStyle = `<style>
 ${css}
 </style>`;

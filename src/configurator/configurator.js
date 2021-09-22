@@ -24,9 +24,9 @@ function stringifyReplacer(value, indent, stringify) {
 }
 
 function createConfig(configItems, configType, features) {
-  const isReact = _.includes(configItems, 'React');
-  const isTypescript = _.includes(configItems, 'Typescript');
-  const isHotReact = _.includes(configItems, 'React hot loader');
+  const isReact = _.includes(configItems, 'react');
+  const isTypescript = _.includes(configItems, 'typescript');
+  const isHotReact = _.includes(configItems, 'react-hot-loader');
 
   let entryExtension = 'js';
   if (isTypescript) {
@@ -107,8 +107,8 @@ export function createBabelConfig(configItems) {
 }
 
 function createHotReloadModifier(configItems) {
-  const isCodeSplit = _.includes(configItems, 'Code split vendors');
-  const isHotReact = _.includes(configItems, 'React hot loader');
+  const isCodeSplit = _.includes(configItems, 'code-split-vendors');
+  const isHotReact = _.includes(configItems, 'react-hot-loader');
 
   if (!isCodeSplit || !isHotReact) {
     return null;

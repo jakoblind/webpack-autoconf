@@ -4,9 +4,9 @@ describe('Hot reload and Code split vs. `contenthash` in output filename', () =>
   const staticFilename = `filename: 'bundle.js'`;
   const hashedFilename = `filename: '[name].[contenthash].js'`;
   const modifiedFilename = '[name].[hash].js';
-  const featureReact = 'React';
-  const featureHot = 'React hot loader';
-  const featureSplit = 'Code split vendors';
+  const featureReact = 'react';
+  const featureHot = 'react-hot-loader';
+  const featureSplit = 'code-split-vendors';
 
   test('static filename without Hot Reload and Code Split', () => {
     const result = createWebpackConfig([featureReact]);

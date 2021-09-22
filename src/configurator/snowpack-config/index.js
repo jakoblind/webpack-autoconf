@@ -26,9 +26,9 @@ import lintingRules from '../common-config/linting';
 import unitTestsRules from '../common-config/unitTests';
 
 function getStyleImports(configItems) {
-  const isCss = _.includes(configItems, 'CSS');
-  const isSass = _.includes(configItems, 'Sass');
-  const isLess = _.includes(configItems, 'Less');
+  const isCss = _.includes(configItems, 'css');
+  const isSass = _.includes(configItems, 'sass');
+  const isLess = _.includes(configItems, 'less');
   const isStylus = _.includes(configItems, 'stylus');
   return _.concat(
     [],
@@ -55,14 +55,16 @@ function addSnowpackPlugin(snowpackConfig, plugin) {
 
 export default (() => {
   const features = {
-    'No library': {
+    'no-library': {
+      name: 'No library',
       group: 'Main library',
     },
-    React: {
+    react: {
+      name: 'React',
       group: 'Main library',
       dependencies: configItems => ['react', 'react-dom'],
       files: configItems => {
-        const isTypescript = _.includes(configItems, 'Typescript');
+        const isTypescript = _.includes(configItems, 'typescript');
         const extraImports = getStyleImports(configItems);
 
         if (isTypescript) {
@@ -85,7 +87,8 @@ export default (() => {
         };
       },
     },
-    Svelte: {
+    svelte: {
+      name: 'Svelte',
       group: 'Main library',
       dependencies: configItems => [
         'svelte',
@@ -93,7 +96,7 @@ export default (() => {
         'svelte-preprocess',
       ],
       devDependencies: configItems => {
-        const isSass = _.includes(configItems, 'Sass');
+        const isSass = _.includes(configItems, 'sass');
         return _.concat(
           ['@snowpack/plugin-svelte'],
           isSass ? ['svelte-preprocess'] : null
@@ -103,7 +106,7 @@ export default (() => {
         addSnowpackPlugin(config, '@snowpack/plugin-svelte'),
       files: configItems => {
         const styling = getStyleTags(configItems);
-        const isSass = _.includes(configItems, 'Sass');
+        const isSass = _.includes(configItems, 'sass');
         let svelteConf = null;
         if (isSass) {
           svelteConf = {
@@ -124,27 +127,30 @@ export default (() => {
         );
       },
     },
-    Bootstrap: {
+    bootstrap: {
+      name: 'Bootstrap',
       group: 'UI library',
       dependencies: configItems => ['bootstrap', 'jquery', 'popper.js'],
     },
-    'Tailwind CSS': {
+    'tailwind-css': {
+      name: 'Tailwind CSS',
       group: 'UI library',
       dependencies: configItems => ['tailwindcss'],
     },
-    Jest: unitTestsRules.Jest,
-    Mocha: unitTestsRules.Mocha,
-    Chai: unitTestsRules.Chai,
-    Jasmine: unitTestsRules.Jasmine,
-    AVA: unitTestsRules.AVA,
-    Cypress: unitTestsRules.Cypress,
-    TestCafe: unitTestsRules.TestCafe,
+    jest: unitTestsRules.jest,
+    mocha: unitTestsRules.mocha,
+    chai: unitTestsRules.chai,
+    jasmine: unitTestsRules.jasmine,
+    ava: unitTestsRules.ava,
+    cypress: unitTestsRules.cypress,
+    testcafe: unitTestsRules.testcafe,
 
-    Typescript: {
+    typescript: {
+      name: 'Typescript',
       group: 'Transpiler',
       files: configItems => {
-        const isReact = _.includes(configItems, 'React');
-        const isVue = _.includes(configItems, 'Vue');
+        const isReact = _.includes(configItems, 'react');
+        const isVue = _.includes(configItems, 'vue');
 
         const configFiles = isReact
           ? { 'tsconfig.json': tsconfigReact }
@@ -162,13 +168,14 @@ export default (() => {
         return _.assign(configFiles, sourceFiles);
       },
     },
-    CSS: {
+    css: {
+      name: 'CSS',
       group: 'Styling',
       files: configItems => {
-        const isTailwindcss = _.includes(configItems, 'Tailwind CSS');
-        const isPostCSS = _.includes(configItems, 'PostCSS');
-        const isVue = _.includes(configItems, 'Vue');
-        const isSvelte = _.includes(configItems, 'Svelte');
+        const isTailwindcss = _.includes(configItems, 'tailwind-css');
+        const isPostCSS = _.includes(configItems, 'postcss');
+        const isVue = _.includes(configItems, 'vue');
+        const isSvelte = _.includes(configItems, 'svelte');
         if (isVue || isSvelte) {
           return {};
         }
@@ -179,7 +186,8 @@ export default (() => {
         };
       },
     },
-    PostCSS: {
+    postcss: {
+      name: 'PostCSS',
       group: 'Styling',
       devDependencies: configItems => [
         'postcss-cli',
@@ -188,18 +196,19 @@ export default (() => {
         '@snowpack/plugin-postcss',
       ],
       files: configItems => {
-        const isTailwindcss = _.includes(configItems, 'Tailwind CSS');
+        const isTailwindcss = _.includes(configItems, 'tailwind-css');
         return { 'postcss.config.js': postCssConfig(isTailwindcss) };
       },
       snowpack: (config = {}) =>
         addSnowpackPlugin(config, ['@snowpack/plugin-postcss']),
     },
-    Sass: {
+    sass: {
+      name: 'Sass',
       group: 'Styling',
       devDependencies: configItems => ['@snowpack/plugin-sass'],
       files: configItems => {
-        const isVue = _.includes(configItems, 'Vue');
-        const isSvelte = _.includes(configItems, 'Svelte');
+        const isVue = _.includes(configItems, 'vue');
+        const isSvelte = _.includes(configItems, 'svelte');
         if (isVue || isSvelte) {
           return {};
         }
@@ -208,8 +217,8 @@ export default (() => {
       snowpack: (config = {}) =>
         addSnowpackPlugin(config, '@snowpack/plugin-sass'),
     },
-    ESLint: lintingRules.eslint,
-    Prettier: lintingRules.prettier,
+    eslint: lintingRules.eslint,
+    prettier: lintingRules.prettier,
   };
   const featuresNoNulls = _.mapValues(features, item => {
     if (!item.snowpack) {
@@ -241,9 +250,9 @@ export default (() => {
       },
       devDependencies: ['snowpack'],
       files: configItems => {
-        const isReact = _.includes(configItems, 'React');
-        const isTypescript = _.includes(configItems, 'Typescript');
-        const isVue = _.includes(configItems, 'Vue');
+        const isReact = _.includes(configItems, 'react');
+        const isTypescript = _.includes(configItems, 'typescript');
+        const isVue = _.includes(configItems, 'vue');
         if (!isReact && !isTypescript && !isVue) {
           return {
             'src/index.js': emptyIndexJs(getStyleImports(configItems)),

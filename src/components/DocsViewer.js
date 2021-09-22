@@ -4,7 +4,7 @@ import _ from 'lodash';
 import styles from '../styles.module.css';
 
 const webpackDocsMap = {
-  React: (
+  react: (
     <div>
       <p>
         React uses JSX and you need a tool for transpiling the JSX to regular
@@ -21,7 +21,7 @@ const webpackDocsMap = {
       </p>
     </div>
   ),
-  Vue: (
+  vue: (
     <div>
       <p>
         Vue uses <code>vue-loader</code> to transpile the Vue code. This is
@@ -37,7 +37,7 @@ const webpackDocsMap = {
       </p>
     </div>
   ),
-  Babel: (
+  babel: (
     <div>
       <p>
         Babel is a tool for transpiling JavaScript code. The{' '}
@@ -58,7 +58,7 @@ const webpackDocsMap = {
       </p>
     </div>
   ),
-  Typescript: (
+  typescript: (
     <div>
       <p>
         In <code>webpack.config.js</code> we configure webpack to use{' '}
@@ -72,7 +72,7 @@ const webpackDocsMap = {
       </p>
     </div>
   ),
-  CSS: (
+  css: (
     <div>
       <p>
         Webpack uses both <code>style-loader</code> and <code>css-loader</code>{' '}
@@ -92,7 +92,7 @@ const webpackDocsMap = {
       </ul>
     </div>
   ),
-  'CSS Modules': (
+  'css-modules': (
     <div>
       <p>
         CSS modules are activated by configuring the <code>css-loader</code> and
@@ -116,7 +116,7 @@ const webpackDocsMap = {
       </ul>
     </div>
   ),
-  PostCSS: (
+  postcss: (
     <div>
       <p>
         PostCSS is enabled by adding <code>postcss-loader</code> to the CSS
@@ -128,7 +128,7 @@ const webpackDocsMap = {
       </p>
     </div>
   ),
-  Sass: (
+  sass: (
     <div>
       <p>
         Configuring Sass is very similar to configuring CSS. The only difference
@@ -137,7 +137,7 @@ const webpackDocsMap = {
       </p>
     </div>
   ),
-  Less: (
+  less: (
     <div>
       <p>
         Configuring Less is very similar to configuring CSS. The only difference
@@ -155,7 +155,7 @@ const webpackDocsMap = {
       </p>
     </div>
   ),
-  SVG: (
+  svg: (
     <div>
       <p>
         We configure support for SVG by using the <code>file-loader</code> in{' '}
@@ -166,7 +166,7 @@ const webpackDocsMap = {
       </p>
     </div>
   ),
-  PNG: (
+  png: (
     <div>
       <p>
         We configure support for PNG by using the <code>url-loader</code> in{' '}
@@ -203,7 +203,7 @@ const webpackDocsMap = {
       </p>
     </div>
   ),
-  ESLint: (
+  eslint: (
     <div>
       <p>
         ESLint is a widely used linter for Javascript. The configuration
@@ -218,23 +218,23 @@ const webpackDocsMap = {
       </p>
     </div>
   ),
-  Prettier: (
+  prettier: (
     <div>
       <p>
         Prettier is an opinionated code formatter. It automatically formats the
         code for you.
         <h3>Learn more</h3>
-        <ul>
-          <li>
-            <a href="https://blog.jakoblind.no/prettier/" target="new">
-              What is Prettier and how to configure it
-            </a>
-          </li>
-        </ul>
       </p>
+      <ul>
+        <li>
+          <a href="https://blog.jakoblind.no/prettier/" target="new">
+            What is Prettier and how to configure it
+          </a>
+        </li>
+      </ul>
     </div>
   ),
-  'Code split vendors': (
+  'code-split-vendors': (
     <div>
       <p>
         Code split vendors means that we split up the bundle into two: one
@@ -246,7 +246,7 @@ const webpackDocsMap = {
       </p>
     </div>
   ),
-  CleanWebpackPlugin: (
+  cleanwebpackplugin: (
     <div>
       <p>
         This plugin removes the contents of the output directory before
@@ -266,7 +266,7 @@ const webpackDocsMap = {
       </ul>
     </div>
   ),
-  CopyWebpackPlugin: (
+  copywebpackplugin: (
     <div>
       <p>
         This plugin lets you copy any static files after the project has built.
@@ -289,7 +289,7 @@ const webpackDocsMap = {
 };
 
 const parcelDocsMap = {
-  React: (
+  react: (
     <div>
       <p>
         React uses JSX and you need a tool for transpiling the JSX to regular
@@ -306,7 +306,7 @@ const parcelDocsMap = {
       </p>
     </div>
   ),
-  Babel: (
+  babel: (
     <div>
       <p>Babel is a tool for transpiling JavaScript code.</p>
       <p>
@@ -322,7 +322,7 @@ const parcelDocsMap = {
       </p>
     </div>
   ),
-  Vue: (
+  vue: (
     <div>
       <p>With Parcel, Vue works out-of-the box. No config required.</p>
 
@@ -332,7 +332,7 @@ const parcelDocsMap = {
       </p>
     </div>
   ),
-  Typescript: (
+  typescript: (
     <div>
       <p>
         With Parcel, Typescript works out-of-the box. No extra config required.
@@ -348,7 +348,7 @@ const parcelDocsMap = {
 };
 
 const snowpackDocsMap = {
-  React: (
+  react: (
     <div>
       <p>
         React uses JSX and you need a tool for transpiling the JSX to regular
@@ -364,7 +364,7 @@ const snowpackDocsMap = {
       </p>
     </div>
   ),
-  Typescript: (
+  typescript: (
     <div>
       <p>
         With Snowpack, Typescript works out-of-the box. No extra config
@@ -378,7 +378,7 @@ const snowpackDocsMap = {
       </p>
     </div>
   ),
-  PostCSS: (
+  postcss: (
     <div>
       <p>
         We enable PostCSS by using the plugin{' '}
@@ -397,7 +397,7 @@ const snowpackDocsMap = {
 };
 
 const commonDocsMap = {
-  Prettier: (
+  prettier: (
     <div>
       <p>
         Prettier is an opinionated code formatter. It automatically formats the

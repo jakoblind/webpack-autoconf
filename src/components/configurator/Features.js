@@ -1,28 +1,28 @@
-import React, { useState, useEffect, useRef } from "react";
-import PropTypes from "prop-types";
-import _ from "lodash";
-import Modal from "../Modal";
-import styles from "../../styles.module.css";
-import { docsMap } from "../DocsViewer";
-import { gaSendEvent } from "../../googleAnalytics";
+import React, { useState, useEffect, useRef } from 'react';
+import PropTypes from 'prop-types';
+import _ from 'lodash';
+import Modal from '../Modal';
+import styles from '../../styles.module.css';
+import { docsMap } from '../DocsViewer';
+import { gaSendEvent } from '../../googleAnalytics';
 
 function trackHelpIconClick(eventAction) {
   gaSendEvent({
-    eventCategory: "Help Icon clicked",
-    eventAction
+    eventCategory: 'Help Icon clicked',
+    eventAction,
   });
 }
 
 // eslint-disable-next-line no-unused-vars
 function FeedbackForm({ feature, children }) {
-  const [email, setEmail] = useState("");
-  const [comment, setComment] = useState("");
+  const [email, setEmail] = useState('');
+  const [comment, setComment] = useState('');
   const [isSent, setIsSent] = useState(false);
   const submit = e => {
     e.preventDefault();
     fetch(`https://hooks.zapier.com/hooks/catch/1239764/oo73gyz/`, {
-      method: "POST",
-      body: JSON.stringify({ email, comment, key: feature })
+      method: 'POST',
+      body: JSON.stringify({ email, comment, key: feature }),
     }).then(() => setIsSent(true));
   };
   const thankYouMessage = <p>Thank you for your input!</p>;
@@ -44,7 +44,7 @@ function FeedbackForm({ feature, children }) {
           value={email}
           placeholder="will only be used to send you a reply"
           onChange={e => setEmail(e.target.value)}
-        />{" "}
+        />{' '}
         <br />
         <button type="submit" onClick={submit}>
           Send it!
@@ -61,12 +61,12 @@ FeedbackForm.propTypes = {
   feature: PropTypes.string.isRequired,
   children: PropTypes.oneOfType([
     PropTypes.arrayOf(PropTypes.node),
-    PropTypes.node
-  ])
+    PropTypes.node,
+  ]),
 };
 
 FeedbackForm.defaultProps = {
-  children: []
+  children: [],
 };
 
 export function FeatureHelp({ featureName, selectedBuildTool }) {
@@ -92,9 +92,9 @@ export function FeatureHelp({ featureName, selectedBuildTool }) {
         className="modal"
         contentLabel="Help"
       >
-        <h2 style={{ width: "90%", float: "left" }}>Help for {featureName}</h2>
+        <h2 style={{ width: '90%', float: 'left' }}>Help for {featureName}</h2>
         <button
-          style={{ borderRadius: "100px", float: "left" }}
+          style={{ borderRadius: '100px', float: 'left' }}
           onClick={() => setModalOpen(false)}
         >
           X
@@ -109,7 +109,7 @@ export function FeatureHelp({ featureName, selectedBuildTool }) {
 
 FeatureHelp.propTypes = {
   featureName: PropTypes.string.isRequired,
-  selectedBuildTool: PropTypes.string.isRequired
+  selectedBuildTool: PropTypes.string.isRequired,
 };
 
 const Feature = ({
@@ -119,7 +119,8 @@ const Feature = ({
   setSelected,
   onMouseEnter,
   onMouseLeave,
-  selectedBuildTool
+  selectedBuildTool,
+  featureName,
 }) => (
   <>
     <label
@@ -130,14 +131,14 @@ const Feature = ({
       onTouchEnd={() => onMouseLeave(feature)}
       onTouchCancel={() => onMouseLeave(feature)}
     >
-      {feature}
+      {featureName}
       <input
         checked={selected || false}
         onChange={() => setSelected(feature)}
-        type={isRadio ? "radio" : "checkbox"}
+        type={isRadio ? 'radio' : 'checkbox'}
         name="main-library"
       />
-      <span className={isRadio ? styles.radio : styles.checkmark} />{" "}
+      <span className={isRadio ? styles.radio : styles.checkmark} />{' '}
     </label>
     <FeatureHelp featureName={feature} selectedBuildTool={selectedBuildTool} />
   </>
@@ -150,12 +151,13 @@ Feature.propTypes = {
   setSelected: PropTypes.func.isRequired,
   onMouseEnter: PropTypes.func.isRequired,
   onMouseLeave: PropTypes.func.isRequired,
-  selectedBuildTool: PropTypes.string.isRequired
+  selectedBuildTool: PropTypes.string.isRequired,
+  featureName: PropTypes.string.isRequired,
 };
 
 Feature.defaultProps = {
   isRadio: false,
-  selected: false
+  selected: false,
 };
 
 function usePrevious(value) {
@@ -173,10 +175,11 @@ function FeatureGroup({
   setSelected,
   onMouseEnter,
   onMouseLeave,
-  selectedBuildTool
+  selectedBuildTool,
+  features,
 }) {
-  const [expanded, setExpanded] = useState(group === "Main library");
-  const isRadio = group === "Main library";
+  const [expanded, setExpanded] = useState(group === 'Main library');
+  const isRadio = group === 'Main library';
   const prevSelected = usePrevious(selected);
   useEffect(() => {
     const anyChanged = _.reduce(
@@ -200,12 +203,13 @@ function FeatureGroup({
         className={styles.featureGroupName}
         onClick={() => setExpanded(!expanded)}
       >
-        {group !== "undefined" ? (expanded ? "− " : "+ ") + group : ""}
+        {group !== 'undefined' ? (expanded ? '− ' : '+ ') + group : ''}
       </div>
       {expanded ? (
         <div className={styles.featureGroupContainer}>
           {_.map(featureList, ({ feature }) => (
             <Feature
+              featureName={features[feature].name}
               feature={feature}
               isRadio={isRadio} // main library options should be type radio
               selected={selected[feature]}
@@ -230,12 +234,12 @@ FeatureGroup.propTypes = PropTypes.shape({
       feature: PropTypes.string.isRequired,
       group: PropTypes.string.isRequired,
       packageJson: packageJsonShape.isRequired,
-      webpackImports: PropTypes.arrayOf(PropTypes.any).isRequired
+      webpackImports: PropTypes.arrayOf(PropTypes.any).isRequired,
     }).isRequired
   ).isRequired,
   group: PropTypes.string.isRequired,
   selected: packageJsonShape.isRequired,
-  selectedBuildTool: PropTypes.string.isRequired
+  selectedBuildTool: PropTypes.string.isRequired,
 }).isRequired;
 
 export default class Features extends React.Component {
@@ -246,17 +250,19 @@ export default class Features extends React.Component {
       setSelected,
       onMouseEnter,
       onMouseLeave,
-      selectedBuildTool
+      selectedBuildTool,
     } = this.props;
+
     const groupedFeatures = _.chain(features)
       .mapValues((v, k, o) => ({ ...v, feature: k }))
-      .groupBy("group")
+      .groupBy('group')
       .value();
 
     return (
       <div className={styles.features} id="features">
         {_.map(groupedFeatures, (featureList, group) => (
           <FeatureGroup
+            features={features}
             featureList={featureList}
             group={group}
             setSelected={setSelected}
@@ -275,13 +281,13 @@ export default class Features extends React.Component {
 const feautureShape = PropTypes.shape({
   group: PropTypes.string.isRequired,
   packageJson: packageJsonShape.isRequired,
-  webpackImports: PropTypes.arrayOf(PropTypes.any).isRequired
+  webpackImports: PropTypes.arrayOf(PropTypes.any).isRequired,
 });
 
 Features.propTypes = PropTypes.shape({
   features: PropTypes.objectOf(feautureShape).isRequired,
   selected: packageJsonShape.isRequired,
-  selectedBuildTool: PropTypes.string.isRequired
+  selectedBuildTool: PropTypes.string.isRequired,
 }).isRequired;
 
 /*
@@ -290,34 +296,34 @@ Features.propTypes = PropTypes.shape({
 */
 function enforceMainLibrary(allFeatureStates, affectedFeature, setToSelected) {
   // Deselect React if user picks Vue
-  if (affectedFeature === "Vue" && setToSelected) {
+  if (affectedFeature === 'vue' && setToSelected) {
     return {
       ...allFeatureStates,
-      React: !setToSelected,
-      Svelte: !setToSelected,
-      "No library": !setToSelected
+      react: !setToSelected,
+      svelte: !setToSelected,
+      'no-library': !setToSelected,
     };
     // deselect vue if user selects react
-  } else if (affectedFeature === "React" && setToSelected) {
+  } else if (affectedFeature === 'react' && setToSelected) {
     return {
       ...allFeatureStates,
-      Vue: !setToSelected,
-      Svelte: !setToSelected,
-      "No library": !setToSelected
+      vue: !setToSelected,
+      svelte: !setToSelected,
+      'no-library': !setToSelected,
     };
-  } else if (affectedFeature === "Svelte" && setToSelected) {
+  } else if (affectedFeature === 'svelte' && setToSelected) {
     return {
       ...allFeatureStates,
-      Vue: !setToSelected,
-      React: !setToSelected,
-      "No library": !setToSelected
+      vue: !setToSelected,
+      react: !setToSelected,
+      'no-library': !setToSelected,
     };
-  } else if (affectedFeature === "No library" && setToSelected) {
+  } else if (affectedFeature === 'no-library' && setToSelected) {
     return {
       ...allFeatureStates,
-      Vue: !setToSelected,
-      React: !setToSelected,
-      Svelte: !setToSelected
+      vue: !setToSelected,
+      react: !setToSelected,
+      svelte: !setToSelected,
     };
   }
 
@@ -332,13 +338,13 @@ function addOrRemoveReactHotLoader(
   let setReactHotLoader;
 
   if (
-    (affectedFeature === "Vue" || affectedFeature === "Svelte") &&
+    (affectedFeature === 'vue' || affectedFeature === 'svelte') &&
     setToSelected
   ) {
     setReactHotLoader = false;
   }
 
-  if (affectedFeature === "React") {
+  if (affectedFeature === 'react') {
     if (setToSelected) {
       setReactHotLoader = true;
     } else {
@@ -350,7 +356,7 @@ function addOrRemoveReactHotLoader(
   }
   return {
     ...allFeatureStates,
-    "React hot loader": setReactHotLoader
+    'react-hot-loader': setReactHotLoader,
   };
 }
 
@@ -361,18 +367,18 @@ function stopIfNotBabelOrTypescriptForReact(
 ) {
   // if user tries to deselect babel, and react is set and typescript is not set, then don't allow it
   if (
-    affectedFeature === "Babel" &&
+    affectedFeature === 'babel' &&
     !setToSelected &&
-    allFeatureStates.React &&
-    !allFeatureStates.Typescript
+    allFeatureStates.react &&
+    !allFeatureStates.typescript
   ) {
     return true;
   }
   if (
-    affectedFeature === "Typescript" &&
+    affectedFeature === 'typescript' &&
     !setToSelected &&
-    allFeatureStates.React &&
-    !allFeatureStates.Babel
+    allFeatureStates.react &&
+    !allFeatureStates.babel
   ) {
     return true;
   }
@@ -385,11 +391,11 @@ function removeEslintIfTypscript(
   affectedFeature,
   setToSelected
 ) {
-  const toTypescript = affectedFeature === "Typescript" && setToSelected;
+  const toTypescript = affectedFeature === 'typescript' && setToSelected;
 
   return {
     ...allFeatureStates,
-    ESLint: toTypescript ? false : allFeatureStates.ESLint
+    eslint: toTypescript ? false : allFeatureStates.eslint,
   };
 }
 
@@ -399,12 +405,14 @@ function removeMaterialIfNotReact(
   setToSelected
 ) {
   if (
-    (affectedFeature === "Vue" || affectedFeature === "Svelte" || affectedFeature === "No library") &&
+    (affectedFeature === 'vue' ||
+      affectedFeature === 'svelte' ||
+      affectedFeature === 'no-library') &&
     setToSelected
   ) {
     return {
       ...allFeatureStates,
-      "Material-UI": false
+      'material-ui': false,
     };
   }
   return allFeatureStates;
@@ -417,14 +425,14 @@ function addPostCSSandCSSIfTailwindCSS(
 ) {
   return {
     ...allFeatureStates,
-    CSS:
-      affectedFeature === "Tailwind CSS" && setToSelected
+    css:
+      affectedFeature === 'tailwind-css' && setToSelected
         ? true
-        : allFeatureStates.CSS,
-    PostCSS:
-      affectedFeature === "Tailwind CSS" && setToSelected
+        : allFeatureStates.css,
+    postcss:
+      affectedFeature === 'tailwind-css' && setToSelected
         ? true
-        : allFeatureStates.PostCSS
+        : allFeatureStates.postcss,
   };
 }
 
@@ -432,17 +440,17 @@ function addXIfY(x, y) {
   return function(allFeatureStates, affectedFeature, setToSelected) {
     return {
       ...allFeatureStates,
-      [x]: affectedFeature === y && setToSelected ? true : allFeatureStates[x]
+      [x]: affectedFeature === y && setToSelected ? true : allFeatureStates[x],
     };
   };
 }
 
 function addBabelIfReact(allFeatureStates, affectedFeature, setToSelected) {
-  const forceBabel = allFeatureStates.React && !allFeatureStates.Typescript;
+  const forceBabel = allFeatureStates.react && !allFeatureStates.Typescript;
 
   return {
     ...allFeatureStates,
-    Babel: forceBabel || allFeatureStates.Babel
+    babel: forceBabel || allFeatureStates.babel,
   };
 }
 
@@ -459,23 +467,20 @@ export const selectionRules = {
     enforceMainLibrary,
     addBabelIfReact,
     addOrRemoveReactHotLoader,
-    addCssIfPostCSS: addXIfY(`CSS`, `PostCSS`),
+    addCssIfPostCSS: addXIfY(`css`, `postcss`),
     addCopyPluginIfCleanPlugin: addXIfY(
-      "CopyWebpackPlugin",
-      "CleanWebpackPlugin"
+      'copywebpackplugin',
+      'cleanwebpackplugin'
     ),
     removeEslintIfTypscript,
     addHTMLWebpackPluginIfCodeSplitVendors: addXIfY(
-      "HTML webpack plugin",
-      "Code split vendors"
+      'html-webpack-plugin',
+      'code-split-vendors'
     ),
     addPostCSSandCSSIfTailwindCSS,
     removeMaterialIfNotReact,
-    addCSSifBootstrap: addXIfY(
-      "CSS",
-      "Bootstrap"
-    )
-  }
+    addCSSifBootstrap: addXIfY('css', 'bootstrap'),
+  },
 };
 // eslint-disable-next-line
 const logFeaturCelickToGa = (feature, selected) => {
