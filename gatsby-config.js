@@ -1,9 +1,8 @@
 module.exports = {
   siteMetadata: {
-    title:
-      'Create App - your tool for starting a new webpack or Parcel project',
+    title: 'createapp - webpack/Parcel/Snowpack boilerplate generator',
     description:
-      'Create your own webpack config or Parcel app with React, Vue, Typescript, CSS, SCSS, SASS, less, codesplitting, etc, with this online tool',
+      'Frontend app generator. Create webpack config, Parcel app or Snowpack with React, Vue, Svelte, Typescript, babel, css modules, CSS, SASS, less, code splitting',
   },
   plugins: [
     'gatsby-plugin-react-helmet',
