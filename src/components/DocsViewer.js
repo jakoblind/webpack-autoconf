@@ -244,6 +244,17 @@ const webpackDocsMap = {
         possible to cache the dependencies longer than if everything were in one
         bundle.
       </p>
+      <h3>Learn more</h3>
+      <ul>
+        <li>
+          <a
+            href="https://blog.jakoblind.no/code-split-vendors-with-webpack-for-faster-load-speed/"
+            target="new"
+          >
+            Code split vendors with webpack for faster load speed
+          </a>
+        </li>
+      </ul>
     </div>
   ),
   cleanwebpackplugin: (
