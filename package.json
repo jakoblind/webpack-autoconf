@@ -33,6 +33,7 @@
     "gatsby-plugin-drip-widget": "^1.0.2",
     "gatsby-plugin-google-analytics": "^2.2.4",
     "gatsby-plugin-manifest": "^2.3.5",
+    "gatsby-plugin-netlify": "^3.14.0",
     "gatsby-plugin-offline": "^3.1.4",
     "gatsby-plugin-react-helmet": "^3.2.4",
     "gatsby-transformer-remark": "^2.7.3",
