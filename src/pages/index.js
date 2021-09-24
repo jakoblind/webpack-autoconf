@@ -349,10 +349,30 @@ const buildConfigConfig = {
 };
 
 const initialState = (selectedTab = 'webpack', initFeatures) => {
-  // convert here
+  const initFeaturesArray = _.chain(initFeatures)
+    .split('--')
+    .reject(_.isEmpty)
+    .value();
+  const validFeatures = _.keys(
+    buildConfigConfig[selectedTab].featureConfig.features
+  );
+  const initFeaturesArrayOnlyApplicable = _.intersection(
+    initFeaturesArray,
+    validFeatures
+  );
+
+  const initFeaturesOnlyApplicableObject = _.chain(
+    initFeaturesArrayOnlyApplicable
+  )
+    .map(f => ({ [f]: true }))
+    .reduce(_.merge)
+    .value();
+
   return {
     selectedTab,
-    selectedFeatures: { 'no-library': true },
+    selectedFeatures: _.isEmpty(initFeaturesOnlyApplicableObject)
+      ? { 'no-library': true }
+      : initFeaturesOnlyApplicableObject,
   };
 };
 
@@ -468,21 +488,18 @@ function Configurator(props) {
     reducer,
     initialState(props.selectedTab, props.urlId)
   );
-  useEffect(
-    something => {
-      const selectedArray = getSelectedArray(state.selectedFeatures);
-      const mainLibs = _.remove(selectedArray, i =>
-        _.includes(['react', 'Vue', 'svelte', 'no-library'], i)
-      );
-      const path = _.kebabCase(_.sortBy(selectedArray));
-      const newUrl = `/${state.selectedTab}/${_.kebabCase(mainLibs)}${
-        path ? '-' + path : ''
-      }`;
-      //trackPageView(newUrl);
-      window.history.replaceState(null, null, newUrl);
-    },
-    [state.selectedFeatures]
-  );
+  useEffect(() => {
+    const selectedArray = getSelectedArray(state.selectedFeatures);
+    const mainLibs = _.remove(selectedArray, i =>
+      _.includes(['react', 'vue', 'svelte', 'no-library'], i)
+    );
+    const path = _.join(_.sortBy(selectedArray), '--');
+    const newUrl = `/${state.selectedTab}/${_.kebabCase(mainLibs)}${
+      path ? '--' + path : ''
+    }`;
+    //trackPageView(newUrl);
+    window.history.replaceState(null, null, newUrl);
+  }, [state.selectedFeatures]);
   const [hoverFeature, setHoverFeature] = useState('');
   const [projectName, setProjectName] = useState('empty-project');
 
@@ -580,7 +597,8 @@ function Configurator(props) {
         setSelected={selectedTab => {
           const newUrl = `/${selectedTab}`;
           trackPageView(newUrl);
-          window.history.replaceState(null, null, newUrl);
+          // url is changed when state changes so no need to do it here
+          //window.history.replaceState(null, null, newUrl);
 
           dispatch({ type: 'setSelectedTab', selectedTab });
         }}
@@ -721,7 +739,10 @@ export class App extends React.Component {
             path={`${selectedTab}/:urlId`}
             selectedTab={selectedTab}
           />
-          <Configurator path={`${selectedTab}`} selectedTab={selectedTab} />
+          <Configurator
+            path={`${selectedTab || '/'}`}
+            selectedTab={selectedTab}
+          />
         </Router>
       </Layout>
     );
