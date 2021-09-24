@@ -2,7 +2,7 @@ import _ from 'lodash';
 import projectGenerator from './project-generator';
 
 test('React project', () => {
-  const project = projectGenerator(['React']);
+  const project = projectGenerator(['react']);
 
   expect(project['.babelrc']).not.toBeNull();
   expect(_.size(project)).toBe(7);
