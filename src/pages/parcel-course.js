@@ -1,5 +1,5 @@
 import React from 'react';
-import styles from '../styles.module.css';
+import * as styles from '../styles.module.css';
 import Layout from '../components/layout';
 import { GenericSignupForm } from '../components/SignupForms';
 

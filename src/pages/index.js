@@ -1,6 +1,12 @@
 import React, { useState, useReducer, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import _ from 'lodash';
+import flow from 'lodash/fp/flow';
+const map = require('lodash/fp/map').convert({ cap: false });
+import reject from 'lodash/fp/reject';
+const reduce = require('lodash/fp/reduce').convert({ cap: false });
+import merge from 'lodash/fp/merge';
+import split from 'lodash/fp/split';
 import { Link } from 'gatsby';
 import jszip from 'jszip';
 import Joyride from 'react-joyride';
@@ -8,10 +14,17 @@ import { saveAs } from 'file-saver';
 import validate from 'validate-npm-package-name';
 import { Router } from '@reach/router';
 import Modal from '../components/Modal';
-import styles from '../styles.module.css';
+import * as styles from '../styles.module.css';
 import npmVersionPromise from '../fetch-npm-version';
 
 import { CourseSignupForm } from '../components/SignupForms';
+import webpackImg from '../../images/webpack-logo.png';
+import webpackImgColor from '../../images/webpack-logo-color.png';
+import parcelImg from '../../images/parcel-logo.png';
+import parcelImgColor from '../../images/parcel-logo-color.png';
+import snowpackImg from '../../images/snowpack-logo.png';
+import snowpackImgColor from '../../images/snowpack-logo-color.png';
+import zipImg from '../../images/zip.svg';
 
 import {
   webpackConfig,
@@ -145,9 +158,7 @@ function Tabs({ selected, setSelected }) {
         >
           <img
             alt="webpack logo"
-            src={require(`../../images/webpack-logo${
-              selected === 'webpack' ? '-color' : ''
-            }.png`)}
+            src={selected === 'webpack' ? webpackImgColor : webpackImg}
           />
           <div>webpack</div>
         </button>
@@ -160,9 +171,7 @@ function Tabs({ selected, setSelected }) {
         >
           <img
             alt="parcel logo"
-            src={require(`../../images/parcel-logo${
-              selected === 'parcel' ? '-color' : ''
-            }.png`)}
+            src={selected === 'parcel' ? parcelImgColor : parcelImg}
           />
           <div>Parcel</div>
         </button>
@@ -176,9 +185,7 @@ function Tabs({ selected, setSelected }) {
         >
           <img
             alt="snowpack logo"
-            src={require(`../../images/snowpack-logo${
-              selected === 'snowpack' ? '-color' : ''
-            }.png`)}
+            src={selected === 'snowpack' ? snowpackImgColor : snowpackImg}
           />
           <div>Snowpack</div>
         </button>
@@ -219,11 +226,7 @@ function DownloadButton({ url, onClick, filename, buildTool }) {
         }}
         id="download"
       >
-        <img
-          alt="zip file"
-          className={styles.icon}
-          src={require('../../images/zip.svg')}
-        />
+        <img alt="zip file" className={styles.icon} src={zipImg} />
         <span>Download project</span>
       </button>
       <Modal
@@ -349,10 +352,8 @@ const buildConfigConfig = {
 };
 
 const initialState = (selectedTab = 'webpack', initFeatures) => {
-  const initFeaturesArray = _.chain(initFeatures)
-    .split('--')
-    .reject(_.isEmpty)
-    .value();
+  const initFeaturesArray = flow(split('--'), reject(_.isEmpty))(initFeatures);
+
   const validFeatures = _.keys(
     buildConfigConfig[selectedTab].featureConfig.features
   );
@@ -361,12 +362,10 @@ const initialState = (selectedTab = 'webpack', initFeatures) => {
     validFeatures
   );
 
-  const initFeaturesOnlyApplicableObject = _.chain(
-    initFeaturesArrayOnlyApplicable
-  )
-    .map(f => ({ [f]: true }))
-    .reduce(_.merge)
-    .value();
+  const initFeaturesOnlyApplicableObject = flow(
+    map(f => ({ [f]: true })),
+    reduce(merge, [])
+  )(initFeaturesArrayOnlyApplicable);
 
   return {
     selectedTab,
@@ -477,10 +476,12 @@ function trackHelpClick(eventAction) {
 }
 
 function getSelectedArray(o) {
-  return _.chain(o)
-    .map((v, k) => (v ? k : null))
-    .reject(_.isNull)
-    .value();
+  return flow(
+    map((v, k) => {
+      return v ? k : null;
+    }),
+    reject(_.isEmpty)
+  )(o);
 }
 
 function Configurator(props) {

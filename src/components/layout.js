@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import Helmet from 'react-helmet';
 import { StaticQuery, graphql, Link } from 'gatsby';
 
-import styles from '../styles.module.css';
+import * as styles from '../styles.module.css';
 import './layout.css';
 
 const Header = () => {

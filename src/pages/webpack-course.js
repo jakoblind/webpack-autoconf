@@ -1,7 +1,9 @@
 import React from 'react';
-import styles from '../styles.module.css';
+import * as styles from '../styles.module.css';
 import Layout from '../components/layout';
 import { CourseSignupForm } from '../components/SignupForms';
+import feedbackImg from '../../images/email-course-feedback1.png';
+import emailCourseImg from '../../images/email-course.jpg';
 
 export default () => {
   return (
@@ -33,7 +35,7 @@ export default () => {
         <img
           alt="webpack email course feedback"
           className={styles.shadow}
-          src={require('../../images/email-course-feedback1.png')}
+          src={feedbackImg}
         />
         <p>
           <i>
@@ -58,10 +60,7 @@ export default () => {
               <li>Lesson 5: Styling with webpack</li>
             </ul>
           </div>
-          <img
-            alt="webpack email course"
-            src={require('../../images/email-course.jpg')}
-          />
+          <img alt="webpack email course" src={emailCourseImg} />
         </div>
         <p>
           Level up your frontend skills and become a more solid, all-round

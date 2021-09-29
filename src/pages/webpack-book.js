@@ -1,8 +1,12 @@
 import React from 'react';
-import styles from '../styles.module.css';
+import * as styles from '../styles.module.css';
 import { SampleChapterSignupForm, withHidden } from '../components/SignupForms';
 import Layout from '../components/layout';
 // import Countdown from 'react-countdown-now'
+import webpackConfigImg from '../../images/webpack-config.png';
+import dependencyImg from '../../images/dependency-hell-overlay.png';
+import speedImg from '../../images/100-on-speed.png';
+import profileImg from '../../images/profile-pic.jpg';
 
 export const HiddenSampleChapterSignupForm = withHidden(
   SampleChapterSignupForm,
@@ -62,7 +66,7 @@ export default () => {
         </p>
         <img
           alt="webpack config wtf"
-          src={require('../../images/webpack-config.png')}
+          src={webpackConfigImg}
           width="100%"
           style={{ textAlgin: 'center' }}
         />
@@ -100,7 +104,7 @@ export default () => {
           To create a simple hello world app with webpack, you have to install
           LOTs of dependencies. First, there's <code>webpack</code>, which is
           fine. You already expected to install that. But then you
-           <i>also</i> have to install all of the following:
+          <i>also</i> have to install all of the following:
         </p>
         <ul>
           <li>
@@ -124,7 +128,7 @@ export default () => {
         </ul>
         <img
           alt="webpack config wtf"
-          src={require('../../images/dependency-hell-overlay.png')}
+          src={dependencyImg}
           width="100%"
           style={{ textAlgin: 'center' }}
         />
@@ -160,7 +164,7 @@ export default () => {
         </p>
         <img
           alt="100 web app speed"
-          src={require('../../images/100-on-speed.png')}
+          src={speedImg}
           width="100%"
           style={{ textAlgin: 'center' }}
         />
@@ -322,11 +326,7 @@ export default () => {
           guarantee if you are not happy with the book.
         </p>
         <h3>About the author</h3>
-        <img
-          alt="Jakob Lind"
-          className={styles.authorImage}
-          src={require('../../images/profile-pic.jpg')}
-        />
+        <img alt="Jakob Lind" className={styles.authorImage} src={profileImg} />
         Hi, I'm Jakob Lind (
         <a href="https://twitter.com/karljakoblind">@karljakoblind</a>
         ). I'm a full stack developer and independent consultant. I have 10

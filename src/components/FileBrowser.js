@@ -3,11 +3,16 @@ import PropTypes from 'prop-types';
 import _ from 'lodash';
 import Prism from 'prismjs';
 import memoizee from 'memoizee';
+import flow from 'lodash/fp/flow';
+const map = require('lodash/fp/map').convert({ cap: false });
+import groupBy from 'lodash/fp/groupBy';
+import mapValues from 'lodash/fp/mapValues';
+import reduce from 'lodash/fp/reduce';
 
 import { getDiffAsLineNumber } from '../configurator/Diff';
 import { getNpmDependencies } from '../configurator/configurator';
 import npmVersionPromise from '../fetch-npm-version';
-import styles from '../styles.module.css';
+import * as styles from '../styles.module.css';
 
 require('./prism-customization/styles.css');
 require('./prism-customization/LineHighlight');
@@ -18,12 +23,12 @@ require('./prism-customization/LineHighlight');
 
 const FileList = ({ files, selectedFile, onSelectFile }) => {
   // sort with folders on top, and in alphabetic order
-  const sortedFiles = _.chain(files)
-    .map(({ highlightedFile }, filename) => ({ filename, highlightedFile }))
-    .groupBy(({ filename }) => _.includes(filename, '/'))
-    .mapValues(group => _.sortBy(group, 'filename'))
-    .reduce((all, value, key) => _.concat(value, all), [])
-    .value();
+  const sortedFiles = flow(
+    map(({ highlightedFile }, filename) => ({ filename, highlightedFile })),
+    groupBy(({ filename }) => _.includes(filename, '/')),
+    mapValues(group => _.sortBy(group, 'filename')),
+    reduce((all, value, key) => _.concat(value, all), [])
+  )(files);
 
   // group adjacent files that are highlighted
   // so that we can highlight  more than one

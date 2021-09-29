@@ -1,5 +1,10 @@
-import jsStringify from 'javascript-stringify';
+import { stringify as jsStringify } from 'javascript-stringify';
 import _ from 'lodash';
+import flow from 'lodash/fp/flow';
+import reduce from 'lodash/fp/reduce';
+import uniq from 'lodash/fp/uniq';
+import concat from 'lodash/fp/concat';
+import get from 'lodash/fp/get';
 
 import {
   baseWebpack,
@@ -63,29 +68,27 @@ function createConfig(configItems, configType, features) {
 }
 
 export function getNpmDependencies(featureConfig, configItems) {
-  const dependencies = _.chain(configItems)
-    .reduce(
-      (acc, currentValue) =>
-        _.concat(
-          acc,
-          featureConfig.features[currentValue].dependencies(configItems)
-        ),
-      _.get(featureConfig, 'base.dependencies', [])
-    )
-    .uniq()
-    .value();
+  const dependencies = flow(
+    reduce((acc, currentValue) => {
+      return concat(
+        acc,
+        featureConfig.features[currentValue].dependencies(configItems)
+      );
+    }, get(featureConfig, 'base.dependencies') || []),
+    uniq()
+  )(configItems);
 
-  const devDependencies = _.chain(configItems)
-    .reduce(
+  const devDependencies = flow(
+    reduce(
       (acc, currentValue) =>
         _.concat(
           acc,
           featureConfig.features[currentValue].devDependencies(configItems)
         ),
       _.get(featureConfig, 'base.devDependencies', [])
-    )
-    .uniq()
-    .value();
+    ),
+    uniq()
+  )(configItems);
 
   return {
     dependencies,

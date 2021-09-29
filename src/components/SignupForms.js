@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import styles from '../styles.module.css';
+import * as styles from '../styles.module.css';
 
 /* DRIP form. currently not in use. */
 // eslint-disable-next-line

@@ -2,9 +2,13 @@ import React, { useState, useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
 import _ from 'lodash';
 import Modal from '../Modal';
-import styles from '../../styles.module.css';
+import * as styles from '../../styles.module.css';
 import { docsMap } from '../DocsViewer';
 import { gaSendEvent } from '../../googleAnalytics';
+import flow from 'lodash/fp/flow';
+import groupBy from 'lodash/fp/groupBy';
+const mapValues = require('lodash/fp/mapValues').convert({ cap: false });
+const map = require('lodash/fp/map').convert({ cap: false });
 
 function trackHelpIconClick(eventAction) {
   gaSendEvent({
@@ -253,10 +257,10 @@ export default class Features extends React.Component {
       selectedBuildTool,
     } = this.props;
 
-    const groupedFeatures = _.chain(features)
-      .mapValues((v, k, o) => ({ ...v, feature: k }))
-      .groupBy('group')
-      .value();
+    const groupedFeatures = flow(
+      mapValues((v, k, o) => ({ ...v, feature: k })),
+      groupBy('group')
+    )(features);
 
     return (
       <div className={styles.features} id="features">
