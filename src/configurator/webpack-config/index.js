@@ -428,7 +428,9 @@ export default (() => {
       webpack: (webpackConfig) => ({
         ...webpackConfig,
         devServer: {
-          contentBase: './dist',
+          static: {
+            directory: './dist',
+          },
         },
       }),
       packageJson: {
