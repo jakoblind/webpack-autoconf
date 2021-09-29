@@ -46,8 +46,8 @@ export default (() => {
     react: {
       name: 'React',
       group: 'Main library',
-      dependencies: configItems => ['react', 'react-dom'],
-      devDependencies: configItems => {
+      dependencies: (configItems) => ['react', 'react-dom'],
+      devDependencies: (configItems) => {
         const isTypescript = _.includes(configItems, 'typescript');
         const isBabel = _.includes(configItems, 'babel');
         return _.concat(
@@ -56,7 +56,7 @@ export default (() => {
           isBabel ? ['@babel/preset-react'] : []
         );
       },
-      files: configItems => {
+      files: (configItems) => {
         const isTypescript = _.includes(configItems, 'typescript');
         const isHotReact = _.includes(configItems, 'react-hot-loader');
         const extraImports = getStyleImports(configItems);
@@ -77,7 +77,7 @@ export default (() => {
     svelte: {
       name: 'Svelte',
       group: 'Main library',
-      devDependencies: configItems => [
+      devDependencies: (configItems) => [
         'svelte',
         'svelte-loader',
         'svelte-preprocess',
@@ -101,7 +101,7 @@ export default (() => {
         );
         return webpackConfigWithRule;
       },
-      files: configItems => {
+      files: (configItems) => {
         const styling = getStyleTags(configItems);
         return {
           'src/index.js': svelteIndexJs(),
@@ -118,7 +118,7 @@ export default (() => {
       webpackImports: [
         "const VueLoaderPlugin = require('vue-loader/lib/plugin');",
       ],
-      webpack: webpackConfig => {
+      webpack: (webpackConfig) => {
         const webpackConfigWithRule = assignModuleRuleAndResolver(
           webpackConfig,
           [
@@ -131,15 +131,15 @@ export default (() => {
         );
         return addPlugin(webpackConfigWithRule, 'CODE:new VueLoaderPlugin()');
       },
-      devDependencies: configItems => [
+      devDependencies: (configItems) => [
         'vue-loader',
         'vue-template-compiler',
         'babel-loader',
         '@babel/core',
         '@babel/preset-env',
       ],
-      dependencies: configItems => ['vue'],
-      files: configItems => {
+      dependencies: (configItems) => ['vue'],
+      files: (configItems) => {
         const isTypescript = _.includes(configItems, 'typescript');
         const indexFilename = isTypescript ? 'src/index.ts' : 'src/index.js';
         const styling = getStyleTags(configItems);
@@ -156,17 +156,17 @@ export default (() => {
     bootstrap: {
       name: 'Bootstrap',
       group: 'UI library',
-      dependencies: configItems => ['bootstrap', 'jquery', 'popper.js'],
+      dependencies: (configItems) => ['bootstrap', 'jquery', 'popper.js'],
     },
     'tailwind-css': {
       name: 'Taliwind CSS',
       group: 'UI library',
-      dependencies: configItems => ['tailwindcss'],
+      dependencies: (configItems) => ['tailwindcss'],
     },
     'material-ui': {
       name: 'Material UI',
       group: 'UI library',
-      dependencies: configItems => [
+      dependencies: (configItems) => [
         '@material-ui/core',
         'fontsource-roboto',
         '@material-ui/icons',
@@ -189,7 +189,7 @@ export default (() => {
           _.includes(configItems, 'react') ? '@babel/preset-react' : []
         ),
       }),
-      devDependencies: configItems => {
+      devDependencies: (configItems) => {
         const devDepList = ['babel-loader', '@babel/core', '@babel/preset-env'];
         if (_.includes(configItems, 'react-hot-loader'))
           devDepList.push('@hot-loader/react-dom');
@@ -214,7 +214,7 @@ export default (() => {
     typescript: {
       name: 'Typescript',
       group: 'Transpiler',
-      devDependencies: configItems => {
+      devDependencies: (configItems) => {
         const devDepList = ['typescript', 'ts-loader'];
         if (_.includes(configItems, 'react-hot-loader'))
           devDepList.push('@hot-loader/react-dom');
@@ -244,7 +244,7 @@ export default (() => {
           aliases
         );
       },
-      files: configItems => {
+      files: (configItems) => {
         const isReact = _.includes(configItems, 'react');
         const isVue = _.includes(configItems, 'vue');
 
@@ -269,8 +269,8 @@ export default (() => {
     svg: {
       name: 'SVG',
       group: 'Image',
-      devDependencies: configItems => ['file-loader'],
-      webpack: webpackConfig =>
+      devDependencies: (configItems) => ['file-loader'],
+      webpack: (webpackConfig) =>
         addModuleRule(webpackConfig, {
           test: /\.svg$/,
           use: 'file-loader',
@@ -279,8 +279,8 @@ export default (() => {
     png: {
       name: 'PNG',
       group: 'Image',
-      devDependencies: configItems => ['url-loader'],
-      webpack: webpackConfig =>
+      devDependencies: (configItems) => ['url-loader'],
+      webpack: (webpackConfig) =>
         addModuleRule(webpackConfig, {
           test: /\.png$/,
           use: [
@@ -296,8 +296,8 @@ export default (() => {
     moment: {
       name: 'moment',
       group: 'Utilities',
-      dependencies: configItems => ['moment'],
-      webpack: webpackConfig =>
+      dependencies: (configItems) => ['moment'],
+      webpack: (webpackConfig) =>
         addPlugin(
           webpackConfig,
           'CODE:new webpack.ContextReplacementPlugin(/moment[\\/\\\\]locale$/, /en/)'
@@ -307,12 +307,12 @@ export default (() => {
       name: 'lodash',
       group: 'Utilities',
       babel: _.identity,
-      dependencies: configItems => ['lodash'],
-      devDependencies: configItems => ['lodash-webpack-plugin'],
+      dependencies: (configItems) => ['lodash'],
+      devDependencies: (configItems) => ['lodash-webpack-plugin'],
       webpackImports: [
         "const LodashModuleReplacementPlugin = require('lodash-webpack-plugin');",
       ],
-      webpack: webpackConfig =>
+      webpack: (webpackConfig) =>
         addPlugin(webpackConfig, 'CODE:new LodashModuleReplacementPlugin'),
     },
     eslint: lintingRules.eslint,
@@ -320,7 +320,7 @@ export default (() => {
     'code-split-vendors': {
       name: 'Code split vendors',
       group: 'Optimization',
-      webpack: webpackConfig => {
+      webpack: (webpackConfig) => {
         const withFilename = _.setWith(
           webpackConfig,
           'output.filename',
@@ -349,11 +349,11 @@ export default (() => {
     'html-webpack-plugin': {
       name: 'HTML webpack plugin',
       group: 'Webpack plugins',
-      devDependencies: configItems => ['html-webpack-plugin'],
+      devDependencies: (configItems) => ['html-webpack-plugin'],
       webpackImports: [
         "const HtmlWebpackPlugin = require('html-webpack-plugin');",
       ],
-      webpack: webpackConfig => {
+      webpack: (webpackConfig) => {
         return addPlugin(
           webpackConfig,
           `CODE:new HtmlWebpackPlugin({
@@ -366,11 +366,11 @@ export default (() => {
     'webpack-bundle-analyzer': {
       name: 'Webpack Bundle Analyzer',
       group: 'Webpack plugins',
-      devDependencies: configItems => ['webpack-bundle-analyzer'],
+      devDependencies: (configItems) => ['webpack-bundle-analyzer'],
       webpackImports: [
         "const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;",
       ],
-      webpack: webpackConfig => {
+      webpack: (webpackConfig) => {
         return addPlugin(
           webpackConfig,
           `CODE:new BundleAnalyzerPlugin({
@@ -383,20 +383,20 @@ export default (() => {
     minicssextractplugin: {
       name: 'MiniCssExtractPlugin',
       group: 'Webpack plugins',
-      devDependencies: configItems => ['mini-css-extract-plugin'],
+      devDependencies: (configItems) => ['mini-css-extract-plugin'],
       webpackImports: [
         "const MiniCssExtractPlugin = require('mini-css-extract-plugin');",
       ],
-      webpack: webpackConfig => {
+      webpack: (webpackConfig) => {
         return addPlugin(webpackConfig, `CODE:new MiniCssExtractPlugin()`);
       },
     },
     copywebpackplugin: {
       name: 'CopyWebpackPlugin',
       group: 'Webpack plugins',
-      devDependencies: configItems => ['copy-webpack-plugin'],
+      devDependencies: (configItems) => ['copy-webpack-plugin'],
       webpackImports: ["const CopyPlugin = require('copy-webpack-plugin');"],
-      webpack: webpackConfig => {
+      webpack: (webpackConfig) => {
         return addPlugin(
           webpackConfig,
           `CODE:new CopyPlugin({
@@ -408,11 +408,11 @@ export default (() => {
     cleanwebpackplugin: {
       name: 'CleanWebpackPlugin',
       group: 'Webpack plugins',
-      devDependencies: configItems => ['clean-webpack-plugin'],
+      devDependencies: (configItems) => ['clean-webpack-plugin'],
       webpackImports: [
         `const { CleanWebpackPlugin } = require('clean-webpack-plugin');`,
       ],
-      webpack: webpackConfig => {
+      webpack: (webpackConfig) => {
         return addPlugin(webpackConfig, `CODE:new CleanWebpackPlugin()`);
       },
     },
@@ -423,9 +423,9 @@ export default (() => {
         if (!_.includes(configItems, 'babel')) return {}; // We don't need babelrc for typescript
         return { ...babelConfig, plugins: ['react-hot-loader/babel'] };
       },
-      dependencies: configItems => ['react-hot-loader'],
-      devDependencies: configItems => ['webpack-dev-server'],
-      webpack: webpackConfig => ({
+      dependencies: (configItems) => ['react-hot-loader'],
+      devDependencies: (configItems) => ['webpack-dev-server'],
+      webpack: (webpackConfig) => ({
         ...webpackConfig,
         devServer: {
           contentBase: './dist',
@@ -438,7 +438,7 @@ export default (() => {
       },
     },
   };
-  const featuresNoNulls = _.mapValues(features, item => {
+  const featuresNoNulls = _.mapValues(features, (item) => {
     if (!item.babel) {
       item.babel = _.identity;
     }
@@ -473,7 +473,7 @@ export default (() => {
         },
       },
       devDependencies: ['webpack', 'webpack-cli'],
-      files: configItems => {
+      files: (configItems) => {
         const isTypescript = _.includes(configItems, 'typescript');
         const isCopyPlugin = _.includes(configItems, 'copywebpackplugin');
 
