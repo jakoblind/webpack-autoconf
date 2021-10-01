@@ -22,7 +22,7 @@ function FeedbackForm({ feature, children }) {
   const [email, setEmail] = useState('');
   const [comment, setComment] = useState('');
   const [isSent, setIsSent] = useState(false);
-  const submit = e => {
+  const submit = (e) => {
     e.preventDefault();
     fetch(`https://hooks.zapier.com/hooks/catch/1239764/oo73gyz/`, {
       method: 'POST',
@@ -38,7 +38,7 @@ function FeedbackForm({ feature, children }) {
         <textarea
           name="comment"
           value={comment}
-          onChange={e => setComment(e.target.value)}
+          onChange={(e) => setComment(e.target.value)}
         />
         <br />
         <label htmlFor="email">Email (optional)</label> <br />
@@ -47,7 +47,7 @@ function FeedbackForm({ feature, children }) {
           name="email"
           value={email}
           placeholder="will only be used to send you a reply"
-          onChange={e => setEmail(e.target.value)}
+          onChange={(e) => setEmail(e.target.value)}
         />{' '}
         <br />
         <button type="submit" onClick={submit}>
@@ -342,7 +342,9 @@ function addOrRemoveReactHotLoader(
   let setReactHotLoader;
 
   if (
-    (affectedFeature === 'vue' || affectedFeature === 'svelte') &&
+    (affectedFeature === 'vue' ||
+      affectedFeature === 'svelte' ||
+      affectedFeature === 'no-library') &&
     setToSelected
   ) {
     setReactHotLoader = false;
@@ -441,7 +443,7 @@ function addPostCSSandCSSIfTailwindCSS(
 }
 
 function addXIfY(x, y) {
-  return function(allFeatureStates, affectedFeature, setToSelected) {
+  return function (allFeatureStates, affectedFeature, setToSelected) {
     return {
       ...allFeatureStates,
       [x]: affectedFeature === y && setToSelected ? true : allFeatureStates[x],
