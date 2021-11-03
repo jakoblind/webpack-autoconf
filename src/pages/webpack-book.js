@@ -45,7 +45,7 @@ const Discount = () => (
 
 export default () => {
   return (
-    <Layout title="Learn webpack">
+    <Layout title="Learn webpack" hideHeader={true}>
       <div className={styles.webpackConfigContainer}>
         <h1 className={styles.large}>Learn webpack</h1>
         <h2 className={styles.subtitle}>A handbook for webpack beginners</h2>

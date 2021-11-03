@@ -17,7 +17,7 @@ const Header = () => {
   );
 };
 
-const Layout = ({ children, title, metaDescription }) => (
+const Layout = ({ children, title, metaDescription, hideHeader }) => (
   <StaticQuery
     query={graphql`
       query SiteTitleQuery {
@@ -29,7 +29,7 @@ const Layout = ({ children, title, metaDescription }) => (
         }
       }
     `}
-    render={data => (
+    render={(data) => (
       <>
         <Helmet
           title={title || data.site.siteMetadata.title}
@@ -54,7 +54,7 @@ const Layout = ({ children, title, metaDescription }) => (
           <html lang="en" />
         </Helmet>
 
-        <Header />
+        {hideHeader ? null : <Header />}
         <div>{children}</div>
         <footer>
           <br />
