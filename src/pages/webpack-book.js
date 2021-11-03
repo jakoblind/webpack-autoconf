@@ -57,7 +57,7 @@ export default () => {
             <HiddenSampleChapterSignupForm />
           </p>
         </div>
-        <h3>Configuring webpack is painful</h3>
+        <h3>Setting up an app with webpack shouldn't be this complex</h3>
         <p style={{ marginBottom: 0 }}>
           The heart of webpack — the <code>webpack.config.js</code> — has a
           syntax that probably makes sense for hackers on the internals of
@@ -76,13 +76,13 @@ export default () => {
           does that all even mean in the context of a build setup for a web app?
         </p>
         <p>
-          You stumble around with webpack, browsing the docs, tutorials, blogs
-          and YouTube to trying to make sense of it all. And you're really
-          struggling.
+          You stumble around with webpack, browsing the docs, tutorials, blogs,
+          YouTube and Stack Overflow to try to make sense of it all. And you're
+          really struggling.
         </p>
         <p>
           <i>
-            The problem is that every tutorial has their creative way of
+            The problem is that every tutorial has its own creative way of
             configuring webpack.
           </i>
         </p>
@@ -99,94 +99,49 @@ export default () => {
           anything with webpack. This makes it very difficult to know what is
           the best practice way to configure it.
         </p>
-        <h3>Javascript fatigue before hello world</h3>
         <p>
-          To create a simple hello world app with webpack, you have to install
-          LOTs of dependencies. First, there's <code>webpack</code>, which is
-          fine. You already expected to install that. But then you
-          <i>also</i> have to install all of the following:
-        </p>
-        <ul>
-          <li>
-            <code>webpack-cli</code>
-          </li>
-          <li>
-            <code>webpack-dev-server</code>
-          </li>
-          <li>
-            <code>babel-loader</code>
-          </li>
-          <li>
-            <code>@babel/preset-react</code>
-          </li>
-          <li>
-            <code>@babel/core</code>
-          </li>
-          <li>
-            <code>@babel/preset-env</code>
-          </li>
-        </ul>
-        <img
-          alt="webpack config wtf"
-          src={dependencyImg}
-          width="100%"
-          style={{ textAlgin: 'center' }}
-        />
-        <p>
-          These dependencies are only used for building the app — you haven’t
-          even coded a single feature yet.
-        </p>
-        <p>
-          You very quickly lose control over whats going on. You desperately
-          start googling “babel”, “babel-preset-env” to learn what it’s doing
-          but you just get overwhelmed with all the information.{' '}
-        </p>
-        <p>
-          And you’re worried that all these dependencies will bloat your bundle.
-          But it’s difficult to know because you don’t know what’s going on
-          under-the-hood in webpack. Maybe webpack is smart and doesn’t put
-          these in the output bundle? You are not sure.
-        </p>
-        <p>
-          You want to be an awesome frontend dev knowing modern tools - but is
-          it really supposed to be this hard just to get started coding a simple
-          webpack app in 2019?
+          You know that webpack is a really powerful tool, it's just so time
+          consuming to figure out how it works.
         </p>
         <h3>
-          What if you had one source of truth for learning how to build fast,
-          well-organized and scalable webpack apps?
+          When you know webpack on a deeper level a new world in frontend
+          ecosystem opens up for you:
         </h3>
         <p>
-          What if you could use webpack to make fast apps by using the latest
-          and greatest tech — without shipping too much to the end-user. Your
-          apps would get quicker load speed and better overall performance. You
-          would use powerful techniques like minifying and uglifying like a pro.
-        </p>
-        <img
-          alt="100 web app speed"
-          src={speedImg}
-          width="100%"
-          style={{ textAlgin: 'center' }}
-        />
-        <p>
-          Your app would be well-organized. The code would be easier to maintain
-          even for big and complex code bases. And your build setup would be
-          highly customizable and ready for the enterprise. You would never
-          paint yourself into a corner.
+          <b>
+            ➡️ You'll know how create-react-app, Gatsby, Next.js, etc work under
+            the hood
+          </b>
         </p>
         <p>
-          You would take full benefit of ES6 in your codebase. It would be a
-          true future-focused app using the latest tech to make you as
-          productive and up-to-date as possible. You could create apps with Vue,
-          React, or whatever you want. The possibilities are endless.
+          Make sense of the ejected create-react-app webpack config. Know how to
+          extend it and adjust it to your needs. Extend Gatsby in gatby-node.js
+          with ease.
         </p>
         <p>
-          But most importantly you would understand frontend development much
-          deeper. You would grow your skills and become a better dev. You would
-          be a well-rounded developer in a really good position to get the job
-          you want.
+          <b>
+            ➡️ Master the webpack config. Know how it works without having to
+            google everything
+          </b>
         </p>
-        <h3>Learn webpack is a complete handbook for webpack beginners</h3>
+        <p>
+          And in those cases when you get stuck, you know what to google for and
+          interpret the result. You are able to not only read and understand the
+          webpack docs but you'll enjoy it.
+        </p>
+        <p>
+          <b>
+            ➡️ Become a better dev to get better chances of getting the job you
+            want
+          </b>
+        </p>
+        <p>
+          Stand out from other devs on the team and be the go-to guy when it
+          comes to setting up new frontend apps. Raise your overall knowledge
+          level. Apply for senior engineers roles that expect deep webpack
+          knowledge.
+        </p>
+        <h3>Learn webpack from the ground up with "Learn webpack ebook"</h3>
         <p>
           Learn webpack is an e-book designed to make the process of learning
           webpack as quick and smooth as possible for you.
@@ -218,7 +173,7 @@ export default () => {
         <p>
           This is a <i>complete</i> and <i>up-to-date</i> book for webpack
           beginners. It covers the latest stable version of webpack which is
-          version 4.
+          version 5.
         </p>
         <h3>What does the book cover?</h3>
         <p>
@@ -311,7 +266,7 @@ export default () => {
             <td>
               <b>Webpack version:</b>
             </td>
-            <td>4</td>
+            <td>5 (latest webpack version)</td>
           </tr>
         </table>
         <p />
@@ -334,12 +289,9 @@ export default () => {
         hobby since I was a kid.
         <br />
         <br />
-        I’m a strong believer in sharing and helping others. I have a blog and I
-        work on open source projects.
-        <br />
-        <br />
-        The best way to learn how to program is to do hard and deep work. There
-        are no shortcuts.
+        I’ve written hundreds of webpack apps - everything from small
+        experimentation apps to large-scale production apps serving millions of
+        users.
         <br />
         <br />
         <div style={{ clear: 'both' }} />
@@ -351,7 +303,7 @@ export default () => {
         <p>
           <b>Q: What version of webpack do the book use?</b>
         </p>
-        <p>A: It's written for the latest version of webpack: webpack 4. </p>
+        <p>A: It's written for the latest version of webpack: webpack 5. </p>
         <p>
           <b>
             Q: But soon there will be a new version of webpack and this book
