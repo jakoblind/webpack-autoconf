@@ -43,8 +43,6 @@ import { trackPageView, gaSendEvent } from '../googleAnalytics';
 import { StepByStepArea } from './StepByStepArea';
 import { Tabs } from './Tabs';
 
-//Modal.setAppElement('#___gatsby');
-
 export function Configurator({ selectedStartTab, urlId }) {
   const [selectedTab, setSelectedTab] = useState(selectedStartTab);
   const [selectedFeatures, setSelectedFeatures] = useState(

@@ -9,6 +9,8 @@ import { CourseSignupForm } from './SignupForms';
 
 import zipImg from '../../images/zip.svg';
 
+Modal.setAppElement('#__next');
+
 export function DownloadButton({ url, onClick, filename, buildTool }) {
   const [modalOpen, setModalOpen] = useState(false);
   const customStyles = {
@@ -43,7 +45,7 @@ export function DownloadButton({ url, onClick, filename, buildTool }) {
         isOpen={modalOpen}
         onRequestClose={() => setModalOpen(false)}
         style={customStyles}
-        contentLabel="Example Modal"
+        contentLabel="Download"
       >
         <h2 style={{ width: '90%', float: 'left' }}>Downloading...</h2>
         <button
