@@ -32,11 +32,6 @@ const Layout = ({ children, title, metaDescription, hideHeader }) => (
         name="google-site-verification"
         content="UOjML_KiDFBKebmkb_ybTNcwQaEq3DIW-f7EIzCFo08"
       />
-      <link
-        href="https://fonts.googleapis.com/css2?family=Inconsolata"
-        rel="stylesheet"
-      />
-
       <script async defer src="https://buttons.github.io/buttons.js" />
       <script
         async
@@ -91,10 +86,6 @@ const Layout = ({ children, title, metaDescription, hideHeader }) => (
         <li>
           <a href="https://twitter.com/karljakoblind">Twitter</a>
         </li>
-        <li>
-          <a href="https://spectrum.chat/createapp-dev">Community</a>
-        </li>
-
         <li>
           <a href="https://github.com/jakoblind">GitHub</a>
         </li>
