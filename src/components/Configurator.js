@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import _ from 'lodash';
 import flow from 'lodash/fp/flow';
@@ -50,6 +50,10 @@ export function Configurator({ selectedStartTab, urlId }) {
   const [selectedFeatures, setSelectedFeatures] = useState(
     getSelectedFeatures(selectedTab, urlId)
   );
+
+  useEffect(() => {
+    setSelectedFeatures(getSelectedFeatures(selectedTab, urlId));
+  }, [urlId, selectedTab]);
 
   const [hoverFeature, setHoverFeature] = useState('');
   const [projectName, setProjectName] = useState('empty-project');
