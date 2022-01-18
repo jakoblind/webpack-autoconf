@@ -8,7 +8,7 @@ const App = () => {
   const { slug } = router.query;
   return (
     <Layout>
-      <Configurator urlId={slug && slug[0]} selectedTab={'snowpack'} />
+      <Configurator urlId={slug && slug[0]} selectedStartTab={'snowpack'} />
     </Layout>
   );
 };

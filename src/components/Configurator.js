@@ -186,7 +186,11 @@ function getFeaturesForNewTab(newTab, selectedFeatures) {
   };
 }
 
-function setSelectedFeatures(selectedTab, selectedFeatures, feature) {
+function getNewFeaturesForNewSelectedFeature(
+  selectedTab,
+  selectedFeatures,
+  feature
+) {
   const setToSelected = !selectedFeatures[feature];
   // logFeatureClickToGa(feature, setToSelected)
 
@@ -247,8 +251,11 @@ function getSelectedArray(o) {
   )(o);
 }
 
-export function Configurator({ selectedTab, urlId }) {
-  const selectedFeatures = getSelectedFeatures(selectedTab, urlId);
+export function Configurator({ selectedStartTab, urlId }) {
+  const [selectedTab, setSelectedTab] = useState(selectedStartTab);
+  const [selectedFeatures, setSelectedFeatures] = useState(
+    getSelectedFeatures(selectedTab, urlId)
+  );
   const router = useRouter();
 
   const [hoverFeature, setHoverFeature] = useState('');
@@ -355,11 +362,11 @@ export function Configurator({ selectedTab, urlId }) {
               newSelectedTab,
               selectedFeatures
             );
+            setSelectedFeatures(newSelectedFeatures);
+            setSelectedTab(newSelectedTab);
+
             const newUrl = toUrl(newSelectedTab, newSelectedFeatures);
-            router.push(newUrl, undefined, {
-              scroll: false,
-              shallow: true,
-            });
+            window.history.replaceState(null, null, newUrl);
           }}
         />
 
@@ -369,16 +376,14 @@ export function Configurator({ selectedTab, urlId }) {
               features={showFeatures}
               selected={selectedFeatures}
               setSelected={(feature) => {
-                const newSelectedFeatures = setSelectedFeatures(
+                const newSelectedFeatures = getNewFeaturesForNewSelectedFeature(
                   selectedTab,
                   selectedFeatures,
                   feature
                 );
-                const newSlug = toUrl(selectedTab, newSelectedFeatures);
-                router.push(newSlug, undefined, {
-                  scroll: false,
-                  shallow: true,
-                });
+                setSelectedFeatures(newSelectedFeatures);
+                const newUrl = toUrl(selectedTab, newSelectedFeatures);
+                window.history.replaceState(null, null, newUrl);
               }}
               onMouseEnter={onMouseEnterFeature}
               onMouseLeave={onMouseLeaveFeature}
