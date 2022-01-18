@@ -14,7 +14,6 @@ import validate from 'validate-npm-package-name';
 import * as styles from '../styles.module.css';
 import npmVersionPromise from '../fetch-npm-version';
 import Link from 'next/link';
-import { useRouter } from 'next/router';
 import { DownloadButton } from './DownloadButton';
 import {
   webpackConfig,
@@ -46,217 +45,11 @@ import { Tabs } from './Tabs';
 
 //Modal.setAppElement('#___gatsby');
 
-const selectionRules = {
-  stopSelectFunctions: [
-    allSelectionRules.stopSelectFunctions.stopIfNotBabelOrTypescriptForReact,
-  ],
-  additionalSelectFunctions: [
-    allSelectionRules.additionalSelectFunctions.enforceMainLibrary,
-    allSelectionRules.additionalSelectFunctions.addBabelIfReact,
-    allSelectionRules.additionalSelectFunctions.addOrRemoveReactHotLoader,
-    allSelectionRules.additionalSelectFunctions.addCssIfPostCSS,
-    allSelectionRules.additionalSelectFunctions.addCopyPluginIfCleanPlugin,
-    allSelectionRules.additionalSelectFunctions.removeEslintIfTypscript,
-    allSelectionRules.additionalSelectFunctions
-      .addHTMLWebpackPluginIfCodeSplitVendors,
-    allSelectionRules.additionalSelectFunctions.addPostCSSandCSSIfTailwindCSS,
-    allSelectionRules.additionalSelectFunctions.removeMaterialIfNotReact,
-    allSelectionRules.additionalSelectFunctions.addCSSifBootstrap,
-  ],
-};
-
-const parcelSelectionRules = {
-  stopSelectFunctions: [
-    allSelectionRules.stopSelectFunctions.stopIfNotBabelOrTypescriptForReact,
-  ],
-  additionalSelectFunctions: [
-    allSelectionRules.additionalSelectFunctions.enforceMainLibrary,
-    allSelectionRules.additionalSelectFunctions.addBabelIfReact,
-    allSelectionRules.additionalSelectFunctions.addPostCSSandCSSIfTailwindCSS,
-    allSelectionRules.additionalSelectFunctions.removeMaterialIfNotReact,
-  ],
-};
-
-const snowpackSelectionRules = {
-  stopSelectFunctions: [],
-  additionalSelectFunctions: [
-    allSelectionRules.additionalSelectFunctions.enforceMainLibrary,
-    allSelectionRules.additionalSelectFunctions.addCssIfPostCSS,
-    allSelectionRules.additionalSelectFunctions.addPostCSSandCSSIfTailwindCSS,
-  ],
-};
-
-const buildConfigConfig = {
-  webpack: {
-    featureConfig: webpackConfig,
-    projectGeneratorFunction: generateProject,
-    defaultFile: 'webpack.config.js',
-    selectionRules,
-    extraElements: [
-      <br key={1} />,
-      <Link key={2} href="/webpack-course">
-        <a>Free webpack course</a>
-      </Link>,
-      <br key={3} />,
-    ],
-  },
-  parcel: {
-    featureConfig: parcelConfig,
-    projectGeneratorFunction: generateParcelProject,
-    defaultFile: 'package.json',
-    selectionRules: parcelSelectionRules,
-    extraElements: [
-      <br key={1} />,
-      <Link key={2} href="/parcel-course">
-        <a>Free parcel course</a>
-      </Link>,
-      <br key={3} />,
-    ],
-  },
-  snowpack: {
-    featureConfig: snowpackConfig,
-    projectGeneratorFunction: generateSnowpackProject,
-    defaultFile: 'package.json',
-    selectionRules: snowpackSelectionRules,
-    extraElements: [],
-  },
-};
-
-const getSelectedFeatures = (selectedTab = 'webpack', initFeatures) => {
-  const initFeaturesArray = flow(split('--'), reject(_.isEmpty))(initFeatures);
-
-  const validFeatures = _.keys(
-    buildConfigConfig[selectedTab].featureConfig.features
-  );
-  const initFeaturesArrayOnlyApplicable = _.intersection(
-    initFeaturesArray,
-    validFeatures
-  );
-
-  const initFeaturesOnlyApplicableObject = flow(
-    map((f) => ({ [f]: true })),
-    reduce(merge, [])
-  )(initFeaturesArrayOnlyApplicable);
-
-  return _.isEmpty(initFeaturesOnlyApplicableObject)
-    ? { 'no-library': true }
-    : initFeaturesOnlyApplicableObject;
-};
-
-function getFeaturesForNewTab(newTab, selectedFeatures) {
-  const newAllPossibleFeatures = _.keys(
-    buildConfigConfig[newTab].featureConfig.features
-  );
-
-  let shouldSetNoLibrary = selectedFeatures['no-library'];
-
-  if (newTab === 'parcel' && selectedFeatures.svelte) {
-    // Svelte was selected when switching to the parcel tab
-    // which isn't supported so we set the flag shouldSetNoLibrary to
-    // true so main library switches to "no-library"
-    shouldSetNoLibrary = true;
-  }
-
-  const filteredFeatures = _.mapValues(
-    selectedFeatures,
-    (selected, feature) =>
-      _.includes(newAllPossibleFeatures, feature) && selected
-  );
-
-  let shouldSetBabel = filteredFeatures.babel;
-  if ((newTab === 'webpack' || newTab === 'parcel') && selectedFeatures.react) {
-    // React was selected when switching to the webpack tab
-    // if we come from snowpack, then babel is not set.
-    // it must be set if React should work properly
-    shouldSetBabel = true;
-  }
-
-  if (
-    newTab === 'snowpack' &&
-    (selectedFeatures.vue || selectedFeatures.svelte)
-  ) {
-    // if we select snowpack, and vue was selected, then we must select no lib
-    shouldSetNoLibrary = true;
-  }
-
-  return {
-    ...filteredFeatures,
-    babel: shouldSetBabel,
-    'no-library': shouldSetNoLibrary,
-  };
-}
-
-function getNewFeaturesForNewSelectedFeature(
-  selectedTab,
-  selectedFeatures,
-  feature
-) {
-  const setToSelected = !selectedFeatures[feature];
-  // logFeatureClickToGa(feature, setToSelected)
-
-  const selectedFeature = {
-    ...selectedFeatures,
-    [feature]: setToSelected,
-  };
-
-  if (
-    _.some(
-      _.map(
-        buildConfigConfig[selectedTab].selectionRules.stopSelectFunctions,
-        (fn) => fn(selectedFeature, feature, setToSelected)
-      )
-    )
-  ) {
-    return state;
-  }
-
-  return _.reduce(
-    buildConfigConfig[selectedTab].selectionRules.additionalSelectFunctions,
-    (currentSelectionMap, fn) =>
-      fn(currentSelectionMap, feature, setToSelected),
-    selectedFeature
-  );
-}
-
-function toUrl(selectedTab, selectedFeatures) {
-  const selectedArray = getSelectedArray(selectedFeatures);
-  const mainLibs = _.remove(selectedArray, (i) =>
-    _.includes(['react', 'vue', 'svelte', 'no-library'], i)
-  );
-  const path = _.join(_.sortBy(selectedArray), '--');
-  return `/${selectedTab}/${_.kebabCase(mainLibs)}${path ? '--' + path : ''}`;
-}
-
-function trackDownload(selectedTab, selectedFeatures) {
-  gaSendEvent({
-    eventCategory: 'Project download',
-    eventAction: selectedTab,
-    eventLabel: JSON.stringify(selectedFeatures),
-  });
-}
-
-function trackHelpClick(eventAction) {
-  gaSendEvent({
-    eventCategory: 'Help clicked',
-    eventAction,
-  });
-}
-
-function getSelectedArray(o) {
-  return flow(
-    map((v, k) => {
-      return v ? k : null;
-    }),
-    reject(_.isEmpty)
-  )(o);
-}
-
 export function Configurator({ selectedStartTab, urlId }) {
   const [selectedTab, setSelectedTab] = useState(selectedStartTab);
   const [selectedFeatures, setSelectedFeatures] = useState(
     getSelectedFeatures(selectedTab, urlId)
   );
-  const router = useRouter();
 
   const [hoverFeature, setHoverFeature] = useState('');
   const [projectName, setProjectName] = useState('empty-project');
@@ -488,3 +281,208 @@ Configurator.defaultProps = {
   selectedTab: 'webpack',
   urlId: '',
 };
+
+const selectionRules = {
+  stopSelectFunctions: [
+    allSelectionRules.stopSelectFunctions.stopIfNotBabelOrTypescriptForReact,
+  ],
+  additionalSelectFunctions: [
+    allSelectionRules.additionalSelectFunctions.enforceMainLibrary,
+    allSelectionRules.additionalSelectFunctions.addBabelIfReact,
+    allSelectionRules.additionalSelectFunctions.addOrRemoveReactHotLoader,
+    allSelectionRules.additionalSelectFunctions.addCssIfPostCSS,
+    allSelectionRules.additionalSelectFunctions.addCopyPluginIfCleanPlugin,
+    allSelectionRules.additionalSelectFunctions.removeEslintIfTypscript,
+    allSelectionRules.additionalSelectFunctions
+      .addHTMLWebpackPluginIfCodeSplitVendors,
+    allSelectionRules.additionalSelectFunctions.addPostCSSandCSSIfTailwindCSS,
+    allSelectionRules.additionalSelectFunctions.removeMaterialIfNotReact,
+    allSelectionRules.additionalSelectFunctions.addCSSifBootstrap,
+  ],
+};
+
+const parcelSelectionRules = {
+  stopSelectFunctions: [
+    allSelectionRules.stopSelectFunctions.stopIfNotBabelOrTypescriptForReact,
+  ],
+  additionalSelectFunctions: [
+    allSelectionRules.additionalSelectFunctions.enforceMainLibrary,
+    allSelectionRules.additionalSelectFunctions.addBabelIfReact,
+    allSelectionRules.additionalSelectFunctions.addPostCSSandCSSIfTailwindCSS,
+    allSelectionRules.additionalSelectFunctions.removeMaterialIfNotReact,
+  ],
+};
+
+const snowpackSelectionRules = {
+  stopSelectFunctions: [],
+  additionalSelectFunctions: [
+    allSelectionRules.additionalSelectFunctions.enforceMainLibrary,
+    allSelectionRules.additionalSelectFunctions.addCssIfPostCSS,
+    allSelectionRules.additionalSelectFunctions.addPostCSSandCSSIfTailwindCSS,
+  ],
+};
+
+const buildConfigConfig = {
+  webpack: {
+    featureConfig: webpackConfig,
+    projectGeneratorFunction: generateProject,
+    defaultFile: 'webpack.config.js',
+    selectionRules,
+    extraElements: [
+      <br key={1} />,
+      <Link key={2} href="/webpack-course">
+        <a>Free webpack course</a>
+      </Link>,
+      <br key={3} />,
+    ],
+  },
+  parcel: {
+    featureConfig: parcelConfig,
+    projectGeneratorFunction: generateParcelProject,
+    defaultFile: 'package.json',
+    selectionRules: parcelSelectionRules,
+    extraElements: [
+      <br key={1} />,
+      <Link key={2} href="/parcel-course">
+        <a>Free parcel course</a>
+      </Link>,
+      <br key={3} />,
+    ],
+  },
+  snowpack: {
+    featureConfig: snowpackConfig,
+    projectGeneratorFunction: generateSnowpackProject,
+    defaultFile: 'package.json',
+    selectionRules: snowpackSelectionRules,
+    extraElements: [],
+  },
+};
+
+const getSelectedFeatures = (selectedTab = 'webpack', initFeatures) => {
+  const initFeaturesArray = flow(split('--'), reject(_.isEmpty))(initFeatures);
+
+  const validFeatures = _.keys(
+    buildConfigConfig[selectedTab].featureConfig.features
+  );
+  const initFeaturesArrayOnlyApplicable = _.intersection(
+    initFeaturesArray,
+    validFeatures
+  );
+
+  const initFeaturesOnlyApplicableObject = flow(
+    map((f) => ({ [f]: true })),
+    reduce(merge, [])
+  )(initFeaturesArrayOnlyApplicable);
+
+  return _.isEmpty(initFeaturesOnlyApplicableObject)
+    ? { 'no-library': true }
+    : initFeaturesOnlyApplicableObject;
+};
+
+function getFeaturesForNewTab(newTab, selectedFeatures) {
+  const newAllPossibleFeatures = _.keys(
+    buildConfigConfig[newTab].featureConfig.features
+  );
+
+  let shouldSetNoLibrary = selectedFeatures['no-library'];
+
+  if (newTab === 'parcel' && selectedFeatures.svelte) {
+    // Svelte was selected when switching to the parcel tab
+    // which isn't supported so we set the flag shouldSetNoLibrary to
+    // true so main library switches to "no-library"
+    shouldSetNoLibrary = true;
+  }
+
+  const filteredFeatures = _.mapValues(
+    selectedFeatures,
+    (selected, feature) =>
+      _.includes(newAllPossibleFeatures, feature) && selected
+  );
+
+  let shouldSetBabel = filteredFeatures.babel;
+  if ((newTab === 'webpack' || newTab === 'parcel') && selectedFeatures.react) {
+    // React was selected when switching to the webpack tab
+    // if we come from snowpack, then babel is not set.
+    // it must be set if React should work properly
+    shouldSetBabel = true;
+  }
+
+  if (
+    newTab === 'snowpack' &&
+    (selectedFeatures.vue || selectedFeatures.svelte)
+  ) {
+    // if we select snowpack, and vue was selected, then we must select no lib
+    shouldSetNoLibrary = true;
+  }
+
+  return {
+    ...filteredFeatures,
+    babel: shouldSetBabel,
+    'no-library': shouldSetNoLibrary,
+  };
+}
+
+function getNewFeaturesForNewSelectedFeature(
+  selectedTab,
+  selectedFeatures,
+  feature
+) {
+  const setToSelected = !selectedFeatures[feature];
+  // logFeatureClickToGa(feature, setToSelected)
+
+  const selectedFeature = {
+    ...selectedFeatures,
+    [feature]: setToSelected,
+  };
+
+  if (
+    _.some(
+      _.map(
+        buildConfigConfig[selectedTab].selectionRules.stopSelectFunctions,
+        (fn) => fn(selectedFeature, feature, setToSelected)
+      )
+    )
+  ) {
+    return state;
+  }
+
+  return _.reduce(
+    buildConfigConfig[selectedTab].selectionRules.additionalSelectFunctions,
+    (currentSelectionMap, fn) =>
+      fn(currentSelectionMap, feature, setToSelected),
+    selectedFeature
+  );
+}
+
+function toUrl(selectedTab, selectedFeatures) {
+  const selectedArray = getSelectedArray(selectedFeatures);
+  const mainLibs = _.remove(selectedArray, (i) =>
+    _.includes(['react', 'vue', 'svelte', 'no-library'], i)
+  );
+  const path = _.join(_.sortBy(selectedArray), '--');
+  return `/${selectedTab}/${_.kebabCase(mainLibs)}${path ? '--' + path : ''}`;
+}
+
+function trackDownload(selectedTab, selectedFeatures) {
+  gaSendEvent({
+    eventCategory: 'Project download',
+    eventAction: selectedTab,
+    eventLabel: JSON.stringify(selectedFeatures),
+  });
+}
+
+function trackHelpClick(eventAction) {
+  gaSendEvent({
+    eventCategory: 'Help clicked',
+    eventAction,
+  });
+}
+
+function getSelectedArray(o) {
+  return flow(
+    map((v, k) => {
+      return v ? k : null;
+    }),
+    reject(_.isEmpty)
+  )(o);
+}
