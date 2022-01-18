@@ -4,7 +4,6 @@ import Head from 'next/head';
 import Link from 'next/link';
 
 import * as styles from '../styles.module.css';
-
 import config from '../config';
 
 const Header = () => {
@@ -28,18 +27,6 @@ const Layout = ({ children, title, metaDescription, hideHeader }) => (
         name="description"
         content={metaDescription || config.description}
       />
-      <meta
-        name="google-site-verification"
-        content="UOjML_KiDFBKebmkb_ybTNcwQaEq3DIW-f7EIzCFo08"
-      />
-      <script async defer src="https://buttons.github.io/buttons.js" />
-      <script
-        async
-        defer
-        type="text/javascript"
-        src="https://transactions.sendowl.com/assets/sendowl.js"
-      />
-      <html lang="en" />
     </Head>
 
     {hideHeader ? null : <Header />}
