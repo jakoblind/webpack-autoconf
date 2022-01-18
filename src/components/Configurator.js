@@ -24,7 +24,6 @@ import {
 
 import {
   createBabelConfig,
-  getNpmDependencies,
   getDefaultProjectName,
 } from '../configurator/configurator';
 
@@ -123,7 +122,7 @@ const buildConfigConfig = {
   },
 };
 
-const initialState = (selectedTab = 'webpack', initFeatures) => {
+const getSelectedFeatures = (selectedTab = 'webpack', initFeatures) => {
   const initFeaturesArray = flow(split('--'), reject(_.isEmpty))(initFeatures);
 
   const validFeatures = _.keys(
@@ -139,12 +138,9 @@ const initialState = (selectedTab = 'webpack', initFeatures) => {
     reduce(merge, [])
   )(initFeaturesArrayOnlyApplicable);
 
-  return {
-    selectedTab,
-    selectedFeatures: _.isEmpty(initFeaturesOnlyApplicableObject)
-      ? { 'no-library': true }
-      : initFeaturesOnlyApplicableObject,
-  };
+  return _.isEmpty(initFeaturesOnlyApplicableObject)
+    ? { 'no-library': true }
+    : initFeaturesOnlyApplicableObject;
 };
 
 function getFeaturesForNewTab(newTab, selectedFeatures) {
@@ -252,7 +248,7 @@ function getSelectedArray(o) {
 }
 
 export function Configurator({ selectedTab, urlId }) {
-  const selectedFeatures = initialState(selectedTab, urlId).selectedFeatures;
+  const selectedFeatures = getSelectedFeatures(selectedTab, urlId);
   const router = useRouter();
 
   const [hoverFeature, setHoverFeature] = useState('');
