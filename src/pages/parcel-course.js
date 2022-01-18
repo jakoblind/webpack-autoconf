@@ -3,7 +3,7 @@ import * as styles from '../styles.module.css';
 import Layout from '../components/layout';
 import { GenericSignupForm } from '../components/SignupForms';
 
-export default () => {
+export default function ParcelCourse() {
   return (
     <Layout title="Free Parcel course">
       <div className={styles.webpackConfigContainer}>
@@ -18,4 +18,4 @@ export default () => {
       </div>
     </Layout>
   );
-};
+}

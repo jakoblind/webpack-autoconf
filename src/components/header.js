@@ -1,19 +1,19 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Link } from 'gatsby';
+import Link from 'next/link';
 
 const Header = ({ siteTitle }) => (
   <div>
     <div>
       <h1 style={{ margin: 0 }}>
         <Link
-          to="/"
+          href="/"
           style={{
             color: 'white',
             textDecoration: 'none',
           }}
         >
-          {siteTitle}
+          <a>{siteTitle}</a>
         </Link>
       </h1>
     </div>

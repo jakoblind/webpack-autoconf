@@ -4,8 +4,9 @@ import Layout from '../components/layout';
 import { CourseSignupForm } from '../components/SignupForms';
 import feedbackImg from '../../images/email-course-feedback1.png';
 import emailCourseImg from '../../images/email-course.jpg';
+import Image from 'next/image';
 
-export default () => {
+export default function WebpackCourse() {
   return (
     <Layout title="Free webpack course">
       <div className={styles.webpackConfigContainer}>
@@ -32,7 +33,7 @@ export default () => {
           webpack (version 4).
         </p>
         <h3>Here is what people are saying about the course: </h3>
-        <img
+        <Image
           alt="webpack email course feedback"
           className={styles.shadow}
           src={feedbackImg}
@@ -60,7 +61,7 @@ export default () => {
               <li>Lesson 5: Styling with webpack</li>
             </ul>
           </div>
-          <img alt="webpack email course" src={emailCourseImg} />
+          <Image alt="webpack email course" src={emailCourseImg} />
         </div>
         <p>
           Level up your frontend skills and become a more solid, all-round
@@ -72,4 +73,4 @@ export default () => {
       </div>
     </Layout>
   );
-};
+}

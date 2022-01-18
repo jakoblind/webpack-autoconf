@@ -9,17 +9,64 @@ body {
   font-size: large;
 }
 h1 {
-    font-weight: 300;
+  font-weight: 300;
+}
+
+textarea {
+  padding: 11px;
+  font-size: medium;
+  border-radius: 5px;
+  margin: 10px;
+  width: 90%;
 }
 
 .header-link {
-    text-decoration: none;
-    color: black;
+  text-decoration: none;
+  color: black;
+}
+
+a {
+  color: #0078a0;
+}
+
+h2 {
+  margin-top: 0px;
+}
+
+textarea {
+  width: 90%;
+}
+
+h3 {
+  clear: both;
+}
+
+ol {
+  counter-reset: li;
+}
+ol li {
+  position: relative;
+  list-style: none;
+  margin-bottom: 20px;
+}
+ol li:before {
+  content: counter(li);
+  counter-increment: li;
+  position: absolute;
+  top: -11px;
+  left: -2em;
+  width: 2em;
+  margin-right: 8px;
+  padding: 4px;
+  font-size: 27px;
+  font-weight: bold;
+  font-family: 'Helvetica Neue', Arial, sans-serif;
+  text-align: center;
 }
 
 .main-subheader {
-    font-size: 1em;
-    font-weight: 400;
+  font-size: 1em;
+  font-weight: 400;
 }
 
 h2 {

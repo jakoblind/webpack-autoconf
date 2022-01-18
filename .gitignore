@@ -1,7 +1,6 @@
 node_modules
 dist
-public
-.cache
 /.idea
+.next
 generated
 bin

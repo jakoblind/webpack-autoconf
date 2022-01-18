@@ -1,8 +1,3 @@
-.icon {
-  margin-right: 7px;
-  width: 20px;
-}
-
 .logo {
   color: black;
 }
@@ -15,7 +10,6 @@
 }
 .authorImage {
   float: left;
-  width: 150px;
   margin-right: 20px;
 }
 
@@ -62,26 +56,26 @@
 .miniBook b {
   text-align: center;
 }
-.code-box {
+.codeBox {
   font-size: 14px;
   height: 600px;
   width: 80%;
   overflow: auto;
-  background-color: #0c0c0c;
+  background-color: #1d1f21;
   border-radius: 0px 10px 10px 0px;
   cursor: text;
 }
-.code-box .code-box-pre {
-  background: #0c0c0c;
+.codeBox .codeBoxPre {
+  background: #1d1f21;
   overflow: visible;
   margin: 0px;
   padding: 1em;
 }
 
-.file-browser {
+.fileBrowser {
   font-size: 15px;
   color: #969696;
-  background-color: #212121;
+  background-color: #2e3134;
   margin-top: 14px;
   margin-bottom: 50px;
   display: flex;
@@ -107,7 +101,7 @@
 }
 
 .files li.selected {
-  background: #0c0c0c;
+  background: #1d1f21;
   color: #e8e8e8;
 }
 
@@ -133,7 +127,7 @@
 }
 
 @media only screen and (min-height: 1000px) {
-  .code-box {
+  .codeBox {
     height: 850px;
   }
 }
@@ -170,6 +164,7 @@
 }
 .btn span {
   margin-top: 3px;
+  margin-left: 7px;
   display: block;
   float: left;
 }
@@ -188,7 +183,7 @@
   text-align: center;
   padding-bottom: 10px;
 }
-.webpack-config-container {
+.webpackConfigContainer {
   max-width: 700px;
   margin: 0 auto;
   padding: 30px 20px;
@@ -198,14 +193,14 @@
   padding-bottom: 60px;
 }
 
-.signup-button-area {
+.signupButtonArea {
   margin-bottom: 15px;
 }
-.signup-form-area {
+.signupFormArea {
   width: 95%;
   text-align: center;
 }
-.signup-field {
+.signupField {
   padding: 11px;
   font-size: medium;
   border-radius: 5px;
@@ -241,10 +236,6 @@
   text-align: center;
 }
 
-h2 {
-  margin-top: 0px;
-}
-
 .mainContainer {
   display: flex;
   justify-content: center;
@@ -273,8 +264,8 @@ h2 {
   border-radius: 5px;
   margin: 10px;
 }
-.feedbackForm input,
-textarea {
+
+.feedbackForm input {
   padding: 11px;
   font-size: medium;
   border-radius: 5px;
@@ -317,7 +308,7 @@ textarea {
 }
 
 .tabs {
-  max-width: 375px;
+  max-width: 385px;
   margin: 0 auto;
 }
 
@@ -334,15 +325,16 @@ textarea {
   float: left;
   height: 42px;
 }
-.tabs img {
+.tabImage {
   float: left;
   width: 40px;
+  margin-top: -1px;
   margin-left: 0px;
   margin-right: 5px;
 }
-.tabs div {
+.tabsDescription {
   float: left;
-  margin-top: 11px;
+  margin-top: 10px;
 }
 
 .tabs button:hover {
@@ -355,30 +347,14 @@ textarea {
 .parcelTab {
   width: 115px;
 }
-.parcelTab img {
-  height: 35px;
-  width: 35px;
-}
-.parcelTab div {
-  margin-top: 9px;
-}
+
 .webpackTab {
   width: 135px;
 }
-.webpackTab img {
-  margin-left: -2px;
-}
 .snowpackTab {
-  width: 125px;
+  width: 135px;
 }
-.snowpackTab div {
-  margin-top: 4px;
-}
-.snowpackTab img {
-  margin-top: 2px;
-  height: 22px;
-  width: 22px;
-}
+
 @media only screen and (max-width: 666px) {
   .tabsContainer {
     width: auto;
@@ -451,22 +427,20 @@ input.projectNameInput {
   background: white;
 }
 
-.left-section,
-.right-section {
+.leftSection,
+.rightSection {
   padding: 0px 10px 10px 10px;
   width: 100%;
 }
 @media screen and (max-width: 40em) {
-  .right-section,
-  .left-section {
+  .rightSection,
+  .leftSection {
     display: block;
     width: 100%;
     padding: 0;
   }
 }
-a {
-  color: #0078a0;
-}
+
 .link {
   background: none !important;
   color: inherit;
@@ -479,10 +453,6 @@ a {
   color: #0078a0;
 }
 
-textarea {
-  width: 90%;
-}
-
 .features {
   background: white;
   max-width: 520px;
@@ -490,12 +460,12 @@ textarea {
   margin-bottom: 15px;
 }
 
-.feature-group {
+.featureGroup {
   display: flex;
   flex-direction: column;
 }
 
-.feature-group-name {
+.featureGroupName {
   font-size: 18px;
   text-align: left;
   min-width: 105px;
@@ -503,7 +473,7 @@ textarea {
   cursor: pointer;
 }
 
-.feature-container {
+.featureContainer {
   font-size: medium;
   display: block;
   width: 160px;
@@ -536,7 +506,7 @@ textarea {
   border-color: black;
 }
 /* Hide the browser's default checkbox */
-.feature-container input {
+.featureContainer input {
   position: absolute;
   opacity: 0;
   cursor: pointer;
@@ -554,32 +524,32 @@ textarea {
 }
 
 /* On mouse-over, add a grey background color */
-.feature-container:hover input ~ .checkmark,
-.feature-container:hover input ~ .radio {
+.featureContainer:hover input ~ .checkmark,
+.featureContainer:hover input ~ .radio {
   background-color: #969696;
 }
 
 /* When the checkbox is checked, add a blue background */
-.feature-container input:checked ~ .checkmark,
-.feature-container input:checked ~ .radio {
+.featureContainer input:checked ~ .checkmark,
+.featureContainer input:checked ~ .radio {
   background-color: #0c0c0c;
 }
 
 /* Create the checkmark/indicator (hidden when not checked) */
 .checkmark:after {
-  content: "";
+  content: '';
   position: absolute;
   display: none;
 }
 
 /* Show the checkmark when checked */
-.feature-container input:checked ~ .checkmark:after,
-.feature-container input:checked ~ .radio::after {
+.featureContainer input:checked ~ .checkmark:after,
+.featureContainer input:checked ~ .radio::after {
   display: block;
 }
 
 /* Style the checkmark/indicator */
-.feature-container .checkmark:after {
+.featureContainer .checkmark:after {
   left: 4px;
   top: 1px;
   width: 6px;
@@ -604,8 +574,8 @@ textarea {
 }
 
 /* Style the checkmark/indicator */
-.feature-container .radio::after {
-  content: "";
+.featureContainer .radio::after {
+  content: '';
   position: absolute;
   display: none;
   left: 4px;
@@ -636,32 +606,6 @@ textarea {
 .dropFileText {
   max-width: 500px;
   margin: 0 auto;
-  text-align: center;
-}
-h3 {
-  clear: both;
-}
-
-ol {
-  counter-reset: li;
-}
-ol li {
-  position: relative;
-  list-style: none;
-  margin-bottom: 20px;
-}
-ol li:before {
-  content: counter(li);
-  counter-increment: li;
-  position: absolute;
-  top: -11px;
-  left: -2em;
-  width: 2em;
-  margin-right: 8px;
-  padding: 4px;
-  font-size: 27px;
-  font-weight: bold;
-  font-family: "Helvetica Neue", Arial, sans-serif;
   text-align: center;
 }
 

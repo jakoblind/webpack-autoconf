@@ -75,7 +75,7 @@ function ConvertKitSignupForm({
     }
   };
 
-  const onSubmit = e => {
+  const onSubmit = (e) => {
     if (email === '' || name === '') {
       setErrorMessage('Please no empty inputs');
       e.preventDefault();
@@ -93,7 +93,7 @@ function ConvertKitSignupForm({
         <div>
           <input
             className={styles.signupField}
-            onChange={e => {
+            onChange={(e) => {
               clearError();
               setEmail(e.target.value);
             }}
@@ -109,7 +109,7 @@ function ConvertKitSignupForm({
         <div>
           <input
             className={styles.signupField}
-            onChange={e => {
+            onChange={(e) => {
               clearError();
               setName(e.target.value);
             }}
@@ -160,7 +160,7 @@ ConvertKitSignupForm.defaultProps = {
 };
 
 export function withHidden(WrappedComponent, text) {
-  return class extends React.Component {
+  return class HiddenForm extends React.Component {
     constructor(props) {
       super(props);
       this.state = { hidden: true };

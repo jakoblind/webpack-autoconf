@@ -1,22 +1,11 @@
 {
-  "presets": [
-    [
-      "babel-preset-gatsby",
-      {
-        "targets": {
-          "browsers": [">0.25%", "not dead"]
+    "presets": ["next/babel"],
+    "plugins": [[
+        "prismjs",
+        {
+          "languages": ["bash", "css","html","javascript", "json","less","markdown","markup","scss","stylus","typescript", "tsx", "jsx"],
+          "theme": "okaidia",
+          "css": true
         }
-      }
-    ]
-  ],
-  "plugins": [
-    [
-      "prismjs",
-      {
-        "languages": ["bash", "css","html","javascript", "json","less","markdown","markup","scss","stylus","typescript", "tsx", "jsx"],
-        "theme": "tomorrow",
-        "css": true
-      }
-    ]
-  ]
-}
+      ]]
+  }

@@ -4,9 +4,8 @@ import { SampleChapterSignupForm, withHidden } from '../components/SignupForms';
 import Layout from '../components/layout';
 // import Countdown from 'react-countdown-now'
 import webpackConfigImg from '../../images/webpack-config.png';
-import dependencyImg from '../../images/dependency-hell-overlay.png';
-import speedImg from '../../images/100-on-speed.png';
 import profileImg from '../../images/profile-pic.jpg';
+import Image from 'next/image';
 
 export const HiddenSampleChapterSignupForm = withHidden(
   SampleChapterSignupForm,
@@ -43,7 +42,7 @@ const Discount = () => (
   </div>
 ) */
 
-export default () => {
+export default function WebpackBook() {
   return (
     <Layout title="Learn webpack" hideHeader={true}>
       <div className={styles.webpackConfigContainer}>
@@ -64,12 +63,7 @@ export default () => {
           webpack. But for devs just wanting to create a new project, it's a
           nightmare to write.
         </p>
-        <img
-          alt="webpack config wtf"
-          src={webpackConfigImg}
-          width="100%"
-          style={{ textAlgin: 'center' }}
-        />
+        <Image alt="webpack config wtf" src={webpackConfigImg} />
         <p style={{ marginTop: 0 }}>
           You see keywords like <code>module</code>, <code>rules</code>,{' '}
           <code>use</code>, <code>entry</code>, <code>plugins</code>. But what
@@ -281,17 +275,19 @@ export default () => {
           guarantee if you are not happy with the book.
         </p>
         <h3>About the author</h3>
-        <img alt="Jakob Lind" className={styles.authorImage} src={profileImg} />
-        Hi, I'm Jakob Lind (
-        <a href="https://twitter.com/karljakoblind">@karljakoblind</a>
-        ). I'm a full stack developer and independent consultant. I have 10
-        years of experience as a professional dev and I have been coding as a
-        hobby since I was a kid.
-        <br />
-        <br />
-        I’ve written hundreds of webpack apps - everything from small
-        experimentation apps to large-scale production apps serving millions of
-        users.
+        <Image alt="Jakob Lind" width="150" height="206" src={profileImg} />
+        <div>
+          Hi, I'm Jakob Lind (
+          <a href="https://twitter.com/karljakoblind">@karljakoblind</a>
+          ). I'm a full stack developer and independent consultant. I have 10
+          years of experience as a professional dev and I have been coding as a
+          hobby since I was a kid.
+          <br />
+          <br />
+          I’ve written hundreds of webpack apps - everything from small
+          experimentation apps to large-scale production apps serving millions
+          of users.
+        </div>
         <br />
         <br />
         <div style={{ clear: 'both' }} />
@@ -333,4 +329,4 @@ export default () => {
       </div>
     </Layout>
   );
-};
+}

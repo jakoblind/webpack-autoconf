@@ -7,15 +7,15 @@ import reject from 'lodash/fp/reject';
 const reduce = require('lodash/fp/reduce').convert({ cap: false });
 import merge from 'lodash/fp/merge';
 import split from 'lodash/fp/split';
-import { Link } from 'gatsby';
 import jszip from 'jszip';
 import Joyride from 'react-joyride';
 import { saveAs } from 'file-saver';
 import validate from 'validate-npm-package-name';
-import { Router } from '@reach/router';
 import Modal from '../components/Modal';
 import * as styles from '../styles.module.css';
 import npmVersionPromise from '../fetch-npm-version';
+import Link from 'next/link';
+import Image from 'next/image';
 
 import { CourseSignupForm } from '../components/SignupForms';
 import webpackImg from '../../images/webpack-logo.png';
@@ -127,7 +127,9 @@ const StepByStepArea = ({ features, newBabelConfig, isReact, bundler }) => {
           {srcFoldersStep}
         </ol>
         {isWebpack ? (
-          <Link to="/webpack-course">Need more detailed instructions?</Link>
+          <Link href="/webpack-course">
+            <a>Need more detailed instructions?</a>
+          </Link>
         ) : null}
       </div>
     </div>
@@ -156,11 +158,15 @@ function Tabs({ selected, setSelected }) {
             styles.webpackTab,
           ].join(' ')}
         >
-          <img
-            alt="webpack logo"
-            src={selected === 'webpack' ? webpackImgColor : webpackImg}
-          />
-          <div>webpack</div>
+          <div className={styles.tabImage}>
+            <Image
+              alt="webpack logo"
+              src={selected === 'webpack' ? webpackImgColor : webpackImg}
+              width={40}
+              height={40}
+            />
+          </div>
+          <div className={styles.tabsDescription}>webpack</div>
         </button>
         <button
           onClick={() => setSelected('parcel')}
@@ -169,11 +175,15 @@ function Tabs({ selected, setSelected }) {
             styles.parcelTab,
           ].join(' ')}
         >
-          <img
-            alt="parcel logo"
-            src={selected === 'parcel' ? parcelImgColor : parcelImg}
-          />
-          <div>Parcel</div>
+          <div className={styles.tabImage} style={{ marginTop: '0px' }}>
+            <Image
+              alt="parcel logo"
+              src={selected === 'parcel' ? parcelImgColor : parcelImg}
+              width={35}
+              height={35}
+            />
+          </div>
+          <div className={styles.tabsDescription}>Parcel</div>
         </button>
 
         <button
@@ -183,11 +193,17 @@ function Tabs({ selected, setSelected }) {
             styles.snowpackTab,
           ].join(' ')}
         >
-          <img
-            alt="snowpack logo"
-            src={selected === 'snowpack' ? snowpackImgColor : snowpackImg}
-          />
-          <div>Snowpack</div>
+          <div className={styles.tabImage}>
+            <Image
+              alt="snowpack logo"
+              src={selected === 'snowpack' ? snowpackImgColor : snowpackImg}
+              width={22}
+              height={22}
+            />
+          </div>
+          <div className={styles.tabsDescription} style={{ marginTop: '4px' }}>
+            Snowpack
+          </div>
         </button>
       </nav>
     </div>
@@ -199,7 +215,7 @@ Tabs.propTypes = {
   setSelected: PropTypes.func.isRequired,
 };
 
-Modal.setAppElement('#___gatsby');
+//Modal.setAppElement('#___gatsby');
 
 function DownloadButton({ url, onClick, filename, buildTool }) {
   const [modalOpen, setModalOpen] = useState(false);
@@ -226,7 +242,9 @@ function DownloadButton({ url, onClick, filename, buildTool }) {
         }}
         id="download"
       >
-        <img alt="zip file" className={styles.icon} src={zipImg} />
+        <div className={styles.icon}>
+          <Image alt="zip file" src={zipImg} width="20" height="20" />
+        </div>
         <span>Download project</span>
       </button>
       <Modal
@@ -323,8 +341,8 @@ const buildConfigConfig = {
     selectionRules,
     extraElements: [
       <br key={1} />,
-      <Link key={2} to="/webpack-course">
-        Free webpack course
+      <Link key={2} href="/webpack-course">
+        <a>Free webpack course</a>
       </Link>,
       <br key={3} />,
     ],
@@ -336,8 +354,8 @@ const buildConfigConfig = {
     selectionRules: parcelSelectionRules,
     extraElements: [
       <br key={1} />,
-      <Link key={2} to="/parcel-course">
-        Free parcel course
+      <Link key={2} href="/parcel-course">
+        <a>Free parcel course</a>
       </Link>,
       <br key={3} />,
     ],
@@ -363,7 +381,7 @@ const initialState = (selectedTab = 'webpack', initFeatures) => {
   );
 
   const initFeaturesOnlyApplicableObject = flow(
-    map(f => ({ [f]: true })),
+    map((f) => ({ [f]: true })),
     reduce(merge, [])
   )(initFeaturesArrayOnlyApplicable);
 
@@ -439,7 +457,7 @@ function reducer(state, action) {
           _.map(
             buildConfigConfig[state.selectedTab].selectionRules
               .stopSelectFunctions,
-            fn => fn(selectedFeature, action.feature, setToSelected)
+            (fn) => fn(selectedFeature, action.feature, setToSelected)
           )
         )
       ) {
@@ -491,7 +509,7 @@ function Configurator(props) {
   );
   useEffect(() => {
     const selectedArray = getSelectedArray(state.selectedFeatures);
-    const mainLibs = _.remove(selectedArray, i =>
+    const mainLibs = _.remove(selectedArray, (i) =>
       _.includes(['react', 'vue', 'svelte', 'no-library'], i)
     );
     const path = _.join(_.sortBy(selectedArray), '--');
@@ -499,16 +517,14 @@ function Configurator(props) {
       path ? '--' + path : ''
     }`;
     //trackPageView(newUrl);
-    window.history.replaceState(null, null, newUrl);
+    // TODO: fix
+    //window.history.replaceState(null, null, newUrl);
   }, [state.selectedFeatures]);
   const [hoverFeature, setHoverFeature] = useState('');
   const [projectName, setProjectName] = useState('empty-project');
 
-  const {
-    featureConfig,
-    projectGeneratorFunction,
-    defaultFile,
-  } = buildConfigConfig[state.selectedTab];
+  const { featureConfig, projectGeneratorFunction, defaultFile } =
+    buildConfigConfig[state.selectedTab];
 
   const selectedArray = getSelectedArray(state.selectedFeatures);
 
@@ -559,17 +575,18 @@ function Configurator(props) {
       selectedArray,
       projectName,
       npmVersionPromise
-    ).then(res => {
+    ).then((res) => {
       const zip = new jszip();
       _.forEach(res, (content, file) => {
         zip.file(file, content);
       });
 
-      zip.generateAsync({ type: 'blob' }).then(function(blob) {
+      zip.generateAsync({ type: 'blob' }).then(function (blob) {
         saveAs(
           blob,
-          `${projectName ||
-            getDefaultProjectName('empty-project', selectedArray)}.zip`
+          `${
+            projectName || getDefaultProjectName('empty-project', selectedArray)
+          }.zip`
         );
       });
     });
@@ -595,7 +612,7 @@ function Configurator(props) {
     <div>
       <Tabs
         selected={state.selectedTab}
-        setSelected={selectedTab => {
+        setSelected={(selectedTab) => {
           const newUrl = `/${selectedTab}`;
           trackPageView(newUrl);
           // url is changed when state changes so no need to do it here
@@ -610,7 +627,7 @@ function Configurator(props) {
           <Features
             features={showFeatures}
             selected={state.selectedFeatures}
-            setSelected={feature => {
+            setSelected={(feature) => {
               dispatch({ type: 'setSelectedFeatures', feature });
             }}
             onMouseEnter={onMouseEnterFeature}
@@ -632,13 +649,13 @@ function Configurator(props) {
               id="project-name"
               name="project-name"
               value={projectName}
-              onChange={e => validateProjectName(e.target.value)}
+              onChange={(e) => validateProjectName(e.target.value)}
               className={styles.projectNameInput}
             />
             <DownloadButton
               buildTool={state.selectedTab}
               filename={`${projectName}.zip`}
-              onClick={e => {
+              onClick={(e) => {
                 downloadZip();
                 trackDownload(state.selectedTab, selectedArray);
               }}
@@ -675,13 +692,13 @@ function Configurator(props) {
               id="project-name-small"
               name="project-name"
               value={projectName}
-              onChange={e => validateProjectName(e.target.value)}
+              onChange={(e) => validateProjectName(e.target.value)}
               className={styles.projectNameInput}
             />
             <DownloadButton
               buildTool={state.selectedTab}
               filename={`${projectName}.zip`}
-              onClick={e => {
+              onClick={(e) => {
                 downloadZip();
                 trackDownload(state.selectedTab, selectedArray);
               }}
@@ -735,16 +752,7 @@ export class App extends React.Component {
           continuous
           callback={this.joyrideCallback}
         />
-        <Router>
-          <Configurator
-            path={`${selectedTab}/:urlId`}
-            selectedTab={selectedTab}
-          />
-          <Configurator
-            path={`${selectedTab || '/'}`}
-            selectedTab={selectedTab}
-          />
-        </Router>
+        <Configurator path={`${selectedTab}/:urlId`} selectedTab={'webpack'} />
       </Layout>
     );
   }

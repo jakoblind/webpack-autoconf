@@ -14,7 +14,6 @@ import { getNpmDependencies } from '../configurator/configurator';
 import npmVersionPromise from '../fetch-npm-version';
 import * as styles from '../styles.module.css';
 
-require('./prism-customization/styles.css');
 require('./prism-customization/LineHighlight');
 
 // disable prettier for now.
@@ -26,7 +25,7 @@ const FileList = ({ files, selectedFile, onSelectFile }) => {
   const sortedFiles = flow(
     map(({ highlightedFile }, filename) => ({ filename, highlightedFile })),
     groupBy(({ filename }) => _.includes(filename, '/')),
-    mapValues(group => _.sortBy(group, 'filename')),
+    mapValues((group) => _.sortBy(group, 'filename')),
     reduce((all, value, key) => _.concat(value, all), [])
   )(files);
 
@@ -52,7 +51,7 @@ const FileList = ({ files, selectedFile, onSelectFile }) => {
 
   const filesElements = _.map(groupByHighlight, ({ highlighted, files }, i) => (
     <div className={highlighted ? styles.highlighted : null} key={i}>
-      {_.map(files, file => (
+      {_.map(files, (file) => (
         <li
           className={file === selectedFile ? styles.selected : null}
           key={file}
@@ -169,7 +168,7 @@ class FileBrowser extends React.Component {
         const newSelection = _.find(
           _.keys(this.props.fileContentMap),
           // we don't want to go from index.js to index.html
-          file => _.startsWith(file, filename) && !_.endsWith(file, 'html')
+          (file) => _.startsWith(file, filename) && !_.endsWith(file, 'html')
         );
         this.setState({
           selectedFile: newSelection || this.props.defaultSelection,
@@ -297,7 +296,7 @@ class FileBrowserContainer extends React.Component {
       npmConfigAllFeatures.dependencies,
       npmConfigAllFeatures.devDependencies
     );
-    _.forEach(allDependencies, dependency => npmVersionPromise(dependency));
+    _.forEach(allDependencies, (dependency) => npmVersionPromise(dependency));
   }
 
   componentDidUpdate(prevProps) {
@@ -319,7 +318,7 @@ class FileBrowserContainer extends React.Component {
   }
 
   getAllFeaturesExceptHighlighted = memoizee((features, highlightFeature) =>
-    _.reject(features, f => f === highlightFeature)
+    _.reject(features, (f) => f === highlightFeature)
   );
 
   setProjectFilesInState = () => {
@@ -329,7 +328,7 @@ class FileBrowserContainer extends React.Component {
         this.props.projectName,
         npmVersionPromise
       )
-      .then(files => {
+      .then((files) => {
         this.setState({ projectFiles: files });
         if (!this.props.highlightFeature) {
           // beacuse if there is no highligthed, then the previous content is the same as current content
@@ -348,7 +347,7 @@ class FileBrowserContainer extends React.Component {
           this.props.projectName,
           npmVersionPromise
         )
-        .then(files => {
+        .then((files) => {
           this.setState({
             projectFilesWithoutHighlightedFeature: files,
           });
@@ -361,9 +360,8 @@ class FileBrowserContainer extends React.Component {
     const files = _.mapValues(projectFiles, (currentContent, file) => {
       let previousContent;
       if (this.state.projectFilesWithoutHighlightedFeature[file]) {
-        previousContent = this.state.projectFilesWithoutHighlightedFeature[
-          file
-        ];
+        previousContent =
+          this.state.projectFilesWithoutHighlightedFeature[file];
       }
 
       return {
