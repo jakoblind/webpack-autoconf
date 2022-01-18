@@ -171,7 +171,7 @@ export function Configurator({ selectedStartTab, urlId }) {
           <div className={styles.featuresContainer}>
             <Features
               features={showFeatures}
-              selected={selectedFeatures}
+              selected={urlId ? selectedFeatures : []} //reduce flicker on page load
               setSelected={(feature) => {
                 const newSelectedFeatures = getNewFeaturesForNewSelectedFeature(
                   selectedTab,
