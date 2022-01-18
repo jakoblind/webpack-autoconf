@@ -7,7 +7,7 @@ export class App extends React.Component {
   render() {
     return (
       <Layout>
-        <Configurator selectedTab={'webpack'} />
+        <Configurator urlId={'no-library'} selectedStartTab={'webpack'} />
       </Layout>
     );
   }
