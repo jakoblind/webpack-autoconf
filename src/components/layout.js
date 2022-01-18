@@ -92,6 +92,7 @@ const Layout = ({ children, title, metaDescription, hideHeader }) => (
         <li>
           <a
             className="github-button"
+            data-icon="octicon-issue-opened"
             href="https://github.com/jakoblind/webpack-autoconf/issues"
             aria-label="Issue jakoblind/webpack-autoconf on GitHub"
           >
