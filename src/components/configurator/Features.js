@@ -199,7 +199,7 @@ function FeatureGroup({
     if (anyChanged) {
       setExpanded(true);
     }
-  }, [selected]);
+  }, [selected, featureList, prevSelected]);
 
   return (
     <div className={styles.featureGroup}>
