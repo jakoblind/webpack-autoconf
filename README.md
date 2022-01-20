@@ -6,14 +6,13 @@ This tool is available both as CLI and as a online web tool.
 
 The web tool is running on [createapp.dev](https://createapp.dev)
 
-
 ## Run web version locally
 
 Make sure you use NPM 8 or later
 
 ```sh
 npm install
-gatsby develop
+npm run dev
 ```
 
 Point your browser to http://localhost:8000
@@ -23,16 +22,17 @@ Point your browser to http://localhost:8000
 Usage: webpack-autoconf new [project-name] [features]
 
 Where [features] can be any combination of:
-  - React
-  - Vue
-  - CSS
-  - Sass
-  - Less
-  - stylus
-  - SVG
-  - PNG
-  - moment
-  - lodash
+
+- React
+- Vue
+- CSS
+- Sass
+- Less
+- stylus
+- SVG
+- PNG
+- moment
+- lodash
 
 Example: webpack-autoconf new myProject React PNG
 
