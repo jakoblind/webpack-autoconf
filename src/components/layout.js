@@ -2,19 +2,30 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import Head from 'next/head';
 import Link from 'next/link';
+import Image from 'next/image';
 
 import * as styles from '../styles.module.css';
 import config from '../config';
+import rocket from '../../images/rocket.png';
 
 const Header = () => {
   return (
     <div className={styles.header}>
-      <h1>
+      <div className={styles.logoContainer}>
         <Link href="/">
-          <a className="header-link">Create App</a>
+          <a className={styles.logo}>
+            <Image src={rocket} alt="" width="75" height="75" />
+          </a>
         </Link>
-      </h1>
-      <h2 className="main-subheader">Frontend build config generator</h2>
+        <h1>
+          <Link href="/">
+            <a className={styles.headerLink}>Create App</a>
+          </Link>
+        </h1>
+      </div>
+      <h2 className="main-subheader" style={{ clear: 'both' }}>
+        Frontend build config generator
+      </h2>
     </div>
   );
 };

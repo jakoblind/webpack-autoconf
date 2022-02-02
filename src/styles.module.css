@@ -2,6 +2,15 @@
   color: black;
 }
 
+.headerLink {
+  text-decoration: none;
+  color: black;
+  float: left;
+  margin-top: 14px;
+
+  margin-left: 15px;
+}
+
 .miniBook {
   padding: 10px;
   margin-bottom: 20px;
@@ -142,6 +151,15 @@
   margin: 0 auto;
   text-align: center;
   padding: 40px 0px;
+}
+
+.logo {
+  float: left;
+}
+
+.logoContainer {
+  width: 270px;
+  margin: 0 auto;
 }
 
 .btn {
