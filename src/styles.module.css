@@ -326,7 +326,7 @@
 }
 
 .tabs {
-  max-width: 385px;
+  max-width: 410px;
   margin: 0 auto;
 }
 
@@ -345,14 +345,11 @@
 }
 .tabImage {
   float: left;
-  width: 40px;
-  margin-top: -1px;
-  margin-left: 0px;
-  margin-right: 5px;
 }
 .tabsDescription {
   float: left;
   margin-top: 10px;
+  margin-left: 5px;
 }
 
 .tabs button:hover {
@@ -362,15 +359,9 @@
   border-color: black;
   background: #e3e3e3;
 }
-.parcelTab {
-  width: 115px;
-}
-
-.webpackTab {
-  width: 135px;
-}
-.snowpackTab {
-  width: 135px;
+.tab {
+  padding-left: 15px;
+  padding-right: 15px;
 }
 
 @media only screen and (max-width: 666px) {

@@ -17,7 +17,7 @@ export function Tabs({ selected, setSelected }) {
           onClick={() => setSelected('webpack')}
           className={[
             selected === 'webpack' ? styles.selectedTab : null,
-            styles.webpackTab,
+            styles.tab,
           ].join(' ')}
         >
           <div className={styles.tabImage}>
@@ -34,7 +34,7 @@ export function Tabs({ selected, setSelected }) {
           onClick={() => setSelected('parcel')}
           className={[
             selected === 'parcel' ? styles.selectedTab : null,
-            styles.parcelTab,
+            styles.tab,
           ].join(' ')}
         >
           <div className={styles.tabImage} style={{ marginTop: '0px' }}>
@@ -52,19 +52,24 @@ export function Tabs({ selected, setSelected }) {
           onClick={() => setSelected('snowpack')}
           className={[
             selected === 'snowpack' ? styles.selectedTab : null,
-            styles.snowpackTab,
+            styles.tab,
           ].join(' ')}
         >
-          <div className={styles.tabImage}>
-            <Image
-              alt="snowpack logo"
-              src={selected === 'snowpack' ? snowpackImgColor : snowpackImg}
-              width={22}
-              height={22}
-            />
-          </div>
-          <div className={styles.tabsDescription} style={{ marginTop: '4px' }}>
-            Snowpack
+          <div className={styles.tabWrapper}>
+            <div className={styles.tabImage}>
+              <Image
+                alt="snowpack logo"
+                src={selected === 'snowpack' ? snowpackImgColor : snowpackImg}
+                width={22}
+                height={22}
+              />
+            </div>
+            <div
+              className={styles.tabsDescription}
+              style={{ marginTop: '4px' }}
+            >
+              Snowpack
+            </div>
           </div>
         </button>
       </nav>
