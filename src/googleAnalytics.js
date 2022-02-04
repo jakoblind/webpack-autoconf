@@ -1,13 +1,16 @@
+const GA_CODE = 'UA-43679645-5';
+
 export function trackPageView(newUrl) {
-  if (!window.ga) {
-    return
+  if (!window.gtag) {
+    return;
   }
-  window.ga('set', 'page', newUrl)
-  window.ga('send', 'pageview')
+  window.gtag('config', GA_CODE, {
+    path_url: newUrl,
+  });
 }
 
 export function gaSendEvent({ eventCategory, eventAction, eventLabel }) {
-  if (!window.ga) {
+  if (!window.gtag) {
     console.log(
       'Ga debug: ',
       'send',
@@ -15,8 +18,11 @@ export function gaSendEvent({ eventCategory, eventAction, eventLabel }) {
       eventCategory,
       eventAction,
       eventLabel
-    )
-    return
+    );
+    return;
   }
-  window.ga('send', 'event', eventCategory, eventAction, eventLabel)
+  window.gtag('event', eventAction, {
+    event_category: eventCategory,
+    event_label: eventLabel,
+  });
 }

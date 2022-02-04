@@ -7,6 +7,7 @@ import Image from 'next/image';
 import * as styles from '../styles.module.css';
 import config from '../config';
 import rocket from '../../images/rocket.png';
+import Script from 'next/script';
 
 const Header = () => {
   return (
@@ -57,7 +58,23 @@ const Layout = ({ children, title, metaDescription, hideHeader }) => (
       />
       <link rel="manifest" href="/site.webmanifest" />
     </Head>
-
+    {process.env.NODE_ENV === 'production' ? (
+      <>
+        <Script
+          src={`https://www.googletagmanager.com/gtag/js?id=UA-43679645-5`}
+          strategy="afterInteractive"
+        />
+        <Script id="google-analytics" strategy="afterInteractive">
+          {`
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+        
+          gtag('config', 'UA-43679645-5');
+        `}
+        </Script>
+      </>
+    ) : null}
     {hideHeader ? null : <Header />}
     <div>{children}</div>
     <footer>
