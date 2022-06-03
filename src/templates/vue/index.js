@@ -1,20 +1,17 @@
 import _ from 'lodash';
 
-const joinToString = list => _.reduce(list, (all, i) => `${all + i}\n`, '');
+const joinToString = (list) => _.reduce(list, (all, i) => `${all + i}\n`, '');
 
-export const vueIndexTs = (extraImports = []) => `import Vue from 'vue';
-import App from './App';
+export const vueIndexTs = (extraImports = []) => `import { createApp } from 'vue';
+import App from './App.vue';
 ${joinToString(extraImports)}
-new Vue({
-  el: '#app',
-  render: h => h(App),
-});`;
+createApp(App).mount("#app");`;
 
 export const vueIndexAppVue = (styling, configItems) => {
   const isTailwindcss = _.includes(configItems, 'tailwind-css');
   const isBootstrap = _.includes(configItems, 'bootstrap');
-  return `
-<template>
+  const isTypescript = _.includes(configItems, 'typescript');
+  return `<template>
   <div>
     <h1${isTailwindcss ? ' class="text-4xl text-white bg-black"' : ''}>
       {{name}}
@@ -27,30 +24,35 @@ export const vueIndexAppVue = (styling, configItems) => {
     }
   </div>
 </template>
-
-<script lang="ts">
-  import Vue from "vue";${
-    isBootstrap
-      ? `\n  import 'bootstrap';\n  import 'bootstrap/dist/css/bootstrap.min.css';`
-      : ''
-  }
-
-  export default Vue.extend({
-    data: function() {
-      return {
-        name: 'Hello World!',
-      }
-    },
-  });
+${
+  isTypescript 
+  ? '<script lang="ts">\n' 
+  : '<script>'
+}${
+  isTypescript 
+    ? 'import { defineComponent } from \'vue\'\n' 
+    : ''
+}${
+  isBootstrap
+    ? `\n  import 'bootstrap';\n  import 'bootstrap/dist/css/bootstrap.min.css';`
+    : ''
+}
+export default ${isTypescript ? 'defineComponent(' : ''}{
+  data: function() {
+    return {
+      name: 'Hello World!',
+    }
+  },
+}${isTypescript ? ')' : ''};
 </script>
 
 ${styling}
 `;
 };
 
-export const vueShimType = `
-declare module "*.vue" {
-  import Vue from 'vue'
-  export default Vue
+export const vueShimType = `declare module "*.vue" {
+  import type { DefineComponent } from "vue";
+  const component: DefineComponent<{}, {}, any>;
+  export default component;
 }
 `;

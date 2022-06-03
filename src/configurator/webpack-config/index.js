@@ -116,7 +116,7 @@ export default (() => {
       name: 'Vue',
       group: 'Main library',
       webpackImports: [
-        "const VueLoaderPlugin = require('vue-loader/lib/plugin');",
+        "const { VueLoaderPlugin } = require('vue-loader');",
       ],
       webpack: (webpackConfig) => {
         const webpackConfigWithRule = assignModuleRuleAndResolver(
@@ -149,7 +149,7 @@ export default (() => {
             'src/App.vue': vueIndexAppVue(_.join(styling, '\n'), configItems),
             [indexFilename]: vueIndexTs(),
           },
-          isTypescript ? { 'vue-shim.d.ts': vueShimType } : {}
+          isTypescript ? { 'src/vue-shim.d.ts': vueShimType } : {}
         );
       },
     },
