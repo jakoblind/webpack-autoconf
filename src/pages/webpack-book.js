@@ -19,7 +19,7 @@ const BuyButton = () => (
     rel="nofollow"
     className={styles.myButton}
   >
-    Buy Now for $24
+    Buy Now for $14
   </a>
 );
 
