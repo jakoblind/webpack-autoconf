@@ -159,7 +159,7 @@ export default (() => {
       dependencies: (configItems) => ['bootstrap', 'jquery', 'popper.js'],
     },
     'tailwind-css': {
-      name: 'Taliwind CSS',
+      name: 'Tailwind CSS',
       group: 'UI library',
       dependencies: (configItems) => ['tailwindcss'],
     },
