@@ -330,26 +330,14 @@ const buildConfigConfig = {
     projectGeneratorFunction: generateProject,
     defaultFile: 'webpack.config.js',
     selectionRules,
-    extraElements: [
-      <br key={1} />,
-      <Link key={2} href="/webpack-course">
-        <a>Free webpack course</a>
-      </Link>,
-      <br key={3} />,
-    ],
+    extraElements: [],
   },
   parcel: {
     featureConfig: parcelConfig,
     projectGeneratorFunction: generateParcelProject,
     defaultFile: 'package.json',
     selectionRules: parcelSelectionRules,
-    extraElements: [
-      <br key={1} />,
-      <Link key={2} href="/parcel-course">
-        <a>Free parcel course</a>
-      </Link>,
-      <br key={3} />,
-    ],
+    extraElements: [],
   },
   snowpack: {
     featureConfig: snowpackConfig,

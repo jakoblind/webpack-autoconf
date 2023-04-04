@@ -31,7 +31,7 @@ export function DownloadButton({ url, onClick, filename, buildTool }) {
         onClick={() => {
           onClick();
           if (buildTool === 'webpack') {
-            setModalOpen(true);
+            // setModalOpen(true);
           }
         }}
         id="download"

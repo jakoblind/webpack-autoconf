@@ -92,11 +92,6 @@ const Layout = ({ children, title, metaDescription, hideHeader }) => (
           margin: 'auto',
         }}
       >
-        <li>
-          <Link href="/webpack-course">
-            <a>Free webpack course</a>
-          </Link>
-        </li>
         <Link href="/webpack-book">
           <a>Webpack book</a>
         </Link>
